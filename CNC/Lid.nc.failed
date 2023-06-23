@@ -1,0 +1,26 @@
+%
+(Lid)
+(T1  D=0.25 CR=0 - ZMIN=-0.16 - flat end mill)
+G90
+G17
+G20
+G28 G91 Z0
+G90
+
+(2D Contour1)
+T1 M6
+S10000 M3
+G54
+G0 X8.0848 Y12.0244
+Z0.6
+Z0.2
+G1 Z0.08 F30
+Z-0.135
+G18 G3 X8.0598 Z-0.16 I-0.025 K0 F60
+G28 G91 Z0
+G90
+G28 G91 X0 Y0
+G90
+M30
+%
+!Error: Failed to post data. See log for details.
