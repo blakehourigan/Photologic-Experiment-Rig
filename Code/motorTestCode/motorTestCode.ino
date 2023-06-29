@@ -44,22 +44,23 @@ void setup() {
   // Set the maximum speed and acceleration:
   stepper.setMaxSpeed(500);
   stepper.setAcceleration(500);
-    stepper.moveTo(-8600);
-  while (stepper.distanceToGo() != 0) {
-    stepper.run();
-  }
-      stepper.moveTo(-4300);
-        while (stepper.distanceToGo() != 0) {
-    stepper.run();
-  }
+
+
 }
 
 void loop() {
   // Set the target position:
-  //stepper.moveTo(1600);
 
-  // Move the motor to the target position:
+
+    stepper.moveTo(-2712);
   while (stepper.distanceToGo() != 0) {
+    stepper.run();
+  }
+
+  delay(2000);
+
+      stepper.moveTo(-1472);
+        while (stepper.distanceToGo() != 0) {
     stepper.run();
   }
 }
