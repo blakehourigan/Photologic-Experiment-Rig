@@ -37,6 +37,9 @@ void loop() {
 #define dirPin 26  // Direction
 #define stepPin 28  // Step
 
+String string;
+int val = 0;
+
 // Create a new instance of the AccelStepper class:
 AccelStepper stepper = AccelStepper(1, stepPin, dirPin); 
 
@@ -44,23 +47,22 @@ void setup() {
   // Set the maximum speed and acceleration:
   stepper.setMaxSpeed(500);
   stepper.setAcceleration(500);
+  Serial.begin(9600);
 
 
 }
 
 void loop() {
   // Set the target position:
-
-
-    stepper.moveTo(-2712);
-  while (stepper.distanceToGo() != 0) {
+     if (Serial.available()) {
+       string = Serial.readStringUntil('\n');
+       val = string.toInt(); 
+       Serial.println(val);
+     }
+    stepper.moveTo(val);
+    
+    while (stepper.distanceToGo() != 0) 
+    {
     stepper.run();
+    }
   }
-
-  delay(2000);
-
-      stepper.moveTo(-1472);
-        while (stepper.distanceToGo() != 0) {
-    stepper.run();
-  }
-}
