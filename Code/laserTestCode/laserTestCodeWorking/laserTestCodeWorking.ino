@@ -1,8 +1,9 @@
 const byte inputBit = PB4;        // PB4 or pin 10 is the bit that detects a switch to low to increment number of licks       
       byte ledBit   = PB7;        
 int        intPort  = 26;
+unsigned long startTime, endTime; // variables to store start and endtime of licks
 
-volatile bool pinState;
+volatile bool pinState, previousState;
 int licks = 0;                    // variable to store number of licks detected
 
 void setup() {
@@ -33,14 +34,19 @@ ISR(TIMER4_COMPA_vect) {
 
 void loop() {
     if (pinState == 0) {
+      startTime = millis();
       PORTB |= (1 << ledBit);              // if we are getting a low signal from the photosensor, this means the tongue has interrupted the light, turn light on and increment licks. 
       delay(150);                          // delay execution for 100ms so we don't record multiple licks on one actual lick. If this is not here the lick counter goes up very fast.
       licks++;                             // increment number of licks
+      previousState = 0;
     } 
     if (pinState == 1) {
+      endTime = millis();
       PORTB &= ~(1 << ledBit);                   // this clears the LED by clearing the all portb bits via bitwise and with 0111 1111 resulting in a 0 in every bit except PB4
+      previousState = 1;
 
     }
+    if (pinState == 1 & previousState == 0);
   String myString = "Current Licks: " + String(licks);
   Serial.print("\n" + myString);
   }
