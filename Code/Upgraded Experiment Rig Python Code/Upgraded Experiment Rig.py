@@ -4,6 +4,10 @@ import tkinter as tk
 from tkinter import scrolledtext
 import random
 #import pandas as pd
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 BAUD_RATE = 9600
 
@@ -19,9 +23,9 @@ class App:
 
         # Initialize the interval variables and their corresponding IntVars
         self.interval_vars = {
-            'interval1_var': tk.IntVar(value=30000),
-            'interval2_var': tk.IntVar(value=15000),
-            'interval3_var': tk.IntVar(value=15000),
+            'ITI_var': tk.IntVar(value=30000),
+            'TTC_var': tk.IntVar(value=15000),
+            'sample_time_var': tk.IntVar(value=15000),
             'interval1Rand_var': tk.IntVar(value=5000),
             'interval2Rand_var': tk.IntVar(value=5000),
             'interval3Rand_var': tk.IntVar(value=5000),
@@ -31,7 +35,6 @@ class App:
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
-
 
         self.num_trials = tk.IntVar()
         self.num_trials.set(0)
@@ -46,14 +49,12 @@ class App:
         self.rightLicks = 0 
         self.data_window_open = False
 
-
-
          # Generate random numbers
         self.randomITI = random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get()))
         self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
         self.randomSample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
 
-        self.intervals      = [(self.interval_vars['interval1_var'].get()),(self.interval_vars['interval2_var'].get()),(self.interval_vars['interval3_var'].get())]
+        self.intervals      = [(self.interval_vars['ITI_var'].get()),(self.interval_vars['TTC_var'].get()),(self.interval_vars['sample_time_var'].get())]
 
         self.state = "OFF"
 
@@ -89,17 +90,17 @@ class App:
         self.interval3_label.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
 
         # Add Data Entry widgets for intervals
-        self.interval1_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval1_var'], font=("Helvetica", 24))
+        self.interval1_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_var'], font=("Helvetica", 24))
         self.interval1_entry.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
 
-        self.interval2_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval2_var'], font=("Helvetica", 24))
+        self.interval2_entry = tk.Entry(self.root, textvariable=self.interval_vars['TTC_var'], font=("Helvetica", 24))
         self.interval2_entry.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
 
-        self.interval3_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval3_var'], font=("Helvetica", 24))
+        self.interval3_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_var'], font=("Helvetica", 24))
         self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
 
         # Labels for Interval Entry widgets
-        self.interval1_label = tk.Label(self.root, text="+/- | All times in ms", bg="light blue", font=("Helvetica", 24))
+        self.interval1_label = tk.Label(self.root, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
         self.interval1_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
 
         # Label for # of trials
@@ -202,30 +203,39 @@ class App:
 
 
     def data_window(self):
-        # If the window is already open, lift it to the top and return
-        if self.data_window_open:
+        try:
+            # Try to lift the window to the top (it will fail if the window is closed)
             self.data_window_instance.lift()
-            return
+        except (AttributeError, tk.TclError):
+            # If the window is closed, create a new one
+            self.data_window_instance = tk.Toplevel(self.root)
+            self.data_window_instance.geometry("800x600")
+            self.data_window_instance.title("Data")
 
-        # If the window is closed, create a new one
-        self.data_window_instance = tk.Toplevel(self.root)
-        self.data_window_instance.geometry("800x600")
-        self.data_window_instance.title("Data")
+            # Override the default close behavior
+            self.data_window_instance.protocol("WM_DELETE_WINDOW", self.close_data_window)
 
-        # Override the default close behavior
-        self.data_window_instance.protocol("WM_DELETE_WINDOW", self.close_data_window)
+            # Create a figure and axes for the plot
+            self.fig, self.axes = plt.subplots()
+            self.canvas = FigureCanvasTkAgg(self.fig, master=self.data_window_instance)
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-        # Create a StringVar to hold the label text
-        self.data_label_var = tk.StringVar()
-        self.data_label_var.set("This is a new window")
+            # Create a toolbar for the plot and pack it into the window
+            toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
+            toolbar.update()
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+            self.update_plot()
+        # Update the plot only if the window is open
+        if self.data_window_open:
+            self.update_plot()
+            self.root.after(100, self.data_window)
+        else:
+            self.data_window_open = False
 
-        # Create the label and link it to the StringVar
-        self.data_label = tk.Label(self.data_window_instance, textvariable=self.data_label_var)
-        self.data_label.pack()
-
-        self.data_window_open = True
-        self.root.after(100, self.update_data_label)
-
+    def update_plot(self):
+        self.axes.clear()  # clear the old plot
+        self.axes.plot(self.rightLicks, color='black')  # draw the new plot
+        self.canvas.draw()  # update the canvas
     def update_data_label(self):
         # Update the label text only if the window is open
         if self.data_window_open:
@@ -245,8 +255,8 @@ class App:
             self.state = "ITI"
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = time.time()  # Update the state start time
-            self.append_data('Initial Interval: ' + str(((self.interval_vars['interval1_var'].get()) + random.randint(-self.interval_vars['interval1Rand_var'].get(), self.interval_vars['interval1Rand_var'].get())) / 1000) + "s\n")
-            self.root.after((self.interval_vars['interval1_var'].get() + self.random_numbers[0]), self.time_to_contact)
+            self.append_data('Initial Interval: ' + str(((self.interval_vars['ITI_var'].get()) + random.randint(-self.interval_vars['interval1Rand_var'].get(), self.interval_vars['interval1Rand_var'].get())) / 1000) + "s\n")
+            self.root.after((self.interval_vars['ITI_var'].get() + self.random_numbers[0]), self.time_to_contact)
 
 
     def time_to_contact(self):
