@@ -24,6 +24,14 @@ void setup() {
 }
 
 void loop() {
+  if (Serial.available() > 0) {
+    String command = Serial.readStringUntil('\n');
+    command.trim();  // Remove any leading/trailing whitespace
+ if (command == "reset") {
+      asm volatile ("jmp 0");  // Jump to the start of the program
+    }
+  }
+
   // Set the target position:
      if (Serial.available()) {
        string = Serial.readStringUntil('\n');
