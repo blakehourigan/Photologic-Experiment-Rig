@@ -343,13 +343,13 @@ class App:
         self.pairList = []
         row_offset = 0  # Initialize a row offset
         col_offset = 0  # Initialize a column offset
-        for i in range(self.num_trials.get()):  # create blocks for number of trials
+        for i in range(self.num_trial_blocks.get()):  # create blocks for number of trials
                 pairs_copy = self.pairs.copy()  # Make a copy of the pairs
                 random.shuffle(pairs_copy)  # Shuffle the copy
                 self.pairList.append(pairs_copy)  # Append the shuffled copy to the list
 
                 # Add a label for the current block
-                block_frame = tk.LabelFrame(tab2, text=f'Trial Block{i+1}', font=('Helvetica', 24), borderwidth=2, relief="solid")
+                block_frame = tk.LabelFrame(tab2, text=f'Trial Block {i+1}', font=('Helvetica', 24), borderwidth=2, relief="solid")
                 block_frame.grid(row=row_offset, column=col_offset*3, sticky='news')
 
                 for row_index, pair in enumerate(self.pairList[i]):
