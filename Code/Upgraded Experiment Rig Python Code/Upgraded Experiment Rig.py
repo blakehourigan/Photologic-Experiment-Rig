@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import itertools
 from tkinter import ttk
+from serial.serialutil import SerialException
+
 
 BAUD_RATE = 9600
 
@@ -22,6 +24,7 @@ class App:
         self.root.geometry("1400x800")
         # Set the title of the window
         self.root.title("Upgraded Experiment Rig")
+        self.root.iconbitmap('rat.ico')
 
         # Initialize the interval variables and their corresponding IntVars
         self.interval_vars = {
@@ -33,25 +36,35 @@ class App:
             'interval3Rand_var': tk.IntVar(value=5000),
         }
 
-
+        self.ITI_intervals_final = []
+        self.TTC_intervals_final = []
+        self.sample_intervals_final = []
 
         # Initialize dictionary fill of stimulus variables and fill each entry to hold value equal to the key value
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
 
-        self.pairs = [(self.stimuli_vars['stimuli_var_1'],self.stimuli_vars['stimuli_var_2']),(self.stimuli_vars['stimuli_var_3'],self.stimuli_vars['stimuli_var_4']) \
-                    ,(self.stimuli_vars['stimuli_var_5'],self.stimuli_vars['stimuli_var_6']),(self.stimuli_vars['stimuli_var_7'],self.stimuli_vars['stimuli_var_8'])]
-
-        self.pairings = []
+        # initialize variable
+        self.pairs = []
 
         self.pair_permutations = list(itertools.permutations(self.pairs))
 
         self.num_trials = tk.IntVar()
         self.num_trials.set(0)
+        self.num_trial_blocks = tk.IntVar()
+        self.num_trial_blocks.set(0)
         self.num_stimuli = tk.IntVar()
         self.num_stimuli.set(0)
+
+        # initializing variables for iteration through the trials in the program
         self.curr_trial_number = 1
+        self.current_trial_block = 1
+
+        self.ITI_random_intervals = []
+        self.TTC_random_intervals = []
+        self.sample_random_intervals = []
+
 
         # Initialize the running flag to False
         self.running = False
@@ -60,8 +73,8 @@ class App:
         self.start_time = 0
         self.side_one_licks = 0
         self.sied_two_licks = 0 
-        self.data_window_open = False
 
+        self.data_window_open = False
         self.data_window_job = None
 
         # Initialize these instance variables
@@ -127,8 +140,8 @@ class App:
         self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
 
         # Entry for # of trials
-        self.num_trials_entry = tk.Entry(self.root, textvariable=self.num_trials, font=("Helvetica", 24))
-        self.num_trials_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trial_blocks_entry = tk.Entry(self.root, textvariable=self.num_trial_blocks, font=("Helvetica", 24))
+        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
 
         # Label for # stimuli
         self.num_stimuli_label = tk.Label(self.root, text="# of Stimuli", bg="light blue", font=("Helvetica", 24))
@@ -161,8 +174,8 @@ class App:
         self.clearButton.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
 
         # button to open the stimuli window
-        self.stimuli_window_button = tk.Button(text="Stimuli", command=self.stimuli_window, bg="grey", font=("Helvetica", 24))
-        self.stimuli_window_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew')
+        self.experiment_control_button = tk.Button(text="Experiment Control", command=self.experiment_control, bg="grey", font=("Helvetica", 24))
+        self.experiment_control_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew',columnspan=2)
 
         # button to open the data window
         self.data_window_button = tk.Button(text="View Data", command=self.data_window, bg="grey", font=("Helvetica", 24))
@@ -179,18 +192,26 @@ class App:
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
         self.data_text.grid(row=0, column=0, sticky='nsew')
 
+        try:
+            # Open a serial connection to the first Arduino
+            self.arduinoLaser = serial.Serial('COM3', BAUD_RATE)
+            # Open a serial connection to the second Arduino
+            self.arduinoMotor = serial.Serial('COM4', BAUD_RATE)
+        except SerialException:
+            self.serial_exception_instance = tk.Toplevel(self.root)
+            self.serial_exception_instance.geometry("800x600")
+            self.serial_exception_instance.title("Error")
+            self.serial_exception_instance.iconbitmap('rat.ico')
+            serial_text_box = tk.Text(self.serial_exception_instance, width=52, height=30)  # Adjust size as needed
+            serial_text_box.grid(row=0, column=0)
+            # Insert text
+            serial_text_box.insert('1.0', "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
+            # Wait for the serial connections to settle
+            time.sleep(2)
 
-        # Open a serial connection to the first Arduino
-        self.arduinoLaser = serial.Serial('COM3', BAUD_RATE)
-        # Open a serial connection to the second Arduino
-        self.arduinoMotor = serial.Serial('COM4', BAUD_RATE)
-
-        # Wait for the serial connections to settle
-        time.sleep(2)
-
-        # Start the clock and the data reader
-        self.update_clock()
-        self.read_licks()
+            # Start the clock and the data reader
+            self.update_clock()
+            self.read_licks()
 
     # State methods
 
@@ -223,97 +244,26 @@ class App:
             self.state_start_time = time.time()  # Update the state start time
             self.append_data('Sample Time Interval: ' + str(((self.interval_vars['sample_time_var'].get()) + self.random_sample) / 1000) + "s\n")
 
-    # Define the method for sending the target position
-    def send_target_position(self):
-        # Get the target position from the entry widget
-        target_position = self.position_entry.get()
-        # Send the target position to the second Arduino
-        self.arduinoMotor.write(target_position.encode())
 
-    def toggle(self):
-        # Clear the scrolled text widget
-        self.data_text.delete('1.0', tk.END)
-        elapsed_time = 0 
-        self.time_label.configure(text="{:.3f}s".format(elapsed_time))
-        state_elapsed_time = 0
-        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
-
-    # Define the method for toggling the program state
-    def start_toggle(self):
-        # If the program is running, stop it
-        if self.running:
-            self.state = "OFF"
-            self.state_time_label_header.configure(text=(self.state))
-            self.running = False
-            self.startButton.configure(text="Start", bg="green")
-            # Send the reset command to both Arduinos
-            self.arduinoLaser.write(b'reset\n')
-            self.arduinoMotor.write(b'reset\n')
-            self.curr_trial_number = 1
-
-        # If the program is not running, start it
-        else:
-            # Start the program if it is not already runnning and generate random numbers
-            self.randomITI = random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get()))
-            self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
-            self.random_sample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
-            self.running = True
-            self.start_time = time.time()
-            self.startButton.configure(text="Stop", bg="red")
-            self.initial_time_interval()
-
-    # Define the method for updating the clock
-    def update_clock(self):
-        # If the program is running, update the elapsed time
-        if self.running:
-            elapsed_time = time.time() - self.start_time
-            self.time_label.configure(text="{:.3f}s".format(elapsed_time))
-            state_elapsed_time = time.time() - self.state_start_time
-            self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
-            self.update_clock_id = True
-        # Call this method again after 100 ms
-        self.root.after(100, self.update_clock)
-
-    # Define the method for reading data from the first Arduino
-    def read_licks(self):
-        # If there is data available from the first Arduino, read it
-        if self.arduinoLaser.in_waiting > 0:
-            data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
-            # Append the data to the scrolled text widget
-            if "Left Lick" in data:
-                self.side_one_licks += 1
-                self.append_data(data)
-                self.append_data(str(self.side_one_licks))
-            if "Right Lick" in data:
-                self.sied_two_licks += 1 
-                self.append_data(str(self.sied_two_licks))
-        # Call this method again after 100 ms
-        self.root.after(100, self.read_licks)
-
-    # Define the method for appending data to the scrolled text widget
-    def append_data(self, data):
-        self.data_text.insert(tk.END, data)
-        # Scroll the scrolled text widget to the end of the data
-        self.data_text.see(tk.END)
-
-    def stimuli_window(self):
+    def experiment_control(self):
         try:
             # Try to lift the window to the top (it will fail if the window is closed)
-            self.stimuli_window_instance.lift()
+            self.experiment_control_instance.lift()
         except (AttributeError, tk.TclError):
-            self.stimuli_window_instance = tk.Toplevel(self.root)
-            self.stimuli_window_instance.geometry("1350x850")
-            self.stimuli_window_instance.title("Stimuli")
+            self.experiment_control_instance = tk.Toplevel(self.root)
+            self.experiment_control_instance.geometry("1350x850")
+            self.experiment_control_instance.title("Experiment Control")
+            self.experiment_control_instance.iconbitmap('rat.ico')
 
             # Create the notebook (tab manager)
-            notebook = ttk.Notebook(self.stimuli_window_instance)
+            notebook = ttk.Notebook(self.experiment_control_instance)
             tab1 = ttk.Frame(notebook)
             notebook.add(tab1, text='Experiment Stimuli')
 
             if(self.num_stimuli.get() == 0):
                 # Create a text box
                 text_box = tk.Text(tab1, width=50, height=30)  # Adjust size as needed
-                text_box.pack()
+                text_box.grid(row=0, column=0)
                 # Insert text
                 text_box.insert('1.0', "No stimuli have been added, please close the window, set number of stimuli and try again")
             else: 
@@ -333,25 +283,68 @@ class App:
 
             tab2 = ttk.Frame(notebook)
             notebook.add(tab2, text='Program Stimuli Schedule')
-            # Generate stim schedule button 
+            tab3 = ttk.Frame(notebook)
+            notebook.add(tab3, text= 'Generate Program Schedule')
+
+            # Generate stimuli schedule button 
             self.generateStimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
             self.generateStimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
             self.create_trial_blocks(tab2, notebook, 0, 0)
+            # Generate experiment timeline button
+            self.generate_experiment_timeline_button = tk.Button(tab3,text="Generate Experiment Timeline", command=self.generate_experiment_timeline, bg="green", font=("Helvetica", 24))
+            self.generate_experiment_timeline_button.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+
+
+    def data_window(self):
+        try:
+            # Try to lift the window to the top (it will fail if the window is closed)
+            self.data_window_instance.lift()
+        except (AttributeError, tk.TclError):
+            # If the window is closed, create a new one
+            self.data_window_instance = tk.Toplevel(self.root)
+            self.data_window_instance.geometry("800x600")
+            self.data_window_instance.title("Data")
+            self.data_window_instance.iconbitmap('rat.ico')
+
+            # Override the default close behavior
+            self.data_window_instance.protocol("WM_DELETE_WINDOW", self.close_data_window)
+
+            # Create a figure and axes for the plot
+            self.fig, self.axes = plt.subplots()
+            self.canvas = FigureCanvasTkAgg(self.fig, master=self.data_window_instance)
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+            # Create a toolbar for the plot and pack it into the window
+            toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
+            toolbar.update()
+            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        
+        self.data_window_open = True
+        self.update_plot()
+        if self.data_window_open:
+            self.data_window_job = self.root.after(100, self.data_window)
+        else:
+            self.data_window_open = False
 
     # this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
         self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
+        if len(self.changed_vars) > self.num_stimuli.get(): # Handling the case that you generate the plan for a large num of stimuli and then chanage to a smaller number
+            start_index = self.num_stimuli.get()
+            for index, key in enumerate(self.stimuli_vars):
+                if index >= start_index:
+                    self.stimuli_vars[key].set(key)
+
         self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
-        self.changed_pairs = self.pairs.copy()
 
         # Add reversed pairs
-        self.changed_pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+        self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
         self.pairList = []
         row_offset = 0  # Initialize a row offset
         col_offset = 0  # Initialize a column offset
         for i in range(self.num_trials.get()):  # create blocks for number of trials
-                pairs_copy = self.changed_pairs.copy()  # Make a copy of the pairs
+                pairs_copy = self.pairs.copy()  # Make a copy of the pairs
                 random.shuffle(pairs_copy)  # Shuffle the copy
                 self.pairList.append(pairs_copy)  # Append the shuffled copy to the list
 
@@ -374,39 +367,29 @@ class App:
                     col_offset = 0
                     row_offset += 1  # Increment row_offset after each block of 4 trials
 
-        notebook.pack(expand=True, fill='both')
+        notebook.grid(sticky='nsew')  # Replace notebook.pack(expand=True, fill='both')
+
+    def generate_experiment_timeline(self):
+        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))
+        for entry in range(self.num_trials.get()):
+            self.ITI_random_intervals.append(random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get())))
+        for entry in range(self.num_trials.get()):
+            self.TTC_random_intervals.append(random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get())))
+        for entry in range(self.num_trials.get()):
+            self.sample_random_intervals.append(random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get())))
 
 
-    def data_window(self):
-        try:
-            # Try to lift the window to the top (it will fail if the window is closed)
-            self.data_window_instance.lift()
-        except (AttributeError, tk.TclError):
-            # If the window is closed, create a new one
-            self.data_window_instance = tk.Toplevel(self.root)
-            self.data_window_instance.geometry("800x600")
-            self.data_window_instance.title("Data")
+        for i in range(self.num_trials.get()):
+            self.ITI_intervals_final.append(self.interval_vars['ITI_var'].get() + self.ITI_random_intervals[i])
+            self.TTC_intervals_final.append(self.interval_vars['TTC_var'].get() + self.TTC_random_intervals[i])
+            self.sample_intervals_final.append(self.interval_vars['sample_time_var'].get() + self.sample_random_intervals[i])
 
-            # Override the default close behavior
-            self.data_window_instance.protocol("WM_DELETE_WINDOW", self.close_data_window)
+        for i in range((self.num_trials.get())):
+            print(f"ITI Interval[{i}]: {self.ITI_intervals_final[i]}")
+            print(f"TTC Interval[{i}]: {self.TTC_intervals_final[i]}")
+            print(f"sample interval[{i}]: {self.sample_intervals_final[i]}")
+            print("\n")
 
-            # Create a figure and axes for the plot
-            self.fig, self.axes = plt.subplots()
-            self.canvas = FigureCanvasTkAgg(self.fig, master=self.data_window_instance)
-            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-
-            # Create a toolbar for the plot and pack it into the window
-            toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
-            toolbar.update()
-            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        
-        # Moved this line out of the 'try' block.
-        self.data_window_open = True
-        self.update_plot()
-        if self.data_window_open:
-            self.data_window_job = self.root.after(100, self.data_window)
-        else:
-            self.data_window_open = False
 
     def update_plot(self):
         self.axes.clear()  # clear the old plot
@@ -427,6 +410,85 @@ class App:
         self.root.after_cancel(self.update_clock)
         self.root.after_cancel(self.read_licks)
         self.data_window_instance.destroy()
+
+    # Define the method for toggling the program state
+    def start_toggle(self):
+        # If the program is running, stop it
+        if self.running:
+            self.state = "OFF"
+            self.state_time_label_header.configure(text=(self.state))
+            self.running = False
+            self.startButton.configure(text="Start", bg="green")
+            # Send the reset command to both Arduinos
+            try:
+                self.arduinoLaser.write(b'reset\n')
+                self.arduinoMotor.write(b'reset\n')
+                self.curr_trial_number = 1
+            except:
+                print("tried to tell you man ")
+
+        # If the program is not running, start it
+        else:
+            # Start the program if it is not already runnning and generate random numbers
+
+            self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
+            self.random_sample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
+            self.running = True
+            self.start_time = time.time()
+            self.startButton.configure(text="Stop", bg="red")
+            self.initial_time_interval()
+
+    # Define the method for sending the target position
+    def send_target_position(self):
+        # Get the target position from the entry widget
+        target_position = self.position_entry.get()
+        # Send the target position to the second Arduino
+        self.arduinoMotor.write(target_position.encode())
+
+    def toggle(self):
+        # Clear the scrolled text widget
+        self.data_text.delete('1.0', tk.END)
+        elapsed_time = 0 
+        self.time_label.configure(text="{:.3f}s".format(elapsed_time))
+        state_elapsed_time = 0
+        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+
+    # Define the method for updating the clock
+    def update_clock(self):
+        # If the program is running, update the elapsed time
+        if self.running:
+            elapsed_time = time.time() - self.start_time
+            self.time_label.configure(text="{:.3f}s".format(elapsed_time))
+            state_elapsed_time = time.time() - self.state_start_time
+            self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+            self.update_clock_id = True
+        # Call this method again after 100 ms
+        self.root.after(100, self.update_clock)
+
+    # Define the method for reading data from the first Arduino
+    def read_licks(self):
+        # If there is data available from the first Arduino, read it
+        try:
+            if self.arduinoLaser.in_waiting > 0:
+                data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
+                # Append the data to the scrolled text widget
+                if "Left Lick" in data:
+                    self.side_one_licks += 1
+                    self.append_data(data)
+                    self.append_data(str(self.side_one_licks))
+                if "Right Lick" in data:
+                    self.sied_two_licks += 1 
+                    self.append_data(str(self.sied_two_licks))
+            # Call this method again after 100 ms
+            self.root.after(100, self.read_licks)
+        except AttributeError:
+            print("arduino not connected bro")
+
+    # Define the method for appending data to the scrolled text widget
+    def append_data(self, data):
+        self.data_text.insert(tk.END, data)
+        # Scroll the scrolled text widget to the end of the data
+        self.data_text.see(tk.END)
 
 
 # Create an App object
