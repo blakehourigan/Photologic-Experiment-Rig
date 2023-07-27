@@ -302,7 +302,7 @@ class App:
             self.stimuli_window_instance.lift()
         except (AttributeError, tk.TclError):
             self.stimuli_window_instance = tk.Toplevel(self.root)
-            self.stimuli_window_instance.geometry("800x600")
+            self.stimuli_window_instance.geometry("1350x850")
             self.stimuli_window_instance.title("Stimuli")
 
             # Create the notebook (tab manager)
@@ -325,7 +325,7 @@ class App:
                     row = 2 * (i % 4)
 
                     # Labels/Entry boxes for Stimuli
-                    label = tk.Label(tab1, text=f"Stimuli {i+1}", bg="light blue", font=("Helvetica", 24))
+                    label = tk.Label(tab1, text=f"Stimulus {i+1}", bg="light blue", font=("Helvetica", 24))
                     label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
 
                     entry = tk.Entry(tab1, textvariable=self.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
@@ -333,27 +333,48 @@ class App:
 
             tab2 = ttk.Frame(notebook)
             notebook.add(tab2, text='Program Stimuli Schedule')
+            # Generate stim schedule button 
+            self.generateStimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
+            self.generateStimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+            self.create_trial_blocks(tab2, notebook, 0, 0)
 
-            self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
-            self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
-            self.changed_pairs = self.pairs.copy()
+    # this is the function that will generate the full roster of stimuli for the duration of the program
+    def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
+        self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
+        self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
+        self.changed_pairs = self.pairs.copy()
 
-            # Add reversed pairs
-            self.changed_pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+        # Add reversed pairs
+        self.changed_pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
-            random.shuffle(self.changed_pairs)
+        self.pairList = []
+        row_offset = 0  # Initialize a row offset
+        col_offset = 0  # Initialize a column offset
+        for i in range(self.num_trials.get()):  # create blocks for number of trials
+                pairs_copy = self.changed_pairs.copy()  # Make a copy of the pairs
+                random.shuffle(pairs_copy)  # Shuffle the copy
+                self.pairList.append(pairs_copy)  # Append the shuffled copy to the list
 
-            for pair in self.changed_pairs:
-                # each pair is a tuple (var1, var2)
-                print([var.get() for var in pair])
-            print("\n")
+                # Add a label for the current block
+                block_frame = tk.LabelFrame(tab2, text=f'Trial Block{i+1}', font=('Helvetica', 24), borderwidth=2, relief="solid")
+                block_frame.grid(row=row_offset, column=col_offset*3, sticky='news')
 
-            self.pair_permutations = list(itertools.permutations(self.changed_pairs))
+                for row_index, pair in enumerate(self.pairList[i]):
+                    # Add a number label for the pair
+                    num_label = tk.Label(block_frame, text=str(row_index+1), font=('Helvetica', 16), borderwidth=2, relief="solid")
+                    num_label.grid(row=row_index + 1, column=0)
 
+                    for col_index, var in enumerate(pair):
+                        cell = tk.Label(block_frame, text=var.get(), font=('Helvetica', 16), borderwidth=2, relief="solid")
+                        cell.grid(row=row_index + 1, column=col_index + 1)  # Add 1 to the column index for the cell
 
+                col_offset += 1  # Update the column offset for the next shuffled list.
 
+                if (i + 1) % 7 == 0:  # After every 4 blocks, reset the column offset and increase the row offset
+                    col_offset = 0
+                    row_offset += 1  # Increment row_offset after each block of 4 trials
 
-            notebook.pack(expand=True, fill='both')
+        notebook.pack(expand=True, fill='both')
 
 
     def data_window(self):
