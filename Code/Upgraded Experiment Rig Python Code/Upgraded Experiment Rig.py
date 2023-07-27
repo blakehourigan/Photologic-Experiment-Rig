@@ -9,6 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 import itertools
+from tkinter import ttk
 
 BAUD_RATE = 9600
 
@@ -57,9 +58,15 @@ class App:
 
         # Initialize the start time to 0
         self.start_time = 0
-        self.leftLicks = 0
-        self.rightLicks = 0 
+        self.side_one_licks = 0
+        self.sied_two_licks = 0 
         self.data_window_open = False
+
+        self.data_window_job = None
+
+        # Initialize these instance variables
+        self.update_clock_id = None
+        self.read_licks_id = None
 
          # Generate random numbers
         self.randomITI = random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get()))
@@ -154,16 +161,12 @@ class App:
         self.clearButton.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
 
         # button to open the stimuli window
-        self.stimuli_window_button = tk.Button(text="Edit Stimuli", command=self.stimuli_window, bg="grey", font=("Helvetica", 24))
+        self.stimuli_window_button = tk.Button(text="Stimuli", command=self.stimuli_window, bg="grey", font=("Helvetica", 24))
         self.stimuli_window_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew')
 
         # button to open the data window
         self.data_window_button = tk.Button(text="View Data", command=self.data_window, bg="grey", font=("Helvetica", 24))
         self.data_window_button.grid(row=10, column=2, pady=10, padx=10, sticky='nsew')
-
-        # button to open the stimuli linup
-        self.data_window_button = tk.Button(text="Scheduled Stimuli", command=self.stimuli_lineup_window, bg="grey", font=("Helvetica", 24))
-        self.data_window_button.grid(row=10, column=1, pady=10, padx=10, sticky='nsew')
 
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.root)
@@ -254,15 +257,6 @@ class App:
             self.randomITI = random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get()))
             self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
             self.random_sample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
-            if (self.num_stimuli.get() > 0) and (self.num_trials.get() > 0) and (self.num_stimuli.get() % 2 == 0):
-
-                # Collect all vars that have been changed by the user
-                self.changed_vars = {k: v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}'}
-
-                self.pair_permutations = list(itertools.permutations(self.changed_vars.values()))
-                for pair in self.pair_permutations:
-                    print([var.get() for var in pair])
-
             self.running = True
             self.start_time = time.time()
             self.startButton.configure(text="Stop", bg="red")
@@ -276,6 +270,7 @@ class App:
             self.time_label.configure(text="{:.3f}s".format(elapsed_time))
             state_elapsed_time = time.time() - self.state_start_time
             self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+            self.update_clock_id = True
         # Call this method again after 100 ms
         self.root.after(100, self.update_clock)
 
@@ -286,12 +281,12 @@ class App:
             data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
             # Append the data to the scrolled text widget
             if "Left Lick" in data:
-                self.leftLicks += 1
+                self.side_one_licks += 1
                 self.append_data(data)
-                self.append_data(str(self.leftLicks))
+                self.append_data(str(self.side_one_licks))
             if "Right Lick" in data:
-                self.rightLicks += 1 
-                self.append_data(str(self.rightLicks))
+                self.sied_two_licks += 1 
+                self.append_data(str(self.sied_two_licks))
         # Call this method again after 100 ms
         self.root.after(100, self.read_licks)
 
@@ -300,27 +295,65 @@ class App:
         self.data_text.insert(tk.END, data)
         # Scroll the scrolled text widget to the end of the data
         self.data_text.see(tk.END)
+
     def stimuli_window(self):
         try:
             # Try to lift the window to the top (it will fail if the window is closed)
             self.stimuli_window_instance.lift()
         except (AttributeError, tk.TclError):
             self.stimuli_window_instance = tk.Toplevel(self.root)
-            self.stimuli_window_instance.geometry("800x550")
+            self.stimuli_window_instance.geometry("800x600")
             self.stimuli_window_instance.title("Stimuli")
 
-            for i in range(self.num_stimuli.get()):
-                # Decide column based on iteration number
-                column = 0 if i < 4 else 1
-                # Adjust row for the second column
-                row = 2 * (i % 4)
+            # Create the notebook (tab manager)
+            notebook = ttk.Notebook(self.stimuli_window_instance)
+            tab1 = ttk.Frame(notebook)
+            notebook.add(tab1, text='Experiment Stimuli')
 
-                # Labels/Entry boxes for Stimuli
-                label = tk.Label(self.stimuli_window_instance, text=f"Stimuli {i+1}", bg="light blue", font=("Helvetica", 24))
-                label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
+            if(self.num_stimuli.get() == 0):
+                # Create a text box
+                text_box = tk.Text(tab1, width=50, height=30)  # Adjust size as needed
+                text_box.pack()
+                # Insert text
+                text_box.insert('1.0', "No stimuli have been added, please close the window, set number of stimuli and try again")
+            else: 
+                for i in range(self.num_stimuli.get()):
 
-                entry = tk.Entry(self.stimuli_window_instance, textvariable=self.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
-                entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
+                    # Decide column based on iteration number
+                    column = 0 if i < 4 else 1
+                    # Adjust row for the second column
+                    row = 2 * (i % 4)
+
+                    # Labels/Entry boxes for Stimuli
+                    label = tk.Label(tab1, text=f"Stimuli {i+1}", bg="light blue", font=("Helvetica", 24))
+                    label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
+
+                    entry = tk.Entry(tab1, textvariable=self.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
+                    entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
+
+            tab2 = ttk.Frame(notebook)
+            notebook.add(tab2, text='Program Stimuli Schedule')
+
+            self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
+            self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
+            self.changed_pairs = self.pairs.copy()
+
+            # Add reversed pairs
+            self.changed_pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+
+            random.shuffle(self.changed_pairs)
+
+            for pair in self.changed_pairs:
+                # each pair is a tuple (var1, var2)
+                print([var.get() for var in pair])
+            print("\n")
+
+            self.pair_permutations = list(itertools.permutations(self.changed_pairs))
+
+
+
+
+            notebook.pack(expand=True, fill='both')
 
 
     def data_window(self):
@@ -345,54 +378,34 @@ class App:
             toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
             toolbar.update()
             self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-            self.update_plot()
-        # Update the plot only if the window is open
+        
+        # Moved this line out of the 'try' block.
+        self.data_window_open = True
+        self.update_plot()
         if self.data_window_open:
-            self.update_plot()
-            self.root.after(100, self.data_window)
+            self.data_window_job = self.root.after(100, self.data_window)
         else:
             self.data_window_open = False
 
     def update_plot(self):
         self.axes.clear()  # clear the old plot
-        self.axes.plot(self.rightLicks, color='black')  # draw the new plot
+        # Assuming that self.side_one_licks and self.sied_two_licks are the numbers of licks
+        self.axes.bar(['1', '2'], [self.side_one_licks, self.sied_two_licks])  # draw the new plot
         self.canvas.draw()  # update the canvas
-    def update_data_label(self):
-        # Update the label text only if the window is open
-        if self.data_window_open:
-            self.data_label_var.set("Updated text")
-            self.root.after(100, self.update_data_label)
 
     def close_data_window(self):
-        if self.data_window_open: 
-            self.data_window_open = False
+        self.data_window_open = False
+        if self.data_window_job is not None:
+            self.root.after_cancel(self.data_window_job)
+            self.data_window_job = None
             self.data_window_instance.destroy()
         else:
             self.stimuli_lineup_instance.destroy()
 
-    def stimuli_lineup_window(self):
-        try:
-            # Try to lift the window to the top (it will fail if the window is closed)
-            self.stimuli_lineup_instance.lift()
-        except (AttributeError, tk.TclError):
-            # If the window is closed, create a new one
-            self.stimuli_lineup_instance = tk.Toplevel(self.root)
-            self.stimuli_lineup_instance.geometry("800x600")
-            self.stimuli_lineup_instance.title("Stimuli Lineup")
-
-            # Override the default close behavior
-            self.stimuli_lineup_instance.protocol("WM_DELETE_WINDOW", self.close_data_window)
-
-            # Use a frame to contain the table
-            frame = tk.Frame(self.stimuli_lineup_instance)
-            frame.pack()
-
-            for row_index, pair in enumerate(self.pair_permutations):
-                for col_index, var_pair in enumerate(pair):
-                    for i, var in enumerate(var_pair):
-                        cell = tk.Label(frame, text=var.get(), borderwidth=1, relief="solid")
-                        cell.grid(row=row_index, column=2*col_index + i)
-
+    def on_close(self):
+        self.root.after_cancel(self.update_clock)
+        self.root.after_cancel(self.read_licks)
+        self.data_window_instance.destroy()
 
 
 # Create an App object
