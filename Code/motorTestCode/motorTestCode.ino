@@ -23,25 +23,33 @@ void setup() {
 
 }
 
-void loop() {
-  if (Serial.available() > 0) {
+void loop() 
+{
+  if (Serial.available() > 0) 
+  {
     String command = Serial.readStringUntil('\n');
     command.trim();  // Remove any leading/trailing whitespace
- if (command == "reset") {
-      asm volatile ("jmp 0");  // Jump to the start of the program
-    }
+  if (command == "reset") 
+  {
+    asm volatile ("jmp 0");  // Jump to the start of the program
+  }
+  if(command == "UP")
+  {
+  stepper.moveTo(0);
+  while (stepper.distanceToGo() != 0) 
+  {
+  stepper.run();
+  }
+  }
+  if(command == "DOWN")
+  {
+  stepper.moveTo(6400);
+  while (stepper.distanceToGo() != 0) 
+  {
+  stepper.run();
+  }
+  } 
   }
 
-  // Set the target position:
-     if (Serial.available()) {
-       string = Serial.readStringUntil('\n');
-       val = string.toInt(); 
-       Serial.println(val);
-     }
-    stepper.moveTo(val);
-    
-    while (stepper.distanceToGo() != 0) 
-    {
-    stepper.run();
-    }
-  }
+}
+

@@ -3,7 +3,8 @@ import time
 import tkinter as tk
 from tkinter import scrolledtext
 import random
-#import pandas as pd
+import pandas as pd
+from pandastable import Table, TableModel
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
@@ -31,9 +32,9 @@ class App:
             'ITI_var': tk.IntVar(value=30000),
             'TTC_var': tk.IntVar(value=15000),
             'sample_time_var': tk.IntVar(value=15000),
-            'interval1Rand_var': tk.IntVar(value=5000),
-            'interval2Rand_var': tk.IntVar(value=5000),
-            'interval3Rand_var': tk.IntVar(value=5000),
+            'ITI_random_entry': tk.IntVar(value=5000),
+            'TTC_random_entry': tk.IntVar(value=5000),
+            'sample_time_entry': tk.IntVar(value=5000),
         }
 
         self.ITI_intervals_final = []
@@ -47,6 +48,7 @@ class App:
 
         # initialize variable
         self.pairs = []
+        self.df_list = []
 
         self.pair_permutations = list(itertools.permutations(self.pairs))
 
@@ -73,6 +75,7 @@ class App:
         self.start_time = 0
         self.side_one_licks = 0
         self.sied_two_licks = 0 
+        self.target_position = 0
 
         self.data_window_open = False
         self.data_window_job = None
@@ -80,13 +83,6 @@ class App:
         # Initialize these instance variables
         self.update_clock_id = None
         self.read_licks_id = None
-
-         # Generate random numbers
-        self.randomITI = random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get()))
-        self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
-        self.random_sample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
-
-        self.intervals      = [(self.interval_vars['ITI_var'].get()),(self.interval_vars['TTC_var'].get()),(self.interval_vars['sample_time_var'].get())]
 
         self.state = "OFF"
 
@@ -152,13 +148,13 @@ class App:
         self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
 
         # Add Data Entry widgets for random plus/minus intervals
-        self.interval1Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval1Rand_var'], font=("Helvetica", 24))
+        self.interval1Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
         self.interval1Rand_entry.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
 
-        self.interval2Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval2Rand_var'], font=("Helvetica", 24))
+        self.interval2Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['TTC_random_entry'], font=("Helvetica", 24))
         self.interval2Rand_entry.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
 
-        self.interval3Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['interval3Rand_var'], font=("Helvetica", 24))
+        self.interval3Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_entry'], font=("Helvetica", 24))
         self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
 
         # Program information label
@@ -202,47 +198,58 @@ class App:
             self.serial_exception_instance.geometry("800x600")
             self.serial_exception_instance.title("Error")
             self.serial_exception_instance.iconbitmap('rat.ico')
+
             serial_text_box = tk.Text(self.serial_exception_instance, width=52, height=30)  # Adjust size as needed
             serial_text_box.grid(row=0, column=0)
-            # Insert text
+        # Insert text
             serial_text_box.insert('1.0', "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
-            # Wait for the serial connections to settle
-            time.sleep(2)
+        # Wait for the serial connections to settle
+        time.sleep(2)
 
-            # Start the clock and the data reader
-            self.update_clock()
-            self.read_licks()
+        # Start the clock and the data reader
+        self.update_clock()
+        self.read_licks()
 
     # State methods
 
-    def initial_time_interval(self):
-        if self.running:
+    def initial_time_interval(self, i):
+        if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()):
             self.state = "ITI"
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = time.time()  # Update the state start time
-            self.append_data('Initial Interval trial #: ' + str(self.curr_trial_number) + ": " + str(((self.interval_vars['ITI_var'].get()) + self.randomITI) / 1000) + "s\n")
-            self.root.after((self.interval_vars['ITI_var'].get() + self.randomITI), self.time_to_contact)
-            self.curr_trial_number += 1
+            self.append_data('1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n")
+            self.append_data('Initial Interval trial #: ' + str(self.curr_trial_number) + ": " + str(self.df_stimuli.loc[i,'ITI'] / 1000) + "s\n")
+            # After the 'ITI' time, call time_to_contact
+            self.root.after(int(self.df_stimuli.loc[i,'ITI']), lambda: self.time_to_contact(i))
+        else: 
+            self.state = "OFF"
+            self.state_time_label_header.configure(text=(self.state))
+            self.running = False
+            self.startButton.configure(text="Start", bg="green")
 
 
-    def time_to_contact(self):
+
+    def time_to_contact(self, i):
         if self.running:
             self.state = "TTC"
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = 0
             self.state_start_time = time.time()  # Update the state start time
-            target_position = "-6400"
-            self.arduinoMotor.write(target_position.encode())
-            self.append_data("Time to Contact: " + str(((self.interval_vars['TTC_var'].get()) + self.randomTTC) / 1000) + "s\n")
-            self.root.after((self.interval_vars['TTC_var'].get() + self.randomTTC), self.sample_time)
+            self.arduinoMotor.write(b'DOWN\n')
+            self.append_data("Time to Contact: " + str(self.df_stimuli.loc[i,'TTC'] / 1000) + "s\n")
+            self.root.after(int(self.df_stimuli.loc[i,'TTC']), lambda: self.sample_time(i))
 
-    def sample_time(self):
+    def sample_time(self, i):
         if self.running:
+            self.arduinoMotor.write(b'UP\n')
             self.state = "Sample"
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = 0
             self.state_start_time = time.time()  # Update the state start time
-            self.append_data('Sample Time Interval: ' + str(((self.interval_vars['sample_time_var'].get()) + self.random_sample) / 1000) + "s\n")
+            self.append_data('Sample Time Interval: ' + str(self.df_stimuli.loc[i,'Sample Time'] / 1000) + "s\n\n\n")
+            self.root.after(int(self.df_stimuli.loc[i, 'Sample Time']), lambda: self.initial_time_interval(i+1))
+            self.curr_trial_number += 1
+            
 
 
     def experiment_control(self):
@@ -251,7 +258,7 @@ class App:
             self.experiment_control_instance.lift()
         except (AttributeError, tk.TclError):
             self.experiment_control_instance = tk.Toplevel(self.root)
-            self.experiment_control_instance.geometry("1350x850")
+            self.experiment_control_instance.geometry("600x600")
             self.experiment_control_instance.title("Experiment Control")
             self.experiment_control_instance.iconbitmap('rat.ico')
 
@@ -285,14 +292,28 @@ class App:
             notebook.add(tab2, text='Program Stimuli Schedule')
             tab3 = ttk.Frame(notebook)
             notebook.add(tab3, text= 'Generate Program Schedule')
+            # Create the dataframe
+            df = pd.DataFrame({
+                "Trial Number": [1, 2, 3, 4, 5],
+                "ITI": [25, 27, 26, 25, 26],
+                "Trial Start": [25, 52, 79, 105, 131],
+                "Choice Made": [31, 58, 85, 111, 137],
+                "TTC": [35, 62, 89, 115, 141],
+                "Trial End": [60, 87, 114, 140, 166],
+                "Trial Outcome": ["Success", "Success", "Failure", "Success", "Failure"],
+                "Stimulus": ["A", "B", "A", "B", "A"]
+            })
+            # Create a frame to contain the PandasTable
+            panda_frame = tk.Frame(tab3)
+            panda_frame.grid(sticky='nsew')  # Modify this to your needs
 
             # Generate stimuli schedule button 
-            self.generateStimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
-            self.generateStimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+            self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
+            self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
             self.create_trial_blocks(tab2, notebook, 0, 0)
-            # Generate experiment timeline button
-            self.generate_experiment_timeline_button = tk.Button(tab3,text="Generate Experiment Timeline", command=self.generate_experiment_timeline, bg="green", font=("Helvetica", 24))
-            self.generate_experiment_timeline_button.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+
+            pt = Table(panda_frame, dataframe=df, showtoolbar=True, showstatusbar=True)
+            pt.show()
 
 
     def data_window(self):
@@ -328,6 +349,24 @@ class App:
 
     # this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
+
+        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))
+
+        for entry in range(self.num_trials.get()):
+            self.ITI_random_intervals.append(random.randint(-(self.interval_vars['ITI_random_entry'].get()), (self.interval_vars['ITI_random_entry'].get())))
+            self.TTC_random_intervals.append(random.randint(-(self.interval_vars['TTC_random_entry'].get()), (self.interval_vars['TTC_random_entry'].get())))
+            self.sample_random_intervals.append(random.randint(-(self.interval_vars['sample_time_entry'].get()), (self.interval_vars['sample_time_entry'].get())))
+
+        self.ITI_intervals_final = []
+        self.TTC_intervals_final = []
+        self.sample_intervals_final = []
+
+        for i in range(self.num_trials.get()):
+            self.ITI_intervals_final.append(self.interval_vars['ITI_var'].get() + self.ITI_random_intervals[i])
+            self.TTC_intervals_final.append(self.interval_vars['TTC_var'].get() + self.TTC_random_intervals[i])
+            self.sample_intervals_final.append(self.interval_vars['sample_time_var'].get() + self.sample_random_intervals[i])
+
+
         self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
         if len(self.changed_vars) > self.num_stimuli.get(): # Handling the case that you generate the plan for a large num of stimuli and then chanage to a smaller number
             start_index = self.num_stimuli.get()
@@ -341,54 +380,44 @@ class App:
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
         self.pairList = []
-        row_offset = 0  # Initialize a row offset
-        col_offset = 0  # Initialize a column offset
-        for i in range(self.num_trial_blocks.get()):  # create blocks for number of trials
-                pairs_copy = self.pairs.copy()  # Make a copy of the pairs
-                random.shuffle(pairs_copy)  # Shuffle the copy
-                self.pairList.append(pairs_copy)  # Append the shuffled copy to the list
+        if hasattr(self, 'stimuli_frame'):
+            self.trial_blocks.destroy()
+            self.stimuli_frame.destroy()
+            self.df_list = []
 
-                # Add a label for the current block
-                block_frame = tk.LabelFrame(tab2, text=f'Trial Block {i+1}', font=('Helvetica', 24), borderwidth=2, relief="solid")
-                block_frame.grid(row=row_offset, column=col_offset*3, sticky='news')
+        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0: 
+            # Initialize the counter for the stimuli
+            stimulus_counter = 0 
 
-                for row_index, pair in enumerate(self.pairList[i]):
-                    # Add a number label for the pair
-                    num_label = tk.Label(block_frame, text=str(row_index+1), font=('Helvetica', 16), borderwidth=2, relief="solid")
-                    num_label.grid(row=row_index + 1, column=0)
+            for i in range(self.num_trial_blocks.get()): 
+                pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]
+                random.shuffle(pairs_copy)
+                pairs_copy = [(str(i+1) if k % len(pairs_copy) == 0 else '', str(k+1)) + pair for k, pair in enumerate(pairs_copy)]
 
-                    for col_index, var in enumerate(pair):
-                        cell = tk.Label(block_frame, text=var.get(), font=('Helvetica', 16), borderwidth=2, relief="solid")
-                        cell.grid(row=row_index + 1, column=col_index + 1)  # Add 1 to the column index for the cell
+                self.pairList.append(pairs_copy)
 
-                col_offset += 1  # Update the column offset for the next shuffled list.
+                # Create a DataFrame and add it to the list
+                self.df_list.append(pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2']))
 
-                if (i + 1) % 7 == 0:  # After every 4 blocks, reset the column offset and increase the row offset
-                    col_offset = 0
-                    row_offset += 1  # Increment row_offset after each block of 4 trials
+            # Concatenate all the dataframes in the list
+            self.df_stimuli = pd.concat(self.df_list, ignore_index=True)
 
-        notebook.grid(sticky='nsew')  # Replace notebook.pack(expand=True, fill='both')
+            for i in range(len(self.df_stimuli)):
+                self.df_stimuli.loc[i, 'ITI'] = self.ITI_intervals_final[i]
+                self.df_stimuli.loc[i, 'TTC'] = self.TTC_intervals_final[i]
+                self.df_stimuli.loc[i, 'Sample Time'] = self.sample_intervals_final[i]
 
-    def generate_experiment_timeline(self):
-        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))
-        for entry in range(self.num_trials.get()):
-            self.ITI_random_intervals.append(random.randint(-(self.interval_vars['interval1Rand_var'].get()), (self.interval_vars['interval1Rand_var'].get())))
-        for entry in range(self.num_trials.get()):
-            self.TTC_random_intervals.append(random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get())))
-        for entry in range(self.num_trials.get()):
-            self.sample_random_intervals.append(random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get())))
+            # Now create a new stimuli_frame
+            self.stimuli_frame = tk.Frame(tab2)
+            self.stimuli_frame.grid(row=0, column=0, sticky='nsew')
+            tab2.grid_rowconfigure(0, weight=1)
+            tab2.grid_columnconfigure(0, weight=1)
+
+            self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
+            self.trial_blocks.show()
 
 
-        for i in range(self.num_trials.get()):
-            self.ITI_intervals_final.append(self.interval_vars['ITI_var'].get() + self.ITI_random_intervals[i])
-            self.TTC_intervals_final.append(self.interval_vars['TTC_var'].get() + self.TTC_random_intervals[i])
-            self.sample_intervals_final.append(self.interval_vars['sample_time_var'].get() + self.sample_random_intervals[i])
-
-        for i in range((self.num_trials.get())):
-            print(f"ITI Interval[{i}]: {self.ITI_intervals_final[i]}")
-            print(f"TTC Interval[{i}]: {self.TTC_intervals_final[i]}")
-            print(f"sample interval[{i}]: {self.sample_intervals_final[i]}")
-            print("\n")
+        notebook.grid(sticky='nsew') 
 
 
     def update_plot(self):
@@ -425,23 +454,18 @@ class App:
                 self.arduinoMotor.write(b'reset\n')
                 self.curr_trial_number = 1
             except:
-                print("tried to tell you man ")
+                pass
 
         # If the program is not running, start it
         else:
             # Start the program if it is not already runnning and generate random numbers
-
-            self.randomTTC = random.randint(-(self.interval_vars['interval2Rand_var'].get()), (self.interval_vars['interval2Rand_var'].get()))
-            self.random_sample = random.randint(-(self.interval_vars['interval3Rand_var'].get()), (self.interval_vars['interval3Rand_var'].get()))
             self.running = True
             self.start_time = time.time()
             self.startButton.configure(text="Stop", bg="red")
-            self.initial_time_interval()
+            self.initial_time_interval(0)
 
     # Define the method for sending the target position
-    def send_target_position(self):
-        # Get the target position from the entry widget
-        target_position = self.position_entry.get()
+    def send_target_position(self, target_position):
         # Send the target position to the second Arduino
         self.arduinoMotor.write(target_position.encode())
 
@@ -482,13 +506,14 @@ class App:
             # Call this method again after 100 ms
             self.root.after(100, self.read_licks)
         except AttributeError:
-            print("arduino not connected bro")
+            pass
 
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
         self.data_text.insert(tk.END, data)
         # Scroll the scrolled text widget to the end of the data
         self.data_text.see(tk.END)
+
 
 
 # Create an App object
