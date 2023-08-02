@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Final_PCB_Footprint")(type "KiCad")(uri "${KIPRJMOD}/Final_PCB_Footprint.pretty")(options "")(descr ""))
+)

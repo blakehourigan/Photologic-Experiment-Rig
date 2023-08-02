@@ -12,6 +12,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import itertools
 from tkinter import ttk
 from serial.serialutil import SerialException
+import numpy as np
 
 
 BAUD_RATE = 9600
@@ -74,7 +75,7 @@ class App:
         # Initialize the start time to 0
         self.start_time = 0
         self.side_one_licks = 0
-        self.sied_two_licks = 0 
+        self.side_two_licks = 0 
         self.target_position = 0
 
         self.data_window_open = False
@@ -208,13 +209,15 @@ class App:
 
         # Start the clock and the data reader
         self.update_clock()
-        self.read_licks()
+
 
     # State methods
 
     def initial_time_interval(self, i):
         if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()):
             self.state = "ITI"
+            self.side_one_licks = 0
+            self.side_two_licks = 0
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = time.time()  # Update the state start time
             self.append_data('1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n")
@@ -232,24 +235,31 @@ class App:
     def time_to_contact(self, i):
         if self.running:
             self.state = "TTC"
+            self.read_licks(i)
             self.state_time_label_header.configure(text=(self.state + " Time:"))
             self.state_start_time = 0
             self.state_start_time = time.time()  # Update the state start time
             self.arduinoMotor.write(b'DOWN\n')
             self.append_data("Time to Contact: " + str(self.df_stimuli.loc[i,'TTC'] / 1000) + "s\n")
-            self.root.after(int(self.df_stimuli.loc[i,'TTC']), lambda: self.sample_time(i))
+            self.after_sample_id = self.root.after(int(self.df_stimuli.loc[i, 'TTC']), lambda: self.save_licks(i))
 
     def sample_time(self, i):
         if self.running:
-            self.arduinoMotor.write(b'UP\n')
-            self.state = "Sample"
-            self.state_time_label_header.configure(text=(self.state + " Time:"))
-            self.state_start_time = 0
-            self.state_start_time = time.time()  # Update the state start time
-            self.append_data('Sample Time Interval: ' + str(self.df_stimuli.loc[i,'Sample Time'] / 1000) + "s\n\n\n")
-            self.root.after(int(self.df_stimuli.loc[i, 'Sample Time']), lambda: self.initial_time_interval(i+1))
-            self.curr_trial_number += 1
+            self.state = "Sample"                                                   # we are now in the sample time state
+            self.state_time_label_header.configure(text=(self.state + " Time:"))    # change the state time label accordingly
+            self.state_start_time = 0                                               # state start time starts at 0
+            self.state_start_time = time.time()                                     # Update the state start time to reflect the zero we just set
+            self.append_data('Sample Time Interval: ' + str(self.df_stimuli.loc[i,'Sample Time'] / 1000) + "s\n\n\n")   # Appending the sample time interval to the main text box
+            self.root.after(int(self.df_stimuli.loc[i, 'Sample Time']), lambda: self.save_licks(i))                     # After the sample time as stored in the df_stimuli table, go to the save licks function
+
             
+    def save_licks(self, i):
+            self.arduinoMotor.write(b'UP\n')                                        # move the door up
+            self.curr_trial_number += 1                                             # increment to the next trial
+            self.df_stimuli.loc[i, 'Stimulus 1 Licks'] = self.side_one_licks        # store licks in their respective columns in the data table for the trial
+            self.df_stimuli.loc[i, 'Stimulus 2 Licks'] = self.side_two_licks
+            self.initial_time_interval(i+1)                                         # begin ITI for next trial
+
 
 
     def experiment_control(self):
@@ -290,30 +300,11 @@ class App:
 
             tab2 = ttk.Frame(notebook)
             notebook.add(tab2, text='Program Stimuli Schedule')
-            tab3 = ttk.Frame(notebook)
-            notebook.add(tab3, text= 'Generate Program Schedule')
-            # Create the dataframe
-            df = pd.DataFrame({
-                "Trial Number": [1, 2, 3, 4, 5],
-                "ITI": [25, 27, 26, 25, 26],
-                "Trial Start": [25, 52, 79, 105, 131],
-                "Choice Made": [31, 58, 85, 111, 137],
-                "TTC": [35, 62, 89, 115, 141],
-                "Trial End": [60, 87, 114, 140, 166],
-                "Trial Outcome": ["Success", "Success", "Failure", "Success", "Failure"],
-                "Stimulus": ["A", "B", "A", "B", "A"]
-            })
-            # Create a frame to contain the PandasTable
-            panda_frame = tk.Frame(tab3)
-            panda_frame.grid(sticky='nsew')  # Modify this to your needs
 
             # Generate stimuli schedule button 
             self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
             self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
             self.create_trial_blocks(tab2, notebook, 0, 0)
-
-            pt = Table(panda_frame, dataframe=df, showtoolbar=True, showstatusbar=True)
-            pt.show()
 
 
     def data_window(self):
@@ -397,7 +388,11 @@ class App:
                 self.pairList.append(pairs_copy)
 
                 # Create a DataFrame and add it to the list
-                self.df_list.append(pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2']))
+                df = pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2'])
+                df['Stimulus 1 Licks'] = np.nan
+                df['Stimulus 2 Licks'] = np.nan
+                self.df_list.append(df)
+
 
             # Concatenate all the dataframes in the list
             self.df_stimuli = pd.concat(self.df_list, ignore_index=True)
@@ -422,8 +417,9 @@ class App:
 
     def update_plot(self):
         self.axes.clear()  # clear the old plot
-        # Assuming that self.side_one_licks and self.sied_two_licks are the numbers of licks
-        self.axes.bar(['1', '2'], [self.side_one_licks, self.sied_two_licks])  # draw the new plot
+        # Assuming that self.side_one_licks and self.side_two_licks are the numbers of licks
+        self.axes.bar([self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 1'], \
+        self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks])  # draw the new plot
         self.canvas.draw()  # update the canvas
 
     def close_data_window(self):
@@ -436,8 +432,8 @@ class App:
             self.stimuli_lineup_instance.destroy()
 
     def on_close(self):
-        self.root.after_cancel(self.update_clock)
-        self.root.after_cancel(self.read_licks)
+        self.root.after_cancel(self.update_clock_id)
+        self.root.after_cancel(self.update)
         self.data_window_instance.destroy()
 
     # Define the method for toggling the program state
@@ -487,10 +483,11 @@ class App:
             self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
             self.update_clock_id = True
         # Call this method again after 100 ms
-        self.root.after(100, self.update_clock)
+        self.update_clock_id = self.root.after(50, self.update_clock)
+        
 
     # Define the method for reading data from the first Arduino
-    def read_licks(self):
+    def read_licks(self, i):
         # If there is data available from the first Arduino, read it
         try:
             if self.arduinoLaser.in_waiting > 0:
@@ -498,13 +495,16 @@ class App:
                 # Append the data to the scrolled text widget
                 if "Left Lick" in data:
                     self.side_one_licks += 1
-                    self.append_data(data)
-                    self.append_data(str(self.side_one_licks))
                 if "Right Lick" in data:
-                    self.sied_two_licks += 1 
-                    self.append_data(str(self.sied_two_licks))
+                    self.side_two_licks += 1 
+            if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
+                self.root.after_cancel(self.after_sample_id)
+                self.side_one_licks = 0
+                self.side_two_licks = 0
+                self.sample_time(i)
             # Call this method again after 100 ms
-            self.root.after(100, self.read_licks)
+            self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
+            
         except AttributeError:
             pass
 
