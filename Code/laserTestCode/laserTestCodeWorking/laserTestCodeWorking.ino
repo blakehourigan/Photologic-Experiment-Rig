@@ -58,7 +58,7 @@ void loop()
     Serial.print("lick time:");
     Serial.println(endTime - startTime);
     currentTime= endTime - programStart;
-    Serial.println(currentTime / 1000.0 );
+    Serial.println("Stamp:" + String(currentTime / 1000.0) );
     Serial.println("\n");
    
 
@@ -81,7 +81,7 @@ void loop()
     Serial.print("lick time:");
     Serial.println(endTime - startTime);
     currentTime= endTime - programStart;
-    Serial.println(currentTime / 1000.0 );
+    Serial.println("Stamp:" + String(currentTime / 1000.0) );
     Serial.println("\n");
     previousState1 = 1;
 

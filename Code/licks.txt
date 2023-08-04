@@ -1,0 +1,448 @@
+Left Lick:1
+           lick time:1004
+Stamp:1.00
+
+
+Left Lick:2
+           lick time:425
+Stamp:1.60
+
+
+Left Lick:3
+           lick time:125
+Stamp:1.75
+
+
+Left Lick:4
+           lick time:121
+Stamp:1.91
+
+
+Left Lick:5
+           lick time:98
+Stamp:2.04
+
+
+Left Lick:6
+           lick time:99
+Stamp:2.16
+
+
+Left Lick:7
+           lick time:76
+Stamp:2.27
+
+
+Left Lick:8
+           lick time:103
+Stamp:2.40
+
+
+Left Lick:9
+           lick time:79
+Stamp:2.51
+
+
+Left Lick:10
+            lick time:77
+Stamp:2.61
+
+
+Left Lick:11
+            lick time:75
+Stamp:2.72
+
+
+Left Lick:12
+            lick time:84
+Stamp:2.83
+
+
+Left Lick:13
+            lick time:85
+Stamp:2.95
+
+
+Left Lick:14
+            lick time:59
+Stamp:3.03
+
+
+Left Lick:15
+            lick time:68
+Stamp:3.13
+
+
+Left Lick:16
+            lick time:58
+Stamp:3.22
+
+
+Left Lick:17
+            lick time:65
+Stamp:3.31
+
+
+Left Lick:18
+            lick time:67
+Stamp:3.41
+
+
+Left Lick:19
+            lick time:41
+Stamp:3.48
+
+
+Left Lick:20
+            lick time:92
+Stamp:3.60
+
+
+Left Lick:21
+            lick time:50
+Stamp:3.68
+
+
+Left Lick:22
+            lick time:87
+Stamp:3.80
+
+
+Left Lick:23
+            lick time:21
+Stamp:3.85
+
+
+Left Lick:24
+            lick time:92
+Stamp:3.97
+
+
+Left Lick:25
+            lick time:36
+Stamp:4.03
+
+
+Left Lick:26
+            lick time:525
+Stamp:4.59
+
+
+Left Lick:27
+            lick time:67
+Stamp:4.69
+
+
+Left Lick:28
+            lick time:66
+Stamp:4.78
+
+
+Left Lick:29
+            lick time:54
+Stamp:4.87
+
+
+Left Lick:30
+            lick time:46
+Stamp:4.94
+
+
+Left Lick:31
+            lick time:49
+Stamp:5.02
+
+
+Left Lick:32
+            lick time:58
+Stamp:5.11
+
+
+Left Lick:33
+            lick time:54
+Stamp:5.19
+
+
+Left Lick:34
+            lick time:45
+Stamp:5.27
+
+
+Left Lick:35
+            lick time:59
+Stamp:5.36
+
+
+Left Lick:36
+            lick time:28
+Stamp:5.41
+
+
+Left Lick:37
+            lick time:67
+Stamp:5.51
+
+
+Left Lick:38
+            lick time:79
+Stamp:5.65
+
+
+Left Lick:39
+            lick time:89
+Stamp:5.78
+
+
+Left Lick:40
+            lick time:92
+Stamp:5.92
+
+
+Left Lick:41
+            lick time:75
+Stamp:6.04
+
+
+Left Lick:42
+            lick time:79
+Stamp:6.17
+
+
+Left Lick:43
+            lick time:88
+Stamp:6.32
+
+
+Left Lick:44
+            lick time:59
+Stamp:6.43
+
+
+Left Lick:45
+            lick time:7
+Stamp:6.47
+
+
+Left Lick:46
+            lick time:81
+Stamp:6.57
+
+
+Left Lick:47
+            lick time:19
+Stamp:6.62
+
+
+Left Lick:48
+            lick time:64
+Stamp:6.72
+
+
+Left Lick:49
+            lick time:21
+Stamp:6.77
+
+
+Left Lick:50
+            lick time:30
+Stamp:6.83
+
+
+Left Lick:51
+            lick time:36
+Stamp:6.89
+
+
+Left Lick:52
+            lick time:44
+Stamp:6.97
+
+
+Left Lick:53
+            lick time:36
+Stamp:7.03
+
+
+Left Lick:54
+            lick time:21
+Stamp:7.09
+
+
+Left Lick:55
+            lick time:37
+Stamp:7.15
+
+
+Left Lick:56
+            lick time:51
+Stamp:7.23
+
+
+Left Lick:57
+            lick time:20
+Stamp:7.28
+
+
+Left Lick:58
+            lick time:62
+Stamp:7.37
+
+
+Left Lick:59
+            lick time:18
+Stamp:7.42
+
+
+Left Lick:60
+            lick time:62
+Stamp:7.51
+
+
+Left Lick:61
+            lick time:9
+Stamp:7.55
+
+
+Left Lick:62
+            lick time:69
+Stamp:7.64
+
+
+Left Lick:63
+            lick time:9
+Stamp:7.68
+
+
+Left Lick:64
+            lick time:74
+Stamp:7.78
+
+
+Left Lick:65
+            lick time:92
+Stamp:7.91
+
+
+Left Lick:66
+            lick time:11
+Stamp:7.95
+
+
+Left Lick:67
+            lick time:83
+Stamp:8.06
+
+
+Left Lick:68
+            lick time:95
+Stamp:8.18
+
+
+Left Lick:69
+            lick time:90
+Stamp:8.31
+
+
+Left Lick:70
+            lick time:5
+Stamp:8.34
+
+
+Left Lick:71
+            lick time:86
+Stamp:8.46
+
+
+Left Lick:72
+            lick time:256
+Stamp:8.74
+
+
+Left Lick:73
+            lick time:106
+Stamp:8.88
+
+
+Left Lick:74
+            lick time:94
+Stamp:9.01
+
+
+Left Lick:75
+            lick time:8
+Stamp:9.04
+
+
+Left Lick:76
+            lick time:209
+Stamp:9.28
+
+
+Left Lick:77
+            lick time:90
+Stamp:9.40
+
+
+Left Lick:78
+            lick time:14
+Stamp:9.45
+
+
+Left Lick:79
+            lick time:69
+Stamp:9.55
+
+
+Left Lick:80
+            lick time:11
+Stamp:9.59
+
+
+Left Lick:81
+            lick time:61
+Stamp:9.68
+
+
+Left Lick:82
+            lick time:6
+Stamp:9.71
+
+
+Left Lick:83
+            lick time:58
+Stamp:9.80
+
+
+Left Lick:84
+            lick time:16
+Stamp:9.85
+
+
+Left Lick:85
+            lick time:36
+Stamp:9.91
+
+
+Left Lick:86
+            lick time:28
+Stamp:9.97
+
+
+Left Lick:87
+            lick time:70
+Stamp:10.07
+
+
+Left Lick:88
+            lick time:54
+Stamp:10.15
+
+
+Left Lick:89
+            lick time:38
+Stamp:10.22
+
+
+Left Lick:90
+            lick time:72
+Stamp:10.33
