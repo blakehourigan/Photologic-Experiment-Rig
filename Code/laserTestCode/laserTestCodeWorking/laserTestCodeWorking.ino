@@ -1,7 +1,5 @@
 const byte inputBit0 = PB4;        // PB4 or pin 10 is the bit that detects a switch to low to increment number of licks       
-      byte ledBit0   = PB5;
       byte inputBit1 = PH5;
-      byte ledBit1   = PH6;    
 
 unsigned long startTime, endTime; // variables to store start and endtime of licks
 
@@ -14,10 +12,10 @@ int licksRight = 0;
 void setup() {
   Serial.begin(9600);             // Start the serial communication
   DDRB |= (1 << DDB5);            // Set pin 7 in the Port B register (pin 13) as output, we want to output the value of this pin to the LED.
-  PORTB |= (0 << ledBit0);         // 
+
 
   DDRH |= (1 << DDH6);            // Set pin 7 in the Port H register (pin 13) as output, we want to output the value of this pin to the LED.
-  PORTH |= (0 << ledBit1);         // 
+
 
   // Set up Timer 4 for 1 microsecond interval
   cli();                          // Disable global interrupts
@@ -52,18 +50,20 @@ void loop()
   
   if (pinState0 == 0 && previousState0 == 1) {
     startTime = millis();
-    PORTB |= (1 << ledBit0);
+
     previousState0 = 0;
   } 
   if (pinState0 == 1 && previousState0 == 0) {
     endTime = millis();
-    PORTB &= ~(1 << ledBit0);
+
     licksLeft++;
 
-    String myString = "Left Lick\n";
-    Serial.print("\nlick time:");
+    String myString = "Left Lick:";
+    Serial.print(myString + licksLeft + "\n");
+    Serial.print("lick time:");
     Serial.println(endTime - startTime);
-    Serial.print("\n" + myString);
+    Serial.println();
+   
 
     previousState0 = 1;
 
@@ -72,19 +72,18 @@ void loop()
 
   if (pinState1 == 0 && previousState1 == 1) {
     startTime = millis();
-    PORTH |= (1 << ledBit1);
+
     previousState1 = 0;
   } 
   if (pinState1 == 1 && previousState1 == 0) {
     endTime = millis();
-    PORTH &= ~(1 << ledBit1);
     licksRight++;
 
-    String myString = "Right Lick";
-    Serial.print("\nlick time:");
+    String myString = "Right Lick:";
+    Serial.print(myString + licksRight + "\n");
+    Serial.print("lick time:");
     Serial.println(endTime - startTime);
-    Serial.print("\n" + myString);
-
+    Serial.println("\n");
     previousState1 = 1;
 
     
