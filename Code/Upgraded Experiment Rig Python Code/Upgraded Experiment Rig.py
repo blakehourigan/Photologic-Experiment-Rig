@@ -51,8 +51,6 @@ class App:
         self.pairs = []
         self.df_list = []
 
-        self.pair_permutations = list(itertools.permutations(self.pairs))
-
         self.num_trials = tk.IntVar()
         self.num_trials.set(0)
         self.num_trial_blocks = tk.IntVar()
@@ -74,9 +72,10 @@ class App:
 
         # Initialize the start time to 0
         self.start_time = 0
+
         self.side_one_licks = 0
-        self.side_two_licks = 0 
-        self.target_position = 0
+        self.side_two_licks = 0
+
 
         self.data_window_open = False
         self.data_window_job = None
@@ -92,7 +91,6 @@ class App:
             self.root.grid_rowconfigure(i, weight=1 if i == 3 else 0)
         # The column is also configured to expand
         self.root.grid_columnconfigure(0, weight=1)
-
 
         # Label headers
         self.time_label_header = tk.Label(text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
@@ -204,17 +202,18 @@ class App:
             serial_text_box.grid(row=0, column=0)
         # Insert text
             serial_text_box.insert('1.0', "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
+
         # Wait for the serial connections to settle
-        time.sleep(2)
+        #time.sleep(2)
 
-        # Start the clock and the data reader
+        # Start the clock 
         self.update_clock()
-
 
     # State methods
 
     def initial_time_interval(self, i):
         if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()):
+
             self.state = "ITI"
             self.side_one_licks = 0
             self.side_two_licks = 0
@@ -268,7 +267,7 @@ class App:
             self.experiment_control_instance.lift()
         except (AttributeError, tk.TclError):
             self.experiment_control_instance = tk.Toplevel(self.root)
-            self.experiment_control_instance.geometry("600x600")
+            self.experiment_control_instance.geometry("1600x800")
             self.experiment_control_instance.title("Experiment Control")
             self.experiment_control_instance.iconbitmap('rat.ico')
 
@@ -276,6 +275,9 @@ class App:
             notebook = ttk.Notebook(self.experiment_control_instance)
             tab1 = ttk.Frame(notebook)
             notebook.add(tab1, text='Experiment Stimuli')
+            notebook.grid(sticky='nsew')                                                # These 3 lines set the contents of the tabs to expand when we expand the window  
+            self.experiment_control_instance.grid_rowconfigure(0, weight=1)
+            self.experiment_control_instance.grid_columnconfigure(0, weight=1)
 
             if(self.num_stimuli.get() == 0):
                 # Create a text box
@@ -341,7 +343,7 @@ class App:
     # this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
 
-        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))
+        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
 
         for entry in range(self.num_trials.get()):
             self.ITI_random_intervals.append(random.randint(-(self.interval_vars['ITI_random_entry'].get()), (self.interval_vars['ITI_random_entry'].get())))
@@ -359,9 +361,9 @@ class App:
 
 
         self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
-        if len(self.changed_vars) > self.num_stimuli.get(): # Handling the case that you generate the plan for a large num of stimuli and then chanage to a smaller number
-            start_index = self.num_stimuli.get()
-            for index, key in enumerate(self.stimuli_vars):
+        if len(self.changed_vars) > self.num_stimuli.get():                 # Handling the case that you generate the plan for a large num of stimuli and then chanage to a smaller number
+            start_index = self.num_stimuli.get()                            # Start at the number of stimuli you now have
+            for index, key in enumerate(self.stimuli_vars):                 # and then set the rest of stimuli past that value back to default to avoid error
                 if index >= start_index:
                     self.stimuli_vars[key].set(key)
 
@@ -370,56 +372,48 @@ class App:
         # Add reversed pairs
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
-        self.pairList = []
-        if hasattr(self, 'stimuli_frame'):
+
+        if hasattr(self, 'stimuli_frame'):                                                         # if the frame is already open then destroy everything in it so we can write over it
             self.trial_blocks.destroy()
             self.stimuli_frame.destroy()
             self.df_list = []
 
-        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0: 
-            # Initialize the counter for the stimuli
-            stimulus_counter = 0 
-
-            for i in range(self.num_trial_blocks.get()): 
-                pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]
-                random.shuffle(pairs_copy)
-                pairs_copy = [(str(i+1) if k % len(pairs_copy) == 0 else '', str(k+1)) + pair for k, pair in enumerate(pairs_copy)]
-
-                self.pairList.append(pairs_copy)
-
+        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:                                             # if the number of trial blocks is greater than 0 and we have changed more than one default stimulus,
+            for i in range(self.num_trial_blocks.get()):                                                                # filling pair information in the tables with trial numbers and random interval times
+                pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]                                    # copy the list of pairs from pairs 
+                random.shuffle(pairs_copy)                                                                              # then shuffle the pairs so we get pseudo random generation 
+                pairs_copy = [(str(i+1) if k % len(pairs_copy) == 0 else '', np.nan) + pair for k, pair in enumerate(pairs_copy)]
                 # Create a DataFrame and add it to the list
-                df = pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2'])
-                df['Stimulus 1 Licks'] = np.nan
+                df = pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2'])      # create the dataframe skeleton, include listed headings 
+                df['Stimulus 1 Licks'] = np.nan                                                                         # we don't have any licks yet so, fill with blank or 'nan' values
                 df['Stimulus 2 Licks'] = np.nan
-                self.df_list.append(df)
 
-
-            # Concatenate all the dataframes in the list
-            self.df_stimuli = pd.concat(self.df_list, ignore_index=True)
+                self.df_list.append(df)                                                                                 # add df to the list of data frames
+            self.df_stimuli = pd.concat(self.df_list, ignore_index=True)                                                # add the df list to the pandas df_stimuli table
 
             for i in range(len(self.df_stimuli)):
                 self.df_stimuli.loc[i, 'ITI'] = self.ITI_intervals_final[i]
                 self.df_stimuli.loc[i, 'TTC'] = self.TTC_intervals_final[i]
                 self.df_stimuli.loc[i, 'Sample Time'] = self.sample_intervals_final[i]
+                self.df_stimuli.loc[i, 'Trial Number'] = int(i + 1) 
 
             # Now create a new stimuli_frame
-            self.stimuli_frame = tk.Frame(tab2)
-            self.stimuli_frame.grid(row=0, column=0, sticky='nsew')
-            tab2.grid_rowconfigure(0, weight=1)
-            tab2.grid_columnconfigure(0, weight=1)
+            self.stimuli_frame = tk.Frame(tab2)                            # creating the frame that will contain the data table
+            self.stimuli_frame.grid(row=0, column=0, sticky='nsew')        # setting the place of the frame
+
+            tab2.grid_rowconfigure(0, weight=1)                            # setting the tab (frame) to expand when we expand the window 
+            tab2.grid_columnconfigure(0, weight=1)  
 
             self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
+            self.trial_blocks.autoResizeColumns()
             self.trial_blocks.show()
-
-
-        notebook.grid(sticky='nsew') 
-
 
     def update_plot(self):
         self.axes.clear()  # clear the old plot
         # Assuming that self.side_one_licks and self.side_two_licks are the numbers of licks
         self.axes.bar([self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 1'], \
-        self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks])  # draw the new plot
+        self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks])  # draw the bar plot with correct labels for the current stimuli
+
         self.canvas.draw()  # update the canvas
 
     def close_data_window(self):
@@ -433,7 +427,7 @@ class App:
 
     def on_close(self):
         self.root.after_cancel(self.update_clock_id)
-        self.root.after_cancel(self.update)
+        self.root.after_cancel(self.update_licks_id)
         self.data_window_instance.destroy()
 
     # Define the method for toggling the program state

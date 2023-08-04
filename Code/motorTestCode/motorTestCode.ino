@@ -19,7 +19,11 @@ void setup() {
   stepper.setMaxSpeed(1800);
   stepper.setAcceleration(1800);
   Serial.begin(9600);
-
+  stepper.moveTo(-6400);
+  while (stepper.distanceToGo() != 0) 
+  {
+  stepper.run();
+  }
 
 }
 
