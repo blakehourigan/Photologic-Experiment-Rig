@@ -1,9 +1,313 @@
 ('C:\\Users\\Samuelsen Data 4\\Documents\\Upgraded Experiment '
  'Rig\\Code\\Upgraded Experiment Rig Python Code\\build\\Upgraded Experiment '
  'Rig\\PYZ-00.pyz',
- [('__future__',
+ [('PIL',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\__init__.py',
+   'PYMODULE'),
+  ('PIL.BlpImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\BlpImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BmpImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\BmpImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.BufrStubImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\BufrStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.CurImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\CurImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DcxImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\DcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.DdsImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\DdsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.EpsImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\EpsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ExifTags',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ExifTags.py',
+   'PYMODULE'),
+  ('PIL.FitsImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\FitsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FliImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\FliImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FpxImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\FpxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.FtexImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\FtexImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GbrImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\GbrImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GifImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\GifImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.GimpGradientFile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\GimpGradientFile.py',
+   'PYMODULE'),
+  ('PIL.GimpPaletteFile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\GimpPaletteFile.py',
+   'PYMODULE'),
+  ('PIL.GribStubImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\GribStubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Hdf5StubImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\Hdf5StubImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcnsImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\IcnsImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IcoImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\IcoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.ImImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Image',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\Image.py',
+   'PYMODULE'),
+  ('PIL.ImageChops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageChops.py',
+   'PYMODULE'),
+  ('PIL.ImageCms',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageCms.py',
+   'PYMODULE'),
+  ('PIL.ImageColor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageColor.py',
+   'PYMODULE'),
+  ('PIL.ImageFile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageFile.py',
+   'PYMODULE'),
+  ('PIL.ImageFilter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageFilter.py',
+   'PYMODULE'),
+  ('PIL.ImageMode',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageMode.py',
+   'PYMODULE'),
+  ('PIL.ImageOps',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageOps.py',
+   'PYMODULE'),
+  ('PIL.ImagePalette',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImagePalette.py',
+   'PYMODULE'),
+  ('PIL.ImageQt',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageQt.py',
+   'PYMODULE'),
+  ('PIL.ImageSequence',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageSequence.py',
+   'PYMODULE'),
+  ('PIL.ImageShow',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageShow.py',
+   'PYMODULE'),
+  ('PIL.ImageTk',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageTk.py',
+   'PYMODULE'),
+  ('PIL.ImageWin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImageWin.py',
+   'PYMODULE'),
+  ('PIL.ImtImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\ImtImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.IptcImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\IptcImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.Jpeg2KImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\Jpeg2KImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.JpegImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\JpegImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.JpegPresets',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\JpegPresets.py',
+   'PYMODULE'),
+  ('PIL.McIdasImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\McIdasImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MicImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\MicImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MpegImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\MpegImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MpoImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\MpoImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.MspImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\MspImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PaletteFile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PaletteFile.py',
+   'PYMODULE'),
+  ('PIL.PalmImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PalmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PcdImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PcdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PcxImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PcxImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PdfImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PdfImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PdfParser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PdfParser.py',
+   'PYMODULE'),
+  ('PIL.PixarImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PixarImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PngImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PngImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PpmImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PpmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PsdImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PsdImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.PyAccess',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\PyAccess.py',
+   'PYMODULE'),
+  ('PIL.QoiImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\QoiImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SgiImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\SgiImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SpiderImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\SpiderImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.SunImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\SunImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TgaImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\TgaImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TiffImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\TiffImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.TiffTags',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\TiffTags.py',
+   'PYMODULE'),
+  ('PIL.WebPImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\WebPImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.WmfImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\WmfImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XVThumbImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\XVThumbImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XbmImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\XbmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL.XpmImagePlugin',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\XpmImagePlugin.py',
+   'PYMODULE'),
+  ('PIL._binary',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\_binary.py',
+   'PYMODULE'),
+  ('PIL._deprecate',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\_deprecate.py',
+   'PYMODULE'),
+  ('PIL._util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\_util.py',
+   'PYMODULE'),
+  ('PIL._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\_version.py',
+   'PYMODULE'),
+  ('PIL.features',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\PIL\\features.py',
+   'PYMODULE'),
+  ('__future__',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\__future__.py',
+   'PYMODULE'),
+  ('_aix_support',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_aix_support.py',
+   'PYMODULE'),
+  ('_bootsubprocess',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_bootsubprocess.py',
    'PYMODULE'),
   ('_compat_pickle',
    'C:\\Users\\Samuelsen Data '
@@ -37,9 +341,141 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\ast.py',
    'PYMODULE'),
+  ('asyncio',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\__init__.py',
+   'PYMODULE'),
+  ('asyncio.base_events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\base_events.py',
+   'PYMODULE'),
+  ('asyncio.base_futures',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\base_futures.py',
+   'PYMODULE'),
+  ('asyncio.base_subprocess',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\base_subprocess.py',
+   'PYMODULE'),
+  ('asyncio.base_tasks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\base_tasks.py',
+   'PYMODULE'),
+  ('asyncio.constants',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\constants.py',
+   'PYMODULE'),
+  ('asyncio.coroutines',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\coroutines.py',
+   'PYMODULE'),
+  ('asyncio.events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\events.py',
+   'PYMODULE'),
+  ('asyncio.exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\exceptions.py',
+   'PYMODULE'),
+  ('asyncio.format_helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\format_helpers.py',
+   'PYMODULE'),
+  ('asyncio.futures',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\futures.py',
+   'PYMODULE'),
+  ('asyncio.locks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\locks.py',
+   'PYMODULE'),
+  ('asyncio.log',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\log.py',
+   'PYMODULE'),
+  ('asyncio.mixins',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\mixins.py',
+   'PYMODULE'),
+  ('asyncio.proactor_events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\proactor_events.py',
+   'PYMODULE'),
+  ('asyncio.protocols',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\protocols.py',
+   'PYMODULE'),
+  ('asyncio.queues',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\queues.py',
+   'PYMODULE'),
+  ('asyncio.runners',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\runners.py',
+   'PYMODULE'),
+  ('asyncio.selector_events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\selector_events.py',
+   'PYMODULE'),
+  ('asyncio.sslproto',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\sslproto.py',
+   'PYMODULE'),
+  ('asyncio.staggered',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\staggered.py',
+   'PYMODULE'),
+  ('asyncio.streams',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\streams.py',
+   'PYMODULE'),
+  ('asyncio.subprocess',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\subprocess.py',
+   'PYMODULE'),
+  ('asyncio.taskgroups',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\taskgroups.py',
+   'PYMODULE'),
+  ('asyncio.tasks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\tasks.py',
+   'PYMODULE'),
+  ('asyncio.threads',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\threads.py',
+   'PYMODULE'),
+  ('asyncio.timeouts',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\timeouts.py',
+   'PYMODULE'),
+  ('asyncio.transports',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\transports.py',
+   'PYMODULE'),
+  ('asyncio.trsock',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\trsock.py',
+   'PYMODULE'),
+  ('asyncio.unix_events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\unix_events.py',
+   'PYMODULE'),
+  ('asyncio.windows_events',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\windows_events.py',
+   'PYMODULE'),
+  ('asyncio.windows_utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\asyncio\\windows_utils.py',
+   'PYMODULE'),
   ('base64',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\base64.py',
+   'PYMODULE'),
+  ('bdb',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\bdb.py',
    'PYMODULE'),
   ('bisect',
    'C:\\Users\\Samuelsen Data '
@@ -53,6 +489,46 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\calendar.py',
    'PYMODULE'),
+  ('cmd',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\cmd.py',
+   'PYMODULE'),
+  ('code',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\code.py',
+   'PYMODULE'),
+  ('codeop',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\codeop.py',
+   'PYMODULE'),
+  ('colorsys',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\colorsys.py',
+   'PYMODULE'),
+  ('concurrent',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\concurrent\\__init__.py',
+   'PYMODULE'),
+  ('concurrent.futures',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\concurrent\\futures\\__init__.py',
+   'PYMODULE'),
+  ('concurrent.futures._base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\concurrent\\futures\\_base.py',
+   'PYMODULE'),
+  ('concurrent.futures.process',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\concurrent\\futures\\process.py',
+   'PYMODULE'),
+  ('concurrent.futures.thread',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\concurrent\\futures\\thread.py',
+   'PYMODULE'),
+  ('configparser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\configparser.py',
+   'PYMODULE'),
   ('contextlib',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\contextlib.py',
@@ -60,6 +536,22 @@
   ('contextvars',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\contextvars.py',
+   'PYMODULE'),
+  ('contourpy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\contourpy\\__init__.py',
+   'PYMODULE'),
+  ('contourpy._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\contourpy\\_version.py',
+   'PYMODULE'),
+  ('contourpy.chunk',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\contourpy\\chunk.py',
+   'PYMODULE'),
+  ('contourpy.enum_util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\contourpy\\enum_util.py',
    'PYMODULE'),
   ('copy',
    'C:\\Users\\Samuelsen Data '
@@ -81,6 +573,10 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\ctypes\\wintypes.py',
    'PYMODULE'),
+  ('cycler',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\cycler.py',
+   'PYMODULE'),
   ('dataclasses',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\dataclasses.py',
@@ -89,13 +585,81 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\datetime.py',
    'PYMODULE'),
+  ('dateutil',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\__init__.py',
+   'PYMODULE'),
+  ('dateutil._common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\_common.py',
+   'PYMODULE'),
+  ('dateutil._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\_version.py',
+   'PYMODULE'),
+  ('dateutil.easter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\easter.py',
+   'PYMODULE'),
+  ('dateutil.parser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\parser\\__init__.py',
+   'PYMODULE'),
+  ('dateutil.parser._parser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\parser\\_parser.py',
+   'PYMODULE'),
+  ('dateutil.parser.isoparser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\parser\\isoparser.py',
+   'PYMODULE'),
+  ('dateutil.relativedelta',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\relativedelta.py',
+   'PYMODULE'),
+  ('dateutil.rrule',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\rrule.py',
+   'PYMODULE'),
+  ('dateutil.tz',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\tz\\__init__.py',
+   'PYMODULE'),
+  ('dateutil.tz._common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\tz\\_common.py',
+   'PYMODULE'),
+  ('dateutil.tz._factories',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\tz\\_factories.py',
+   'PYMODULE'),
+  ('dateutil.tz.tz',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\tz\\tz.py',
+   'PYMODULE'),
+  ('dateutil.tz.win',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\tz\\win.py',
+   'PYMODULE'),
+  ('dateutil.zoneinfo',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\dateutil\\zoneinfo\\__init__.py',
+   'PYMODULE'),
   ('decimal',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\decimal.py',
    'PYMODULE'),
+  ('difflib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\difflib.py',
+   'PYMODULE'),
   ('dis',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\dis.py',
+   'PYMODULE'),
+  ('doctest',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\doctest.py',
    'PYMODULE'),
   ('email',
    'C:\\Users\\Samuelsen Data '
@@ -197,6 +761,10 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\gettext.py',
    'PYMODULE'),
+  ('glob',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\glob.py',
+   'PYMODULE'),
   ('gzip',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\gzip.py',
@@ -204,6 +772,18 @@
   ('hashlib',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\hashlib.py',
+   'PYMODULE'),
+  ('hmac',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\hmac.py',
+   'PYMODULE'),
+  ('html',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\html\\__init__.py',
+   'PYMODULE'),
+  ('html.entities',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\html\\entities.py',
    'PYMODULE'),
   ('http',
    'C:\\Users\\Samuelsen Data '
@@ -216,6 +796,14 @@
   ('http.cookiejar',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\http\\cookiejar.py',
+   'PYMODULE'),
+  ('http.server',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\http\\server.py',
+   'PYMODULE'),
+  ('imp',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\imp.py',
    'PYMODULE'),
   ('importlib',
    'C:\\Users\\Samuelsen Data '
@@ -309,6 +897,26 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\inspect.py',
    'PYMODULE'),
+  ('json',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\__init__.py',
+   'PYMODULE'),
+  ('json.decoder',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\decoder.py',
+   'PYMODULE'),
+  ('json.encoder',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\encoder.py',
+   'PYMODULE'),
+  ('json.scanner',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\json\\scanner.py',
+   'PYMODULE'),
+  ('kiwisolver',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\kiwisolver\\__init__.py',
+   'PYMODULE'),
   ('logging',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\logging\\__init__.py',
@@ -317,9 +925,501 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\lzma.py',
    'PYMODULE'),
+  ('matplotlib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib._afm',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_afm.py',
+   'PYMODULE'),
+  ('matplotlib._animation_data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_animation_data.py',
+   'PYMODULE'),
+  ('matplotlib._api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_api\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib._api.deprecation',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_api\\deprecation.py',
+   'PYMODULE'),
+  ('matplotlib._blocking_input',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_blocking_input.py',
+   'PYMODULE'),
+  ('matplotlib._cm',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_cm.py',
+   'PYMODULE'),
+  ('matplotlib._cm_listed',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_cm_listed.py',
+   'PYMODULE'),
+  ('matplotlib._color_data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_color_data.py',
+   'PYMODULE'),
+  ('matplotlib._constrained_layout',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_constrained_layout.py',
+   'PYMODULE'),
+  ('matplotlib._docstring',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_docstring.py',
+   'PYMODULE'),
+  ('matplotlib._enums',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_enums.py',
+   'PYMODULE'),
+  ('matplotlib._fontconfig_pattern',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_fontconfig_pattern.py',
+   'PYMODULE'),
+  ('matplotlib._layoutgrid',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_layoutgrid.py',
+   'PYMODULE'),
+  ('matplotlib._mathtext',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_mathtext.py',
+   'PYMODULE'),
+  ('matplotlib._mathtext_data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_mathtext_data.py',
+   'PYMODULE'),
+  ('matplotlib._pylab_helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_pylab_helpers.py',
+   'PYMODULE'),
+  ('matplotlib._text_helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_text_helpers.py',
+   'PYMODULE'),
+  ('matplotlib._tight_bbox',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_tight_bbox.py',
+   'PYMODULE'),
+  ('matplotlib._tight_layout',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_tight_layout.py',
+   'PYMODULE'),
+  ('matplotlib._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\_version.py',
+   'PYMODULE'),
+  ('matplotlib.animation',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\animation.py',
+   'PYMODULE'),
+  ('matplotlib.artist',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\artist.py',
+   'PYMODULE'),
+  ('matplotlib.axes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\axes\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.axes._axes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\axes\\_axes.py',
+   'PYMODULE'),
+  ('matplotlib.axes._base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\axes\\_base.py',
+   'PYMODULE'),
+  ('matplotlib.axes._secondary_axes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\axes\\_secondary_axes.py',
+   'PYMODULE'),
+  ('matplotlib.axis',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\axis.py',
+   'PYMODULE'),
+  ('matplotlib.backend_bases',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backend_bases.py',
+   'PYMODULE'),
+  ('matplotlib.backend_managers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backend_managers.py',
+   'PYMODULE'),
+  ('matplotlib.backend_tools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backend_tools.py',
+   'PYMODULE'),
+  ('matplotlib.backends',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.backends._backend_tk',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\_backend_tk.py',
+   'PYMODULE'),
+  ('matplotlib.backends.backend_agg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\backend_agg.py',
+   'PYMODULE'),
+  ('matplotlib.backends.backend_tkagg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\backend_tkagg.py',
+   'PYMODULE'),
+  ('matplotlib.backends.backend_webagg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\backend_webagg.py',
+   'PYMODULE'),
+  ('matplotlib.backends.backend_webagg_core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\backends\\backend_webagg_core.py',
+   'PYMODULE'),
+  ('matplotlib.bezier',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\bezier.py',
+   'PYMODULE'),
+  ('matplotlib.category',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\category.py',
+   'PYMODULE'),
+  ('matplotlib.cbook',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\cbook\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.cm',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\cm.py',
+   'PYMODULE'),
+  ('matplotlib.collections',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\collections.py',
+   'PYMODULE'),
+  ('matplotlib.colorbar',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\colorbar.py',
+   'PYMODULE'),
+  ('matplotlib.colors',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\colors.py',
+   'PYMODULE'),
+  ('matplotlib.container',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\container.py',
+   'PYMODULE'),
+  ('matplotlib.contour',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\contour.py',
+   'PYMODULE'),
+  ('matplotlib.dates',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\dates.py',
+   'PYMODULE'),
+  ('matplotlib.dviread',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\dviread.py',
+   'PYMODULE'),
+  ('matplotlib.figure',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\figure.py',
+   'PYMODULE'),
+  ('matplotlib.font_manager',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\font_manager.py',
+   'PYMODULE'),
+  ('matplotlib.gridspec',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\gridspec.py',
+   'PYMODULE'),
+  ('matplotlib.hatch',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\hatch.py',
+   'PYMODULE'),
+  ('matplotlib.image',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\image.py',
+   'PYMODULE'),
+  ('matplotlib.layout_engine',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\layout_engine.py',
+   'PYMODULE'),
+  ('matplotlib.legend',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\legend.py',
+   'PYMODULE'),
+  ('matplotlib.legend_handler',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\legend_handler.py',
+   'PYMODULE'),
+  ('matplotlib.lines',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\lines.py',
+   'PYMODULE'),
+  ('matplotlib.markers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\markers.py',
+   'PYMODULE'),
+  ('matplotlib.mathtext',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\mathtext.py',
+   'PYMODULE'),
+  ('matplotlib.mlab',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\mlab.py',
+   'PYMODULE'),
+  ('matplotlib.offsetbox',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\offsetbox.py',
+   'PYMODULE'),
+  ('matplotlib.patches',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\patches.py',
+   'PYMODULE'),
+  ('matplotlib.path',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\path.py',
+   'PYMODULE'),
+  ('matplotlib.patheffects',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\patheffects.py',
+   'PYMODULE'),
+  ('matplotlib.projections',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\projections\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.projections.geo',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\projections\\geo.py',
+   'PYMODULE'),
+  ('matplotlib.projections.polar',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\projections\\polar.py',
+   'PYMODULE'),
+  ('matplotlib.pylab',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\pylab.py',
+   'PYMODULE'),
+  ('matplotlib.pyplot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\pyplot.py',
+   'PYMODULE'),
+  ('matplotlib.quiver',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\quiver.py',
+   'PYMODULE'),
+  ('matplotlib.rcsetup',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\rcsetup.py',
+   'PYMODULE'),
+  ('matplotlib.scale',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\scale.py',
+   'PYMODULE'),
+  ('matplotlib.spines',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\spines.py',
+   'PYMODULE'),
+  ('matplotlib.stackplot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\stackplot.py',
+   'PYMODULE'),
+  ('matplotlib.streamplot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\streamplot.py',
+   'PYMODULE'),
+  ('matplotlib.style',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\style\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.style.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\style\\core.py',
+   'PYMODULE'),
+  ('matplotlib.table',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\table.py',
+   'PYMODULE'),
+  ('matplotlib.texmanager',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\texmanager.py',
+   'PYMODULE'),
+  ('matplotlib.text',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\text.py',
+   'PYMODULE'),
+  ('matplotlib.textpath',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\textpath.py',
+   'PYMODULE'),
+  ('matplotlib.ticker',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\ticker.py',
+   'PYMODULE'),
+  ('matplotlib.transforms',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\transforms.py',
+   'PYMODULE'),
+  ('matplotlib.tri',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\__init__.py',
+   'PYMODULE'),
+  ('matplotlib.tri._triangulation',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_triangulation.py',
+   'PYMODULE'),
+  ('matplotlib.tri._tricontour',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_tricontour.py',
+   'PYMODULE'),
+  ('matplotlib.tri._trifinder',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_trifinder.py',
+   'PYMODULE'),
+  ('matplotlib.tri._triinterpolate',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_triinterpolate.py',
+   'PYMODULE'),
+  ('matplotlib.tri._tripcolor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_tripcolor.py',
+   'PYMODULE'),
+  ('matplotlib.tri._triplot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_triplot.py',
+   'PYMODULE'),
+  ('matplotlib.tri._trirefine',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_trirefine.py',
+   'PYMODULE'),
+  ('matplotlib.tri._tritools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\tri\\_tritools.py',
+   'PYMODULE'),
+  ('matplotlib.units',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\units.py',
+   'PYMODULE'),
+  ('matplotlib.widgets',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\matplotlib\\widgets.py',
+   'PYMODULE'),
   ('mimetypes',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\mimetypes.py',
+   'PYMODULE'),
+  ('mpl_toolkits',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\__init__.py',
+   'PYMODULE'),
+  ('mpl_toolkits.mplot3d',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\mplot3d\\__init__.py',
+   'PYMODULE'),
+  ('mpl_toolkits.mplot3d.art3d',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\mplot3d\\art3d.py',
+   'PYMODULE'),
+  ('mpl_toolkits.mplot3d.axes3d',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\mplot3d\\axes3d.py',
+   'PYMODULE'),
+  ('mpl_toolkits.mplot3d.axis3d',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\mplot3d\\axis3d.py',
+   'PYMODULE'),
+  ('mpl_toolkits.mplot3d.proj3d',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\mpl_toolkits\\mplot3d\\proj3d.py',
+   'PYMODULE'),
+  ('multiprocessing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\__init__.py',
+   'PYMODULE'),
+  ('multiprocessing.connection',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\connection.py',
+   'PYMODULE'),
+  ('multiprocessing.context',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\context.py',
+   'PYMODULE'),
+  ('multiprocessing.dummy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\dummy\\__init__.py',
+   'PYMODULE'),
+  ('multiprocessing.dummy.connection',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\dummy\\connection.py',
+   'PYMODULE'),
+  ('multiprocessing.forkserver',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\forkserver.py',
+   'PYMODULE'),
+  ('multiprocessing.heap',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\heap.py',
+   'PYMODULE'),
+  ('multiprocessing.managers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\managers.py',
+   'PYMODULE'),
+  ('multiprocessing.pool',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\pool.py',
+   'PYMODULE'),
+  ('multiprocessing.popen_fork',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\popen_fork.py',
+   'PYMODULE'),
+  ('multiprocessing.popen_forkserver',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\popen_forkserver.py',
+   'PYMODULE'),
+  ('multiprocessing.popen_spawn_posix',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\popen_spawn_posix.py',
+   'PYMODULE'),
+  ('multiprocessing.popen_spawn_win32',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\popen_spawn_win32.py',
+   'PYMODULE'),
+  ('multiprocessing.process',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\process.py',
+   'PYMODULE'),
+  ('multiprocessing.queues',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\queues.py',
+   'PYMODULE'),
+  ('multiprocessing.reduction',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\reduction.py',
+   'PYMODULE'),
+  ('multiprocessing.resource_sharer',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\resource_sharer.py',
+   'PYMODULE'),
+  ('multiprocessing.resource_tracker',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\resource_tracker.py',
+   'PYMODULE'),
+  ('multiprocessing.shared_memory',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\shared_memory.py',
+   'PYMODULE'),
+  ('multiprocessing.sharedctypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\sharedctypes.py',
+   'PYMODULE'),
+  ('multiprocessing.spawn',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\spawn.py',
+   'PYMODULE'),
+  ('multiprocessing.synchronize',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\synchronize.py',
+   'PYMODULE'),
+  ('multiprocessing.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\multiprocessing\\util.py',
    'PYMODULE'),
   ('netrc',
    'C:\\Users\\Samuelsen Data '
@@ -333,13 +1433,1965 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\numbers.py',
    'PYMODULE'),
+  ('numexpr',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\__init__.py',
+   'PYMODULE'),
+  ('numexpr.cpuinfo',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\cpuinfo.py',
+   'PYMODULE'),
+  ('numexpr.expressions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\expressions.py',
+   'PYMODULE'),
+  ('numexpr.necompiler',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\necompiler.py',
+   'PYMODULE'),
+  ('numexpr.tests',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\tests\\__init__.py',
+   'PYMODULE'),
+  ('numexpr.tests.test_numexpr',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\tests\\test_numexpr.py',
+   'PYMODULE'),
+  ('numexpr.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\utils.py',
+   'PYMODULE'),
+  ('numexpr.version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numexpr\\version.py',
+   'PYMODULE'),
+  ('numpy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\__init__.py',
+   'PYMODULE'),
+  ('numpy.__config__',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\__config__.py',
+   'PYMODULE'),
+  ('numpy._distributor_init',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_distributor_init.py',
+   'PYMODULE'),
+  ('numpy._globals',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_globals.py',
+   'PYMODULE'),
+  ('numpy._pytesttester',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_pytesttester.py',
+   'PYMODULE'),
+  ('numpy._typing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\__init__.py',
+   'PYMODULE'),
+  ('numpy._typing._add_docstring',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_add_docstring.py',
+   'PYMODULE'),
+  ('numpy._typing._array_like',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_array_like.py',
+   'PYMODULE'),
+  ('numpy._typing._char_codes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_char_codes.py',
+   'PYMODULE'),
+  ('numpy._typing._dtype_like',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_dtype_like.py',
+   'PYMODULE'),
+  ('numpy._typing._nbit',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_nbit.py',
+   'PYMODULE'),
+  ('numpy._typing._nested_sequence',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_nested_sequence.py',
+   'PYMODULE'),
+  ('numpy._typing._scalars',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_scalars.py',
+   'PYMODULE'),
+  ('numpy._typing._shape',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_typing\\_shape.py',
+   'PYMODULE'),
+  ('numpy._utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_utils\\__init__.py',
+   'PYMODULE'),
+  ('numpy._utils._inspect',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_utils\\_inspect.py',
+   'PYMODULE'),
+  ('numpy._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\_version.py',
+   'PYMODULE'),
+  ('numpy.array_api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\__init__.py',
+   'PYMODULE'),
+  ('numpy.array_api._array_object',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_array_object.py',
+   'PYMODULE'),
+  ('numpy.array_api._constants',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_constants.py',
+   'PYMODULE'),
+  ('numpy.array_api._creation_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_creation_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._data_type_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_data_type_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._dtypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_dtypes.py',
+   'PYMODULE'),
+  ('numpy.array_api._elementwise_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_elementwise_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._indexing_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_indexing_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._manipulation_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_manipulation_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._searching_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_searching_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._set_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_set_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._sorting_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_sorting_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._statistical_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_statistical_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api._typing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_typing.py',
+   'PYMODULE'),
+  ('numpy.array_api._utility_functions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\_utility_functions.py',
+   'PYMODULE'),
+  ('numpy.array_api.linalg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\array_api\\linalg.py',
+   'PYMODULE'),
+  ('numpy.compat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\compat\\__init__.py',
+   'PYMODULE'),
+  ('numpy.compat.py3k',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\compat\\py3k.py',
+   'PYMODULE'),
+  ('numpy.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\__init__.py',
+   'PYMODULE'),
+  ('numpy.core._add_newdocs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_add_newdocs.py',
+   'PYMODULE'),
+  ('numpy.core._add_newdocs_scalars',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_add_newdocs_scalars.py',
+   'PYMODULE'),
+  ('numpy.core._asarray',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_asarray.py',
+   'PYMODULE'),
+  ('numpy.core._dtype',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_dtype.py',
+   'PYMODULE'),
+  ('numpy.core._dtype_ctypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_dtype_ctypes.py',
+   'PYMODULE'),
+  ('numpy.core._exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_exceptions.py',
+   'PYMODULE'),
+  ('numpy.core._internal',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_internal.py',
+   'PYMODULE'),
+  ('numpy.core._machar',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_machar.py',
+   'PYMODULE'),
+  ('numpy.core._methods',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_methods.py',
+   'PYMODULE'),
+  ('numpy.core._string_helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_string_helpers.py',
+   'PYMODULE'),
+  ('numpy.core._type_aliases',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_type_aliases.py',
+   'PYMODULE'),
+  ('numpy.core._ufunc_config',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\_ufunc_config.py',
+   'PYMODULE'),
+  ('numpy.core.arrayprint',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\arrayprint.py',
+   'PYMODULE'),
+  ('numpy.core.defchararray',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\defchararray.py',
+   'PYMODULE'),
+  ('numpy.core.einsumfunc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\einsumfunc.py',
+   'PYMODULE'),
+  ('numpy.core.fromnumeric',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\fromnumeric.py',
+   'PYMODULE'),
+  ('numpy.core.function_base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\function_base.py',
+   'PYMODULE'),
+  ('numpy.core.getlimits',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\getlimits.py',
+   'PYMODULE'),
+  ('numpy.core.memmap',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\memmap.py',
+   'PYMODULE'),
+  ('numpy.core.multiarray',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\multiarray.py',
+   'PYMODULE'),
+  ('numpy.core.numeric',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\numeric.py',
+   'PYMODULE'),
+  ('numpy.core.numerictypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\numerictypes.py',
+   'PYMODULE'),
+  ('numpy.core.overrides',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\overrides.py',
+   'PYMODULE'),
+  ('numpy.core.records',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\records.py',
+   'PYMODULE'),
+  ('numpy.core.shape_base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\shape_base.py',
+   'PYMODULE'),
+  ('numpy.core.umath',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\core\\umath.py',
+   'PYMODULE'),
+  ('numpy.ctypeslib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\ctypeslib.py',
+   'PYMODULE'),
+  ('numpy.dtypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\dtypes.py',
+   'PYMODULE'),
+  ('numpy.exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\exceptions.py',
+   'PYMODULE'),
+  ('numpy.fft',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\fft\\__init__.py',
+   'PYMODULE'),
+  ('numpy.fft._pocketfft',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\fft\\_pocketfft.py',
+   'PYMODULE'),
+  ('numpy.fft.helper',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\fft\\helper.py',
+   'PYMODULE'),
+  ('numpy.lib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\__init__.py',
+   'PYMODULE'),
+  ('numpy.lib._datasource',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\_datasource.py',
+   'PYMODULE'),
+  ('numpy.lib._iotools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\_iotools.py',
+   'PYMODULE'),
+  ('numpy.lib._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\_version.py',
+   'PYMODULE'),
+  ('numpy.lib.arraypad',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\arraypad.py',
+   'PYMODULE'),
+  ('numpy.lib.arraysetops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\arraysetops.py',
+   'PYMODULE'),
+  ('numpy.lib.arrayterator',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\arrayterator.py',
+   'PYMODULE'),
+  ('numpy.lib.format',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\format.py',
+   'PYMODULE'),
+  ('numpy.lib.function_base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\function_base.py',
+   'PYMODULE'),
+  ('numpy.lib.histograms',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\histograms.py',
+   'PYMODULE'),
+  ('numpy.lib.index_tricks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\index_tricks.py',
+   'PYMODULE'),
+  ('numpy.lib.mixins',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\mixins.py',
+   'PYMODULE'),
+  ('numpy.lib.nanfunctions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\nanfunctions.py',
+   'PYMODULE'),
+  ('numpy.lib.npyio',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\npyio.py',
+   'PYMODULE'),
+  ('numpy.lib.polynomial',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\polynomial.py',
+   'PYMODULE'),
+  ('numpy.lib.recfunctions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\recfunctions.py',
+   'PYMODULE'),
+  ('numpy.lib.scimath',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\scimath.py',
+   'PYMODULE'),
+  ('numpy.lib.shape_base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\shape_base.py',
+   'PYMODULE'),
+  ('numpy.lib.stride_tricks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\stride_tricks.py',
+   'PYMODULE'),
+  ('numpy.lib.twodim_base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\twodim_base.py',
+   'PYMODULE'),
+  ('numpy.lib.type_check',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\type_check.py',
+   'PYMODULE'),
+  ('numpy.lib.ufunclike',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\ufunclike.py',
+   'PYMODULE'),
+  ('numpy.lib.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\lib\\utils.py',
+   'PYMODULE'),
+  ('numpy.linalg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\linalg\\__init__.py',
+   'PYMODULE'),
+  ('numpy.linalg.linalg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\linalg\\linalg.py',
+   'PYMODULE'),
+  ('numpy.ma',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\ma\\__init__.py',
+   'PYMODULE'),
+  ('numpy.ma.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\ma\\core.py',
+   'PYMODULE'),
+  ('numpy.ma.extras',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\ma\\extras.py',
+   'PYMODULE'),
+  ('numpy.ma.mrecords',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\ma\\mrecords.py',
+   'PYMODULE'),
+  ('numpy.matrixlib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\matrixlib\\__init__.py',
+   'PYMODULE'),
+  ('numpy.matrixlib.defmatrix',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\matrixlib\\defmatrix.py',
+   'PYMODULE'),
+  ('numpy.polynomial',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\__init__.py',
+   'PYMODULE'),
+  ('numpy.polynomial._polybase',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\_polybase.py',
+   'PYMODULE'),
+  ('numpy.polynomial.chebyshev',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\chebyshev.py',
+   'PYMODULE'),
+  ('numpy.polynomial.hermite',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\hermite.py',
+   'PYMODULE'),
+  ('numpy.polynomial.hermite_e',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\hermite_e.py',
+   'PYMODULE'),
+  ('numpy.polynomial.laguerre',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\laguerre.py',
+   'PYMODULE'),
+  ('numpy.polynomial.legendre',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\legendre.py',
+   'PYMODULE'),
+  ('numpy.polynomial.polynomial',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\polynomial.py',
+   'PYMODULE'),
+  ('numpy.polynomial.polyutils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\polynomial\\polyutils.py',
+   'PYMODULE'),
+  ('numpy.random',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\random\\__init__.py',
+   'PYMODULE'),
+  ('numpy.random._pickle',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\random\\_pickle.py',
+   'PYMODULE'),
+  ('numpy.testing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\testing\\__init__.py',
+   'PYMODULE'),
+  ('numpy.testing._private',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\testing\\_private\\__init__.py',
+   'PYMODULE'),
+  ('numpy.testing._private.extbuild',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\testing\\_private\\extbuild.py',
+   'PYMODULE'),
+  ('numpy.testing._private.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\testing\\_private\\utils.py',
+   'PYMODULE'),
+  ('numpy.testing.overrides',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\testing\\overrides.py',
+   'PYMODULE'),
+  ('numpy.typing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\typing\\__init__.py',
+   'PYMODULE'),
+  ('numpy.version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\numpy\\version.py',
+   'PYMODULE'),
   ('opcode',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\opcode.py',
    'PYMODULE'),
+  ('packaging',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('packaging._elffile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_elffile.py',
+   'PYMODULE'),
+  ('packaging._manylinux',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_manylinux.py',
+   'PYMODULE'),
+  ('packaging._musllinux',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_musllinux.py',
+   'PYMODULE'),
+  ('packaging._parser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_parser.py',
+   'PYMODULE'),
+  ('packaging._structures',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_structures.py',
+   'PYMODULE'),
+  ('packaging._tokenizer',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\_tokenizer.py',
+   'PYMODULE'),
+  ('packaging.markers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\markers.py',
+   'PYMODULE'),
+  ('packaging.metadata',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\metadata.py',
+   'PYMODULE'),
+  ('packaging.requirements',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('packaging.specifiers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\specifiers.py',
+   'PYMODULE'),
+  ('packaging.tags',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\tags.py',
+   'PYMODULE'),
+  ('packaging.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\utils.py',
+   'PYMODULE'),
+  ('packaging.version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\packaging\\version.py',
+   'PYMODULE'),
+  ('pandas',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\__init__.py',
+   'PYMODULE'),
+  ('pandas._config',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_config\\__init__.py',
+   'PYMODULE'),
+  ('pandas._config.config',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_config\\config.py',
+   'PYMODULE'),
+  ('pandas._config.dates',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_config\\dates.py',
+   'PYMODULE'),
+  ('pandas._config.display',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_config\\display.py',
+   'PYMODULE'),
+  ('pandas._config.localization',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_config\\localization.py',
+   'PYMODULE'),
+  ('pandas._libs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_libs\\__init__.py',
+   'PYMODULE'),
+  ('pandas._libs.tslibs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_libs\\tslibs\\__init__.py',
+   'PYMODULE'),
+  ('pandas._libs.window',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_libs\\window\\__init__.py',
+   'PYMODULE'),
+  ('pandas._testing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\__init__.py',
+   'PYMODULE'),
+  ('pandas._testing._io',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\_io.py',
+   'PYMODULE'),
+  ('pandas._testing._random',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\_random.py',
+   'PYMODULE'),
+  ('pandas._testing._warnings',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\_warnings.py',
+   'PYMODULE'),
+  ('pandas._testing.asserters',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\asserters.py',
+   'PYMODULE'),
+  ('pandas._testing.compat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\compat.py',
+   'PYMODULE'),
+  ('pandas._testing.contexts',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_testing\\contexts.py',
+   'PYMODULE'),
+  ('pandas._typing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_typing.py',
+   'PYMODULE'),
+  ('pandas._version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\_version.py',
+   'PYMODULE'),
+  ('pandas.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\api\\__init__.py',
+   'PYMODULE'),
+  ('pandas.api.extensions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\api\\extensions\\__init__.py',
+   'PYMODULE'),
+  ('pandas.api.indexers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\api\\indexers\\__init__.py',
+   'PYMODULE'),
+  ('pandas.api.interchange',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\api\\interchange\\__init__.py',
+   'PYMODULE'),
+  ('pandas.api.types',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\api\\types\\__init__.py',
+   'PYMODULE'),
+  ('pandas.arrays',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\arrays\\__init__.py',
+   'PYMODULE'),
+  ('pandas.compat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\__init__.py',
+   'PYMODULE'),
+  ('pandas.compat._constants',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\_constants.py',
+   'PYMODULE'),
+  ('pandas.compat._optional',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\_optional.py',
+   'PYMODULE'),
+  ('pandas.compat.compressors',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\compressors.py',
+   'PYMODULE'),
+  ('pandas.compat.numpy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\numpy\\__init__.py',
+   'PYMODULE'),
+  ('pandas.compat.numpy.function',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\numpy\\function.py',
+   'PYMODULE'),
+  ('pandas.compat.pickle_compat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\pickle_compat.py',
+   'PYMODULE'),
+  ('pandas.compat.pyarrow',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\compat\\pyarrow.py',
+   'PYMODULE'),
+  ('pandas.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core._numba',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core._numba.executor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\executor.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels.mean_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\mean_.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels.min_max_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\min_max_.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels.shared',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\shared.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels.sum_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\sum_.py',
+   'PYMODULE'),
+  ('pandas.core._numba.kernels.var_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\_numba\\kernels\\var_.py',
+   'PYMODULE'),
+  ('pandas.core.accessor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\accessor.py',
+   'PYMODULE'),
+  ('pandas.core.algorithms',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\algorithms.py',
+   'PYMODULE'),
+  ('pandas.core.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\api.py',
+   'PYMODULE'),
+  ('pandas.core.apply',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\apply.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.datetimelike_accumulations',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\datetimelike_accumulations.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.masked_accumulations',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\masked_accumulations.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.masked_reductions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\masked_reductions.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.putmask',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\putmask.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.quantile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\quantile.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.replace',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\replace.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.take',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\take.py',
+   'PYMODULE'),
+  ('pandas.core.array_algos.transforms',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\array_algos\\transforms.py',
+   'PYMODULE'),
+  ('pandas.core.arraylike',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arraylike.py',
+   'PYMODULE'),
+  ('pandas.core.arrays',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.arrays._mixins',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\_mixins.py',
+   'PYMODULE'),
+  ('pandas.core.arrays._ranges',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\_ranges.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.arrow',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\arrow\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.arrow._arrow_utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\arrow\\_arrow_utils.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.arrow.array',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\arrow\\array.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.arrow.dtype',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\arrow\\dtype.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.arrow.extension_types',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\arrow\\extension_types.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\base.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.boolean',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\boolean.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.categorical',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\categorical.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.datetimelike',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\datetimelike.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.datetimes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\datetimes.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.floating',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\floating.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.integer',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\integer.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.interval',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\interval.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.masked',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\masked.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.numeric',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\numeric.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.numpy_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\numpy_.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.period',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\period.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.sparse',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\sparse\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.sparse.accessor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\sparse\\accessor.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.sparse.array',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\sparse\\array.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.sparse.dtype',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\sparse\\dtype.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.sparse.scipy_sparse',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\sparse\\scipy_sparse.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.string_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\string_.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.string_arrow',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\string_arrow.py',
+   'PYMODULE'),
+  ('pandas.core.arrays.timedeltas',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\arrays\\timedeltas.py',
+   'PYMODULE'),
+  ('pandas.core.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\base.py',
+   'PYMODULE'),
+  ('pandas.core.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\common.py',
+   'PYMODULE'),
+  ('pandas.core.computation',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.computation.align',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\align.py',
+   'PYMODULE'),
+  ('pandas.core.computation.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\api.py',
+   'PYMODULE'),
+  ('pandas.core.computation.check',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\check.py',
+   'PYMODULE'),
+  ('pandas.core.computation.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\common.py',
+   'PYMODULE'),
+  ('pandas.core.computation.engines',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\engines.py',
+   'PYMODULE'),
+  ('pandas.core.computation.eval',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\eval.py',
+   'PYMODULE'),
+  ('pandas.core.computation.expr',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\expr.py',
+   'PYMODULE'),
+  ('pandas.core.computation.expressions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\expressions.py',
+   'PYMODULE'),
+  ('pandas.core.computation.ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\ops.py',
+   'PYMODULE'),
+  ('pandas.core.computation.parsing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\parsing.py',
+   'PYMODULE'),
+  ('pandas.core.computation.pytables',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\pytables.py',
+   'PYMODULE'),
+  ('pandas.core.computation.scope',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\computation\\scope.py',
+   'PYMODULE'),
+  ('pandas.core.config_init',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\config_init.py',
+   'PYMODULE'),
+  ('pandas.core.construction',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\construction.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\api.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.astype',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\astype.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\base.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.cast',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\cast.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\common.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.concat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\concat.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.dtypes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\dtypes.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.generic',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\generic.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.inference',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\inference.py',
+   'PYMODULE'),
+  ('pandas.core.dtypes.missing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\dtypes\\missing.py',
+   'PYMODULE'),
+  ('pandas.core.flags',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\flags.py',
+   'PYMODULE'),
+  ('pandas.core.frame',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\frame.py',
+   'PYMODULE'),
+  ('pandas.core.generic',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\generic.py',
+   'PYMODULE'),
+  ('pandas.core.groupby',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\base.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.categorical',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\categorical.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.generic',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\generic.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.groupby',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\groupby.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.grouper',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\grouper.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.indexing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\indexing.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.numba_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\numba_.py',
+   'PYMODULE'),
+  ('pandas.core.groupby.ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\groupby\\ops.py',
+   'PYMODULE'),
+  ('pandas.core.indexers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexers\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.indexers.objects',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexers\\objects.py',
+   'PYMODULE'),
+  ('pandas.core.indexers.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexers\\utils.py',
+   'PYMODULE'),
+  ('pandas.core.indexes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.accessors',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\accessors.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\api.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\base.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.category',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\category.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.datetimelike',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\datetimelike.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.datetimes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\datetimes.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.extension',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\extension.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.frozen',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\frozen.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.interval',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\interval.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.multi',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\multi.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.period',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\period.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.range',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\range.py',
+   'PYMODULE'),
+  ('pandas.core.indexes.timedeltas',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexes\\timedeltas.py',
+   'PYMODULE'),
+  ('pandas.core.indexing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\indexing.py',
+   'PYMODULE'),
+  ('pandas.core.interchange',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.buffer',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\buffer.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.column',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\column.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.dataframe',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\dataframe.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.dataframe_protocol',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\dataframe_protocol.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.from_dataframe',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\from_dataframe.py',
+   'PYMODULE'),
+  ('pandas.core.interchange.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\interchange\\utils.py',
+   'PYMODULE'),
+  ('pandas.core.internals',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.internals.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\api.py',
+   'PYMODULE'),
+  ('pandas.core.internals.array_manager',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\array_manager.py',
+   'PYMODULE'),
+  ('pandas.core.internals.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\base.py',
+   'PYMODULE'),
+  ('pandas.core.internals.blocks',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\blocks.py',
+   'PYMODULE'),
+  ('pandas.core.internals.concat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\concat.py',
+   'PYMODULE'),
+  ('pandas.core.internals.construction',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\construction.py',
+   'PYMODULE'),
+  ('pandas.core.internals.managers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\managers.py',
+   'PYMODULE'),
+  ('pandas.core.internals.ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\internals\\ops.py',
+   'PYMODULE'),
+  ('pandas.core.methods',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\methods\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.methods.describe',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\methods\\describe.py',
+   'PYMODULE'),
+  ('pandas.core.methods.selectn',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\methods\\selectn.py',
+   'PYMODULE'),
+  ('pandas.core.methods.to_dict',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\methods\\to_dict.py',
+   'PYMODULE'),
+  ('pandas.core.missing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\missing.py',
+   'PYMODULE'),
+  ('pandas.core.nanops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\nanops.py',
+   'PYMODULE'),
+  ('pandas.core.ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.ops.array_ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\array_ops.py',
+   'PYMODULE'),
+  ('pandas.core.ops.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\common.py',
+   'PYMODULE'),
+  ('pandas.core.ops.dispatch',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\dispatch.py',
+   'PYMODULE'),
+  ('pandas.core.ops.docstrings',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\docstrings.py',
+   'PYMODULE'),
+  ('pandas.core.ops.invalid',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\invalid.py',
+   'PYMODULE'),
+  ('pandas.core.ops.mask_ops',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\mask_ops.py',
+   'PYMODULE'),
+  ('pandas.core.ops.methods',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\methods.py',
+   'PYMODULE'),
+  ('pandas.core.ops.missing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\ops\\missing.py',
+   'PYMODULE'),
+  ('pandas.core.resample',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\resample.py',
+   'PYMODULE'),
+  ('pandas.core.reshape',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\api.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.concat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\concat.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.encoding',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\encoding.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.melt',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\melt.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.merge',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\merge.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.pivot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\pivot.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.reshape',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\reshape.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.tile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\tile.py',
+   'PYMODULE'),
+  ('pandas.core.reshape.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\reshape\\util.py',
+   'PYMODULE'),
+  ('pandas.core.roperator',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\roperator.py',
+   'PYMODULE'),
+  ('pandas.core.sample',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\sample.py',
+   'PYMODULE'),
+  ('pandas.core.series',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\series.py',
+   'PYMODULE'),
+  ('pandas.core.shared_docs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\shared_docs.py',
+   'PYMODULE'),
+  ('pandas.core.sorting',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\sorting.py',
+   'PYMODULE'),
+  ('pandas.core.strings',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\strings\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.strings.accessor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\strings\\accessor.py',
+   'PYMODULE'),
+  ('pandas.core.strings.base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\strings\\base.py',
+   'PYMODULE'),
+  ('pandas.core.strings.object_array',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\strings\\object_array.py',
+   'PYMODULE'),
+  ('pandas.core.tools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\tools\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.tools.datetimes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\tools\\datetimes.py',
+   'PYMODULE'),
+  ('pandas.core.tools.numeric',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\tools\\numeric.py',
+   'PYMODULE'),
+  ('pandas.core.tools.timedeltas',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\tools\\timedeltas.py',
+   'PYMODULE'),
+  ('pandas.core.tools.times',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\tools\\times.py',
+   'PYMODULE'),
+  ('pandas.core.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\util\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.util.hashing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\util\\hashing.py',
+   'PYMODULE'),
+  ('pandas.core.util.numba_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\util\\numba_.py',
+   'PYMODULE'),
+  ('pandas.core.window',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\__init__.py',
+   'PYMODULE'),
+  ('pandas.core.window.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\common.py',
+   'PYMODULE'),
+  ('pandas.core.window.doc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\doc.py',
+   'PYMODULE'),
+  ('pandas.core.window.ewm',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\ewm.py',
+   'PYMODULE'),
+  ('pandas.core.window.expanding',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\expanding.py',
+   'PYMODULE'),
+  ('pandas.core.window.numba_',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\numba_.py',
+   'PYMODULE'),
+  ('pandas.core.window.online',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\online.py',
+   'PYMODULE'),
+  ('pandas.core.window.rolling',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\core\\window\\rolling.py',
+   'PYMODULE'),
+  ('pandas.errors',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\errors\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io._util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\_util.py',
+   'PYMODULE'),
+  ('pandas.io.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\api.py',
+   'PYMODULE'),
+  ('pandas.io.clipboard',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\clipboard\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.clipboards',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\clipboards.py',
+   'PYMODULE'),
+  ('pandas.io.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\common.py',
+   'PYMODULE'),
+  ('pandas.io.excel',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.excel._base',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_base.py',
+   'PYMODULE'),
+  ('pandas.io.excel._odfreader',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_odfreader.py',
+   'PYMODULE'),
+  ('pandas.io.excel._odswriter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_odswriter.py',
+   'PYMODULE'),
+  ('pandas.io.excel._openpyxl',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_openpyxl.py',
+   'PYMODULE'),
+  ('pandas.io.excel._pyxlsb',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_pyxlsb.py',
+   'PYMODULE'),
+  ('pandas.io.excel._util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_util.py',
+   'PYMODULE'),
+  ('pandas.io.excel._xlrd',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_xlrd.py',
+   'PYMODULE'),
+  ('pandas.io.excel._xlsxwriter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\excel\\_xlsxwriter.py',
+   'PYMODULE'),
+  ('pandas.io.feather_format',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\feather_format.py',
+   'PYMODULE'),
+  ('pandas.io.formats',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.formats._color_data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\_color_data.py',
+   'PYMODULE'),
+  ('pandas.io.formats.console',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\console.py',
+   'PYMODULE'),
+  ('pandas.io.formats.css',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\css.py',
+   'PYMODULE'),
+  ('pandas.io.formats.csvs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\csvs.py',
+   'PYMODULE'),
+  ('pandas.io.formats.excel',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\excel.py',
+   'PYMODULE'),
+  ('pandas.io.formats.format',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\format.py',
+   'PYMODULE'),
+  ('pandas.io.formats.html',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\html.py',
+   'PYMODULE'),
+  ('pandas.io.formats.info',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\info.py',
+   'PYMODULE'),
+  ('pandas.io.formats.latex',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\latex.py',
+   'PYMODULE'),
+  ('pandas.io.formats.printing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\printing.py',
+   'PYMODULE'),
+  ('pandas.io.formats.string',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\string.py',
+   'PYMODULE'),
+  ('pandas.io.formats.style',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\style.py',
+   'PYMODULE'),
+  ('pandas.io.formats.style_render',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\style_render.py',
+   'PYMODULE'),
+  ('pandas.io.formats.xml',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\formats\\xml.py',
+   'PYMODULE'),
+  ('pandas.io.gbq',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\gbq.py',
+   'PYMODULE'),
+  ('pandas.io.html',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\html.py',
+   'PYMODULE'),
+  ('pandas.io.json',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\json\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.json._json',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\json\\_json.py',
+   'PYMODULE'),
+  ('pandas.io.json._normalize',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\json\\_normalize.py',
+   'PYMODULE'),
+  ('pandas.io.json._table_schema',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\json\\_table_schema.py',
+   'PYMODULE'),
+  ('pandas.io.orc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\orc.py',
+   'PYMODULE'),
+  ('pandas.io.parquet',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parquet.py',
+   'PYMODULE'),
+  ('pandas.io.parsers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.parsers.arrow_parser_wrapper',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\arrow_parser_wrapper.py',
+   'PYMODULE'),
+  ('pandas.io.parsers.base_parser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\base_parser.py',
+   'PYMODULE'),
+  ('pandas.io.parsers.c_parser_wrapper',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\c_parser_wrapper.py',
+   'PYMODULE'),
+  ('pandas.io.parsers.python_parser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\python_parser.py',
+   'PYMODULE'),
+  ('pandas.io.parsers.readers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\parsers\\readers.py',
+   'PYMODULE'),
+  ('pandas.io.pickle',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\pickle.py',
+   'PYMODULE'),
+  ('pandas.io.pytables',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\pytables.py',
+   'PYMODULE'),
+  ('pandas.io.sas',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sas\\__init__.py',
+   'PYMODULE'),
+  ('pandas.io.sas.sas7bdat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sas\\sas7bdat.py',
+   'PYMODULE'),
+  ('pandas.io.sas.sas_constants',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sas\\sas_constants.py',
+   'PYMODULE'),
+  ('pandas.io.sas.sas_xport',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sas\\sas_xport.py',
+   'PYMODULE'),
+  ('pandas.io.sas.sasreader',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sas\\sasreader.py',
+   'PYMODULE'),
+  ('pandas.io.spss',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\spss.py',
+   'PYMODULE'),
+  ('pandas.io.sql',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\sql.py',
+   'PYMODULE'),
+  ('pandas.io.stata',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\stata.py',
+   'PYMODULE'),
+  ('pandas.io.xml',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\io\\xml.py',
+   'PYMODULE'),
+  ('pandas.plotting',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\__init__.py',
+   'PYMODULE'),
+  ('pandas.plotting._core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_core.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\__init__.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.boxplot',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\boxplot.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.converter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\converter.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\core.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.groupby',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\groupby.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.hist',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\hist.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.misc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\misc.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.style',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\style.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.timeseries',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\timeseries.py',
+   'PYMODULE'),
+  ('pandas.plotting._matplotlib.tools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_matplotlib\\tools.py',
+   'PYMODULE'),
+  ('pandas.plotting._misc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\plotting\\_misc.py',
+   'PYMODULE'),
+  ('pandas.testing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\testing.py',
+   'PYMODULE'),
+  ('pandas.tseries',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\tseries\\__init__.py',
+   'PYMODULE'),
+  ('pandas.tseries.api',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\tseries\\api.py',
+   'PYMODULE'),
+  ('pandas.tseries.frequencies',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\tseries\\frequencies.py',
+   'PYMODULE'),
+  ('pandas.tseries.offsets',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\tseries\\offsets.py',
+   'PYMODULE'),
+  ('pandas.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\__init__.py',
+   'PYMODULE'),
+  ('pandas.util._decorators',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_decorators.py',
+   'PYMODULE'),
+  ('pandas.util._exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_exceptions.py',
+   'PYMODULE'),
+  ('pandas.util._print_versions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_print_versions.py',
+   'PYMODULE'),
+  ('pandas.util._str_methods',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_str_methods.py',
+   'PYMODULE'),
+  ('pandas.util._tester',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_tester.py',
+   'PYMODULE'),
+  ('pandas.util._validators',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\_validators.py',
+   'PYMODULE'),
+  ('pandas.util.version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandas\\util\\version\\__init__.py',
+   'PYMODULE'),
+  ('pandastable',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\__init__.py',
+   'PYMODULE'),
+  ('pandastable.config',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\config.py',
+   'PYMODULE'),
+  ('pandastable.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\core.py',
+   'PYMODULE'),
+  ('pandastable.data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\data.py',
+   'PYMODULE'),
+  ('pandastable.dialogs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\dialogs.py',
+   'PYMODULE'),
+  ('pandastable.handlers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\handlers.py',
+   'PYMODULE'),
+  ('pandastable.headers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\headers.py',
+   'PYMODULE'),
+  ('pandastable.images',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\images.py',
+   'PYMODULE'),
+  ('pandastable.plotting',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\plotting.py',
+   'PYMODULE'),
+  ('pandastable.stats',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\stats.py',
+   'PYMODULE'),
+  ('pandastable.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pandastable\\util.py',
+   'PYMODULE'),
+  ('pdb',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pdb.py',
+   'PYMODULE'),
   ('pickle',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pickle.py',
+   'PYMODULE'),
+  ('pkg_resources',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.appdirs',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\appdirs.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources._adapters',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\_adapters.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources._common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\_common.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources._compat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\_compat.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources._itertools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\_itertools.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources._legacy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\_legacy.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources.abc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\abc.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources.readers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\readers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.importlib_resources.simple',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\importlib_resources\\simple.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.jaraco',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\jaraco\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.jaraco.context',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\jaraco\\context.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.jaraco.functools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\jaraco\\functools.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.jaraco.text',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\jaraco\\text\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.more_itertools',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\more_itertools\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.more_itertools.more',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\more_itertools\\more.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.more_itertools.recipes',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\more_itertools\\recipes.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.__about__',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\__about__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._manylinux',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_manylinux.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._musllinux',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_musllinux.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging._structures',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\_structures.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.markers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\markers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.requirements',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\requirements.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.specifiers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\specifiers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.tags',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\tags.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.utils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\utils.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.packaging.version',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\packaging\\version.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.actions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\actions.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\common.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\core.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.diagram',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\diagram\\__init__.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\exceptions.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\helpers.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.results',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\results.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.testing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\testing.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.unicode',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\unicode.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.pyparsing.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\pyparsing\\util.py',
+   'PYMODULE'),
+  ('pkg_resources._vendor.zipp',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\_vendor\\zipp.py',
+   'PYMODULE'),
+  ('pkg_resources.extern',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pkg_resources\\extern\\__init__.py',
+   'PYMODULE'),
+  ('pkgutil',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pkgutil.py',
+   'PYMODULE'),
+  ('platform',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\platform.py',
+   'PYMODULE'),
+  ('plistlib',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\plistlib.py',
    'PYMODULE'),
   ('pprint',
    'C:\\Users\\Samuelsen Data '
@@ -349,6 +3401,90 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\py_compile.py',
    'PYMODULE'),
+  ('pydoc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pydoc.py',
+   'PYMODULE'),
+  ('pydoc_data',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pydoc_data\\__init__.py',
+   'PYMODULE'),
+  ('pydoc_data.topics',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\pydoc_data\\topics.py',
+   'PYMODULE'),
+  ('pylab',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pylab.py',
+   'PYMODULE'),
+  ('pyparsing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\__init__.py',
+   'PYMODULE'),
+  ('pyparsing.actions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\actions.py',
+   'PYMODULE'),
+  ('pyparsing.common',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\common.py',
+   'PYMODULE'),
+  ('pyparsing.core',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\core.py',
+   'PYMODULE'),
+  ('pyparsing.diagram',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\diagram\\__init__.py',
+   'PYMODULE'),
+  ('pyparsing.exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\exceptions.py',
+   'PYMODULE'),
+  ('pyparsing.helpers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\helpers.py',
+   'PYMODULE'),
+  ('pyparsing.results',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\results.py',
+   'PYMODULE'),
+  ('pyparsing.testing',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\testing.py',
+   'PYMODULE'),
+  ('pyparsing.unicode',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\unicode.py',
+   'PYMODULE'),
+  ('pyparsing.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pyparsing\\util.py',
+   'PYMODULE'),
+  ('pytz',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pytz\\__init__.py',
+   'PYMODULE'),
+  ('pytz.exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pytz\\exceptions.py',
+   'PYMODULE'),
+  ('pytz.lazy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pytz\\lazy.py',
+   'PYMODULE'),
+  ('pytz.tzfile',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pytz\\tzfile.py',
+   'PYMODULE'),
+  ('pytz.tzinfo',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\pytz\\tzinfo.py',
+   'PYMODULE'),
+  ('queue',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\queue.py',
+   'PYMODULE'),
   ('quopri',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\quopri.py',
@@ -356,6 +3492,14 @@
   ('random',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\random.py',
+   'PYMODULE'),
+  ('runpy',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\runpy.py',
+   'PYMODULE'),
+  ('secrets',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\secrets.py',
    'PYMODULE'),
   ('selectors',
    'C:\\Users\\Samuelsen Data '
@@ -401,9 +3545,29 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\signal.py',
    'PYMODULE'),
+  ('six',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\six.py',
+   'PYMODULE'),
   ('socket',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\socket.py',
+   'PYMODULE'),
+  ('socketserver',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\socketserver.py',
+   'PYMODULE'),
+  ('sqlite3',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\sqlite3\\__init__.py',
+   'PYMODULE'),
+  ('sqlite3.dbapi2',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\sqlite3\\dbapi2.py',
+   'PYMODULE'),
+  ('sqlite3.dump',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\sqlite3\\dump.py',
    'PYMODULE'),
   ('ssl',
    'C:\\Users\\Samuelsen Data '
@@ -425,6 +3589,10 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\subprocess.py',
    'PYMODULE'),
+  ('sysconfig',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\sysconfig.py',
+   'PYMODULE'),
   ('tarfile',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tarfile.py',
@@ -445,19 +3613,251 @@
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\__init__.py',
    'PYMODULE'),
+  ('tkinter.colorchooser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\colorchooser.py',
+   'PYMODULE'),
+  ('tkinter.commondialog',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\commondialog.py',
+   'PYMODULE'),
   ('tkinter.constants',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\constants.py',
+   'PYMODULE'),
+  ('tkinter.dialog',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\dialog.py',
+   'PYMODULE'),
+  ('tkinter.filedialog',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\filedialog.py',
+   'PYMODULE'),
+  ('tkinter.font',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\font.py',
+   'PYMODULE'),
+  ('tkinter.messagebox',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\messagebox.py',
+   'PYMODULE'),
+  ('tkinter.scrolledtext',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\scrolledtext.py',
+   'PYMODULE'),
+  ('tkinter.simpledialog',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\simpledialog.py',
+   'PYMODULE'),
+  ('tkinter.ttk',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tkinter\\ttk.py',
    'PYMODULE'),
   ('tracemalloc',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tracemalloc.py',
    'PYMODULE'),
+  ('tty',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\tty.py',
+   'PYMODULE'),
   ('typing',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\typing.py',
    'PYMODULE'),
+  ('unittest',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\__init__.py',
+   'PYMODULE'),
+  ('unittest._log',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\_log.py',
+   'PYMODULE'),
+  ('unittest.async_case',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\async_case.py',
+   'PYMODULE'),
+  ('unittest.case',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\case.py',
+   'PYMODULE'),
+  ('unittest.loader',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\loader.py',
+   'PYMODULE'),
+  ('unittest.main',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\main.py',
+   'PYMODULE'),
+  ('unittest.result',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\result.py',
+   'PYMODULE'),
+  ('unittest.runner',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\runner.py',
+   'PYMODULE'),
+  ('unittest.signals',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\signals.py',
+   'PYMODULE'),
+  ('unittest.suite',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\suite.py',
+   'PYMODULE'),
+  ('unittest.util',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\unittest\\util.py',
+   'PYMODULE'),
+  ('uuid',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\uuid.py',
+   'PYMODULE'),
+  ('webbrowser',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\webbrowser.py',
+   'PYMODULE'),
+  ('xlrd',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\__init__.py',
+   'PYMODULE'),
+  ('xlrd.biffh',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\biffh.py',
+   'PYMODULE'),
+  ('xlrd.book',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\book.py',
+   'PYMODULE'),
+  ('xlrd.compdoc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\compdoc.py',
+   'PYMODULE'),
+  ('xlrd.formatting',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\formatting.py',
+   'PYMODULE'),
+  ('xlrd.formula',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\formula.py',
+   'PYMODULE'),
+  ('xlrd.info',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\info.py',
+   'PYMODULE'),
+  ('xlrd.sheet',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\sheet.py',
+   'PYMODULE'),
+  ('xlrd.timemachine',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\timemachine.py',
+   'PYMODULE'),
+  ('xlrd.xldate',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\xlrd\\xldate.py',
+   'PYMODULE'),
+  ('xml',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\__init__.py',
+   'PYMODULE'),
+  ('xml.dom',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\__init__.py',
+   'PYMODULE'),
+  ('xml.dom.NodeFilter',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\NodeFilter.py',
+   'PYMODULE'),
+  ('xml.dom.domreg',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\domreg.py',
+   'PYMODULE'),
+  ('xml.dom.expatbuilder',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\expatbuilder.py',
+   'PYMODULE'),
+  ('xml.dom.minicompat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\minicompat.py',
+   'PYMODULE'),
+  ('xml.dom.minidom',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\minidom.py',
+   'PYMODULE'),
+  ('xml.dom.pulldom',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\pulldom.py',
+   'PYMODULE'),
+  ('xml.dom.xmlbuilder',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\dom\\xmlbuilder.py',
+   'PYMODULE'),
+  ('xml.etree',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\etree\\__init__.py',
+   'PYMODULE'),
+  ('xml.etree.ElementInclude',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\etree\\ElementInclude.py',
+   'PYMODULE'),
+  ('xml.etree.ElementPath',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\etree\\ElementPath.py',
+   'PYMODULE'),
+  ('xml.etree.ElementTree',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\etree\\ElementTree.py',
+   'PYMODULE'),
+  ('xml.etree.cElementTree',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\etree\\cElementTree.py',
+   'PYMODULE'),
+  ('xml.parsers',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\parsers\\__init__.py',
+   'PYMODULE'),
+  ('xml.parsers.expat',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\parsers\\expat.py',
+   'PYMODULE'),
+  ('xml.sax',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\__init__.py',
+   'PYMODULE'),
+  ('xml.sax._exceptions',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\_exceptions.py',
+   'PYMODULE'),
+  ('xml.sax.expatreader',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\expatreader.py',
+   'PYMODULE'),
+  ('xml.sax.handler',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\handler.py',
+   'PYMODULE'),
+  ('xml.sax.saxutils',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\saxutils.py',
+   'PYMODULE'),
+  ('xml.sax.xmlreader',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xml\\sax\\xmlreader.py',
+   'PYMODULE'),
+  ('xmlrpc',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xmlrpc\\__init__.py',
+   'PYMODULE'),
+  ('xmlrpc.client',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\xmlrpc\\client.py',
+   'PYMODULE'),
   ('zipfile',
    'C:\\Users\\Samuelsen Data '
    '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\zipfile.py',
+   'PYMODULE'),
+  ('zipimport',
+   'C:\\Users\\Samuelsen Data '
+   '4\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\zipimport.py',
    'PYMODULE')])

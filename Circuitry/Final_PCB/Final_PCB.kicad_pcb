@@ -6158,6 +6158,9 @@
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp b0765213-6048-497a-bed2-7630f28651c1))
   (gr_line (start 83.7184 140.2842) (end 260.4008 140.2334)
     (stroke (width 0.1) (type default)) (layer "Edge.Cuts") (tstamp fa84cd50-65c3-456b-89e7-7ad59c0387bd))
+  (gr_text "Samuelsen Lab - Photologic Experiment Rig" (at 137.6172 137.414) (layer "F.SilkS") (tstamp 3e0c9a80-8967-4a4e-9ea9-e4d2a43d51fa)
+    (effects (font (size 2 2) (thickness 0.15)) (justify left bottom))
+  )
 
   (segment (start 151.6316 113.9852) (end 150.3516 113.9852) (width 0.25) (layer "F.Cu") (net 1) (tstamp 39e226bb-f613-4060-aa1e-771ced04681e))
   (segment (start 134.6952 129.6416) (end 125.3226 129.6416) (width 0.25) (layer "F.Cu") (net 1) (tstamp 4c87d6f6-5ffd-4e14-869f-9853bfcf4096))
