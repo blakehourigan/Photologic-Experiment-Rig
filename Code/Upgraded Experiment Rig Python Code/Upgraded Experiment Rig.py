@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
 from tkinter import filedialog
+from tkinter import messagebox
 import pandas as pd
 from pandastable import Table, TableModel
 from matplotlib.figure import Figure
@@ -84,11 +85,14 @@ class App:
         # Initialize the running flag to False
         self.running = False
 
+        self.blocks_generated = False
+
         # Initialize the start time to 0
         self.start_time = 0
 
         self.side_one_licks = 0
         self.side_two_licks = 0
+        self.total_licks = 0
 
 
         self.data_window_open = False
@@ -180,12 +184,15 @@ class App:
         self.startButton.grid(row=1, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
 
         # Clear screen button
-        self.clearButton = tk.Button(text="Clear", command=self.toggle, bg="grey", font=("Helvetica", 24))
-        self.clearButton.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
+        self.clear_button = tk.Button(text="Clear", command=self.clear_toggle, bg="grey", font=("Helvetica", 24))
+        self.clear_button.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
 
         # button to open the stimuli window
-        self.experiment_control_button = tk.Button(text="Experiment Control", command=self.experiment_control, bg="grey", font=("Helvetica", 24))
-        self.experiment_control_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew',columnspan=2)
+        self.experiment_control_button = tk.Button(text="Experiment CTL", command=self.experiment_control, bg="grey", font=("Helvetica", 24))
+        self.experiment_control_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew',columnspan=1)
+
+        self.lick_window_button = tk.Button(text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
+        self.lick_window_button.grid(row=10, column=1, pady=10, padx=10, sticky='nsew',columnspan=1)
 
         # button to open the data window
         self.data_window_button = tk.Button(text="View Data", command=self.data_window, bg="grey", font=("Helvetica", 24))
@@ -194,7 +201,6 @@ class App:
         # button to save expirement data to excel sheets
         self.data_window_button = tk.Button(text="Save Data Externally", command=self.save_data, bg="grey", font=("Helvetica", 24))
         self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')
-
 
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.root)
@@ -215,34 +221,31 @@ class App:
             self.arduinoMotor = serial.Serial('COM4', BAUD_RATE)
             # if one or more of the arduinos are not connected then we need to let the user know 
         except SerialException:
-            self.serial_exception_instance = tk.Toplevel(self.root)
-            self.serial_exception_instance.geometry("800x600")
-            self.serial_exception_instance.title("Error")
-            self.serial_exception_instance.iconbitmap('C:\\Users\\Samuelsen Data 4\\Documents\\Upgraded Experiment Rig\\Code\\Upgraded Experiment Rig Python Code\\rat.ico')
-
-            serial_text_box = tk.Text(self.serial_exception_instance, width=52, height=30)  # Adjust size as needed
-            serial_text_box.grid(row=0, column=0)
-            # Insert text
-            serial_text_box.insert('1.0', "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
-
-        # Wait for the serial connections to settle
-        #time.sleep(2)
-
+                messagebox.showinfo("Serial Error", "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
         # Start the program clock function 
         self.update_clock()
 
     # Program state methods
 
     def initial_time_interval(self, i):
-        if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()):
-
+        # if we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, then continue running through more trials
+        if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()) and self.blocks_generated == True:
+            # Set the program state to initial time interval
             self.state = "ITI"
+            # new trial so reset the lick counters
             self.side_one_licks = 0
             self.side_two_licks = 0
+            # configure the state time label in the top right of the main window to hold the value of the new state
             self.state_time_label_header.configure(text=(self.state + " Time:"))
-            self.state_start_time = time.time()  # Update the state start time
-            self.append_data('1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n")
-            self.append_data('Initial Interval trial #: ' + str(self.curr_trial_number) + ": " + str(self.df_stimuli.loc[i,'ITI'] / 1000) + "s\n")
+            # update the state start time to now, so that it starts at 0
+            self.state_start_time = time.time()  
+            # 
+            string = 'TRIAL # (' + str(self.curr_trial_number) + ') Stimulus 1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. Stimulus 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n"
+            self.append_data(string)
+            for letter in range(len(string)):
+                self.append_data("-")
+
+            self.append_data('\nInitial Interval Time: ' +  str(self.df_stimuli.loc[i,'ITI'] / 1000) + "s\n")
             # After the 'ITI' time, call time_to_contact
             self.root.after(int(self.df_stimuli.loc[i,'ITI']), lambda: self.time_to_contact(i))
         else: 
@@ -253,6 +256,7 @@ class App:
 
     def time_to_contact(self, i):
         if self.running:
+            # 
             self.state = "TTC"
             self.read_licks(i)
             self.state_time_label_header.configure(text=(self.state + " Time:"))
@@ -279,6 +283,10 @@ class App:
 
             
     def save_licks(self, i):
+            # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
+            if self.state == 'TTC':
+                self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = self.df_stimuli.loc[self.curr_trial_number - 1, 'TTC']
+
             # tell the motor arduino to move the door up
             self.arduinoMotor.write(b'UP\n')   
             # increment the trial number                                     
@@ -291,6 +299,12 @@ class App:
             # stop calling the lick function so we don't register any licks while we're in the ITI
             self.root.after_cancel(self.update_licks_id)
 
+            # try to redraw the program stimuli schdule window to update the information with number of licks, if it is open
+            try:
+                self.trial_blocks.redraw()
+            # if the window is not open, it will throw an error, but we tell the program that its fine just keep going
+            except:
+                pass
             # Jump to ITI state to begin ITI for next trial
             self.initial_time_interval(i+1)                                        
 
@@ -299,10 +313,8 @@ class App:
             # Try to lift the window to the top (it will fail if the window is closed)
             self.experiment_control_instance.lift()
         except (AttributeError, tk.TclError):
-            self.experiment_control_instance = tk.Toplevel(self.root)
-            self.experiment_control_instance.geometry("1600x800")
-            self.experiment_control_instance.title("Experiment Control")
-            self.experiment_control_instance.iconbitmap('C:\\Users\\Samuelsen Data 4\\Documents\\Upgraded Experiment Rig\\Code\\Upgraded Experiment Rig Python Code\\rat.ico')
+
+            self.experiment_control_instance = self.window_instance_generator("Experiment Control","1600x800")
 
             # Create the notebook (tab manager)
 
@@ -339,74 +351,122 @@ class App:
             tab2 = ttk.Frame(notebook)
             notebook.add(tab2, text='Program Stimuli Schedule')
 
+            self.lick_window_button = tk.Button(tab2, text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
+            self.lick_window_button.grid(row=1, column=0, pady=10, padx=10, sticky='nsew')
+
             # Generate stimuli schedule button 
             self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
             self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
             self.create_trial_blocks(tab2, notebook, 0, 0)
 
 
+    def lick_window(self):
+        try:
+            # Try to lift the window to the top (it will fail if the window is closed)
+            self.lick_window_instance.lift()
+        except (AttributeError, tk.TclError):
+            if self.blocks_generated:
+                self. lick_window_instance = self.window_instance_generator("Licks Data Table", "800x600")
+
+                self.licks_frame = tk.Frame(self.lick_window_instance)
+                self.licks_frame.grid(row=0, column=0, sticky='nsew')  
+                self.licks_frame.grid_rowconfigure(0, weight=1)                            
+                self.licks_frame.grid_columnconfigure(0, weight=1) 
+
+                # Create a DataFrame with NaN values
+                self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
+
+                # creating the frame that will contain the lick data table
+
+                self.stamped_licks = Table(self.licks_frame, dataframe=self.licks_df, showtoolbar=True, showstatusbar=True, weight=1)
+                self.stamped_licks.autoResizeColumns()
+                self.stamped_licks.show()
+            else:
+                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
+
+    def window_instance_generator(self, name, size):
+
+        self.window_instance = tk.Toplevel(self.root)
+        self.window_instance.geometry(size)
+        self.window_instance.title(name)
+        self.window_instance.iconbitmap('C:\\Users\\Samuelsen Data 4\\Documents\\Upgraded Experiment Rig\\Code\\Upgraded Experiment Rig Python Code\\rat.ico')
+        self.window_instance.grid_rowconfigure(0, weight=1)
+        self.window_instance.grid_columnconfigure(0, weight=1)
+        
+
+        return self.window_instance
+
     def data_window(self):
-        self.data_window_instance = tk.Toplevel(self.root)
-        self.data_window_instance.geometry("800x600")
-        self.data_window_instance.title("Data")
-        self.data_window_instance.iconbitmap('C:\\Users\\Samuelsen Data 4\\Documents\\Upgraded Experiment Rig\\Code\\Upgraded Experiment Rig Python Code\\rat.ico')
+        try:
+            # Try to lift the window to the top (it will fail if the window is closed)
+            self.data_window_instance.lift()
+        except (AttributeError, tk.TclError):
+            if self.update_plot_id is not None:
+                self.root.after_cancel(self.update_plot_id)
+            if self.blocks_generated:
+                self.data_window_instance = self.window_instance_generator("Data", "800x600")
 
-        if hasattr(self, 'df_stimuli'):
-            # Create a figure and axes for the plot
-            self.fig, self.axes = plt.subplots()
-            self.canvas = FigureCanvasTkAgg(self.fig, master=self.data_window_instance)
-            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+                # Create a figure and axes for the plot
+                self.fig, self.axes = plt.subplots()
+                self.canvas = FigureCanvasTkAgg(self.fig, master=self.data_window_instance)
+                self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
-            # Create a toolbar for the plot and pack it into the window
-            toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
-            toolbar.update()
-            self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-            self.update_plot()
-        else:
-            data_text_box = tk.Text(self.data_window_instance, width=52, height=30)  # Adjust size as needed
-            data_text_box.grid(row=0, column=0)
-        # Insert text
-            data_text_box.insert('1.0', "Experiment schedule has not been generated, no data yet")
+                # Create a toolbar for the plot and pack it into the window
+                toolbar = NavigationToolbar2Tk(self.canvas, self.data_window_instance)
+                toolbar.update()
+                self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+                self.update_plot()
+            else:
+                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
         
 
     # this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
 
-        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
+        # the total number of trials equals the number of stimuli times the number of trial blocks that we want
+        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         
 
         for entry in range(self.num_trials.get()):
+
+            # Generating random intervals from +/- user entry
             self.ITI_random_intervals.append(random.randint(-(self.interval_vars['ITI_random_entry'].get()), (self.interval_vars['ITI_random_entry'].get())))
             self.TTC_random_intervals.append(random.randint(-(self.interval_vars['TTC_random_entry'].get()), (self.interval_vars['TTC_random_entry'].get())))
             self.sample_random_intervals.append(random.randint(-(self.interval_vars['sample_time_entry'].get()), (self.interval_vars['sample_time_entry'].get())))
 
-        self.ITI_intervals_final = []
-        self.TTC_intervals_final = []
-        self.sample_intervals_final = []
-
-        for i in range(self.num_trials.get()):
-            self.ITI_intervals_final.append(self.interval_vars['ITI_var'].get() + self.ITI_random_intervals[i])
-            self.TTC_intervals_final.append(self.interval_vars['TTC_var'].get() + self.TTC_random_intervals[i])
-            self.sample_intervals_final.append(self.interval_vars['sample_time_var'].get() + self.sample_random_intervals[i])
-
+            # Calculating final total intervals, adding random number to state constant
+            self.ITI_intervals_final.append(self.interval_vars['ITI_var'].get() + self.ITI_random_intervals[entry])
+            self.TTC_intervals_final.append(self.interval_vars['TTC_var'].get() + self.TTC_random_intervals[entry])
+            self.sample_intervals_final.append(self.interval_vars['sample_time_var'].get() + self.sample_random_intervals[entry])
 
         self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
-        if len(self.changed_vars) > self.num_stimuli.get():                 # Handling the case that you generate the plan for a large num of stimuli and then chanage to a smaller number
-            start_index = self.num_stimuli.get()                            # Start at the number of stimuli you now have
-            for index, key in enumerate(self.stimuli_vars):                 # and then set the rest of stimuli past that value back to default to avoid error
+        # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number
+        
+        if len(self.changed_vars) > self.num_stimuli.get():
+
+        # Start at the number of stimuli you now have               
+            start_index = self.num_stimuli.get()  
+            # and then set the rest of stimuli past that value back to default to avoid error                          
+            for index, key in enumerate(self.stimuli_vars):
                 if index >= start_index:
                     self.stimuli_vars[key].set(key)
 
+        # from our list of variables that were changed from their default values, pair them together.
+        # 1 is paired with 2. 3 with 4, etc
+
         self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
 
-        # Add reversed pairs
+        # for each pair in pairs list, include each pair flipped
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
-        # if the frame is already open then destroy everything in it so we can write over it
+        # if the frame is already open then destroy everything in it so we can write over it with a new one
         if hasattr(self, 'stimuli_frame'):                                                        
             self.trial_blocks.destroy()
             self.stimuli_frame.destroy()
             self.df_list = []
+
+        # if the user has changed the defualt values of num_blocks and changed variables, then generate the 
+        # expirament schedule
 
         if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:                                             # if the number of trial blocks is greater than 0 and we have changed more than one default stimulus,
             for i in range(self.num_trial_blocks.get()):                                                                # filling pair information in the tables with trial numbers and random interval times
@@ -421,54 +481,77 @@ class App:
                 self.df_list.append(df)                                                                                 # add df to the list of data frames
             self.df_stimuli = pd.concat(self.df_list, ignore_index=True)                                                # add the df list to the pandas df_stimuli table
 
+            # fill the tables with the values of all random intervals that were previously generated
+            # from their respective lists 
+
             for i in range(len(self.df_stimuli)):
                 self.df_stimuli.loc[i, 'ITI'] = self.ITI_intervals_final[i]
                 self.df_stimuli.loc[i, 'TTC'] = self.TTC_intervals_final[i]
                 self.df_stimuli.loc[i, 'Sample Time'] = self.sample_intervals_final[i]
                 self.df_stimuli.loc[i, 'Trial Number'] = int(i + 1) 
 
+            # Create new column for the actual time elapsed in Time to contact state to be filled during program execution
             self.df_stimuli['TTC Actual'] = np.nan
 
             # creating the frame that will contain the data table
             self.stimuli_frame = tk.Frame(tab2)     
             # setting the place of the frame                       
-            self.stimuli_frame.grid(row=0, column=0, sticky='nsew')        
-            # setting the tab (frame) to expand when we expand the window 
+            self.stimuli_frame.grid(row=0, column=0, sticky='nsew') 
+
+            # setting the tab to expand when we expand the window 
             tab2.grid_rowconfigure(0, weight=1)                            
             tab2.grid_columnconfigure(0, weight=1)  
+
+            # Creating the main data table and adding the dataframe that we just created
 
             self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
             self.trial_blocks.autoResizeColumns()
             self.trial_blocks.show()
 
+            # blocks have been generated
+            self.blocks_generated = True          
+
     def update_plot(self):
 
-        self.axes.clear()  # clear the old plot
-
-        # Assuming that self.side_one_licks and self.side_two_licks are the numbers of licks
+        # clear the old plot
+        self.axes.clear()  
 
         # this line is continued on the next line
         self.axes.bar([self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 1'], \
-        self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks])  # draw the bar plot with correct labels for the current stimuli
+        self.df_stimuli.loc[self.curr_trial_number - 1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks])  # draw the bar plot with correct labels for the current stimuli
 
-        self.canvas.draw()  # update the plot
+        # update the plot
+
+        self.canvas.draw()  
+
+        # set the update plot funtion to call itself again, and set the id to the scheduling identifier so 
+        # that we can cancel it later when we want to stop calling the function
 
         self.update_plot_id = self.root.after(50, self.update_plot)
 
+
+        # this function is called when the main app window is closed, this is set on line 35
     def on_close(self):
         # stop calling the clock update function, we're done with it 
+
         self.root.after_cancel(self.update_clock_id)
-        # if we have called the update licks function at all, then stop it from being called now, we're done with it 
+
+        # if we have called the update licks function at all, 
+        #then stop it from being called now.
+
         if self.update_licks_id is not None:  
             self.root.after_cancel(self.update_licks_id)
 
         # if we have a data window open, then close it
+
         if self.update_plot_id is not None:
             self.root.after_cancel(self.update_plot_id)
             self.data_window_instance.destroy()
-
-        self.arduinoLaser.close()
-        self.arduinoMotor.close()
+        try:
+            self.arduinoLaser.close()
+            self.arduinoMotor.close()
+        except: 
+            pass
         self.root.destroy();
         self.root.quit()
 
@@ -476,15 +559,29 @@ class App:
     def start_toggle(self):
         # If the program is running, stop it
         if self.running:
+            # state of the program is OFF
             self.state = "OFF"
+            # set the state timer label
             self.state_time_label_header.configure(text=(self.state))
+            # set the running variable to false to halt execution in the state functions
             self.running = False
+            # Turn the program execution button back to the green start button
             self.startButton.configure(text="Start", bg="green")
-            # Send the reset command to both Arduinos
+            self.root.after_cancel(self.update_clock_id)
+            # if we have called the update licks function at all, then stop it from being called now, we're done with it 
+            if self.update_licks_id is not None:  
+                self.root.after_cancel(self.update_licks_id)
+
+            # if we have a data window open, then close it
+            if self.update_plot_id is not None:
+                self.root.after_cancel(self.update_plot_id)
+                self.data_window_instance.destroy()
+            # try to send the reset command to both Arduinos
             try:
                 self.arduinoLaser.write(b'reset\n')
                 self.arduinoMotor.write(b'reset\n')
                 self.curr_trial_number = 1
+            # if it fails, then the arduinos are not connected
             except:
                 pass
 
@@ -492,16 +589,15 @@ class App:
         else:
             # Start the program if it is not already runnning and generate random numbers
             self.running = True
+            # program main start time begins now
             self.start_time = time.time()
+            # turn the main button to the red stop button
             self.startButton.configure(text="Stop", bg="red")
+            # call the first ITI state with an iteration variable (i acts as a 
+            # variable to iterate throgh the program schedule data table) starting at 0
             self.initial_time_interval(0)
 
-    # Define the method for sending the target position
-    def send_target_position(self, target_position):
-        # Send the target position to the second Arduino
-        self.arduinoMotor.write(target_position.encode())
-
-    def toggle(self):
+    def clear_toggle(self):
         # Clear the scrolled text widget
         self.data_text.delete('1.0', tk.END)
         elapsed_time = 0 
@@ -526,13 +622,35 @@ class App:
     def read_licks(self, i):
         # If there is data available from the first Arduino, read it
         try:
-            if self.arduinoLaser.in_waiting > 0:
+            if(self.arduinoLaser.in_waiting > 0):
                 data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
                 # Append the data to the scrolled text widget
-                if "Left Lick" in data:
+                if "Stimulus One Lick" in data:
                     self.side_one_licks += 1
-                if "Right Lick" in data:
-                    self.side_two_licks += 1 
+                    self.total_licks += 1
+                    # if we detect a lick on spout one, then add it to the lick data table
+                    # and add whether the lick was a TTC lick or a sample lick
+
+                    # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+                    self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                    self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 1'
+                    self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
+                    self.licks_df.loc[self.total_licks, 'State'] = self.state
+                    self.stamped_licks.redraw()
+                if "Stimulus Two Lick" in data:
+                    self.side_two_licks += 1
+                    self.total_licks += 1  
+                    # if we detect a lick on spout one, then add it to the lick data table
+                    # and add whether the lick was a TTC lick or a sample lick
+
+                    # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+                    self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                    self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 2'
+                    self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
+                    self.licks_df.loc[self.total_licks, 'State'] = self.state
+                    self.stamped_licks.redraw()
+
+
             if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
                 self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = time.time() - self.state_start_time
                 self.trial_blocks.update()
@@ -540,6 +658,7 @@ class App:
                 self.side_one_licks = 0
                 self.side_two_licks = 0
                 self.sample_time(i)
+
             # Call this method again after 100 ms
             self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
             
@@ -553,12 +672,22 @@ class App:
         self.data_text.see(tk.END)
 
     def save_data(self):
-        file_name = filedialog.asksaveasfilename(defaultextension='.xlsx',
-                                             filetypes=[('Excel Files', '*.xlsx')],
-                                             initialfile='lineup',
-                                             title='Save Excel file')
+        try:
+            file_name = filedialog.asksaveasfilename(defaultextension='.xlsx',
+                                                 filetypes=[('Excel Files', '*.xlsx')],
+                                                 initialfile='lineup',
+                                                 title='Save Excel file')
 
-        self.df_stimuli.to_excel(file_name, index=False)
+            self.df_stimuli.to_excel(file_name, index=False)
+
+            licks_file_name = filedialog.asksaveasfilename(defaultextension='.xlsx',
+                                                 filetypes=[('Excel Files', '*.xlsx')],
+                                                 initialfile='lineup',
+                                                 title='Save Excel file')
+
+            self.licks_df.to_excel(licks_file_name, index=False)
+        except:
+            messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
 # Create an App object
 app = App()
