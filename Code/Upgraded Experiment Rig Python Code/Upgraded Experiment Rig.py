@@ -87,6 +87,8 @@ class App:
 
         self.blocks_generated = False
 
+        self.lick_table_created = False
+
         # Initialize the start time to 0
         self.start_time = 0
 
@@ -313,27 +315,22 @@ class App:
             # Try to lift the window to the top (it will fail if the window is closed)
             self.experiment_control_instance.lift()
         except (AttributeError, tk.TclError):
-
-            self.experiment_control_instance = self.window_instance_generator("Experiment Control","1600x800")
-
-            # Create the notebook (tab manager)
-
-            notebook = ttk.Notebook(self.experiment_control_instance)
-            tab1 = ttk.Frame(notebook)
-            notebook.add(tab1, text='Experiment Stimuli')
-
-            # These 3 lines set the contents of the tabs to expand when we expand the window  
-            notebook.grid(sticky='nsew')                                                
-            self.experiment_control_instance.grid_rowconfigure(0, weight=1)
-            self.experiment_control_instance.grid_columnconfigure(0, weight=1)
-
             if(self.num_stimuli.get() == 0):
-                # Create a text box
-                text_box = tk.Text(tab1, width=50, height=30)  # Adjust size as needed
-                text_box.grid(row=0, column=0)
-                # Insert text
-                text_box.insert('1.0', "No stimuli have been added, please close the window, set number of stimuli and try again")
+               messagebox.showinfo("Stimuli Not changed from 0", "No stimuli have been added, please close the window, set number of stimuli and try again")
             else: 
+                self.experiment_control_instance = self.window_instance_generator("Experiment Control","1000x800")
+                # Create the notebook (tab manager)
+
+                notebook = ttk.Notebook(self.experiment_control_instance)
+                tab1 = ttk.Frame(notebook)
+                notebook.add(tab1, text='Experiment Stimuli')
+
+                # These 3 lines set the contents of the tabs to expand when we expand the window  
+                notebook.grid(sticky='nsew')                                                
+                self.experiment_control_instance.grid_rowconfigure(0, weight=1)
+                self.experiment_control_instance.grid_columnconfigure(0, weight=1)
+
+
                 for i in range(self.num_stimuli.get()):
 
                     # Decide column based on iteration number
@@ -348,16 +345,16 @@ class App:
                     entry = tk.Entry(tab1, textvariable=self.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
                     entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
 
-            tab2 = ttk.Frame(notebook)
-            notebook.add(tab2, text='Program Stimuli Schedule')
+                tab2 = ttk.Frame(notebook)
+                notebook.add(tab2, text='Program Stimuli Schedule')
 
-            self.lick_window_button = tk.Button(tab2, text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
-            self.lick_window_button.grid(row=1, column=0, pady=10, padx=10, sticky='nsew')
+                self.lick_window_button = tk.Button(tab2, text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
+                self.lick_window_button.grid(row=1, column=0, pady=10, padx=10, sticky='nsew')
 
-            # Generate stimuli schedule button 
-            self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
-            self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
-            self.create_trial_blocks(tab2, notebook, 0, 0)
+                # Generate stimuli schedule button 
+                self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
+                self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+                self.create_trial_blocks(tab2, notebook, 0, 0)
 
 
     def lick_window(self):
@@ -366,21 +363,22 @@ class App:
             self.lick_window_instance.lift()
         except (AttributeError, tk.TclError):
             if self.blocks_generated:
-                self. lick_window_instance = self.window_instance_generator("Licks Data Table", "800x600")
+                if not self.lick_table_created:
+                    # Create a DataFrame with NaN values
+                    self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
+                    self.licks_df.loc[len(self.licks_df)] = np.nan
 
+                    # creating the frame that will contain the lick data table
+
+
+                self.lick_table_created = True
+                self.lick_window_instance = self.window_instance_generator("Licks Data Table", "300x00")
                 self.licks_frame = tk.Frame(self.lick_window_instance)
                 self.licks_frame.grid(row=0, column=0, sticky='nsew')  
-                self.licks_frame.grid_rowconfigure(0, weight=1)                            
-                self.licks_frame.grid_columnconfigure(0, weight=1) 
-
-                # Create a DataFrame with NaN values
-                self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
-
-                # creating the frame that will contain the lick data table
-
-                self.stamped_licks = Table(self.licks_frame, dataframe=self.licks_df, showtoolbar=True, showstatusbar=True, weight=1)
+                self.stamped_licks = Table(self.licks_frame, dataframe=self.licks_df, showtoolbar=False, showstatusbar=False, weight=1)
                 self.stamped_licks.autoResizeColumns()
                 self.stamped_licks.show()
+
             else:
                 messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
@@ -620,14 +618,12 @@ class App:
 
     # Define the method for reading data from the first Arduino
     def read_licks(self, i):
-        # If there is data available from the first Arduino, read it
+        # try to read licks if there is a arduino connected
         try:
             if(self.arduinoLaser.in_waiting > 0):
                 data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
                 # Append the data to the scrolled text widget
                 if "Stimulus One Lick" in data:
-                    self.side_one_licks += 1
-                    self.total_licks += 1
                     # if we detect a lick on spout one, then add it to the lick data table
                     # and add whether the lick was a TTC lick or a sample lick
 
@@ -637,9 +633,12 @@ class App:
                     self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
                     self.licks_df.loc[self.total_licks, 'State'] = self.state
                     self.stamped_licks.redraw()
+
+                    self.side_one_licks += 1
+                    self.total_licks += 1
+
+
                 if "Stimulus Two Lick" in data:
-                    self.side_two_licks += 1
-                    self.total_licks += 1  
                     # if we detect a lick on spout one, then add it to the lick data table
                     # and add whether the lick was a TTC lick or a sample lick
 
@@ -649,6 +648,10 @@ class App:
                     self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
                     self.licks_df.loc[self.total_licks, 'State'] = self.state
                     self.stamped_licks.redraw()
+
+                    self.side_two_licks += 1
+                    self.total_licks += 1  
+
 
 
             if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
@@ -661,9 +664,9 @@ class App:
 
             # Call this method again after 100 ms
             self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
-            
+        # if the arduino is not connected, tell the user to connect one
         except AttributeError:
-            pass
+            messagebox.showinfo("Arduino Not Connected","One or more Arduino boards are not connected, please ensure both arduinos are connected and try again")
 
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
