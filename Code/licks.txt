@@ -1,448 +1,7156 @@
-Left Lick:1
-           lick time:1004
-Stamp:1.00
+Stimulus One Lick:1
+                   lick time:17
+Stamp:3.45
 
 
-Left Lick:2
-           lick time:425
-Stamp:1.60
+Stimulus One Lick:2
+                   lick time:29
+Stamp:3.82
 
 
-Left Lick:3
-           lick time:125
-Stamp:1.75
+Stimulus One Lick:3
+                   lick time:15
+Stamp:4.50
 
 
-Left Lick:4
-           lick time:121
-Stamp:1.91
+Stimulus One Lick:4
+                   lick time:16
+Stamp:4.91
 
 
-Left Lick:5
-           lick time:98
+Stimulus One Lick:5
+                   lick time:8
+Stamp:5.17
+
+
+Stimulus One Lick:6
+                   lick time:9
+Stamp:36.74
+
+
+Stimulus One Lick:7
+                   lick time:30
+Stamp:36.82
+
+
+Stimulus One Lick:8
+                   lick time:21
+Stamp:36.98
+
+
+Stimulus One Lick:9
+                   lick time:17
+Stamp:37.18
+
+
+Stimulus One Lick:10
+                    lick time:24
+Stamp:37.48
+
+
+Stimulus One Lick:11
+                    lick time:13
+Stamp:37.53
+
+
+Stimulus One Lick:12
+                    lick time:32
+Stamp:38.37
+
+
+Stimulus One Lick:13
+                    lick time:44
+Stamp:39.02
+
+
+Stimulus One Lick:14
+                    lick time:37
+Stamp:39.28
+
+
+Stimulus One Lick:15
+                    lick time:46
+Stamp:39.55
+
+
+Stimulus One Lick:16
+                    lick time:24
+Stamp:39.62
+
+
+Stimulus One Lick:17
+                    lick time:72
+Stamp:39.78
+
+
+Stimulus One Lick:18
+                    lick time:112
+Stamp:45.08
+
+
+Stimulus One Lick:19
+                    lick time:38
+Stamp:45.28
+
+
+Stimulus One Lick:20
+                    lick time:26
+Stamp:45.54
+
+
+Stimulus One Lick:21
+                    lick time:24
+Stamp:45.67
+
+
+Stimulus One Lick:22
+                    lick time:19
+Stamp:45.82
+
+
+Stimulus One Lick:23
+                    lick time:23
+Stamp:45.97
+
+
+Stimulus One Lick:24
+                    lick time:22
+Stamp:46.04
+
+
+Stimulus One Lick:25
+                    lick time:65
+Stamp:46.21
+
+
+Stimulus One Lick:26
+                    lick time:16
+Stamp:46.31
+
+
+Stimulus One Lick:27
+                    lick time:73
+Stamp:46.44
+
+
+Stimulus One Lick:28
+                    lick time:54
+Stamp:46.54
+
+
+Stimulus One Lick:29
+                    lick time:35
+Stamp:46.67
+
+
+Stimulus One Lick:30
+                    lick time:34
+Stamp:46.85
+
+
+Stimulus One Lick:31
+                    lick time:33
+Stamp:46.97
+
+
+Stimulus One Lick:32
+                    lick time:78
+Stamp:47.08
+
+
+Stimulus One Lick:33
+                    lick time:56
+Stamp:47.22
+
+
+Stimulus One Lick:34
+                    lick time:65
+Stamp:47.36
+
+
+Stimulus One Lick:35
+                    lick time:66
+Stamp:47.47
+
+
+Stimulus One Lick:36
+                    lick time:31
+Stamp:47.58
+
+
+Stimulus One Lick:37
+                    lick time:35
+Stamp:48.11
+
+
+Stimulus One Lick:38
+                    lick time:75
+Stamp:48.24
+
+
+Stimulus One Lick:39
+                    lick time:37
+Stamp:48.46
+
+
+Stimulus One Lick:40
+                    lick time:13
+Stamp:49.19
+
+
+Stimulus One Lick:41
+                    lick time:19
+Stamp:49.32
+
+
+Stimulus One Lick:42
+                    lick time:29
+Stamp:49.52
+
+
+Stimulus One Lick:43
+                    lick time:24
+Stamp:49.58
+
+
+Stimulus One Lick:44
+                    lick time:10
+Stamp:49.79
+
+
+Stimulus One Lick:45
+                    lick time:11
+Stamp:49.88
+
+
+Stimulus One Lick:46
+                    lick time:8
+Stamp:50.05
+
+
+Stimulus One Lick:47
+                    lick time:8
+Stamp:50.16
+
+
+Stimulus One Lick:48
+                    lick time:8
+Stamp:50.29
+
+
+Stimulus One Lick:49
+                    lick time:10
+Stamp:50.39
+
+
+Stimulus One Lick:50
+                    lick time:10
+Stamp:50.57
+
+
+Stimulus One Lick:51
+                    lick time:8
+Stamp:50.63
+
+
+Stimulus One Lick:52
+                    lick time:37
+Stamp:50.84
+
+
+Stimulus One Lick:53
+                    lick time:9
+Stamp:51.01
+
+
+Stimulus One Lick:54
+                    lick time:9
+Stamp:51.09
+
+
+Stimulus One Lick:55
+                    lick time:9
+Stamp:51.24
+
+
+Stimulus One Lick:56
+                    lick time:10
+Stamp:51.33
+
+
+Stimulus One Lick:57
+                    lick time:52
+Stamp:51.76
+
+
+Stimulus One Lick:58
+                    lick time:84
+Stamp:53.13
+
+
+Stimulus One Lick:59
+                    lick time:90
+Stamp:53.29
+
+
+Stimulus One Lick:60
+                    lick time:83
+Stamp:53.78
+
+
+Stimulus One Lick:61
+                    lick time:54
+Stamp:53.88
+
+
+Stimulus One Lick:62
+                    lick time:26
+Stamp:54.17
+
+
+Stimulus One Lick:63
+                    lick time:22
+Stamp:54.26
+
+
+Stimulus One Lick:64
+                    lick time:19
+Stamp:54.46
+
+
+Stimulus One Lick:65
+                    lick time:14
+Stamp:54.57
+
+
+Stimulus One Lick:66
+                    lick time:10
+Stamp:54.72
+
+
+Stimulus One Lick:67
+                    lick time:15
+Stamp:54.84
+
+
+Stimulus One Lick:68
+                    lick time:17
+Stamp:65.98
+
+
+Stimulus One Lick:69
+                    lick time:42
+Stamp:66.10
+
+
+Stimulus One Lick:70
+                    lick time:54
+Stamp:66.18
+
+
+Stimulus One Lick:71
+                    lick time:7
+Stamp:66.43
+
+
+Stimulus One Lick:72
+                    lick time:9
+Stamp:66.55
+
+
+Stimulus One Lick:73
+                    lick time:7
+Stamp:66.76
+
+
+Stimulus One Lick:74
+                    lick time:10
+Stamp:66.86
+
+
+Stimulus One Lick:75
+                    lick time:7
+Stamp:67.05
+
+
+Stimulus One Lick:76
+                    lick time:10
+Stamp:67.17
+
+
+Stimulus One Lick:77
+                    lick time:6
+Stamp:67.32
+
+
+Stimulus One Lick:78
+                    lick time:10
+Stamp:67.48
+
+
+Stimulus One Lick:79
+                    lick time:7
+Stamp:67.64
+
+
+Stimulus One Lick:80
+                    lick time:14
+Stamp:67.77
+
+
+Stimulus One Lick:81
+                    lick time:41
+Stamp:68.00
+
+
+Stimulus One Lick:82
+                    lick time:117
+Stamp:68.53
+
+
+Stimulus One Lick:83
+                    lick time:73
+Stamp:68.75
+
+
+Stimulus One Lick:84
+                    lick time:30
+Stamp:68.96
+
+
+Stimulus One Lick:85
+                    lick time:18
+Stamp:69.06
+
+
+Stimulus One Lick:86
+                    lick time:73
+Stamp:69.23
+
+
+Stimulus One Lick:87
+                    lick time:150
+Stamp:69.49
+
+
+Stimulus One Lick:88
+                    lick time:34
+Stamp:76.20
+
+
+Stimulus One Lick:89
+                    lick time:37
+Stamp:76.48
+
+
+Stimulus One Lick:90
+                    lick time:17
+Stamp:76.92
+
+
+Stimulus One Lick:91
+                    lick time:14
+Stamp:77.14
+
+
+Stimulus One Lick:92
+                    lick time:9
+Stamp:77.52
+
+
+Stimulus One Lick:93
+                    lick time:19
+Stamp:77.78
+
+
+Stimulus One Lick:94
+                    lick time:10
+Stamp:78.07
+
+
+Stimulus One Lick:95
+                    lick time:14
+Stamp:78.31
+
+
+Stimulus One Lick:96
+                    lick time:8
+Stamp:78.63
+
+
+Stimulus One Lick:97
+                    lick time:11
+Stamp:78.82
+
+
+Stimulus One Lick:98
+                    lick time:9
+Stamp:79.09
+
+
+Stimulus One Lick:99
+                    lick time:8
+Stamp:79.24
+
+
+Stimulus One Lick:100
+                     lick time:7
+Stamp:79.48
+
+
+Stimulus One Lick:101
+                     lick time:9
+Stamp:79.61
+
+
+Stimulus One Lick:102
+                     lick time:12
+Stamp:79.87
+
+
+Stimulus One Lick:103
+                     lick time:10
+Stamp:79.98
+
+
+Stimulus One Lick:104
+                     lick time:9
+Stamp:80.23
+
+
+Stimulus One Lick:105
+                     lick time:13
+Stamp:80.36
+
+
+Stimulus One Lick:106
+                     lick time:7
+Stamp:80.58
+
+
+Stimulus One Lick:107
+                     lick time:7
+Stamp:80.72
+
+
+Stimulus One Lick:108
+                     lick time:8
+Stamp:80.92
+
+
+Stimulus One Lick:109
+                     lick time:8
+Stamp:81.04
+
+
+Stimulus One Lick:110
+                     lick time:8
+Stamp:81.22
+
+
+Stimulus One Lick:111
+                     lick time:8
+Stamp:81.36
+
+
+Stimulus One Lick:112
+                     lick time:4
+Stamp:94.08
+
+
+Stimulus One Lick:113
+                     lick time:4
+Stamp:94.18
+
+
+Stimulus One Lick:114
+                     lick time:14
+Stamp:94.33
+
+
+Stimulus One Lick:115
+                     lick time:7
+Stamp:94.47
+
+
+Stimulus One Lick:116
+                     lick time:11
+Stamp:94.60
+
+
+Stimulus One Lick:117
+                     lick time:7
+Stamp:94.71
+
+
+Stimulus One Lick:118
+                     lick time:5
+Stamp:94.80
+
+
+Stimulus One Lick:119
+                     lick time:10
+Stamp:94.93
+
+
+Stimulus One Lick:120
+                     lick time:6
+Stamp:94.99
+
+
+Stimulus One Lick:121
+                     lick time:6
+Stamp:95.09
+
+
+Stimulus One Lick:122
+                     lick time:7
+Stamp:95.18
+
+
+Stimulus One Lick:123
+                     lick time:11
+Stamp:95.31
+
+
+Stimulus One Lick:124
+                     lick time:10
+Stamp:95.38
+
+
+Stimulus One Lick:125
+                     lick time:13
+Stamp:95.54
+
+
+Stimulus One Lick:126
+                     lick time:11
+Stamp:95.61
+
+
+Stimulus One Lick:127
+                     lick time:9
+Stamp:95.71
+
+
+Stimulus One Lick:128
+                     lick time:10
+Stamp:95.83
+
+
+Stimulus One Lick:129
+                     lick time:9
+Stamp:95.92
+
+
+Stimulus One Lick:130
+                     lick time:11
+Stamp:96.05
+
+
+Stimulus One Lick:131
+                     lick time:10
+Stamp:96.17
+
+
+Stimulus One Lick:132
+                     lick time:7
+Stamp:96.28
+
+
+Stimulus One Lick:133
+                     lick time:8
+Stamp:96.42
+
+
+Stimulus One Lick:134
+                     lick time:8
+Stamp:96.51
+
+
+Stimulus One Lick:135
+                     lick time:8
+Stamp:96.63
+
+
+Stimulus One Lick:136
+                     lick time:9
+Stamp:96.73
+
+
+Stimulus One Lick:137
+                     lick time:5
+Stamp:96.84
+
+
+Stimulus One Lick:138
+                     lick time:10
+Stamp:96.96
+
+
+Stimulus One Lick:139
+                     lick time:7
+Stamp:97.08
+
+
+Stimulus One Lick:140
+                     lick time:8
+Stamp:97.19
+
+
+Stimulus One Lick:141
+                     lick time:10
+Stamp:97.34
+
+
+Stimulus One Lick:142
+                     lick time:8
+Stamp:97.42
+
+
+Stimulus One Lick:143
+                     lick time:5
+Stamp:97.55
+
+
+Stimulus One Lick:144
+                     lick time:10
+Stamp:97.67
+
+
+Stimulus One Lick:145
+                     lick time:6
+Stamp:97.85
+
+
+Stimulus One Lick:146
+                     lick time:12
+Stamp:97.99
+
+
+Stimulus One Lick:147
+                     lick time:18
+Stamp:98.25
+
+
+Stimulus One Lick:148
+                     lick time:14
+Stamp:98.43
+
+
+Stimulus One Lick:149
+                     lick time:19
+Stamp:98.69
+
+
+Stimulus One Lick:150
+                     lick time:19
+Stamp:98.81
+
+
+Stimulus One Lick:151
+                     lick time:27
+Stamp:99.15
+
+
+Stimulus One Lick:152
+                     lick time:29
+Stamp:99.28
+
+
+Stimulus One Lick:153
+                     lick time:131
+Stamp:99.76
+
+
+Stimulus One Lick:154
+                     lick time:25
+Stamp:100.13
+
+
+Stimulus One Lick:155
+                     lick time:21
+Stamp:100.29
+
+
+Stimulus One Lick:156
+                     lick time:24
+Stamp:100.68
+
+
+Stimulus One Lick:157
+                     lick time:36
+Stamp:100.77
+
+
+Stimulus One Lick:158
+                     lick time:15
+Stamp:101.16
+
+
+Stimulus One Lick:159
+                     lick time:16
+Stamp:101.34
+
+
+Stimulus One Lick:160
+                     lick time:22
+Stamp:101.48
+
+
+Stimulus One Lick:161
+                     lick time:21
+Stamp:101.57
+
+
+Stimulus One Lick:162
+                     lick time:28
+Stamp:101.70
+
+
+Stimulus One Lick:163
+                     lick time:23
+Stamp:101.77
+
+
+Stimulus One Lick:164
+                     lick time:7
+Stamp:101.87
+
+
+Stimulus One Lick:165
+                     lick time:12
+Stamp:102.02
+
+
+Stimulus One Lick:166
+                     lick time:11
+Stamp:102.16
+
+
+Stimulus One Lick:167
+                     lick time:14
+Stamp:102.27
+
+
+Stimulus One Lick:168
+                     lick time:12
+Stamp:102.40
+
+
+Stimulus One Lick:169
+                     lick time:11
+Stamp:102.51
+
+
+Stimulus One Lick:170
+                     lick time:10
+Stamp:102.60
+
+
+Stimulus One Lick:171
+                     lick time:11
+Stamp:102.73
+
+
+Stimulus One Lick:172
+                     lick time:8
+Stamp:102.84
+
+
+Stimulus One Lick:173
+                     lick time:9
+Stamp:102.95
+
+
+Stimulus One Lick:174
+                     lick time:8
+Stamp:103.06
+
+
+Stimulus One Lick:175
+                     lick time:9
+Stamp:103.18
+
+
+Stimulus One Lick:176
+                     lick time:11
+Stamp:103.26
+
+
+Stimulus One Lick:177
+                     lick time:10
+Stamp:103.38
+
+
+Stimulus One Lick:178
+                     lick time:10
+Stamp:103.43
+
+
+Stimulus One Lick:179
+                     lick time:14
+Stamp:103.57
+
+
+Stimulus One Lick:180
+                     lick time:15
+Stamp:103.63
+
+
+Stimulus One Lick:181
+                     lick time:10
+Stamp:103.75
+
+
+Stimulus One Lick:182
+                     lick time:12
+Stamp:103.84
+
+
+Stimulus One Lick:183
+                     lick time:11
+Stamp:103.95
+
+
+Stimulus One Lick:184
+                     lick time:9
+Stamp:104.04
+
+
+Stimulus One Lick:185
+                     lick time:14
+Stamp:104.15
+
+
+Stimulus One Lick:186
+                     lick time:8
+Stamp:104.20
+
+
+Stimulus One Lick:187
+                     lick time:11
+Stamp:104.33
+
+
+Stimulus One Lick:188
+                     lick time:16
+Stamp:104.41
+
+
+Stimulus One Lick:189
+                     lick time:17
+Stamp:104.50
+
+
+Stimulus One Lick:190
+                     lick time:40
+Stamp:104.71
+
+
+Stimulus One Lick:191
+                     lick time:22
+Stamp:104.78
+
+
+Stimulus One Lick:192
+                     lick time:14
+Stamp:104.85
+
+
+Stimulus One Lick:193
+                     lick time:12
+Stamp:104.99
+
+
+Stimulus One Lick:194
+                     lick time:9
+Stamp:105.11
+
+
+Stimulus One Lick:195
+                     lick time:11
+Stamp:105.28
+
+
+Stimulus One Lick:196
+                     lick time:9
+Stamp:105.46
+
+
+Stimulus One Lick:197
+                     lick time:8
+Stamp:105.59
+
+
+Stimulus One Lick:198
+                     lick time:9
+Stamp:105.76
+
+
+Stimulus One Lick:199
+                     lick time:9
+Stamp:105.86
+
+
+Stimulus One Lick:200
+                     lick time:7
+Stamp:105.99
+
+
+Stimulus One Lick:201
+                     lick time:8
+Stamp:106.10
+
+
+Stimulus One Lick:202
+                     lick time:74
+Stamp:106.29
+
+
+Stimulus One Lick:203
+                     lick time:264
+Stamp:107.16
+
+
+Stimulus One Lick:204
+                     lick time:32
+Stamp:107.50
+
+
+Stimulus One Lick:205
+                     lick time:39
+Stamp:107.86
+
+
+Stimulus One Lick:206
+                     lick time:25
+Stamp:108.11
+
+
+Stimulus One Lick:207
+                     lick time:25
+Stamp:108.44
+
+
+Stimulus One Lick:208
+                     lick time:24
+Stamp:108.71
+
+
+Stimulus One Lick:209
+                     lick time:21
+Stamp:109.07
+
+
+Stimulus One Lick:210
+                     lick time:22
+Stamp:109.32
+
+
+Stimulus One Lick:211
+                     lick time:21
+Stamp:109.71
+
+
+Stimulus One Lick:212
+                     lick time:18
+Stamp:109.94
+
+
+Stimulus One Lick:213
+                     lick time:17
+Stamp:110.32
+
+
+Stimulus One Lick:214
+                     lick time:15
+Stamp:110.53
+
+
+Stimulus One Lick:215
+                     lick time:15
+Stamp:110.89
+
+
+Stimulus One Lick:216
+                     lick time:15
+Stamp:111.10
+
+
+Stimulus One Lick:217
+                     lick time:19
+Stamp:111.41
+
+
+Stimulus One Lick:218
+                     lick time:12
+Stamp:111.56
+
+
+Stimulus One Lick:219
+                     lick time:15
+Stamp:111.78
+
+
+Stimulus One Lick:220
+                     lick time:17
+Stamp:111.86
+
+
+Stimulus One Lick:221
+                     lick time:9
+Stamp:112.01
+
+
+Stimulus One Lick:222
+                     lick time:10
+Stamp:112.14
+
+
+Stimulus One Lick:223
+                     lick time:9
+Stamp:112.23
+
+
+Stimulus One Lick:224
+                     lick time:9
+Stamp:112.37
+
+
+Stimulus One Lick:225
+                     lick time:11
+Stamp:112.48
+
+
+Stimulus One Lick:226
+                     lick time:15
+Stamp:112.58
+
+
+Stimulus One Lick:227
+                     lick time:12
+Stamp:112.67
+
+
+Stimulus One Lick:228
+                     lick time:42
+Stamp:112.82
+
+
+Stimulus One Lick:229
+                     lick time:13
+Stamp:112.99
+
+
+Stimulus One Lick:230
+                     lick time:11
+Stamp:113.06
+
+
+Stimulus One Lick:231
+                     lick time:11
+Stamp:113.16
+
+
+Stimulus One Lick:232
+                     lick time:8
+Stamp:113.24
+
+
+Stimulus One Lick:233
+                     lick time:11
+Stamp:113.34
+
+
+Stimulus One Lick:234
+                     lick time:10
+Stamp:113.41
+
+
+Stimulus One Lick:235
+                     lick time:10
+Stamp:113.51
+
+
+Stimulus One Lick:236
+                     lick time:9
+Stamp:113.59
+
+
+Stimulus One Lick:237
+                     lick time:14
+Stamp:113.68
+
+
+Stimulus One Lick:238
+                     lick time:10
+Stamp:113.77
+
+
+Stimulus One Lick:239
+                     lick time:11
+Stamp:113.85
+
+
+Stimulus One Lick:240
+                     lick time:7
+Stamp:113.90
+
+
+Stimulus One Lick:241
+                     lick time:15
+Stamp:114.01
+
+
+
+Stimulus One Lick:1
+                   lick time:22
 Stamp:2.04
 
 
-Left Lick:6
-           lick time:99
-Stamp:2.16
+Stimulus One Lick:2
+                   lick time:37
+Stamp:5.72
 
 
-Left Lick:7
-           lick time:76
-Stamp:2.27
 
 
-Left Lick:8
-           lick time:103
-Stamp:2.40
 
 
-Left Lick:9
-           lick time:79
-Stamp:2.51
 
 
-Left Lick:10
-            lick time:77
-Stamp:2.61
 
 
-Left Lick:11
-            lick time:75
-Stamp:2.72
 
 
-Left Lick:12
-            lick time:84
-Stamp:2.83
 
 
-Left Lick:13
-            lick time:85
-Stamp:2.95
 
 
-Left Lick:14
-            lick time:59
-Stamp:3.03
+Stimulus One Lick:1
+                   lick time:141
+Stamp:183.55
 
 
-Left Lick:15
-            lick time:68
-Stamp:3.13
 
 
-Left Lick:16
-            lick time:58
-Stamp:3.22
 
 
-Left Lick:17
-            lick time:65
-Stamp:3.31
 
 
-Left Lick:18
-            lick time:67
-Stamp:3.41
 
 
-Left Lick:19
-            lick time:41
-Stamp:3.48
 
 
-Left Lick:20
-            lick time:92
-Stamp:3.60
 
 
-Left Lick:21
-            lick time:50
-Stamp:3.68
 
 
-Left Lick:22
-            lick time:87
-Stamp:3.80
 
 
-Left Lick:23
-            lick time:21
-Stamp:3.85
 
 
-Left Lick:24
-            lick time:92
-Stamp:3.97
 
+Stimulus One Lick:2
+                   lick time:679
+Stamp:225.15
 
-Left Lick:25
-            lick time:36
-Stamp:4.03
 
+Stimulus One Lick:3
+                   lick time:56
+Stamp:227.23
 
-Left Lick:26
-            lick time:525
-Stamp:4.59
 
+Stimulus One Lick:4
+                   lick time:266
+Stamp:228.82
 
-Left Lick:27
-            lick time:67
-Stamp:4.69
 
+Stimulus One Lick:5
+                   lick time:161
+Stamp:229.69
 
-Left Lick:28
-            lick time:66
-Stamp:4.78
 
+Stimulus One Lick:6
+                   lick time:164
+Stamp:229.96
 
-Left Lick:29
-            lick time:54
-Stamp:4.87
 
+Stimulus One Lick:7
+                   lick time:475
+Stamp:233.35
 
-Left Lick:30
-            lick time:46
-Stamp:4.94
 
+Stimulus One Lick:8
+                   lick time:598
+Stamp:237.49
 
-Left Lick:31
-            lick time:49
-Stamp:5.02
 
+Stimulus One Lick:9
+                   lick time:2762
+Stamp:246.55
 
-Left Lick:32
-            lick time:58
-Stamp:5.11
 
+Stimulus One Lick:10
+                    lick time:46
+Stamp:247.73
 
-Left Lick:33
-            lick time:54
-Stamp:5.19
 
+Stimulus One Lick:11
+                    lick time:168
+Stamp:248.10
 
-Left Lick:34
-            lick time:45
-Stamp:5.27
 
+Stimulus One Lick:12
+                    lick time:1112
+Stamp:249.91
 
-Left Lick:35
-            lick time:59
-Stamp:5.36
 
+Stimulus One Lick:13
+                    lick time:731
+Stamp:254.11
 
-Left Lick:36
-            lick time:28
-Stamp:5.41
 
+Stimulus One Lick:14
+                    lick time:0
+Stamp:254.73
 
-Left Lick:37
-            lick time:67
-Stamp:5.51
 
 
-Left Lick:38
-            lick time:79
-Stamp:5.65
+Stimulus One Lick:1
+                   lick time:15
+Stamp:53.25
 
 
-Left Lick:39
-            lick time:89
-Stamp:5.78
+Stimulus One Lick:2
+                   lick time:42
+Stamp:53.94
 
 
-Left Lick:40
-            lick time:92
-Stamp:5.92
+Stimulus One Lick:3
+                   lick time:2442
+Stamp:68.33
 
 
-Left Lick:41
-            lick time:75
-Stamp:6.04
+Stimulus One Lick:4
+                   lick time:53
+Stamp:81.62
 
 
-Left Lick:42
-            lick time:79
-Stamp:6.17
+Stimulus One Lick:5
+                   lick time:12
+Stamp:104.86
 
 
-Left Lick:43
-            lick time:88
-Stamp:6.32
+Stimulus One Lick:6
+                   lick time:23
+Stamp:104.92
 
 
-Left Lick:44
-            lick time:59
-Stamp:6.43
+Stimulus One Lick:7
+                   lick time:1817
+Stamp:106.77
 
 
-Left Lick:45
-            lick time:7
-Stamp:6.47
+Stimulus One Lick:8
+                   lick time:427
+Stamp:123.97
 
 
-Left Lick:46
-            lick time:81
-Stamp:6.57
+Stimulus One Lick:9
+                   lick time:4451
+Stamp:128.62
 
 
-Left Lick:47
-            lick time:19
-Stamp:6.62
+Stimulus One Lick:10
+                    lick time:12
+Stamp:159.42
 
 
-Left Lick:48
-            lick time:64
-Stamp:6.72
+Stimulus One Lick:11
+                    lick time:19
+Stamp:159.54
 
 
-Left Lick:49
-            lick time:21
-Stamp:6.77
+Stimulus One Lick:12
+                    lick time:44
+Stamp:159.67
 
 
-Left Lick:50
-            lick time:30
-Stamp:6.83
+Stimulus One Lick:13
+                    lick time:34
+Stamp:159.93
 
 
-Left Lick:51
-            lick time:36
-Stamp:6.89
+Stimulus One Lick:14
+                    lick time:37
+Stamp:160.59
 
 
-Left Lick:52
-            lick time:44
-Stamp:6.97
+Stimulus One Lick:15
+                    lick time:31
+Stamp:160.72
 
 
-Left Lick:53
-            lick time:36
-Stamp:7.03
+Stimulus One Lick:16
+                    lick time:30
+Stamp:160.84
 
 
-Left Lick:54
-            lick time:21
-Stamp:7.09
+Stimulus One Lick:17
+                    lick time:42
+Stamp:160.96
 
 
-Left Lick:55
-            lick time:37
-Stamp:7.15
+Stimulus One Lick:18
+                    lick time:48
+Stamp:161.09
 
 
-Left Lick:56
-            lick time:51
-Stamp:7.23
+Stimulus One Lick:19
+                    lick time:49
+Stamp:161.23
 
 
-Left Lick:57
-            lick time:20
-Stamp:7.28
+Stimulus One Lick:20
+                    lick time:8
+Stamp:161.48
 
 
-Left Lick:58
-            lick time:62
-Stamp:7.37
+Stimulus One Lick:21
+                    lick time:27
+Stamp:161.61
 
 
-Left Lick:59
-            lick time:18
-Stamp:7.42
+Stimulus One Lick:22
+                    lick time:11
+Stamp:161.87
 
 
-Left Lick:60
-            lick time:62
-Stamp:7.51
+Stimulus One Lick:23
+                    lick time:44
+Stamp:162.02
 
 
-Left Lick:61
-            lick time:9
-Stamp:7.55
+Stimulus One Lick:24
+                    lick time:36
+Stamp:162.14
 
 
-Left Lick:62
-            lick time:69
-Stamp:7.64
+Stimulus One Lick:25
+                    lick time:2
+Stamp:162.24
 
 
-Left Lick:63
-            lick time:9
-Stamp:7.68
+Stimulus One Lick:26
+                    lick time:5
+Stamp:162.28
 
 
-Left Lick:64
-            lick time:74
-Stamp:7.78
+Stimulus One Lick:27
+                    lick time:2
+Stamp:162.37
 
 
-Left Lick:65
-            lick time:92
-Stamp:7.91
+Stimulus One Lick:28
+                    lick time:40
+Stamp:162.66
 
 
-Left Lick:66
-            lick time:11
-Stamp:7.95
+Stimulus One Lick:29
+                    lick time:40
+Stamp:162.80
 
 
-Left Lick:67
-            lick time:83
-Stamp:8.06
+Stimulus One Lick:30
+                    lick time:21
+Stamp:162.93
 
 
-Left Lick:68
-            lick time:95
-Stamp:8.18
+Stimulus One Lick:31
+                    lick time:45
+Stamp:163.21
 
 
-Left Lick:69
-            lick time:90
-Stamp:8.31
+Stimulus One Lick:32
+                    lick time:49
+Stamp:163.37
 
 
-Left Lick:70
-            lick time:5
-Stamp:8.34
+Stimulus One Lick:33
+                    lick time:47
+Stamp:163.51
 
 
-Left Lick:71
-            lick time:86
-Stamp:8.46
+Stimulus One Lick:34
+                    lick time:37
+Stamp:163.65
 
 
-Left Lick:72
-            lick time:256
-Stamp:8.74
+Stimulus One Lick:35
+                    lick time:20
+Stamp:163.93
 
 
-Left Lick:73
-            lick time:106
-Stamp:8.88
+Stimulus One Lick:36
+                    lick time:20
+Stamp:164.52
 
 
-Left Lick:74
-            lick time:94
-Stamp:9.01
+Stimulus One Lick:37
+                    lick time:1
+Stamp:164.65
 
 
-Left Lick:75
-            lick time:8
-Stamp:9.04
+Stimulus One Lick:38
+                    lick time:11
+Stamp:164.93
 
 
-Left Lick:76
-            lick time:209
-Stamp:9.28
+Stimulus One Lick:39
+                    lick time:9
+Stamp:165.21
 
 
-Left Lick:77
-            lick time:90
-Stamp:9.40
+Stimulus One Lick:40
+                    lick time:44
+Stamp:165.36
 
 
-Left Lick:78
-            lick time:14
-Stamp:9.45
+Stimulus One Lick:41
+                    lick time:35
+Stamp:165.80
 
 
-Left Lick:79
-            lick time:69
-Stamp:9.55
+Stimulus One Lick:42
+                    lick time:46
+Stamp:165.95
 
 
-Left Lick:80
-            lick time:11
-Stamp:9.59
+Stimulus One Lick:43
+                    lick time:31
+Stamp:166.08
 
 
-Left Lick:81
-            lick time:61
-Stamp:9.68
+Stimulus One Lick:44
+                    lick time:51
+Stamp:166.24
 
 
-Left Lick:82
-            lick time:6
-Stamp:9.71
+Stimulus One Lick:45
+                    lick time:53
+Stamp:166.39
 
 
-Left Lick:83
-            lick time:58
-Stamp:9.80
+Stimulus One Lick:46
+                    lick time:47
+Stamp:166.54
 
 
-Left Lick:84
-            lick time:16
-Stamp:9.85
+Stimulus One Lick:47
+                    lick time:10
+Stamp:166.68
 
 
-Left Lick:85
-            lick time:36
-Stamp:9.91
+Stimulus One Lick:48
+                    lick time:50
+Stamp:166.83
 
 
-Left Lick:86
-            lick time:28
-Stamp:9.97
+Stimulus One Lick:49
+                    lick time:45
+Stamp:166.97
 
 
-Left Lick:87
-            lick time:70
-Stamp:10.07
+Stimulus One Lick:50
+                    lick time:44
+Stamp:167.10
 
 
-Left Lick:88
-            lick time:54
-Stamp:10.15
+Stimulus One Lick:51
+                    lick time:54
+Stamp:167.25
 
 
-Left Lick:89
-            lick time:38
-Stamp:10.22
+Stimulus One Lick:52
+                    lick time:39
+Stamp:167.68
 
 
-Left Lick:90
-            lick time:72
-Stamp:10.33
+Stimulus One Lick:53
+                    lick time:22
+Stamp:167.80
+
+
+Stimulus One Lick:54
+                    lick time:27
+Stamp:169.30
+
+
+Stimulus One Lick:55
+                    lick time:36
+Stamp:169.45
+
+
+Stimulus One Lick:56
+                    lick time:25
+Stamp:169.60
+
+
+Stimulus One Lick:57
+                    lick time:50
+Stamp:169.76
+
+
+Stimulus One Lick:58
+                    lick time:50
+Stamp:169.91
+
+
+Stimulus One Lick:59
+                    lick time:11
+Stamp:170.04
+
+
+Stimulus One Lick:60
+                    lick time:8
+Stamp:170.17
+
+
+Stimulus One Lick:61
+                    lick time:8
+Stamp:170.48
+
+
+Stimulus One Lick:62
+                    lick time:47
+Stamp:170.64
+
+
+Stimulus One Lick:63
+                    lick time:33
+Stamp:170.78
+
+
+Stimulus One Lick:64
+                    lick time:34
+Stamp:171.52
+
+
+Stimulus One Lick:65
+                    lick time:17
+Stamp:171.67
+
+
+Stimulus One Lick:66
+                    lick time:12
+Stamp:171.83
+
+
+Stimulus One Lick:67
+                    lick time:16
+Stamp:172.73
+
+
+Stimulus One Lick:68
+                    lick time:24
+Stamp:173.75
+
+
+Stimulus One Lick:69
+                    lick time:53
+Stamp:176.13
+
+
+Stimulus One Lick:70
+                    lick time:37
+Stamp:176.45
+
+
+Stimulus One Lick:71
+                    lick time:48
+Stamp:176.59
+
+
+Stimulus One Lick:72
+                    lick time:42
+Stamp:176.71
+
+
+Stimulus One Lick:73
+                    lick time:29
+Stamp:176.85
+
+
+Stimulus One Lick:74
+                    lick time:42
+Stamp:176.99
+
+
+Stimulus One Lick:75
+                    lick time:27
+Stamp:177.67
+
+
+Stimulus One Lick:76
+                    lick time:19
+Stamp:177.79
+
+
+Stimulus One Lick:77
+                    lick time:37
+Stamp:177.93
+
+
+Stimulus One Lick:78
+                    lick time:37
+Stamp:178.06
+
+
+Stimulus One Lick:79
+                    lick time:41
+Stamp:178.19
+
+
+Stimulus One Lick:80
+                    lick time:30
+Stamp:178.32
+
+
+Stimulus One Lick:81
+                    lick time:37
+Stamp:178.45
+
+
+Stimulus One Lick:82
+                    lick time:40
+Stamp:178.58
+
+
+Stimulus One Lick:83
+                    lick time:41
+Stamp:178.72
+
+
+Stimulus One Lick:84
+                    lick time:22
+Stamp:179.09
+
+
+Stimulus One Lick:85
+                    lick time:22
+Stamp:179.74
+
+
+Stimulus One Lick:86
+                    lick time:31
+Stamp:182.47
+
+
+Stimulus One Lick:87
+                    lick time:46
+Stamp:182.65
+
+
+Stimulus One Lick:88
+                    lick time:56
+Stamp:182.91
+
+
+Stimulus One Lick:89
+                    lick time:46
+Stamp:183.03
+
+
+Stimulus One Lick:90
+                    lick time:53
+Stamp:183.16
+
+
+Stimulus One Lick:91
+                    lick time:51
+Stamp:183.30
+
+
+Stimulus One Lick:92
+                    lick time:48
+Stamp:183.43
+
+
+Stimulus One Lick:93
+                    lick time:61
+Stamp:183.58
+
+
+Stimulus One Lick:94
+                    lick time:70
+Stamp:183.74
+
+
+Stimulus One Lick:95
+                    lick time:64
+Stamp:183.88
+
+
+Stimulus One Lick:96
+                    lick time:54
+Stamp:184.02
+
+
+Stimulus One Lick:97
+                    lick time:63
+Stamp:184.18
+
+
+Stimulus One Lick:98
+                    lick time:64
+Stamp:184.33
+
+
+Stimulus One Lick:99
+                    lick time:55
+Stamp:184.47
+
+
+Stimulus One Lick:100
+                     lick time:51
+Stamp:184.61
+
+
+Stimulus One Lick:101
+                     lick time:65
+Stamp:184.77
+
+
+Stimulus One Lick:102
+                     lick time:61
+Stamp:184.92
+
+
+Stimulus One Lick:103
+                     lick time:64
+Stamp:185.07
+
+
+Stimulus One Lick:104
+                     lick time:58
+Stamp:185.22
+
+
+Stimulus One Lick:105
+                     lick time:53
+Stamp:185.36
+
+
+Stimulus One Lick:106
+                     lick time:54
+Stamp:185.51
+
+
+Stimulus One Lick:107
+                     lick time:55
+Stamp:185.65
+
+
+Stimulus One Lick:108
+                     lick time:60
+Stamp:185.80
+
+
+Stimulus One Lick:109
+                     lick time:58
+Stamp:185.96
+
+
+Stimulus One Lick:110
+                     lick time:54
+Stamp:186.11
+
+
+Stimulus One Lick:111
+                     lick time:44
+Stamp:186.24
+
+
+Stimulus One Lick:112
+                     lick time:52
+Stamp:186.39
+
+
+Stimulus One Lick:113
+                     lick time:57
+Stamp:186.54
+
+
+Stimulus One Lick:114
+                     lick time:56
+Stamp:186.69
+
+
+Stimulus One Lick:115
+                     lick time:59
+Stamp:186.84
+
+
+Stimulus One Lick:116
+                     lick time:60
+Stamp:186.99
+
+
+Stimulus One Lick:117
+                     lick time:61
+Stamp:187.14
+
+
+Stimulus One Lick:118
+                     lick time:52
+Stamp:187.29
+
+
+Stimulus One Lick:119
+                     lick time:51
+Stamp:187.44
+
+
+Stimulus One Lick:120
+                     lick time:52
+Stamp:187.59
+
+
+Stimulus One Lick:121
+                     lick time:56
+Stamp:187.74
+
+
+Stimulus One Lick:122
+                     lick time:58
+Stamp:187.89
+
+
+Stimulus One Lick:123
+                     lick time:65
+Stamp:188.04
+
+
+Stimulus One Lick:124
+                     lick time:61
+Stamp:188.19
+
+
+Stimulus One Lick:125
+                     lick time:64
+Stamp:188.36
+
+
+Stimulus One Lick:126
+                     lick time:52
+Stamp:188.49
+
+
+Stimulus One Lick:127
+                     lick time:53
+Stamp:188.63
+
+
+Stimulus One Lick:128
+                     lick time:59
+Stamp:188.78
+
+
+Stimulus One Lick:129
+                     lick time:58
+Stamp:188.92
+
+
+Stimulus One Lick:130
+                     lick time:61
+Stamp:189.06
+
+
+Stimulus One Lick:131
+                     lick time:55
+Stamp:189.21
+
+
+Stimulus One Lick:132
+                     lick time:65
+Stamp:189.36
+
+
+Stimulus One Lick:133
+                     lick time:67
+Stamp:189.51
+
+
+Stimulus One Lick:134
+                     lick time:62
+Stamp:189.69
+
+
+Stimulus One Lick:135
+                     lick time:58
+Stamp:189.83
+
+
+Stimulus One Lick:136
+                     lick time:54
+Stamp:189.98
+
+
+Stimulus One Lick:137
+                     lick time:62
+Stamp:190.13
+
+
+Stimulus One Lick:138
+                     lick time:63
+Stamp:190.28
+
+
+Stimulus One Lick:139
+                     lick time:59
+Stamp:190.43
+
+
+Stimulus One Lick:140
+                     lick time:61
+Stamp:190.57
+
+
+Stimulus One Lick:141
+                     lick time:63
+Stamp:190.72
+
+
+Stimulus One Lick:142
+                     lick time:61
+Stamp:190.87
+
+
+Stimulus One Lick:143
+                     lick time:70
+Stamp:191.03
+
+
+Stimulus One Lick:144
+                     lick time:60
+Stamp:191.17
+
+
+Stimulus One Lick:145
+                     lick time:59
+Stamp:191.34
+
+
+Stimulus One Lick:146
+                     lick time:52
+Stamp:191.48
+
+
+Stimulus One Lick:147
+                     lick time:66
+Stamp:191.63
+
+
+Stimulus One Lick:148
+                     lick time:66
+Stamp:191.79
+
+
+Stimulus One Lick:149
+                     lick time:61
+Stamp:191.93
+
+
+Stimulus One Lick:150
+                     lick time:57
+Stamp:192.08
+
+
+Stimulus One Lick:151
+                     lick time:61
+Stamp:192.23
+
+
+Stimulus One Lick:152
+                     lick time:59
+Stamp:192.38
+
+
+Stimulus One Lick:153
+                     lick time:62
+Stamp:192.54
+
+
+Stimulus One Lick:154
+                     lick time:63
+Stamp:192.69
+
+
+Stimulus One Lick:155
+                     lick time:63
+Stamp:192.84
+
+
+Stimulus One Lick:156
+                     lick time:65
+Stamp:193.00
+
+
+Stimulus One Lick:157
+                     lick time:52
+Stamp:193.14
+
+
+Stimulus One Lick:158
+                     lick time:57
+Stamp:193.29
+
+
+Stimulus One Lick:159
+                     lick time:64
+Stamp:193.44
+
+
+Stimulus One Lick:160
+                     lick time:65
+Stamp:193.59
+
+
+Stimulus One Lick:161
+                     lick time:61
+Stamp:193.74
+
+
+Stimulus One Lick:162
+                     lick time:60
+Stamp:193.89
+
+
+Stimulus One Lick:163
+                     lick time:56
+Stamp:194.03
+
+
+Stimulus One Lick:164
+                     lick time:60
+Stamp:194.18
+
+
+Stimulus One Lick:165
+                     lick time:58
+Stamp:194.33
+
+
+Stimulus One Lick:166
+                     lick time:59
+Stamp:194.48
+
+
+Stimulus One Lick:167
+                     lick time:61
+Stamp:194.65
+
+
+Stimulus One Lick:168
+                     lick time:50
+Stamp:194.79
+
+
+Stimulus One Lick:169
+                     lick time:59
+Stamp:194.93
+
+
+Stimulus One Lick:170
+                     lick time:60
+Stamp:195.08
+
+
+Stimulus One Lick:171
+                     lick time:61
+Stamp:195.23
+
+
+Stimulus One Lick:172
+                     lick time:55
+Stamp:195.37
+
+
+Stimulus One Lick:173
+                     lick time:62
+Stamp:195.52
+
+
+Stimulus One Lick:174
+                     lick time:61
+Stamp:195.67
+
+
+Stimulus One Lick:175
+                     lick time:54
+Stamp:195.82
+
+
+Stimulus One Lick:176
+                     lick time:54
+Stamp:195.96
+
+
+Stimulus One Lick:177
+                     lick time:60
+Stamp:196.12
+
+
+Stimulus One Lick:178
+                     lick time:54
+Stamp:196.26
+
+
+Stimulus One Lick:179
+                     lick time:56
+Stamp:196.42
+
+
+Stimulus One Lick:180
+                     lick time:60
+Stamp:196.57
+
+
+Stimulus One Lick:181
+                     lick time:58
+Stamp:196.71
+
+
+Stimulus One Lick:182
+                     lick time:62
+Stamp:196.86
+
+
+Stimulus One Lick:183
+                     lick time:59
+Stamp:197.01
+
+
+Stimulus One Lick:184
+                     lick time:56
+Stamp:197.15
+
+
+Stimulus One Lick:185
+                     lick time:52
+Stamp:197.30
+
+
+Stimulus One Lick:186
+                     lick time:61
+Stamp:197.45
+
+
+Stimulus One Lick:187
+                     lick time:62
+Stamp:197.60
+
+
+Stimulus One Lick:188
+                     lick time:61
+Stamp:197.75
+
+
+Stimulus One Lick:189
+                     lick time:54
+Stamp:197.91
+
+
+Stimulus One Lick:190
+                     lick time:52
+Stamp:198.06
+
+
+Stimulus One Lick:191
+                     lick time:45
+Stamp:198.20
+
+
+Stimulus One Lick:192
+                     lick time:47
+Stamp:198.34
+
+
+Stimulus One Lick:193
+                     lick time:46
+Stamp:199.01
+
+
+Stimulus One Lick:194
+                     lick time:44
+Stamp:199.14
+
+
+Stimulus One Lick:195
+                     lick time:47
+Stamp:199.27
+
+
+Stimulus One Lick:196
+                     lick time:55
+Stamp:199.42
+
+
+Stimulus One Lick:197
+                     lick time:57
+Stamp:199.56
+
+
+Stimulus One Lick:198
+                     lick time:66
+Stamp:199.73
+
+
+Stimulus One Lick:199
+                     lick time:59
+Stamp:199.87
+
+
+Stimulus One Lick:200
+                     lick time:57
+Stamp:200.01
+
+
+Stimulus One Lick:201
+                     lick time:55
+Stamp:200.16
+
+
+Stimulus One Lick:202
+                     lick time:47
+Stamp:200.30
+
+
+Stimulus One Lick:203
+                     lick time:56
+Stamp:200.45
+
+
+Stimulus One Lick:204
+                     lick time:54
+Stamp:200.59
+
+
+Stimulus One Lick:205
+                     lick time:55
+Stamp:200.74
+
+
+Stimulus One Lick:206
+                     lick time:55
+Stamp:200.89
+
+
+Stimulus One Lick:207
+                     lick time:47
+Stamp:201.03
+
+
+Stimulus One Lick:208
+                     lick time:56
+Stamp:201.17
+
+
+Stimulus One Lick:209
+                     lick time:49
+Stamp:201.32
+
+
+Stimulus One Lick:210
+                     lick time:47
+Stamp:201.46
+
+
+Stimulus One Lick:211
+                     lick time:46
+Stamp:201.62
+
+
+Stimulus One Lick:212
+                     lick time:44
+Stamp:201.77
+
+
+Stimulus One Lick:213
+                     lick time:48
+Stamp:201.93
+
+
+Stimulus One Lick:214
+                     lick time:57
+Stamp:202.08
+
+
+Stimulus One Lick:215
+                     lick time:56
+Stamp:202.23
+
+
+Stimulus One Lick:216
+                     lick time:56
+Stamp:202.38
+
+
+Stimulus One Lick:217
+                     lick time:60
+Stamp:202.54
+
+
+Stimulus One Lick:218
+                     lick time:53
+Stamp:202.68
+
+
+Stimulus One Lick:219
+                     lick time:57
+Stamp:202.83
+
+
+Stimulus One Lick:220
+                     lick time:58
+Stamp:202.99
+
+
+Stimulus One Lick:221
+                     lick time:50
+Stamp:203.13
+
+
+Stimulus One Lick:222
+                     lick time:58
+Stamp:203.28
+
+
+Stimulus One Lick:223
+                     lick time:55
+Stamp:203.43
+
+
+Stimulus One Lick:224
+                     lick time:59
+Stamp:203.58
+
+
+Stimulus One Lick:225
+                     lick time:57
+Stamp:203.73
+
+
+Stimulus One Lick:226
+                     lick time:51
+Stamp:203.89
+
+
+Stimulus One Lick:227
+                     lick time:58
+Stamp:204.04
+
+
+Stimulus One Lick:228
+                     lick time:54
+Stamp:204.18
+
+
+Stimulus One Lick:229
+                     lick time:58
+Stamp:204.33
+
+
+Stimulus One Lick:230
+                     lick time:53
+Stamp:204.48
+
+
+Stimulus One Lick:231
+                     lick time:58
+Stamp:204.63
+
+
+Stimulus One Lick:232
+                     lick time:54
+Stamp:204.78
+
+
+Stimulus One Lick:233
+                     lick time:62
+Stamp:204.93
+
+
+Stimulus One Lick:234
+                     lick time:62
+Stamp:205.09
+
+
+Stimulus One Lick:235
+                     lick time:58
+Stamp:205.24
+
+
+Stimulus One Lick:236
+                     lick time:58
+Stamp:205.38
+
+
+Stimulus One Lick:237
+                     lick time:58
+Stamp:205.53
+
+
+Stimulus One Lick:238
+                     lick time:65
+Stamp:205.70
+
+
+Stimulus One Lick:239
+                     lick time:58
+Stamp:205.85
+
+
+Stimulus One Lick:240
+                     lick time:56
+Stamp:205.99
+
+
+Stimulus One Lick:241
+                     lick time:59
+Stamp:206.14
+
+
+Stimulus One Lick:242
+                     lick time:63
+Stamp:206.30
+
+
+Stimulus One Lick:243
+                     lick time:63
+Stamp:206.45
+
+
+Stimulus One Lick:244
+                     lick time:60
+Stamp:206.60
+
+
+Stimulus One Lick:245
+                     lick time:53
+Stamp:206.74
+
+
+Stimulus One Lick:246
+                     lick time:60
+Stamp:206.90
+
+
+Stimulus One Lick:247
+                     lick time:59
+Stamp:207.05
+
+
+Stimulus One Lick:248
+                     lick time:66
+Stamp:207.23
+
+
+Stimulus One Lick:249
+                     lick time:60
+Stamp:207.38
+
+
+Stimulus One Lick:250
+                     lick time:60
+Stamp:207.53
+
+
+Stimulus One Lick:251
+                     lick time:56
+Stamp:207.68
+
+
+Stimulus One Lick:252
+                     lick time:52
+Stamp:207.82
+
+
+Stimulus One Lick:253
+                     lick time:61
+Stamp:207.97
+
+
+Stimulus One Lick:254
+                     lick time:60
+Stamp:208.13
+
+
+Stimulus One Lick:255
+                     lick time:53
+Stamp:208.27
+
+
+Stimulus One Lick:256
+                     lick time:53
+Stamp:208.41
+
+
+Stimulus One Lick:257
+                     lick time:47
+Stamp:208.56
+
+
+Stimulus One Lick:258
+                     lick time:55
+Stamp:208.71
+
+
+Stimulus One Lick:259
+                     lick time:57
+Stamp:208.88
+
+
+Stimulus One Lick:260
+                     lick time:62
+Stamp:209.03
+
+
+Stimulus One Lick:261
+                     lick time:59
+Stamp:209.18
+
+
+Stimulus One Lick:262
+                     lick time:63
+Stamp:209.34
+
+
+Stimulus One Lick:263
+                     lick time:65
+Stamp:209.49
+
+
+Stimulus One Lick:264
+                     lick time:67
+Stamp:209.65
+
+
+Stimulus One Lick:265
+                     lick time:60
+Stamp:209.80
+
+
+Stimulus One Lick:266
+                     lick time:43
+Stamp:209.94
+
+
+Stimulus One Lick:267
+                     lick time:59
+Stamp:210.09
+
+
+Stimulus One Lick:268
+                     lick time:59
+Stamp:210.25
+
+
+Stimulus One Lick:269
+                     lick time:49
+Stamp:210.42
+
+
+Stimulus One Lick:270
+                     lick time:67
+Stamp:210.58
+
+
+Stimulus One Lick:271
+                     lick time:61
+Stamp:210.75
+
+
+Stimulus One Lick:272
+                     lick time:60
+Stamp:210.90
+
+
+Stimulus One Lick:273
+                     lick time:59
+Stamp:211.05
+
+
+Stimulus One Lick:274
+                     lick time:50
+Stamp:211.20
+
+
+Stimulus One Lick:275
+                     lick time:47
+Stamp:211.34
+
+
+Stimulus One Lick:276
+                     lick time:52
+Stamp:212.06
+
+
+Stimulus One Lick:277
+                     lick time:43
+Stamp:212.20
+
+
+Stimulus One Lick:278
+                     lick time:39
+Stamp:212.33
+
+
+Stimulus One Lick:279
+                     lick time:23
+Stamp:212.46
+
+
+Stimulus One Lick:280
+                     lick time:52
+Stamp:212.76
+
+
+Stimulus One Lick:281
+                     lick time:49
+Stamp:212.90
+
+
+Stimulus One Lick:282
+                     lick time:51
+Stamp:213.05
+
+
+Stimulus One Lick:283
+                     lick time:61
+Stamp:213.20
+
+
+Stimulus One Lick:284
+                     lick time:60
+Stamp:213.36
+
+
+Stimulus One Lick:285
+                     lick time:60
+Stamp:213.51
+
+
+Stimulus One Lick:286
+                     lick time:61
+Stamp:213.67
+
+
+Stimulus One Lick:287
+                     lick time:64
+Stamp:213.83
+
+
+Stimulus One Lick:288
+                     lick time:60
+Stamp:213.98
+
+
+Stimulus One Lick:289
+                     lick time:65
+Stamp:214.15
+
+
+Stimulus One Lick:290
+                     lick time:51
+Stamp:214.29
+
+
+Stimulus One Lick:291
+                     lick time:39
+Stamp:215.66
+
+
+Stimulus One Lick:292
+                     lick time:38
+Stamp:215.78
+
+
+Stimulus One Lick:293
+                     lick time:29
+Stamp:215.90
+
+
+Stimulus One Lick:294
+                     lick time:47
+Stamp:216.04
+
+
+Stimulus One Lick:295
+                     lick time:55
+Stamp:216.18
+
+
+Stimulus One Lick:296
+                     lick time:64
+Stamp:216.34
+
+
+Stimulus One Lick:297
+                     lick time:57
+Stamp:216.48
+
+
+Stimulus One Lick:298
+                     lick time:57
+Stamp:216.62
+
+
+Stimulus One Lick:299
+                     lick time:56
+Stamp:216.77
+
+
+Stimulus One Lick:300
+                     lick time:58
+Stamp:216.92
+
+
+Stimulus One Lick:301
+                     lick time:61
+Stamp:217.07
+
+
+Stimulus One Lick:302
+                     lick time:60
+Stamp:217.22
+
+
+Stimulus One Lick:303
+                     lick time:54
+Stamp:217.36
+
+
+Stimulus One Lick:304
+                     lick time:58
+Stamp:217.51
+
+
+Stimulus One Lick:305
+                     lick time:66
+Stamp:217.67
+
+
+Stimulus One Lick:306
+                     lick time:56
+Stamp:217.83
+
+
+Stimulus One Lick:307
+                     lick time:60
+Stamp:217.99
+
+
+Stimulus One Lick:308
+                     lick time:63
+Stamp:218.15
+
+
+Stimulus One Lick:309
+                     lick time:50
+Stamp:218.30
+
+
+Stimulus One Lick:310
+                     lick time:12
+Stamp:218.45
+
+
+Stimulus One Lick:311
+                     lick time:53
+Stamp:220.00
+
+
+Stimulus One Lick:312
+                     lick time:50
+Stamp:220.13
+
+
+Stimulus One Lick:313
+                     lick time:48
+Stamp:220.26
+
+
+Stimulus One Lick:314
+                     lick time:49
+Stamp:220.40
+
+
+Stimulus One Lick:315
+                     lick time:57
+Stamp:220.55
+
+
+Stimulus One Lick:316
+                     lick time:41
+Stamp:220.72
+
+
+Stimulus One Lick:317
+                     lick time:36
+Stamp:220.87
+
+
+Stimulus One Lick:318
+                     lick time:55
+Stamp:221.02
+
+
+Stimulus One Lick:319
+                     lick time:57
+Stamp:221.17
+
+
+Stimulus One Lick:320
+                     lick time:54
+Stamp:221.32
+
+
+Stimulus One Lick:321
+                     lick time:55
+Stamp:221.47
+
+
+Stimulus One Lick:322
+                     lick time:65
+Stamp:221.63
+
+
+Stimulus One Lick:323
+                     lick time:60
+Stamp:221.77
+
+
+Stimulus One Lick:324
+                     lick time:59
+Stamp:221.93
+
+
+Stimulus One Lick:325
+                     lick time:57
+Stamp:222.08
+
+
+Stimulus One Lick:326
+                     lick time:58
+Stamp:222.22
+
+
+Stimulus One Lick:327
+                     lick time:64
+Stamp:222.38
+
+
+Stimulus One Lick:328
+                     lick time:60
+Stamp:222.53
+
+
+Stimulus One Lick:329
+                     lick time:61
+Stamp:222.68
+
+
+Stimulus One Lick:330
+                     lick time:62
+Stamp:222.83
+
+
+Stimulus One Lick:331
+                     lick time:60
+Stamp:222.98
+
+
+Stimulus One Lick:332
+                     lick time:63
+Stamp:223.14
+
+
+Stimulus One Lick:333
+                     lick time:60
+Stamp:223.29
+
+
+Stimulus One Lick:334
+                     lick time:62
+Stamp:223.45
+
+
+Stimulus One Lick:335
+                     lick time:56
+Stamp:223.60
+
+
+Stimulus One Lick:336
+                     lick time:61
+Stamp:223.77
+
+
+Stimulus One Lick:337
+                     lick time:61
+Stamp:223.94
+
+
+Stimulus One Lick:338
+                     lick time:53
+Stamp:224.08
+
+
+Stimulus One Lick:339
+                     lick time:54
+Stamp:224.23
+
+
+Stimulus One Lick:340
+                     lick time:56
+Stamp:224.38
+
+
+Stimulus One Lick:341
+                     lick time:68
+Stamp:224.56
+
+
+Stimulus One Lick:342
+                     lick time:58
+Stamp:224.71
+
+
+Stimulus One Lick:343
+                     lick time:63
+Stamp:224.85
+
+
+Stimulus One Lick:344
+                     lick time:58
+Stamp:225.00
+
+
+Stimulus One Lick:345
+                     lick time:59
+Stamp:225.16
+
+
+Stimulus One Lick:346
+                     lick time:59
+Stamp:225.31
+
+
+Stimulus One Lick:347
+                     lick time:61
+Stamp:225.46
+
+
+Stimulus One Lick:348
+                     lick time:53
+Stamp:225.60
+
+
+Stimulus One Lick:349
+                     lick time:53
+Stamp:225.74
+
+
+Stimulus One Lick:350
+                     lick time:57
+Stamp:225.88
+
+
+Stimulus One Lick:351
+                     lick time:61
+Stamp:226.04
+
+
+Stimulus One Lick:352
+                     lick time:60
+Stamp:226.19
+
+
+Stimulus One Lick:353
+                     lick time:61
+Stamp:226.34
+
+
+Stimulus One Lick:354
+                     lick time:51
+Stamp:226.50
+
+
+Stimulus One Lick:355
+                     lick time:58
+Stamp:226.65
+
+
+Stimulus One Lick:356
+                     lick time:58
+Stamp:226.80
+
+
+Stimulus One Lick:357
+                     lick time:56
+Stamp:226.94
+
+
+Stimulus One Lick:358
+                     lick time:54
+Stamp:227.10
+
+
+Stimulus One Lick:359
+                     lick time:52
+Stamp:227.25
+
+
+Stimulus One Lick:360
+                     lick time:51
+Stamp:227.39
+
+
+Stimulus One Lick:361
+                     lick time:62
+Stamp:227.55
+
+
+Stimulus One Lick:362
+                     lick time:58
+Stamp:227.70
+
+
+Stimulus One Lick:363
+                     lick time:57
+Stamp:227.86
+
+
+Stimulus One Lick:364
+                     lick time:50
+Stamp:228.01
+
+
+Stimulus One Lick:365
+                     lick time:56
+Stamp:228.15
+
+
+Stimulus One Lick:366
+                     lick time:49
+Stamp:228.29
+
+
+Stimulus One Lick:367
+                     lick time:30
+Stamp:228.48
+
+
+Stimulus One Lick:368
+                     lick time:54
+Stamp:228.63
+
+
+Stimulus One Lick:369
+                     lick time:57
+Stamp:228.80
+
+
+Stimulus One Lick:370
+                     lick time:42
+Stamp:228.93
+
+
+Stimulus One Lick:371
+                     lick time:51
+Stamp:229.08
+
+
+Stimulus One Lick:372
+                     lick time:50
+Stamp:229.23
+
+
+Stimulus One Lick:373
+                     lick time:51
+Stamp:229.38
+
+
+Stimulus One Lick:374
+                     lick time:49
+Stamp:229.67
+
+
+Stimulus One Lick:375
+                     lick time:35
+Stamp:231.27
+
+
+Stimulus One Lick:376
+                     lick time:35
+Stamp:231.39
+
+
+Stimulus One Lick:377
+                     lick time:111
+Stamp:232.91
+
+
+Stimulus One Lick:378
+                     lick time:9
+Stamp:290.32
+
+
+Stimulus One Lick:379
+                     lick time:7
+Stamp:290.78
+
+
+Stimulus One Lick:380
+                     lick time:4
+Stamp:290.85
+
+
+Stimulus One Lick:381
+                     lick time:38
+Stamp:291.02
+
+
+Stimulus One Lick:382
+                     lick time:33
+Stamp:416.67
+
+
+Stimulus One Lick:383
+                     lick time:4
+Stamp:523.61
+
+
+Stimulus One Lick:384
+                     lick time:11
+Stamp:524.32
+
+
+Stimulus One Lick:385
+                     lick time:46
+Stamp:524.93
+
+
+Stimulus One Lick:386
+                     lick time:65
+Stamp:525.09
+
+
+Stimulus One Lick:387
+                     lick time:53
+Stamp:525.26
+
+
+Stimulus One Lick:388
+                     lick time:31
+Stamp:525.60
+
+
+Stimulus One Lick:389
+                     lick time:105
+Stamp:525.81
+
+
+Stimulus One Lick:390
+                     lick time:206
+Stamp:526.14
+
+
+Stimulus One Lick:391
+                     lick time:48
+Stamp:526.31
+
+
+Stimulus One Lick:392
+                     lick time:18
+Stamp:526.38
+
+
+Stimulus One Lick:393
+                     lick time:104
+Stamp:526.91
+
+
+Stimulus One Lick:394
+                     lick time:53
+Stamp:527.16
+
+
+Stimulus One Lick:395
+                     lick time:113
+Stamp:527.44
+
+
+Stimulus One Lick:396
+                     lick time:145
+Stamp:527.87
+
+
+Stimulus One Lick:397
+                     lick time:38
+Stamp:528.06
+
+
+Stimulus One Lick:398
+                     lick time:108
+Stamp:528.54
+
+
+Stimulus One Lick:399
+                     lick time:47
+Stamp:530.46
+
+
+Stimulus One Lick:400
+                     lick time:39
+Stamp:530.97
+
+
+Stimulus One Lick:401
+                     lick time:32
+Stamp:531.08
+
+
+Stimulus One Lick:402
+                     lick time:30
+Stamp:531.23
+
+
+Stimulus One Lick:403
+                     lick time:32
+Stamp:531.38
+
+
+Stimulus One Lick:404
+                     lick time:48
+Stamp:531.51
+
+
+Stimulus One Lick:405
+                     lick time:33
+Stamp:531.85
+
+
+Stimulus One Lick:406
+                     lick time:48
+Stamp:531.97
+
+
+Stimulus One Lick:407
+                     lick time:46
+Stamp:532.10
+
+
+Stimulus One Lick:408
+                     lick time:47
+Stamp:532.22
+
+
+Stimulus One Lick:409
+                     lick time:51
+Stamp:532.35
+
+
+Stimulus One Lick:410
+                     lick time:44
+Stamp:532.46
+
+
+Stimulus One Lick:411
+                     lick time:38
+Stamp:532.58
+
+
+Stimulus One Lick:412
+                     lick time:35
+Stamp:532.70
+
+
+Stimulus One Lick:413
+                     lick time:46
+Stamp:532.83
+
+
+Stimulus One Lick:414
+                     lick time:55
+Stamp:532.96
+
+
+Stimulus One Lick:415
+                     lick time:27
+Stamp:533.07
+
+
+Stimulus One Lick:416
+                     lick time:41
+Stamp:533.22
+
+
+Stimulus One Lick:417
+                     lick time:50
+Stamp:533.35
+
+
+Stimulus One Lick:418
+                     lick time:41
+Stamp:533.48
+
+
+Stimulus One Lick:419
+                     lick time:43
+Stamp:533.61
+
+
+Stimulus One Lick:420
+                     lick time:31
+Stamp:533.74
+
+
+Stimulus One Lick:421
+                     lick time:51
+Stamp:533.88
+
+
+Stimulus One Lick:422
+                     lick time:58
+Stamp:534.02
+
+
+Stimulus One Lick:423
+                     lick time:54
+Stamp:534.16
+
+
+Stimulus One Lick:424
+                     lick time:24
+Stamp:534.28
+
+
+Stimulus One Lick:425
+                     lick time:55
+Stamp:534.42
+
+
+Stimulus One Lick:426
+                     lick time:49
+Stamp:534.56
+
+
+Stimulus One Lick:427
+                     lick time:53
+Stamp:534.69
+
+
+Stimulus One Lick:428
+                     lick time:36
+Stamp:534.82
+
+
+Stimulus One Lick:429
+                     lick time:50
+Stamp:534.95
+
+
+Stimulus One Lick:430
+                     lick time:62
+Stamp:535.10
+
+
+Stimulus One Lick:431
+                     lick time:53
+Stamp:535.24
+
+
+Stimulus One Lick:432
+                     lick time:46
+Stamp:535.37
+
+
+Stimulus One Lick:433
+                     lick time:59
+Stamp:535.52
+
+
+Stimulus One Lick:434
+                     lick time:58
+Stamp:535.66
+
+
+Stimulus One Lick:435
+                     lick time:61
+Stamp:535.81
+
+
+Stimulus One Lick:436
+                     lick time:64
+Stamp:535.96
+
+
+Stimulus One Lick:437
+                     lick time:64
+Stamp:536.11
+
+
+Stimulus One Lick:438
+                     lick time:41
+Stamp:536.25
+
+
+Stimulus One Lick:439
+                     lick time:32
+Stamp:536.38
+
+
+Stimulus One Lick:440
+                     lick time:58
+Stamp:536.53
+
+
+Stimulus One Lick:441
+                     lick time:56
+Stamp:536.67
+
+
+Stimulus One Lick:442
+                     lick time:53
+Stamp:536.82
+
+
+Stimulus One Lick:443
+                     lick time:43
+Stamp:536.97
+
+
+Stimulus One Lick:444
+                     lick time:38
+Stamp:537.11
+
+
+Stimulus One Lick:445
+                     lick time:49
+Stamp:537.25
+
+
+Stimulus One Lick:446
+                     lick time:40
+Stamp:537.38
+
+
+Stimulus One Lick:447
+                     lick time:34
+Stamp:537.52
+
+
+Stimulus One Lick:448
+                     lick time:50
+Stamp:537.66
+
+
+Stimulus One Lick:449
+                     lick time:66
+Stamp:537.81
+
+
+Stimulus One Lick:450
+                     lick time:58
+Stamp:537.95
+
+
+Stimulus One Lick:451
+                     lick time:44
+Stamp:538.08
+
+
+Stimulus One Lick:452
+                     lick time:48
+Stamp:538.25
+
+
+Stimulus One Lick:453
+                     lick time:50
+Stamp:538.39
+
+
+Stimulus One Lick:454
+                     lick time:52
+Stamp:538.53
+
+
+Stimulus One Lick:455
+                     lick time:40
+Stamp:538.67
+
+
+Stimulus One Lick:456
+                     lick time:45
+Stamp:538.80
+
+
+Stimulus One Lick:457
+                     lick time:55
+Stamp:538.95
+
+
+Stimulus One Lick:458
+                     lick time:49
+Stamp:539.10
+
+
+Stimulus One Lick:459
+                     lick time:42
+Stamp:539.22
+
+
+Stimulus One Lick:460
+                     lick time:54
+Stamp:539.38
+
+
+Stimulus One Lick:461
+                     lick time:44
+Stamp:539.51
+
+
+Stimulus One Lick:462
+                     lick time:54
+Stamp:539.66
+
+
+Stimulus One Lick:463
+                     lick time:36
+Stamp:539.80
+
+
+Stimulus One Lick:464
+                     lick time:47
+Stamp:539.97
+
+
+Stimulus One Lick:465
+                     lick time:56
+Stamp:540.12
+
+
+Stimulus One Lick:466
+                     lick time:46
+Stamp:540.26
+
+
+Stimulus One Lick:467
+                     lick time:44
+Stamp:540.40
+
+
+Stimulus One Lick:468
+                     lick time:65
+Stamp:540.55
+
+
+Stimulus One Lick:469
+                     lick time:65
+Stamp:540.70
+
+
+Stimulus One Lick:470
+                     lick time:66
+Stamp:540.85
+
+
+Stimulus One Lick:471
+                     lick time:64
+Stamp:540.99
+
+
+Stimulus One Lick:472
+                     lick time:48
+Stamp:541.14
+
+
+Stimulus One Lick:473
+                     lick time:57
+Stamp:541.32
+
+
+Stimulus One Lick:474
+                     lick time:6
+Stamp:541.43
+
+
+Stimulus One Lick:475
+                     lick time:55
+Stamp:541.60
+
+
+Stimulus One Lick:476
+                     lick time:39
+Stamp:541.73
+
+
+Stimulus One Lick:477
+                     lick time:49
+Stamp:541.88
+
+
+Stimulus One Lick:478
+                     lick time:43
+Stamp:542.02
+
+
+Stimulus One Lick:479
+                     lick time:36
+Stamp:542.16
+
+
+Stimulus One Lick:480
+                     lick time:51
+Stamp:542.31
+
+
+Stimulus One Lick:481
+                     lick time:48
+Stamp:542.45
+
+
+Stimulus One Lick:482
+                     lick time:55
+Stamp:542.60
+
+
+Stimulus One Lick:483
+                     lick time:35
+Stamp:542.73
+
+
+Stimulus One Lick:484
+                     lick time:47
+Stamp:542.87
+
+
+Stimulus One Lick:485
+                     lick time:44
+Stamp:543.03
+
+
+Stimulus One Lick:486
+                     lick time:35
+Stamp:543.17
+
+
+Stimulus One Lick:487
+                     lick time:50
+Stamp:543.32
+
+
+Stimulus One Lick:488
+                     lick time:37
+Stamp:543.45
+
+
+Stimulus One Lick:489
+                     lick time:40
+Stamp:543.60
+
+
+Stimulus One Lick:490
+                     lick time:66
+Stamp:543.75
+
+
+Stimulus One Lick:491
+                     lick time:67
+Stamp:543.91
+
+
+Stimulus One Lick:492
+                     lick time:55
+Stamp:544.04
+
+
+Stimulus One Lick:493
+                     lick time:42
+Stamp:544.19
+
+
+Stimulus One Lick:494
+                     lick time:42
+Stamp:544.32
+
+
+Stimulus One Lick:495
+                     lick time:56
+Stamp:544.47
+
+
+Stimulus One Lick:496
+                     lick time:58
+Stamp:544.62
+
+
+Stimulus One Lick:497
+                     lick time:59
+Stamp:544.77
+
+
+Stimulus One Lick:498
+                     lick time:50
+Stamp:544.92
+
+
+Stimulus One Lick:499
+                     lick time:53
+Stamp:545.07
+
+
+Stimulus One Lick:500
+                     lick time:40
+Stamp:545.20
+
+
+Stimulus One Lick:501
+                     lick time:57
+Stamp:545.35
+
+
+Stimulus One Lick:502
+                     lick time:65
+Stamp:545.51
+
+
+Stimulus One Lick:503
+                     lick time:65
+Stamp:545.66
+
+
+Stimulus One Lick:504
+                     lick time:54
+Stamp:545.80
+
+
+Stimulus One Lick:505
+                     lick time:46
+Stamp:545.96
+
+
+Stimulus One Lick:506
+                     lick time:40
+Stamp:546.09
+
+
+Stimulus One Lick:507
+                     lick time:39
+Stamp:546.22
+
+
+Stimulus One Lick:508
+                     lick time:67
+Stamp:546.38
+
+
+Stimulus One Lick:509
+                     lick time:55
+Stamp:546.53
+
+
+Stimulus One Lick:510
+                     lick time:53
+Stamp:546.67
+
+
+Stimulus One Lick:511
+                     lick time:39
+Stamp:546.80
+
+
+Stimulus One Lick:512
+                     lick time:30
+Stamp:546.94
+
+
+Stimulus One Lick:513
+                     lick time:62
+Stamp:547.12
+
+
+Stimulus One Lick:514
+                     lick time:30
+Stamp:547.25
+
+
+Stimulus One Lick:515
+                     lick time:59
+Stamp:547.42
+
+
+Stimulus One Lick:516
+                     lick time:46
+Stamp:547.56
+
+
+Stimulus One Lick:517
+                     lick time:42
+Stamp:547.70
+
+
+Stimulus One Lick:518
+                     lick time:58
+Stamp:547.86
+
+
+Stimulus One Lick:519
+                     lick time:57
+Stamp:548.00
+
+
+Stimulus One Lick:520
+                     lick time:55
+Stamp:548.14
+
+
+Stimulus One Lick:521
+                     lick time:40
+Stamp:548.28
+
+
+Stimulus One Lick:522
+                     lick time:9
+Stamp:548.40
+
+
+Stimulus One Lick:523
+                     lick time:58
+Stamp:548.58
+
+
+Stimulus One Lick:524
+                     lick time:55
+Stamp:548.72
+
+
+Stimulus One Lick:525
+                     lick time:24
+Stamp:548.85
+
+
+Stimulus One Lick:526
+                     lick time:57
+Stamp:549.01
+
+
+Stimulus One Lick:527
+                     lick time:52
+Stamp:549.17
+
+
+Stimulus One Lick:528
+                     lick time:68
+Stamp:549.33
+
+
+Stimulus One Lick:529
+                     lick time:40
+Stamp:549.46
+
+
+Stimulus One Lick:530
+                     lick time:46
+Stamp:549.61
+
+
+Stimulus One Lick:531
+                     lick time:41
+Stamp:549.74
+
+
+Stimulus One Lick:532
+                     lick time:46
+Stamp:549.89
+
+
+Stimulus One Lick:533
+                     lick time:40
+Stamp:550.03
+
+
+Stimulus One Lick:534
+                     lick time:44
+Stamp:550.17
+
+
+Stimulus One Lick:535
+                     lick time:35
+Stamp:550.30
+
+
+Stimulus One Lick:536
+                     lick time:41
+Stamp:550.48
+
+
+Stimulus One Lick:537
+                     lick time:48
+Stamp:550.63
+
+
+Stimulus One Lick:538
+                     lick time:44
+Stamp:550.77
+
+
+Stimulus One Lick:539
+                     lick time:51
+Stamp:550.91
+
+
+Stimulus One Lick:540
+                     lick time:53
+Stamp:551.06
+
+
+Stimulus One Lick:541
+                     lick time:35
+Stamp:551.19
+
+
+Stimulus One Lick:542
+                     lick time:52
+Stamp:551.34
+
+
+Stimulus One Lick:543
+                     lick time:43
+Stamp:551.47
+
+
+Stimulus One Lick:544
+                     lick time:60
+Stamp:551.63
+
+
+Stimulus One Lick:545
+                     lick time:45
+Stamp:551.79
+
+
+Stimulus One Lick:546
+                     lick time:10
+Stamp:551.90
+
+
+Stimulus One Lick:547
+                     lick time:58
+Stamp:552.07
+
+
+Stimulus One Lick:548
+                     lick time:49
+Stamp:552.21
+
+
+Stimulus One Lick:549
+                     lick time:46
+Stamp:552.35
+
+
+Stimulus One Lick:550
+                     lick time:50
+Stamp:552.49
+
+
+Stimulus One Lick:551
+                     lick time:54
+Stamp:552.64
+
+
+Stimulus One Lick:552
+                     lick time:55
+Stamp:552.79
+
+
+Stimulus One Lick:553
+                     lick time:64
+Stamp:552.94
+
+
+Stimulus One Lick:554
+                     lick time:42
+Stamp:553.11
+
+
+Stimulus One Lick:555
+                     lick time:33
+Stamp:553.24
+
+
+Stimulus One Lick:556
+                     lick time:67
+Stamp:553.40
+
+
+Stimulus One Lick:557
+                     lick time:42
+Stamp:553.54
+
+
+Stimulus One Lick:558
+                     lick time:44
+Stamp:553.68
+
+
+Stimulus One Lick:559
+                     lick time:40
+Stamp:553.82
+
+
+Stimulus One Lick:560
+                     lick time:48
+Stamp:553.96
+
+
+Stimulus One Lick:561
+                     lick time:45
+Stamp:554.10
+
+
+Stimulus One Lick:562
+                     lick time:49
+Stamp:554.24
+
+
+Stimulus One Lick:563
+                     lick time:40
+Stamp:554.38
+
+
+Stimulus One Lick:564
+                     lick time:37
+Stamp:554.53
+
+
+Stimulus One Lick:565
+                     lick time:52
+Stamp:554.68
+
+
+Stimulus One Lick:566
+                     lick time:58
+Stamp:554.83
+
+
+Stimulus One Lick:567
+                     lick time:42
+Stamp:554.97
+
+
+Stimulus One Lick:568
+                     lick time:38
+Stamp:555.10
+
+
+Stimulus One Lick:569
+                     lick time:59
+Stamp:555.25
+
+
+Stimulus One Lick:570
+                     lick time:55
+Stamp:555.40
+
+
+Stimulus One Lick:571
+                     lick time:54
+Stamp:555.55
+
+
+Stimulus One Lick:572
+                     lick time:53
+Stamp:555.69
+
+
+Stimulus One Lick:573
+                     lick time:46
+Stamp:555.84
+
+
+Stimulus One Lick:574
+                     lick time:16
+Stamp:555.98
+
+
+Stimulus One Lick:575
+                     lick time:63
+Stamp:556.15
+
+
+Stimulus One Lick:576
+                     lick time:37
+Stamp:556.29
+
+
+Stimulus One Lick:577
+                     lick time:52
+Stamp:556.44
+
+
+Stimulus One Lick:578
+                     lick time:61
+Stamp:556.59
+
+
+Stimulus One Lick:579
+                     lick time:33
+Stamp:556.72
+
+
+Stimulus One Lick:580
+                     lick time:48
+Stamp:556.86
+
+
+Stimulus One Lick:581
+                     lick time:58
+Stamp:557.01
+
+
+Stimulus One Lick:582
+                     lick time:41
+Stamp:557.38
+
+
+Stimulus One Lick:583
+                     lick time:55
+Stamp:557.53
+
+
+Stimulus One Lick:584
+                     lick time:57
+Stamp:557.69
+
+
+Stimulus One Lick:585
+                     lick time:56
+Stamp:557.84
+
+
+Stimulus One Lick:586
+                     lick time:54
+Stamp:557.98
+
+
+Stimulus One Lick:587
+                     lick time:48
+Stamp:558.12
+
+
+Stimulus One Lick:588
+                     lick time:60
+Stamp:558.28
+
+
+Stimulus One Lick:589
+                     lick time:60
+Stamp:558.42
+
+
+Stimulus One Lick:590
+                     lick time:57
+Stamp:558.57
+
+
+Stimulus One Lick:591
+                     lick time:56
+Stamp:558.72
+
+
+Stimulus One Lick:592
+                     lick time:42
+Stamp:558.86
+
+
+Stimulus One Lick:593
+                     lick time:52
+Stamp:559.01
+
+
+Stimulus One Lick:594
+                     lick time:56
+Stamp:559.16
+
+
+Stimulus One Lick:595
+                     lick time:57
+Stamp:559.32
+
+
+Stimulus One Lick:596
+                     lick time:57
+Stamp:559.48
+
+
+Stimulus One Lick:597
+                     lick time:59
+Stamp:559.63
+
+
+Stimulus One Lick:598
+                     lick time:58
+Stamp:559.78
+
+
+Stimulus One Lick:599
+                     lick time:49
+Stamp:559.93
+
+
+Stimulus One Lick:600
+                     lick time:53
+Stamp:560.07
+
+
+Stimulus One Lick:601
+                     lick time:64
+Stamp:560.23
+
+
+Stimulus One Lick:602
+                     lick time:63
+Stamp:560.39
+
+
+Stimulus One Lick:603
+                     lick time:58
+Stamp:560.54
+
+
+Stimulus One Lick:604
+                     lick time:45
+Stamp:560.68
+
+
+Stimulus One Lick:605
+                     lick time:56
+Stamp:560.84
+
+
+Stimulus One Lick:606
+                     lick time:51
+Stamp:560.99
+
+
+Stimulus One Lick:607
+                     lick time:46
+Stamp:561.14
+
+
+Stimulus One Lick:608
+                     lick time:64
+Stamp:561.31
+
+
+Stimulus One Lick:609
+                     lick time:63
+Stamp:561.45
+
+
+Stimulus One Lick:610
+                     lick time:58
+Stamp:561.61
+
+
+Stimulus One Lick:611
+                     lick time:51
+Stamp:561.75
+
+
+Stimulus One Lick:612
+                     lick time:55
+Stamp:561.89
+
+
+Stimulus One Lick:613
+                     lick time:46
+Stamp:562.03
+
+
+Stimulus One Lick:614
+                     lick time:53
+Stamp:562.18
+
+
+Stimulus One Lick:615
+                     lick time:45
+Stamp:562.34
+
+
+Stimulus One Lick:616
+                     lick time:45
+Stamp:562.48
+
+
+Stimulus One Lick:617
+                     lick time:63
+Stamp:562.63
+
+
+Stimulus One Lick:618
+                     lick time:65
+Stamp:562.79
+
+
+Stimulus One Lick:619
+                     lick time:58
+Stamp:562.95
+
+
+Stimulus One Lick:620
+                     lick time:43
+Stamp:563.09
+
+
+Stimulus One Lick:621
+                     lick time:45
+Stamp:563.24
+
+
+Stimulus One Lick:622
+                     lick time:68
+Stamp:563.52
+
+
+Stimulus One Lick:623
+                     lick time:58
+Stamp:563.66
+
+
+Stimulus One Lick:624
+                     lick time:50
+Stamp:563.80
+
+
+Stimulus One Lick:625
+                     lick time:57
+Stamp:563.95
+
+
+Stimulus One Lick:626
+                     lick time:56
+Stamp:564.09
+
+
+Stimulus One Lick:627
+                     lick time:44
+Stamp:564.26
+
+
+Stimulus One Lick:628
+                     lick time:58
+Stamp:564.40
+
+
+Stimulus One Lick:629
+                     lick time:35
+Stamp:564.56
+
+
+Stimulus One Lick:630
+                     lick time:33
+Stamp:565.10
+
+
+Stimulus One Lick:631
+                     lick time:46
+Stamp:565.24
+
+
+Stimulus One Lick:632
+                     lick time:69
+Stamp:565.41
+
+
+Stimulus One Lick:633
+                     lick time:55
+Stamp:565.55
+
+
+Stimulus One Lick:634
+                     lick time:61
+Stamp:565.70
+
+
+Stimulus One Lick:635
+                     lick time:56
+Stamp:565.88
+
+
+Stimulus One Lick:636
+                     lick time:42
+Stamp:566.01
+
+
+Stimulus One Lick:637
+                     lick time:56
+Stamp:566.16
+
+
+Stimulus One Lick:638
+                     lick time:52
+Stamp:566.30
+
+
+Stimulus One Lick:639
+                     lick time:50
+Stamp:566.44
+
+
+Stimulus One Lick:640
+                     lick time:51
+Stamp:566.60
+
+
+Stimulus One Lick:641
+                     lick time:47
+Stamp:566.76
+
+
+Stimulus One Lick:642
+                     lick time:58
+Stamp:566.91
+
+
+Stimulus One Lick:643
+                     lick time:48
+Stamp:567.05
+
+
+Stimulus One Lick:644
+                     lick time:19
+Stamp:567.16
+
+
+Stimulus One Lick:645
+                     lick time:44
+Stamp:567.67
+
+
+Stimulus One Lick:646
+                     lick time:40
+Stamp:567.81
+
+
+Stimulus One Lick:647
+                     lick time:37
+Stamp:567.93
+
+
+Stimulus One Lick:648
+                     lick time:62
+Stamp:568.09
+
+
+Stimulus One Lick:649
+                     lick time:44
+Stamp:568.23
+
+
+Stimulus One Lick:650
+                     lick time:41
+Stamp:568.37
+
+
+Stimulus One Lick:651
+                     lick time:58
+Stamp:568.52
+
+
+Stimulus One Lick:652
+                     lick time:56
+Stamp:568.67
+
+
+Stimulus One Lick:653
+                     lick time:61
+Stamp:568.81
+
+
+Stimulus One Lick:654
+                     lick time:59
+Stamp:568.97
+
+
+Stimulus One Lick:655
+                     lick time:62
+Stamp:569.12
+
+
+Stimulus One Lick:656
+                     lick time:16
+Stamp:569.27
+
+
+Stimulus One Lick:657
+                     lick time:58
+Stamp:569.45
+
+
+Stimulus One Lick:658
+                     lick time:60
+Stamp:569.59
+
+
+Stimulus One Lick:659
+                     lick time:61
+Stamp:569.74
+
+
+Stimulus One Lick:660
+                     lick time:56
+Stamp:569.89
+
+
+Stimulus One Lick:661
+                     lick time:49
+Stamp:570.03
+
+
+Stimulus One Lick:662
+                     lick time:55
+Stamp:570.17
+
+
+Stimulus One Lick:663
+                     lick time:57
+Stamp:570.32
+
+
+Stimulus One Lick:664
+                     lick time:55
+Stamp:570.47
+
+
+Stimulus One Lick:665
+                     lick time:51
+Stamp:570.61
+
+
+Stimulus One Lick:666
+                     lick time:31
+Stamp:570.75
+
+
+Stimulus One Lick:667
+                     lick time:61
+Stamp:570.90
+
+
+Stimulus One Lick:668
+                     lick time:44
+Stamp:571.05
+
+
+Stimulus One Lick:669
+                     lick time:63
+Stamp:571.23
+
+
+Stimulus One Lick:670
+                     lick time:63
+Stamp:571.38
+
+
+Stimulus One Lick:671
+                     lick time:63
+Stamp:571.53
+
+
+Stimulus One Lick:672
+                     lick time:57
+Stamp:571.67
+
+
+Stimulus One Lick:673
+                     lick time:57
+Stamp:571.80
+
+
+Stimulus One Lick:674
+                     lick time:60
+Stamp:571.95
+
+
+Stimulus One Lick:675
+                     lick time:59
+Stamp:572.09
+
+
+Stimulus One Lick:676
+                     lick time:55
+Stamp:572.23
+
+
+Stimulus One Lick:677
+                     lick time:39
+Stamp:572.36
+
+
+Stimulus One Lick:678
+                     lick time:36
+Stamp:572.50
+
+
+Stimulus One Lick:679
+                     lick time:61
+Stamp:572.66
+
+
+Stimulus One Lick:680
+                     lick time:59
+Stamp:572.83
+
+
+Stimulus One Lick:681
+                     lick time:64
+Stamp:572.99
+
+
+Stimulus One Lick:682
+                     lick time:56
+Stamp:573.13
+
+
+Stimulus One Lick:683
+                     lick time:59
+Stamp:573.28
+
+
+Stimulus One Lick:684
+                     lick time:52
+Stamp:573.43
+
+
+Stimulus One Lick:685
+                     lick time:29
+Stamp:573.57
+
+
+Stimulus One Lick:686
+                     lick time:63
+Stamp:573.73
+
+
+Stimulus One Lick:687
+                     lick time:56
+Stamp:573.87
+
+
+Stimulus One Lick:688
+                     lick time:54
+Stamp:574.01
+
+
+Stimulus One Lick:689
+                     lick time:52
+Stamp:574.16
+
+
+Stimulus One Lick:690
+                     lick time:54
+Stamp:574.30
+
+
+Stimulus One Lick:691
+                     lick time:56
+Stamp:574.45
+
+
+Stimulus One Lick:692
+                     lick time:56
+Stamp:574.61
+
+
+Stimulus One Lick:693
+                     lick time:53
+Stamp:574.76
+
+
+Stimulus One Lick:694
+                     lick time:35
+Stamp:574.90
+
+
+Stimulus One Lick:695
+                     lick time:4
+Stamp:576.25
+
+
+Stimulus One Lick:696
+                     lick time:52
+Stamp:576.39
+
+
+Stimulus One Lick:697
+                     lick time:53
+Stamp:576.52
+
+
+Stimulus One Lick:698
+                     lick time:40
+Stamp:576.66
+
+
+Stimulus One Lick:699
+                     lick time:46
+Stamp:576.80
+
+
+Stimulus One Lick:700
+                     lick time:52
+Stamp:576.95
+
+
+Stimulus One Lick:701
+                     lick time:42
+Stamp:577.10
+
+
+Stimulus One Lick:702
+                     lick time:9
+Stamp:577.23
+
+
+Stimulus One Lick:703
+                     lick time:43
+Stamp:577.43
+
+
+Stimulus One Lick:704
+                     lick time:61
+Stamp:577.57
+
+
+Stimulus One Lick:705
+                     lick time:65
+Stamp:577.72
+
+
+Stimulus One Lick:706
+                     lick time:51
+Stamp:577.86
+
+
+Stimulus One Lick:707
+                     lick time:52
+Stamp:578.01
+
+
+Stimulus One Lick:708
+                     lick time:64
+Stamp:578.17
+
+
+Stimulus One Lick:709
+                     lick time:53
+Stamp:578.30
+
+
+Stimulus One Lick:710
+                     lick time:59
+Stamp:578.44
+
+
+Stimulus One Lick:711
+                     lick time:60
+Stamp:578.59
+
+
+Stimulus One Lick:712
+                     lick time:61
+Stamp:578.73
+
+
+Stimulus One Lick:713
+                     lick time:61
+Stamp:578.88
+
+
+Stimulus One Lick:714
+                     lick time:38
+Stamp:579.01
+
+
+Stimulus One Lick:715
+                     lick time:11
+Stamp:579.16
+
+
+Stimulus One Lick:716
+                     lick time:64
+Stamp:579.34
+
+
+Stimulus One Lick:717
+                     lick time:63
+Stamp:579.49
+
+
+Stimulus One Lick:718
+                     lick time:57
+Stamp:579.63
+
+
+Stimulus One Lick:719
+                     lick time:54
+Stamp:579.78
+
+
+Stimulus One Lick:720
+                     lick time:45
+Stamp:579.92
+
+
+Stimulus One Lick:721
+                     lick time:47
+Stamp:580.06
+
+
+Stimulus One Lick:722
+                     lick time:62
+Stamp:580.21
+
+
+Stimulus One Lick:723
+                     lick time:69
+Stamp:580.37
+
+
+Stimulus One Lick:724
+                     lick time:59
+Stamp:580.52
+
+
+Stimulus One Lick:725
+                     lick time:64
+Stamp:580.67
+
+
+Stimulus One Lick:726
+                     lick time:67
+Stamp:580.82
+
+
+Stimulus One Lick:727
+                     lick time:59
+Stamp:580.98
+
+
+Stimulus One Lick:728
+                     lick time:51
+Stamp:581.13
+
+
+Stimulus One Lick:729
+                     lick time:55
+Stamp:581.28
+
+
+Stimulus One Lick:730
+                     lick time:62
+Stamp:581.43
+
+
+Stimulus One Lick:731
+                     lick time:51
+Stamp:581.57
+
+
+Stimulus One Lick:732
+                     lick time:52
+Stamp:581.72
+
+
+Stimulus One Lick:733
+                     lick time:46
+Stamp:581.87
+
+
+Stimulus One Lick:734
+                     lick time:38
+Stamp:582.01
+
+
+Stimulus One Lick:735
+                     lick time:71
+Stamp:582.17
+
+
+Stimulus One Lick:736
+                     lick time:61
+Stamp:582.33
+
+
+Stimulus One Lick:737
+                     lick time:57
+Stamp:582.48
+
+
+Stimulus One Lick:738
+                     lick time:21
+Stamp:582.62
+
+
+Stimulus One Lick:739
+                     lick time:56
+Stamp:582.79
+
+
+Stimulus One Lick:740
+                     lick time:5
+Stamp:582.89
+
+
+Stimulus One Lick:741
+                     lick time:32
+Stamp:582.96
+
+
+Stimulus One Lick:742
+                     lick time:68
+Stamp:583.11
+
+
+Stimulus One Lick:743
+                     lick time:51
+Stamp:583.25
+
+
+Stimulus One Lick:744
+                     lick time:55
+Stamp:583.40
+
+
+Stimulus One Lick:745
+                     lick time:58
+Stamp:583.54
+
+
+Stimulus One Lick:746
+                     lick time:54
+Stamp:583.69
+
+
+Stimulus One Lick:747
+                     lick time:54
+Stamp:583.85
+
+
+Stimulus One Lick:748
+                     lick time:42
+Stamp:583.99
+
+
+Stimulus One Lick:749
+                     lick time:60
+Stamp:584.14
+
+
+Stimulus One Lick:750
+                     lick time:45
+Stamp:584.28
+
+
+Stimulus One Lick:751
+                     lick time:50
+Stamp:584.44
+
+
+Stimulus One Lick:752
+                     lick time:58
+Stamp:584.59
+
+
+Stimulus One Lick:753
+                     lick time:57
+Stamp:584.74
+
+
+Stimulus One Lick:754
+                     lick time:47
+Stamp:584.88
+
+
+Stimulus One Lick:755
+                     lick time:42
+Stamp:585.02
+
+
+Stimulus One Lick:756
+                     lick time:63
+Stamp:585.17
+
+
+Stimulus One Lick:757
+                     lick time:47
+Stamp:585.32
+
+
+Stimulus One Lick:758
+                     lick time:52
+Stamp:585.47
+
+
+Stimulus One Lick:759
+                     lick time:47
+Stamp:585.63
+
+
+Stimulus One Lick:760
+                     lick time:24
+Stamp:585.77
+
+
+Stimulus One Lick:761
+                     lick time:58
+Stamp:585.92
+
+
+Stimulus One Lick:762
+                     lick time:60
+Stamp:586.08
+
+
+Stimulus One Lick:763
+                     lick time:53
+Stamp:586.22
+
+
+Stimulus One Lick:764
+                     lick time:49
+Stamp:586.36
+
+
+Stimulus One Lick:765
+                     lick time:67
+Stamp:586.52
+
+
+Stimulus One Lick:766
+                     lick time:57
+Stamp:586.67
+
+
+Stimulus One Lick:767
+                     lick time:53
+Stamp:586.81
+
+
+Stimulus One Lick:768
+                     lick time:49
+Stamp:586.96
+
+
+Stimulus One Lick:769
+                     lick time:40
+Stamp:587.10
+
+
+Stimulus One Lick:770
+                     lick time:55
+Stamp:587.27
+
+
+Stimulus One Lick:771
+                     lick time:47
+Stamp:587.41
+
+
+Stimulus One Lick:772
+                     lick time:57
+Stamp:587.56
+
+
+Stimulus One Lick:773
+                     lick time:55
+Stamp:587.71
+
+
+Stimulus One Lick:774
+                     lick time:55
+Stamp:587.86
+
+
+Stimulus One Lick:775
+                     lick time:42
+Stamp:588.01
+
+
+Stimulus One Lick:776
+                     lick time:57
+Stamp:588.15
+
+
+Stimulus One Lick:777
+                     lick time:64
+Stamp:588.31
+
+
+Stimulus One Lick:778
+                     lick time:66
+Stamp:588.46
+
+
+Stimulus One Lick:779
+                     lick time:53
+Stamp:588.60
+
+
+Stimulus One Lick:780
+                     lick time:63
+Stamp:588.76
+
+
+Stimulus One Lick:781
+                     lick time:53
+Stamp:588.90
+
+
+Stimulus One Lick:782
+                     lick time:44
+Stamp:589.07
+
+
+Stimulus One Lick:783
+                     lick time:44
+Stamp:589.22
+
+
+Stimulus One Lick:784
+                     lick time:69
+Stamp:589.38
+
+
+Stimulus One Lick:785
+                     lick time:47
+Stamp:589.52
+
+
+Stimulus One Lick:786
+                     lick time:61
+Stamp:589.67
+
+
+Stimulus One Lick:787
+                     lick time:57
+Stamp:589.81
+
+
+Stimulus One Lick:788
+                     lick time:61
+Stamp:589.97
+
+
+Stimulus One Lick:789
+                     lick time:49
+Stamp:590.11
+
+
+Stimulus One Lick:790
+                     lick time:61
+Stamp:590.26
+
+
+Stimulus One Lick:791
+                     lick time:49
+Stamp:590.40
+
+
+Stimulus One Lick:792
+                     lick time:63
+Stamp:590.55
+
+
+Stimulus One Lick:793
+                     lick time:48
+Stamp:590.72
+
+
+Stimulus One Lick:794
+                     lick time:11
+Stamp:590.84
+
+
+Stimulus One Lick:795
+                     lick time:54
+Stamp:591.01
+
+
+Stimulus One Lick:796
+                     lick time:58
+Stamp:591.17
+
+
+Stimulus One Lick:797
+                     lick time:57
+Stamp:591.32
+
+
+Stimulus One Lick:798
+                     lick time:59
+Stamp:591.46
+
+
+Stimulus One Lick:799
+                     lick time:54
+Stamp:591.61
+
+
+Stimulus One Lick:800
+                     lick time:54
+Stamp:591.76
+
+
+Stimulus One Lick:801
+                     lick time:53
+Stamp:591.91
+
+
+Stimulus One Lick:802
+                     lick time:60
+Stamp:592.08
+
+
+Stimulus One Lick:803
+                     lick time:33
+Stamp:592.22
+
+
+Stimulus One Lick:804
+                     lick time:52
+Stamp:592.36
+
+
+Stimulus One Lick:805
+                     lick time:55
+Stamp:592.51
+
+
+Stimulus One Lick:806
+                     lick time:51
+Stamp:592.66
+
+
+Stimulus One Lick:807
+                     lick time:65
+Stamp:592.81
+
+
+Stimulus One Lick:808
+                     lick time:63
+Stamp:592.96
+
+
+Stimulus One Lick:809
+                     lick time:66
+Stamp:593.11
+
+
+Stimulus One Lick:810
+                     lick time:54
+Stamp:593.26
+
+
+Stimulus One Lick:811
+                     lick time:54
+Stamp:593.41
+
+
+Stimulus One Lick:812
+                     lick time:59
+Stamp:593.56
+
+
+Stimulus One Lick:813
+                     lick time:48
+Stamp:593.71
+
+
+Stimulus One Lick:814
+                     lick time:43
+Stamp:593.88
+
+
+Stimulus One Lick:815
+                     lick time:58
+Stamp:594.04
+
+
+Stimulus One Lick:816
+                     lick time:47
+Stamp:594.18
+
+
+Stimulus One Lick:817
+                     lick time:61
+Stamp:594.33
+
+
+Stimulus One Lick:818
+                     lick time:69
+Stamp:594.49
+
+
+Stimulus One Lick:819
+                     lick time:63
+Stamp:594.64
+
+
+Stimulus One Lick:820
+                     lick time:63
+Stamp:594.80
+
+
+Stimulus One Lick:821
+                     lick time:58
+Stamp:594.95
+
+
+Stimulus One Lick:822
+                     lick time:59
+Stamp:595.10
+
+
+Stimulus One Lick:823
+                     lick time:57
+Stamp:595.25
+
+
+Stimulus One Lick:824
+                     lick time:56
+Stamp:595.40
+
+
+Stimulus One Lick:825
+                     lick time:52
+Stamp:595.57
+
+
+Stimulus One Lick:826
+                     lick time:54
+Stamp:595.72
+
+
+Stimulus One Lick:827
+                     lick time:58
+Stamp:595.87
+
+
+Stimulus One Lick:828
+                     lick time:49
+Stamp:596.01
+
+
+Stimulus One Lick:829
+                     lick time:15
+Stamp:596.13
+
+
+Stimulus One Lick:830
+                     lick time:54
+Stamp:596.74
+
+
+Stimulus One Lick:831
+                     lick time:45
+Stamp:596.87
+
+
+Stimulus One Lick:832
+                     lick time:31
+Stamp:597.00
+
+
+Stimulus One Lick:833
+                     lick time:58
+Stamp:597.16
+
+
+Stimulus One Lick:834
+                     lick time:48
+Stamp:597.30
+
+
+Stimulus One Lick:835
+                     lick time:63
+Stamp:597.46
+
+
+Stimulus One Lick:836
+                     lick time:63
+Stamp:597.61
+
+
+Stimulus One Lick:837
+                     lick time:59
+Stamp:597.76
+
+
+Stimulus One Lick:838
+                     lick time:58
+Stamp:597.91
+
+
+Stimulus One Lick:839
+                     lick time:58
+Stamp:598.06
+
+
+Stimulus One Lick:840
+                     lick time:63
+Stamp:598.22
+
+
+Stimulus One Lick:841
+                     lick time:56
+Stamp:598.36
+
+
+Stimulus One Lick:842
+                     lick time:66
+Stamp:598.52
+
+
+Stimulus One Lick:843
+                     lick time:59
+Stamp:598.68
+
+
+Stimulus One Lick:844
+                     lick time:59
+Stamp:598.84
+
+
+Stimulus One Lick:845
+                     lick time:66
+Stamp:598.99
+
+
+Stimulus One Lick:846
+                     lick time:63
+Stamp:599.15
+
+
+Stimulus One Lick:847
+                     lick time:59
+Stamp:599.30
+
+
+Stimulus One Lick:848
+                     lick time:58
+Stamp:599.45
+
+
+Stimulus One Lick:849
+                     lick time:41
+Stamp:599.58
+
+
+Stimulus One Lick:850
+                     lick time:39
+Stamp:599.72
+
+
+Stimulus One Lick:851
+                     lick time:57
+Stamp:599.88
+
+
+Stimulus One Lick:852
+                     lick time:55
+Stamp:600.03
+
+
+Stimulus One Lick:853
+                     lick time:61
+Stamp:600.19
+
+
+Stimulus One Lick:854
+                     lick time:68
+Stamp:600.36
+
+
+Stimulus One Lick:855
+                     lick time:38
+Stamp:600.51
+
+
+Stimulus One Lick:856
+                     lick time:58
+Stamp:600.68
+
+
+Stimulus One Lick:857
+                     lick time:68
+Stamp:600.84
+
+
+Stimulus One Lick:858
+                     lick time:62
+Stamp:600.99
+
+
+Stimulus One Lick:859
+                     lick time:41
+Stamp:601.14
+
+
+Stimulus One Lick:860
+                     lick time:43
+Stamp:601.28
+
+
+Stimulus One Lick:861
+                     lick time:50
+Stamp:601.58
+
+
+Stimulus One Lick:862
+                     lick time:46
+Stamp:601.74
+
+
+Stimulus One Lick:863
+                     lick time:50
+Stamp:601.90
+
+
+Stimulus One Lick:864
+                     lick time:57
+Stamp:602.05
+
+
+Stimulus One Lick:865
+                     lick time:48
+Stamp:602.21
+
+
+Stimulus One Lick:866
+                     lick time:68
+Stamp:602.38
+
+
+Stimulus One Lick:867
+                     lick time:45
+Stamp:602.52
+
+
+Stimulus One Lick:868
+                     lick time:61
+Stamp:602.68
+
+
+Stimulus One Lick:869
+                     lick time:21
+Stamp:602.81
+
+
+Stimulus One Lick:870
+                     lick time:59
+Stamp:602.98
+
+
+Stimulus One Lick:871
+                     lick time:55
+Stamp:603.13
+
+
+Stimulus One Lick:872
+                     lick time:59
+Stamp:603.29
+
+
+Stimulus One Lick:873
+                     lick time:57
+Stamp:603.45
+
+
+Stimulus One Lick:874
+                     lick time:57
+Stamp:603.60
+
+
+Stimulus One Lick:875
+                     lick time:39
+Stamp:603.75
+
+
+Stimulus One Lick:876
+                     lick time:49
+Stamp:603.90
+
+
+Stimulus One Lick:877
+                     lick time:57
+Stamp:604.05
+
+
+Stimulus One Lick:878
+                     lick time:60
+Stamp:604.20
+
+
+Stimulus One Lick:879
+                     lick time:56
+Stamp:604.35
+
+
+Stimulus One Lick:880
+                     lick time:53
+Stamp:604.50
+
+
+Stimulus One Lick:881
+                     lick time:63
+Stamp:604.66
+
+
+Stimulus One Lick:882
+                     lick time:59
+Stamp:604.82
+
+
+Stimulus One Lick:883
+                     lick time:49
+Stamp:604.96
+
+
+Stimulus One Lick:884
+                     lick time:67
+Stamp:605.12
+
+
+Stimulus One Lick:885
+                     lick time:50
+Stamp:605.26
+
+
+Stimulus One Lick:886
+                     lick time:57
+Stamp:605.89
+
+
+Stimulus One Lick:887
+                     lick time:40
+Stamp:606.03
+
+
+Stimulus One Lick:888
+                     lick time:42
+Stamp:606.17
+
+
+Stimulus One Lick:889
+                     lick time:59
+Stamp:606.32
+
+
+Stimulus One Lick:890
+                     lick time:59
+Stamp:606.47
+
+
+Stimulus One Lick:891
+                     lick time:48
+Stamp:606.62
+
+
+Stimulus One Lick:892
+                     lick time:57
+Stamp:606.77
+
+
+Stimulus One Lick:893
+                     lick time:56
+Stamp:606.92
+
+
+Stimulus One Lick:894
+                     lick time:61
+Stamp:607.07
+
+
+Stimulus One Lick:895
+                     lick time:58
+Stamp:607.22
+
+
+Stimulus One Lick:896
+                     lick time:56
+Stamp:607.37
+
+
+Stimulus One Lick:897
+                     lick time:56
+Stamp:607.52
+
+
+Stimulus One Lick:898
+                     lick time:42
+Stamp:607.66
+
+
+Stimulus One Lick:899
+                     lick time:51
+Stamp:607.81
+
+
+Stimulus One Lick:900
+                     lick time:63
+Stamp:607.97
+
+
+Stimulus One Lick:901
+                     lick time:67
+Stamp:608.13
+
+
+Stimulus One Lick:902
+                     lick time:41
+Stamp:608.27
+
+
+Stimulus One Lick:903
+                     lick time:67
+Stamp:608.44
+
+
+Stimulus One Lick:904
+                     lick time:61
+Stamp:608.60
+
+
+Stimulus One Lick:905
+                     lick time:66
+Stamp:608.76
+
+
+Stimulus One Lick:906
+                     lick time:42
+Stamp:608.90
+
+
+Stimulus One Lick:907
+                     lick time:61
+Stamp:609.06
+
+
+Stimulus One Lick:908
+                     lick time:68
+Stamp:609.22
+
+
+Stimulus One Lick:909
+                     lick time:55
+Stamp:609.36
+
+
+Stimulus One Lick:910
+                     lick time:65
+Stamp:609.51
+
+
+Stimulus One Lick:911
+                     lick time:43
+Stamp:609.65
+
+
+Stimulus One Lick:912
+                     lick time:35
+Stamp:609.81
+
+
+Stimulus One Lick:913
+                     lick time:68
+Stamp:609.97
+
+
+Stimulus One Lick:914
+                     lick time:54
+Stamp:610.12
+
+
+Stimulus One Lick:915
+                     lick time:55
+Stamp:610.28
+
+
+Stimulus One Lick:916
+                     lick time:59
+Stamp:610.43
+
+
+Stimulus One Lick:917
+                     lick time:50
+Stamp:610.59
+
+
+Stimulus One Lick:918
+                     lick time:50
+Stamp:610.75
+
+
+Stimulus One Lick:919
+                     lick time:56
+Stamp:610.91
+
+
+Stimulus One Lick:920
+                     lick time:51
+Stamp:611.07
+
+
+Stimulus One Lick:921
+                     lick time:26
+Stamp:611.20
+
+
+Stimulus One Lick:922
+                     lick time:64
+Stamp:611.37
+
+
+Stimulus One Lick:923
+                     lick time:77
+Stamp:611.54
+
+
+Stimulus One Lick:924
+                     lick time:62
+Stamp:611.70
+
+
+Stimulus One Lick:925
+                     lick time:71
+Stamp:611.86
+
+
+Stimulus One Lick:926
+                     lick time:61
+Stamp:612.01
+
+
+Stimulus One Lick:927
+                     lick time:56
+Stamp:612.16
+
+
+Stimulus One Lick:928
+                     lick time:57
+Stamp:612.31
+
+
+Stimulus One Lick:929
+                     lick time:46
+Stamp:612.45
+
+
+Stimulus One Lick:930
+                     lick time:67
+Stamp:612.61
+
+
+Stimulus One Lick:931
+                     lick time:67
+Stamp:612.77
+
+
+Stimulus One Lick:932
+                     lick time:62
+Stamp:612.94
+
+
+Stimulus One Lick:933
+                     lick time:63
+Stamp:613.09
+
+
+Stimulus One Lick:934
+                     lick time:55
+Stamp:613.24
+
+
+Stimulus One Lick:935
+                     lick time:47
+Stamp:613.39
+
+
+Stimulus One Lick:936
+                     lick time:45
+Stamp:613.54
+
+
+Stimulus One Lick:937
+                     lick time:63
+Stamp:613.70
+
+
+Stimulus One Lick:938
+                     lick time:66
+Stamp:613.85
+
+
+Stimulus One Lick:939
+                     lick time:63
+Stamp:614.01
+
+
+Stimulus One Lick:940
+                     lick time:61
+Stamp:614.16
+
+
+Stimulus One Lick:941
+                     lick time:27
+Stamp:614.31
+
+
+Stimulus One Lick:942
+                     lick time:56
+Stamp:614.46
+
+
+Stimulus One Lick:943
+                     lick time:32
+Stamp:626.70
+
+
+Stimulus One Lick:944
+                     lick time:70
+Stamp:627.03
+
+
+Stimulus One Lick:945
+                     lick time:64
+Stamp:627.15
+
+
+Stimulus One Lick:946
+                     lick time:18
+Stamp:627.25
+
+
+Stimulus One Lick:947
+                     lick time:14
+Stamp:627.38
+
+
+Stimulus One Lick:948
+                     lick time:47
+Stamp:627.52
+
+
+Stimulus One Lick:949
+                     lick time:44
+Stamp:627.65
+
+
+Stimulus One Lick:950
+                     lick time:48
+Stamp:627.78
+
+
+Stimulus One Lick:951
+                     lick time:8
+Stamp:627.89
+
+
+Stimulus One Lick:952
+                     lick time:59
+Stamp:628.47
+
+
+Stimulus One Lick:953
+                     lick time:58
+Stamp:628.61
+
+
+Stimulus One Lick:954
+                     lick time:40
+Stamp:628.73
+
+
+Stimulus One Lick:955
+                     lick time:42
+Stamp:628.87
+
+
+Stimulus One Lick:956
+                     lick time:48
+Stamp:629.01
+
+
+Stimulus One Lick:957
+                     lick time:47
+Stamp:629.16
+
+
+Stimulus One Lick:958
+                     lick time:54
+Stamp:629.30
+
+
+Stimulus One Lick:959
+                     lick time:70
+Stamp:629.45
+
+
+Stimulus One Lick:960
+                     lick time:65
+Stamp:629.59
+
+
+Stimulus One Lick:961
+                     lick time:56
+Stamp:629.73
+
+
+Stimulus One Lick:962
+                     lick time:54
+Stamp:629.87
+
+
+Stimulus One Lick:963
+                     lick time:53
+Stamp:630.01
+
+
+Stimulus One Lick:964
+                     lick time:56
+Stamp:630.15
+
+
+Stimulus One Lick:965
+                     lick time:56
+Stamp:630.29
+
+
+Stimulus One Lick:966
+                     lick time:58
+Stamp:630.44
+
+
+Stimulus One Lick:967
+                     lick time:58
+Stamp:630.60
+
+
+Stimulus One Lick:968
+                     lick time:45
+Stamp:630.73
+
+
+Stimulus One Lick:969
+                     lick time:60
+Stamp:630.88
+
+
+Stimulus One Lick:970
+                     lick time:61
+Stamp:631.03
+
+
+Stimulus One Lick:971
+                     lick time:50
+Stamp:631.17
+
+
+Stimulus One Lick:972
+                     lick time:45
+Stamp:631.31
+
+
+Stimulus One Lick:973
+                     lick time:62
+Stamp:631.46
+
+
+Stimulus One Lick:974
+                     lick time:56
+Stamp:631.60
+
+
+Stimulus One Lick:975
+                     lick time:55
+Stamp:631.76
+
+
+Stimulus One Lick:976
+                     lick time:40
+Stamp:631.89
+
+
+Stimulus One Lick:977
+                     lick time:48
+Stamp:632.03
+
+
+Stimulus One Lick:978
+                     lick time:61
+Stamp:632.17
+
+
+Stimulus One Lick:979
+                     lick time:66
+Stamp:632.32
+
+
+Stimulus One Lick:980
+                     lick time:65
+Stamp:632.46
+
+
+Stimulus One Lick:981
+                     lick time:71
+Stamp:632.62
+
+
+Stimulus One Lick:982
+                     lick time:59
+Stamp:632.76
+
+
+Stimulus One Lick:983
+                     lick time:65
+Stamp:632.93
+
+
+Stimulus One Lick:984
+                     lick time:42
+Stamp:633.05
+
+
+Stimulus One Lick:985
+                     lick time:52
+Stamp:633.20
+
+
+Stimulus One Lick:986
+                     lick time:68
+Stamp:633.36
+
+
+Stimulus One Lick:987
+                     lick time:62
+Stamp:633.50
+
+
+Stimulus One Lick:988
+                     lick time:53
+Stamp:633.63
+
+
+Stimulus One Lick:989
+                     lick time:44
+Stamp:633.78
+
+
+Stimulus One Lick:990
+                     lick time:60
+Stamp:633.92
+
+
+Stimulus One Lick:991
+                     lick time:59
+Stamp:634.07
+
+
+Stimulus One Lick:992
+                     lick time:60
+Stamp:634.22
+
+
+Stimulus One Lick:993
+                     lick time:61
+Stamp:634.39
+
+
+Stimulus One Lick:994
+                     lick time:42
+Stamp:634.52
+
+
+Stimulus One Lick:995
+                     lick time:62
+Stamp:634.68
+
+
+Stimulus One Lick:996
+                     lick time:64
+Stamp:634.83
+
+
+Stimulus One Lick:997
+                     lick time:60
+Stamp:634.97
+
+
+Stimulus One Lick:998
+                     lick time:58
+Stamp:635.10
+
+
+Stimulus One Lick:999
+                     lick time:51
+Stamp:635.24
+
+
+Stimulus One Lick:1000
+                      lick time:50
+Stamp:635.38
+
+
+Stimulus One Lick:1001
+                      lick time:50
+Stamp:635.54
+
+
+Stimulus One Lick:1002
+                      lick time:36
+Stamp:635.67
+
+
+Stimulus One Lick:1003
+                      lick time:57
+Stamp:635.82
+
+
+Stimulus One Lick:1004
+                      lick time:60
+Stamp:635.97
+
+
+Stimulus One Lick:1005
+                      lick time:50
+Stamp:636.11
+
+
+Stimulus One Lick:1006
+                      lick time:57
+Stamp:636.40
+
+
+Stimulus One Lick:1007
+                      lick time:66
+Stamp:636.55
+
+
+Stimulus One Lick:1008
+                      lick time:57
+Stamp:636.71
+
+
+Stimulus One Lick:1009
+                      lick time:61
+Stamp:636.86
+
+
+Stimulus One Lick:1010
+                      lick time:53
+Stamp:637.00
+
+
+Stimulus One Lick:1011
+                      lick time:52
+Stamp:637.13
+
+
+Stimulus One Lick:1012
+                      lick time:56
+Stamp:637.28
+
+
+Stimulus One Lick:1013
+                      lick time:71
+Stamp:637.43
+
+
+Stimulus One Lick:1014
+                      lick time:58
+Stamp:637.57
+
+
+Stimulus One Lick:1015
+                      lick time:53
+Stamp:637.72
+
+
+Stimulus One Lick:1016
+                      lick time:40
+Stamp:637.85
+
+
+Stimulus One Lick:1017
+                      lick time:53
+Stamp:638.00
+
+
+Stimulus One Lick:1018
+                      lick time:48
+Stamp:638.14
+
+
+Stimulus One Lick:1019
+                      lick time:41
+Stamp:638.30
+
+
+Stimulus One Lick:1020
+                      lick time:60
+Stamp:638.46
+
+
+Stimulus One Lick:1021
+                      lick time:58
+Stamp:638.61
+
+
+Stimulus One Lick:1022
+                      lick time:57
+Stamp:638.75
+
+
+Stimulus One Lick:1023
+                      lick time:50
+Stamp:638.89
+
+
+Stimulus One Lick:1024
+                      lick time:67
+Stamp:639.05
+
+
+Stimulus One Lick:1025
+                      lick time:64
+Stamp:639.19
+
+
+Stimulus One Lick:1026
+                      lick time:46
+Stamp:639.32
+
+
+Stimulus One Lick:1027
+                      lick time:50
+Stamp:639.47
+
+
+Stimulus One Lick:1028
+                      lick time:58
+Stamp:639.61
+
+
+Stimulus One Lick:1029
+                      lick time:58
+Stamp:639.78
+
+
+Stimulus One Lick:1030
+                      lick time:55
+Stamp:639.92
+
+
+Stimulus One Lick:1031
+                      lick time:59
+Stamp:640.07
+
+
+Stimulus One Lick:1032
+                      lick time:58
+Stamp:640.44
+
+
+Stimulus One Lick:1033
+                      lick time:64
+Stamp:640.61
+
+
+Stimulus One Lick:1034
+                      lick time:17
+Stamp:640.73
+
+
+Stimulus One Lick:1035
+                      lick time:62
+Stamp:640.91
+
+
+Stimulus One Lick:1036
+                      lick time:63
+Stamp:641.07
+
+
+Stimulus One Lick:1037
+                      lick time:65
+Stamp:641.22
+
+
+Stimulus One Lick:1038
+                      lick time:54
+Stamp:641.37
+
+
+Stimulus One Lick:1039
+                      lick time:63
+Stamp:641.52
+
+
+Stimulus One Lick:1040
+                      lick time:59
+Stamp:641.66
+
+
+Stimulus One Lick:1041
+                      lick time:57
+Stamp:641.80
+
+
+Stimulus One Lick:1042
+                      lick time:51
+Stamp:641.95
+
+
+Stimulus One Lick:1043
+                      lick time:55
+Stamp:642.09
+
+
+Stimulus One Lick:1044
+                      lick time:63
+Stamp:642.24
+
+
+Stimulus One Lick:1045
+                      lick time:48
+Stamp:642.38
+
+
+Stimulus One Lick:1046
+                      lick time:61
+Stamp:642.56
+
+
+Stimulus One Lick:1047
+                      lick time:47
+Stamp:642.72
+
+
+Stimulus One Lick:1048
+                      lick time:33
+Stamp:649.26
+
+
+Stimulus One Lick:1049
+                      lick time:50
+Stamp:649.39
+
+
+Stimulus One Lick:1050
+                      lick time:35
+Stamp:649.51
+
+
+Stimulus One Lick:1051
+                      lick time:46
+Stamp:649.64
+
+
+Stimulus One Lick:1052
+                      lick time:45
+Stamp:649.77
+
+
+Stimulus One Lick:1053
+                      lick time:53
+Stamp:649.90
+
+
+Stimulus One Lick:1054
+                      lick time:52
+Stamp:650.04
+
+
+Stimulus One Lick:1055
+                      lick time:58
+Stamp:650.18
+
+
+Stimulus One Lick:1056
+                      lick time:54
+Stamp:650.31
+
+
+Stimulus One Lick:1057
+                      lick time:60
+Stamp:650.45
+
+
+Stimulus One Lick:1058
+                      lick time:61
+Stamp:650.59
+
+
+Stimulus One Lick:1059
+                      lick time:52
+Stamp:650.72
+
+
+Stimulus One Lick:1060
+                      lick time:59
+Stamp:650.86
+
+
+Stimulus One Lick:1061
+                      lick time:65
+Stamp:651.01
+
+
+Stimulus One Lick:1062
+                      lick time:59
+Stamp:651.14
+
+
+Stimulus One Lick:1063
+                      lick time:48
+Stamp:651.27
+
+
+Stimulus One Lick:1064
+                      lick time:58
+Stamp:651.41
+
+
+Stimulus One Lick:1065
+                      lick time:58
+Stamp:651.57
+
+
+Stimulus One Lick:1066
+                      lick time:43
+Stamp:651.70
+
+
+Stimulus One Lick:1067
+                      lick time:46
+Stamp:651.83
+
+
+Stimulus One Lick:1068
+                      lick time:55
+Stamp:651.98
+
+
+Stimulus One Lick:1069
+                      lick time:61
+Stamp:652.13
+
+
+Stimulus One Lick:1070
+                      lick time:63
+Stamp:652.27
+
+
+Stimulus One Lick:1071
+                      lick time:65
+Stamp:652.42
+
+
+Stimulus One Lick:1072
+                      lick time:63
+Stamp:652.58
+
+
+Stimulus One Lick:1073
+                      lick time:53
+Stamp:652.72
+
+
+Stimulus One Lick:1074
+                      lick time:47
+Stamp:652.86
+
+
+Stimulus One Lick:1075
+                      lick time:46
+Stamp:653.00
+
+
+Stimulus One Lick:1076
+                      lick time:68
+Stamp:653.15
+
+
+Stimulus One Lick:1077
+                      lick time:50
+Stamp:653.29
+
+
+Stimulus One Lick:1078
+                      lick time:55
+Stamp:653.44
+
+
+Stimulus One Lick:1079
+                      lick time:67
+Stamp:653.59
+
+
+Stimulus One Lick:1080
+                      lick time:56
+Stamp:653.73
+
+
+Stimulus One Lick:1081
+                      lick time:63
+Stamp:653.88
+
+
+Stimulus One Lick:1082
+                      lick time:59
+Stamp:654.04
+
+
+Stimulus One Lick:1083
+                      lick time:62
+Stamp:654.18
+
+
+Stimulus One Lick:1084
+                      lick time:55
+Stamp:654.32
+
+
+Stimulus One Lick:1085
+                      lick time:56
+Stamp:654.47
+
+
+Stimulus One Lick:1086
+                      lick time:42
+Stamp:654.59
+
+
+Stimulus One Lick:1087
+                      lick time:50
+Stamp:654.74
+
+
+Stimulus One Lick:1088
+                      lick time:49
+Stamp:654.90
+
+
+Stimulus One Lick:1089
+                      lick time:40
+Stamp:655.03
+
+
+Stimulus One Lick:1090
+                      lick time:62
+Stamp:655.18
+
+
+Stimulus One Lick:1091
+                      lick time:66
+Stamp:655.34
+
+
+Stimulus One Lick:1092
+                      lick time:51
+Stamp:655.48
+
+
+Stimulus One Lick:1093
+                      lick time:47
+Stamp:655.64
+
+
+Stimulus One Lick:1094
+                      lick time:67
+Stamp:655.79
+
+
+Stimulus One Lick:1095
+                      lick time:65
+Stamp:655.95
+
+
+Stimulus One Lick:1096
+                      lick time:59
+Stamp:656.09
+
+
+Stimulus One Lick:1097
+                      lick time:54
+Stamp:656.25
+
+
+Stimulus One Lick:1098
+                      lick time:57
+Stamp:656.39
+
+
+Stimulus One Lick:1099
+                      lick time:57
+Stamp:656.54
+
+
+Stimulus One Lick:1100
+                      lick time:56
+Stamp:656.68
+
+
+Stimulus One Lick:1101
+                      lick time:56
+Stamp:656.82
+
+
+Stimulus One Lick:1102
+                      lick time:52
+Stamp:656.96
+
+
+Stimulus One Lick:1103
+                      lick time:51
+Stamp:657.10
+
+
+Stimulus One Lick:1104
+                      lick time:60
+Stamp:657.25
+
+
+Stimulus One Lick:1105
+                      lick time:57
+Stamp:657.39
+
+
+Stimulus One Lick:1106
+                      lick time:53
+Stamp:657.53
+
+
+Stimulus One Lick:1107
+                      lick time:40
+Stamp:657.67
+
+
+Stimulus One Lick:1108
+                      lick time:61
+Stamp:657.83
+
+
+Stimulus One Lick:1109
+                      lick time:39
+Stamp:657.96
+
+
+Stimulus One Lick:1110
+                      lick time:56
+Stamp:658.71
+
+
+Stimulus One Lick:1111
+                      lick time:52
+Stamp:658.84
+
+
+Stimulus One Lick:1112
+                      lick time:43
+Stamp:658.96
+
+
+Stimulus One Lick:1113
+                      lick time:57
+Stamp:659.10
+
+
+Stimulus One Lick:1114
+                      lick time:51
+Stamp:659.25
+
+
+Stimulus One Lick:1115
+                      lick time:55
+Stamp:659.39
+
+
+Stimulus One Lick:1116
+                      lick time:68
+Stamp:659.54
+
+
+Stimulus One Lick:1117
+                      lick time:61
+Stamp:659.68
+
+
+Stimulus One Lick:1118
+                      lick time:43
+Stamp:659.81
+
+
+Stimulus One Lick:1119
+                      lick time:63
+Stamp:659.96
+
+
+Stimulus One Lick:1120
+                      lick time:56
+Stamp:660.11
+
+
+Stimulus One Lick:1121
+                      lick time:63
+Stamp:660.26
+
+
+Stimulus One Lick:1122
+                      lick time:64
+Stamp:660.41
+
+
+Stimulus One Lick:1123
+                      lick time:50
+Stamp:660.56
+
+
+Stimulus One Lick:1124
+                      lick time:32
+Stamp:660.68
+
+
+Stimulus One Lick:1125
+                      lick time:65
+Stamp:660.84
+
+
+Stimulus One Lick:1126
+                      lick time:62
+Stamp:660.99
+
+
+Stimulus One Lick:1127
+                      lick time:59
+Stamp:661.13
+
+
+Stimulus One Lick:1128
+                      lick time:59
+Stamp:661.28
+
+
+Stimulus One Lick:1129
+                      lick time:44
+Stamp:661.41
+
+
+Stimulus One Lick:1130
+                      lick time:33
+Stamp:661.54
+
+
+Stimulus One Lick:1131
+                      lick time:47
+Stamp:661.72
+
+
+Stimulus One Lick:1132
+                      lick time:56
+Stamp:662.71
+
+
+Stimulus One Lick:1133
+                      lick time:3212
+Stamp:665.95
+
+
+Stimulus One Lick:1134
+                      lick time:324
+Stamp:666.32
+
+
+Stimulus One Lick:1135
+                      lick time:46
+Stamp:666.40
+
+
+Stimulus One Lick:1136
+                      lick time:87
+Stamp:666.52
+
+
+Stimulus One Lick:1137
+                      lick time:62
+Stamp:666.62
+
+
+Stimulus One Lick:1138
+                      lick time:57
+Stamp:666.74
+
+
+Stimulus One Lick:1139
+                      lick time:109
+Stamp:666.88
+
+
+Stimulus One Lick:1140
+                      lick time:40
+Stamp:666.96
+
+
+Stimulus One Lick:1141
+                      lick time:31
+Stamp:667.02
+
+
+Stimulus One Lick:1142
+                      lick time:56
+Stamp:667.16
+
+
+Stimulus One Lick:1143
+                      lick time:20
+Stamp:667.22
+
+
+Stimulus One Lick:1144
+                      lick time:40
+Stamp:667.29
+
+
+Stimulus One Lick:1145
+                      lick time:57
+Stamp:667.46
+
+
+Stimulus One Lick:1146
+                      lick time:3533
+Stamp:671.03
+
+
+Stimulus One Lick:1147
+                      lick time:911
+Stamp:671.98
+
+
+Stimulus One Lick:1148
+                      lick time:250
+Stamp:672.26
+
+
+Stimulus One Lick:1149
+                      lick time:171
+Stamp:672.47
+
+
+Stimulus One Lick:1150
+                      lick time:72
+Stamp:672.58
+
+
+Stimulus One Lick:1151
+                      lick time:34
+Stamp:672.76
+
+
+Stimulus One Lick:1152
+                      lick time:26
+Stamp:672.82
+
+
+Stimulus One Lick:1153
+                      lick time:5
+Stamp:672.87
+
+
+Stimulus One Lick:1154
+                      lick time:33
+Stamp:672.95
+
+
+Stimulus One Lick:1155
+                      lick time:38
+Stamp:673.03
+
+
+Stimulus One Lick:1156
+                      lick time:34
+Stamp:673.10
+
+
+Stimulus One Lick:1157
+                      lick time:1
+Stamp:673.14
+
+
+Stimulus One Lick:1158
+                      lick time:3
+Stamp:673.17
+
+
+Stimulus One Lick:1159
+                      lick time:31
+Stamp:673.24
+
+
+Stimulus One Lick:1160
+                      lick time:0
+Stamp:673.29
+
+
+Stimulus One Lick:1161
+                      lick time:20
+Stamp:673.38
+
+
+Stimulus One Lick:1162
+                      lick time:15
+Stamp:673.45
+
+
+Stimulus One Lick:1163
+                      lick time:1
+Stamp:673.49
+
+
+Stimulus One Lick:1164
+                      lick time:0
+Stamp:673.58
+
+
+Stimulus One Lick:1165
+                      lick time:0
+Stamp:673.73
+
+
+Stimulus One Lick:1166
+                      lick time:8
+Stamp:699.92
+
+
+Stimulus One Lick:1167
+                      lick time:33
+Stamp:701.01
+
+
+

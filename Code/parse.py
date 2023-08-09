@@ -10,7 +10,7 @@ def parse_file(filename):
     with open(filename, 'r') as file:
         for line in file:
             # Check if line contains 'Right Lick'
-            if 'Left Lick:' in line:
+            if 'Stimulus One Lick:' in line:
                 # Split the line at the colon and take the second part, then strip whitespace
                 lick_value = line.split(':')[1].strip()
                 # Append the lick value to the list
@@ -36,4 +36,4 @@ def parse_file(filename):
 df = parse_file('licks.txt')
 
 
-df.to_excel('output.xlsx', index=False)
+df.to_excel('output_trial_2.xlsx', index=False)
