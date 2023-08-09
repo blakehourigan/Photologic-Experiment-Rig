@@ -251,19 +251,33 @@ class App:
             # After the 'ITI' time, call time_to_contact
             self.root.after(int(self.df_stimuli.loc[i,'ITI']), lambda: self.time_to_contact(i))
         else: 
-            self.state = "OFF"
-            self.state_time_label_header.configure(text=(self.state))
-            self.running = False
-            self.startButton.configure(text="Start", bg="green")
+            self.stop_program()
 
     def time_to_contact(self, i):
         if self.running:
-            # 
+            # Change program state to TTC
             self.state = "TTC"
+            # start reading licks, we pass the same i into this function that we used in the previous function to
+            # continue iterating
             self.read_licks(i)
+            # update state timer header
             self.state_time_label_header.configure(text=(self.state + " Time:"))
-            self.state_start_time = time.time()  # Update the state start time
+            # Update the state start time to current time
+            self.state_start_time = time.time()
+            # move the door down  
             self.arduinoMotor.write(b'DOWN\n')
+            stim_var_list = list(self.stimuli_vars.values())
+            for index, string_var in enumerate(stim_var_list):
+                if string_var.get() == self.df_stimuli.loc[i,'Stimulus 1']:
+                    stim1_position = str(index + 1)
+            for index, string_var in enumerate(stim_var_list):
+                if string_var.get() == self.df_stimuli.loc[i,'Stimulus 2']:
+                    stim2_position = str(index + 1)
+            stim1_position = b'Stimulus 1 Position: ' + stim1_position.encode('utf-8') + b'\n'  
+            stim2_position = b'Stimulus 2 Position: ' + stim2_position.encode('utf-8') + b'\n'  
+            print(str(stim1_position) + "        " + str(stim2_position))
+            self.arduinoMotor.write(stim1_position)
+            self.arduinoMotor.write(stim2_position)
             self.append_data("Time to Contact: " + str(self.df_stimuli.loc[i,'TTC'] / 1000) + "s\n")
             self.after_sample_id = self.root.after(int(self.df_stimuli.loc[i, 'TTC']), lambda: self.save_licks(i))
 
@@ -362,14 +376,16 @@ class App:
             # Try to lift the window to the top (it will fail if the window is closed)
             self.lick_window_instance.lift()
         except (AttributeError, tk.TclError):
+            # if blocks have been generated, then generate the blank lick table
             if self.blocks_generated:
                 if not self.lick_table_created:
-                    # Create a DataFrame with NaN values
+                    # Set column names for the table
                     self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
+                    # sets the row specified at .loc[len(self.licks_df)] which is zero at this time
+                    # so the zeroth row is set to np.nan
                     self.licks_df.loc[len(self.licks_df)] = np.nan
 
                     # creating the frame that will contain the lick data table
-
 
                 self.lick_table_created = True
                 self.lick_window_instance = self.window_instance_generator("Licks Data Table", "300x00")
@@ -393,6 +409,13 @@ class App:
         
 
         return self.window_instance
+
+    def stop_program(self):
+        self.state = "OFF"
+        self.state_time_label_header.configure(text=(self.state))
+        self.running = False
+        self.startButton.configure(text="Start", bg="green")
+
 
     def data_window(self):
         try:
@@ -451,9 +474,10 @@ class App:
 
         # from our list of variables that were changed from their default values, pair them together.
         # 1 is paired with 2. 3 with 4, etc
-
-        self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
-
+        try:
+            self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
+        except:
+            messagebox.showinfo("Stimulus Not Changed","One or more of the default stimuli have not been changed, please change the default value and try again")
         # for each pair in pairs list, include each pair flipped
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 

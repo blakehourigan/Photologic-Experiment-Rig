@@ -33,26 +33,28 @@ void loop()
   {
     String command = Serial.readStringUntil('\n');
     command.trim();  // Remove any leading/trailing whitespace
-  if (command == "reset") 
-  {
-    asm volatile ("jmp 0");  // Jump to the start of the program
-  }
-  if(command == "UP")
-  {
-  stepper.moveTo(0);
-  while (stepper.distanceToGo() != 0) 
-  {
-  stepper.run();
-  }
-  }
-  if(command == "DOWN")
-  {
-  stepper.moveTo(6400);
-  while (stepper.distanceToGo() != 0) 
-  {
-  stepper.run();
-  }
-  } 
+    switch(command):
+      case "reset":
+        asm volatile ("jmp 0");  // Jump to the start of the program
+        break;
+      case "UP":
+        stepper.moveTo(0);
+        while (stepper.distanceToGo() != 0) 
+        {
+        stepper.run();
+        }
+        break;
+      case "DOWN":
+        stepper.moveTo(6400);
+        while (stepper.distanceToGo() != 0) 
+        {
+        stepper.run();
+        }
+        break;
+      case "Stimulus 1 Position":
+
+
+
   }
 
 }
