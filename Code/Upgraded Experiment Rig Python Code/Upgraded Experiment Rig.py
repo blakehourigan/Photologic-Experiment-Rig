@@ -87,7 +87,7 @@ class App:
 
         self.blocks_generated = False
 
-        self.lick_table_created = False
+        self.stamped_exists = False
 
         # Initialize the start time to 0
         self.start_time = 0
@@ -221,6 +221,10 @@ class App:
             self.arduinoLaser = serial.Serial('COM3', BAUD_RATE)
             # Open a serial connection to the second Arduino
             self.arduinoMotor = serial.Serial('COM4', BAUD_RATE)
+
+            self.arduinoLaser.flush()  # or self.arduinoLaser.flush() in recent versions
+            self.arduinoMotor.flush()  # or self.arduinoMotor.flush() in recent versions
+
             # if one or more of the arduinos are not connected then we need to let the user know 
         except SerialException:
                 messagebox.showinfo("Serial Error", "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
@@ -242,7 +246,7 @@ class App:
             # update the state start time to now, so that it starts at 0
             self.state_start_time = time.time()  
             # 
-            string = 'TRIAL # (' + str(self.curr_trial_number) + ') Stimulus 1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. Stimulus 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n"
+            string = '\nTRIAL # (' + str(self.curr_trial_number) + ') Stimulus 1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. Stimulus 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n"
             self.append_data(string)
             for letter in range(len(string)):
                 self.append_data("-")
@@ -266,18 +270,19 @@ class App:
             self.state_start_time = time.time()
             # move the door down  
             self.arduinoMotor.write(b'DOWN\n')
+            self.arduinoMotor.flush()  # or self.arduinoMotor.flush() in recent versions
+
             stim_var_list = list(self.stimuli_vars.values())
             for index, string_var in enumerate(stim_var_list):
                 if string_var.get() == self.df_stimuli.loc[i,'Stimulus 1']:
-                    stim1_position = str(index + 1)
+                    self.stim1_position = str(index + 1)
             for index, string_var in enumerate(stim_var_list):
                 if string_var.get() == self.df_stimuli.loc[i,'Stimulus 2']:
-                    stim2_position = str(index + 1)
-            stim1_position = b'Stimulus 1 Position: ' + stim1_position.encode('utf-8') + b'\n'  
-            stim2_position = b'Stimulus 2 Position: ' + stim2_position.encode('utf-8') + b'\n'  
-            print(str(stim1_position) + "        " + str(stim2_position))
-            self.arduinoMotor.write(stim1_position)
-            self.arduinoMotor.write(stim2_position)
+                    self.stim2_position = str(index + 1)
+
+            self.command = "SIDE_ONE\n" + str(self.stim1_position) + "\nSIDE_TWO\n" + str(self.stim2_position) + "\n"
+            self.arduinoMotor.write(self.command.encode('utf-8'))
+            self.arduinoMotor.flush()  # or self.arduinoMotor.flush() in recent versions
             self.append_data("Time to Contact: " + str(self.df_stimuli.loc[i,'TTC'] / 1000) + "s\n")
             self.after_sample_id = self.root.after(int(self.df_stimuli.loc[i, 'TTC']), lambda: self.save_licks(i))
 
@@ -302,7 +307,8 @@ class App:
             # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
             if self.state == 'TTC':
                 self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = self.df_stimuli.loc[self.curr_trial_number - 1, 'TTC']
-
+                self.command = "SIDE_ONE\n" + str(self.stim1_position) + "\nSIDE_TWO\n" + str(self.stim2_position) + "\n"
+                self.arduinoMotor.write(self.command.encode('utf-8'))
             # tell the motor arduino to move the door up
             self.arduinoMotor.write(b'UP\n')   
             # increment the trial number                                     
@@ -368,7 +374,6 @@ class App:
                 # Generate stimuli schedule button 
                 self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
                 self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
-                self.create_trial_blocks(tab2, notebook, 0, 0)
 
 
     def lick_window(self):
@@ -378,22 +383,16 @@ class App:
         except (AttributeError, tk.TclError):
             # if blocks have been generated, then generate the blank lick table
             if self.blocks_generated:
-                if not self.lick_table_created:
-                    # Set column names for the table
-                    self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
-                    # sets the row specified at .loc[len(self.licks_df)] which is zero at this time
-                    # so the zeroth row is set to np.nan
-                    self.licks_df.loc[len(self.licks_df)] = np.nan
+                # Set column names for the table
+                # creating the frame that will contain the lick data table
 
-                    # creating the frame that will contain the lick data table
-
-                self.lick_table_created = True
-                self.lick_window_instance = self.window_instance_generator("Licks Data Table", "300x00")
+                self.lick_window_instance = self.window_instance_generator("Licks Data Table", "500x800")
                 self.licks_frame = tk.Frame(self.lick_window_instance)
                 self.licks_frame.grid(row=0, column=0, sticky='nsew')  
                 self.stamped_licks = Table(self.licks_frame, dataframe=self.licks_df, showtoolbar=False, showstatusbar=False, weight=1)
                 self.stamped_licks.autoResizeColumns()
                 self.stamped_licks.show()
+                self.stamped_exists = True
 
             else:
                 messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
@@ -447,6 +446,14 @@ class App:
 
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
         self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         
+
+        # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use the new numbers so we clear the lists 
+        self.ITI_intervals_final.clear()
+        self.TTC_intervals_final.clear()
+        self.sample_intervals_final.clear()
+        self.ITI_random_intervals.clear()
+        self.TTC_random_intervals.clear()
+        self.sample_random_intervals.clear()
 
         for entry in range(self.num_trials.get()):
 
@@ -531,8 +538,16 @@ class App:
             self.trial_blocks.show()
 
             # blocks have been generated
-            self.blocks_generated = True          
+            self.blocks_generated = True      
 
+            self.licks_df = pd.DataFrame(columns=['Trial Number', 'Stimulus Licked', 'Time Stamp'])
+            # sets the row specified at .loc[len(self.licks_df)] which is zero at this time
+            # so the zeroth row is set to np.nan
+            self.licks_df.loc[len(self.licks_df)] = np.nan  
+        elif (len(self.changed_vars) == 0): 
+            messagebox.showinfo("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
+        elif (self.num_trial_blocks.get() == 0):
+            messagebox.showinfo("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
     def update_plot(self):
 
         # clear the old plot
@@ -552,7 +567,7 @@ class App:
         self.update_plot_id = self.root.after(50, self.update_plot)
 
 
-        # this function is called when the main app window is closed, this is set on line 35
+    # this function is called when the main app window is closed, this is set on line 35
     def on_close(self):
         # stop calling the clock update function, we're done with it 
 
@@ -643,54 +658,56 @@ class App:
     # Define the method for reading data from the first Arduino
     def read_licks(self, i):
         # try to read licks if there is a arduino connected
-        try:
-            if(self.arduinoLaser.in_waiting > 0):
-                data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
-                # Append the data to the scrolled text widget
-                if "Stimulus One Lick" in data:
-                    # if we detect a lick on spout one, then add it to the lick data table
-                    # and add whether the lick was a TTC lick or a sample lick
+       #try:
+        if(self.arduinoLaser.in_waiting > 0):
+            data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
+            # Append the data to the scrolled text widget
+            if "Stimulus One Lick" in data:
+                # if we detect a lick on spout one, then add it to the lick data table
+                # and add whether the lick was a TTC lick or a sample lick
 
-                    # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
-                    self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
-                    self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 1'
-                    self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
-                    self.licks_df.loc[self.total_licks, 'State'] = self.state
+                # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 1'
+                self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
+                self.licks_df.loc[self.total_licks, 'State'] = self.state
+                if(self.stamped_exists):
                     self.stamped_licks.redraw()
 
-                    self.side_one_licks += 1
-                    self.total_licks += 1
+                self.side_one_licks += 1
+                self.total_licks += 1
 
 
-                if "Stimulus Two Lick" in data:
-                    # if we detect a lick on spout one, then add it to the lick data table
-                    # and add whether the lick was a TTC lick or a sample lick
+            if "Stimulus Two Lick" in data:
+                # if we detect a lick on spout one, then add it to the lick data table
+                # and add whether the lick was a TTC lick or a sample lick
 
-                    # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
-                    self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
-                    self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 2'
-                    self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
-                    self.licks_df.loc[self.total_licks, 'State'] = self.state
+                # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                self.licks_df.loc[self.total_licks, 'Stimulus Licked'] = 'Stimulus 2'
+                self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
+                self.licks_df.loc[self.total_licks, 'State'] = self.state
+                if(self.stamped_exists):
                     self.stamped_licks.redraw()
 
-                    self.side_two_licks += 1
-                    self.total_licks += 1  
+                self.side_two_licks += 1
+                self.total_licks += 1  
 
 
 
-            if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
-                self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = time.time() - self.state_start_time
-                self.trial_blocks.update()
-                self.root.after_cancel(self.after_sample_id)
-                self.side_one_licks = 0
-                self.side_two_licks = 0
-                self.sample_time(i)
+        if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
+            self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = (time.time() - self.state_start_time) * 1000
+            self.trial_blocks.update()
+            self.root.after_cancel(self.after_sample_id)
+            self.side_one_licks = 0
+            self.side_two_licks = 0
+            self.sample_time(i)
 
-            # Call this method again after 100 ms
-            self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
+        # Call this method again after 100 ms
+        self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
         # if the arduino is not connected, tell the user to connect one
-        except AttributeError:
-            messagebox.showinfo("Arduino Not Connected","One or more Arduino boards are not connected, please ensure both arduinos are connected and try again")
+        #except AttributeError:
+        #    messagebox.showinfo("Arduino Not Connected","One or more Arduino boards are not connected, please ensure both arduinos are connected and try again")
 
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
