@@ -373,7 +373,18 @@ class App:
                 # Generate stimuli schedule button 
                 self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
                 self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+                if(self.blocks_generated):
+                                        # creating the frame that will contain the data table
+                    self.stimuli_frame = tk.Frame(tab2)     
+                    # setting the place of the frame                       
+                    self.stimuli_frame.grid(row=0, column=0, sticky='nsew') 
 
+                    # setting the tab to expand when we expand the window 
+                    tab2.grid_rowconfigure(0, weight=1)                            
+                    tab2.grid_columnconfigure(0, weight=1)  
+                    self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
+                    self.trial_blocks.autoResizeColumns()
+                    self.trial_blocks.show()
 
     def lick_window(self):
         try:
