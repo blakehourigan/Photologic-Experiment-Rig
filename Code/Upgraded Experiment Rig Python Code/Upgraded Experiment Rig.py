@@ -89,6 +89,8 @@ class App:
 
         self.stamped_exists = False
 
+        self.data_window_open = False
+
         # Initialize the start time to 0
         self.start_time = 0
 
@@ -97,7 +99,7 @@ class App:
         self.total_licks = 0
 
 
-        self.data_window_open = False
+
         
         # Initialize these function instance ID variables
         self.update_clock_id = None
@@ -368,9 +370,6 @@ class App:
                 tab2 = ttk.Frame(notebook)
                 notebook.add(tab2, text='Program Stimuli Schedule')
 
-                self.lick_window_button = tk.Button(tab2, text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
-                self.lick_window_button.grid(row=1, column=0, pady=10, padx=10, sticky='nsew')
-
                 # Generate stimuli schedule button 
                 self.generate_stimulus = tk.Button(tab1,text="Generate Stimulus", command=lambda: self.create_trial_blocks(tab2, notebook, 0, 0), bg="green", font=("Helvetica", 24))
                 self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
@@ -386,7 +385,7 @@ class App:
                 # Set column names for the table
                 # creating the frame that will contain the lick data table
 
-                self.lick_window_instance = self.window_instance_generator("Licks Data Table", "500x800")
+                self.lick_window_instance = self.window_instance_generator("Licks Data Table", "400x800")
                 self.licks_frame = tk.Frame(self.lick_window_instance)
                 self.licks_frame.grid(row=0, column=0, sticky='nsew')  
                 self.stamped_licks = Table(self.licks_frame, dataframe=self.licks_df, showtoolbar=False, showstatusbar=False, weight=1)
