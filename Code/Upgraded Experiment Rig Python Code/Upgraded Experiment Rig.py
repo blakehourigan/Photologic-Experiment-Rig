@@ -35,6 +35,7 @@ class App:
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Initialize the interval variables and their corresponding IntVars types in a dictionary
+        # value = x sets the defalt value that shows when you first boot the program
 
         self.interval_vars = {
             'ITI_var': tk.IntVar(value=30000),
@@ -98,9 +99,6 @@ class App:
         self.side_two_licks = 0
         self.total_licks = 0
 
-
-
-        
         # Initialize these function instance ID variables
         self.update_clock_id = None
         self.update_licks_id = None
@@ -386,9 +384,10 @@ class App:
                     self.trial_blocks.autoResizeColumns()
                     self.trial_blocks.show()
 
+    # this function is called when we open the lick data window
     def lick_window(self):
         try:
-            # Try to lift the window to the top (it will fail if the window is closed)
+            # Try to lift the window to the top so we can see it (it will fail if the window is closed)
             self.lick_window_instance.lift()
         except (AttributeError, tk.TclError):
             # if blocks have been generated, then generate the blank lick table
@@ -407,6 +406,7 @@ class App:
             else:
                 messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
+    # this function is designed to create new windows when we need them
     def window_instance_generator(self, name, size):
 
         self.window_instance = tk.Toplevel(self.root)
@@ -623,7 +623,7 @@ class App:
             if self.update_plot_id is not None:
                 self.root.after_cancel(self.update_plot_id)
                 self.data_window_instance.destroy()
-            # try to send the reset command to both Arduinos
+            # try to send the reset command to reboot both Arduino boards 
             try:
                 self.arduinoLaser.write(b'reset\n')
                 self.arduinoMotor.write(b'reset\n')
@@ -647,6 +647,7 @@ class App:
     def clear_toggle(self):
         # Clear the scrolled text widget
         self.data_text.delete('1.0', tk.END)
+        # reset timers to hold 0  
         elapsed_time = 0 
         self.time_label.configure(text="{:.3f}s".format(elapsed_time))
         state_elapsed_time = 0
@@ -664,11 +665,9 @@ class App:
         # Call this method again after 100 ms
         self.update_clock_id = self.root.after(50, self.update_clock)
         
-
     # Define the method for reading data from the first Arduino
     def read_licks(self, i):
         # try to read licks if there is a arduino connected
-       #try:
         if(self.arduinoLaser.in_waiting > 0):
             data = self.arduinoLaser.read(self.arduinoLaser.in_waiting).decode('utf-8')
             # Append the data to the scrolled text widget
@@ -715,15 +714,14 @@ class App:
 
         # Call this method again after 100 ms
         self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
-        # if the arduino is not connected, tell the user to connect one
-        #except AttributeError:
-        #    messagebox.showinfo("Arduino Not Connected","One or more Arduino boards are not connected, please ensure both arduinos are connected and try again")
 
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
         self.data_text.insert(tk.END, data)
         # Scroll the scrolled text widget to the end of the data
         self.data_text.see(tk.END)
+
+    # code that brings up the windows file save dialogue menu to save the two data tables to external files
 
     def save_data(self):
         try:
@@ -747,7 +745,3 @@ class App:
 app = App()
 # Start the Tkinter event loop
 app.root.mainloop()
-
-# Close the serial connections to the Arduinos
-app.arduinoLaser.close()
-app.arduinoMotor.close()
