@@ -1,20 +1,8 @@
 # Importing libraries that are used for this program
-import sys
-import serial                           
-import time
-import random
-import itertools
-import numpy as np
-import tkinter as tk
-from tkinter import ttk
-from tkinter import scrolledtext
-from tkinter import filedialog
-from tkinter import messagebox
-import pandas as pd
+import sys, serial, time, random, itertools, numpy as np, tkinter as tk, pandas as pd, matplotlib.pyplot as plt
+from tkinter import ttk, scrolledtext, filedialog, messagebox
 from pandastable import Table, TableModel
 from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from serial.serialutil import SerialException
 
