@@ -1,5 +1,7 @@
 const byte inputBitSide1 = PH5;        // PB4 or pin 10 is the bit that detects a switch to low to increment number of licks       
       byte inputBitSide2 = PH6;
+      byte outputBitSide1 = PB4;
+      byte outputBitSide2 = PB5;
 
 unsigned long startTime, endTime; // variables to store start and endtime of licks
 unsigned long programStart;
@@ -14,6 +16,8 @@ int licksSideTwo = 0;
 void setup() {
   Serial.begin(9600);             // Start the serial communication
   // Set up Timer 4 for 1 microsecond interval
+  pinMode(10, OUTPUT); // Sets pin 10 as an output pin
+  pinMode(11, OUTPUT); // Sets pin 11 as an output pin
   cli();                          // Disable global interrupts
   TCCR4A = 0;                     // Set entire TCCR4A register to 0
   TCCR4B = 0;                     // Set entire TCCR4B register to 0
@@ -46,11 +50,12 @@ void loop()
   
   if (PinStateSide1 == 0 && previousStateSide1 == 1) {
     startTime = millis();
+    PINB |= (1 << outputBitSide1);
     previousStateSide1 = 0;
   } 
   if (PinStateSide1 == 1 && previousStateSide1 == 0) {
     endTime = millis();
-
+    PINB &= ~(1 << outputBitSide1);
     licksSideOne++;
 
     String myString = "Stimulus One Lick:";
@@ -69,11 +74,12 @@ void loop()
 
   if (PinStateSide2 == 0 && previousStateSide2 == 1) {
     startTime = millis();
-
+    PINB |= (1 << outputBitSide2);
     previousStateSide2 = 0;
   } 
   if (PinStateSide2 == 1 && previousStateSide2 == 0) {
     endTime = millis();
+    PINB &= ~(1 << outputBitSide2);
     licksSideTwo++;
 
     String myString = "Stimulus Two Lick:";
