@@ -8,7 +8,7 @@ from serial.serialutil import SerialException
 
 # defining the baud rate for communication with the arduinos
 
-BAUD_RATE = 9600          
+       
 
 class App:
     # Initialize the App object
@@ -80,6 +80,7 @@ class App:
 
         self.data_window_open = False
 
+        BAUD_RATE = 9600   
         # Initialize the time, licks to 0
         self.start_time = 0
         self.side_one_licks = 0
