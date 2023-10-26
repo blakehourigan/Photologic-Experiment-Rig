@@ -214,34 +214,40 @@ class App:
         # Start the program clock function 
         self.update_clock()
 
-    # this function is defined to let the 
+    # this function is defined to find which arduino contains the code for which function automatically 
     def identify_arduino(self, port, BAUD_RATE):
         try:
+            # connect to arduino on specified port
             arduino = serial.Serial(port, BAUD_RATE, timeout=1)
             # Wait for Arduino to initialize
             time.sleep(2)  
+            # ask nicely who the arduino is and wait for response, store it in identifier 
             arduino.write(b'WHO_ARE_YOU\n')
             identifier = arduino.readline().decode('utf-8').strip()
             arduino.close()
+            #return identifier back to connect function 
             return identifier
         
         except Exception:
             print(f"An error occurred: {Exception}")
             return None
         
+    # function that establishes the connection to the arduinos 
     def connect_to_arduino(self, BAUD_RATE):
+        # define a list of all ports on the device 
         ports = [port.device for port in serial.tools.list_ports.comports()]
 
         arduinoLaser = None
         arduinoMotor = None
 
+        # for each port on the device, check if it has an Arduino attached to it and identify that arduino if it does
         for port in ports:
-            identifier = self.idenify_arduino(port, BAUD_RATE)
+            identifier = self.identify_arduino(port, BAUD_RATE)
             if identifier == "LASER":
                 arduinoLaser = serial.Serial(port, BAUD_RATE)
             elif identifier == "MOTOR":
                 arduinoMotor = serial.Serial(port, BAUD_RATE)
-        
+        # if we didn't find either arduino then display the error message to the user
         if arduinoLaser is None or arduinoMotor is None:
             messagebox.showinfo("Serial Error", "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
             if arduinoLaser is not None:
