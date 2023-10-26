@@ -1,5 +1,5 @@
 # Importing libraries that are used for this program
-import sys, serial, time, random, itertools, numpy as np, tkinter as tk, pandas as pd, matplotlib.pyplot as plt
+import sys, serial, serial.tools.list_ports, time, random, itertools, platform, numpy as np, tkinter as tk, pandas as pd, matplotlib.pyplot as plt
 from tkinter import ttk, scrolledtext, filedialog, messagebox
 from pandastable import Table, TableModel
 from matplotlib.figure import Figure
@@ -205,20 +205,53 @@ class App:
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
         self.data_text.grid(row=0, column=0, sticky='nsew')
 
-        try:
-            # Open a serial connection to the first Arduino
-            self.arduinoLaser = serial.Serial('COM3', BAUD_RATE)
-            # Open a serial connection to the second Arduino
-            self.arduinoMotor = serial.Serial('COM4', BAUD_RATE)
+        # Open a serial connection to the first Arduino
+        self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)
 
-            self.arduinoLaser.flush()  # or self.arduinoLaser.flush() in recent versions
-            self.arduinoMotor.flush()  # or self.arduinoMotor.flush() in recent versions
+        self.arduinoLaser.flush() 
+        self.arduinoMotor.flush()  
 
-            # if one or more of the arduinos are not connected then we need to let the user know 
-        except SerialException:
-                messagebox.showinfo("Serial Error", "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
         # Start the program clock function 
         self.update_clock()
+
+    # this function is defined to let the 
+    def identify_arduino(self, port, BAUD_RATE):
+        try:
+            arduino = serial.Serial(port, BAUD_RATE, timeout=1)
+            # Wait for Arduino to initialize
+            time.sleep(2)  
+            arduino.write(b'WHO_ARE_YOU\n')
+            identifier = arduino.readline().decode('utf-8').strip()
+            arduino.close()
+            return identifier
+        
+        except Exception:
+            print(f"An error occurred: {Exception}")
+            return None
+        
+    def connect_to_arduino(self, BAUD_RATE):
+        ports = [port.device for port in serial.tools.list_ports.comports()]
+
+        arduinoLaser = None
+        arduinoMotor = None
+
+        for port in ports:
+            identifier = self.idenify_arduino(port, BAUD_RATE)
+            if identifier == "LASER":
+                arduinoLaser = serial.Serial(port, BAUD_RATE)
+            elif identifier == "MOTOR":
+                arduinoMotor = serial.Serial(port, BAUD_RATE)
+        
+        if arduinoLaser is None or arduinoMotor is None:
+            messagebox.showinfo("Serial Error", "1 or more Arduino boards are not connected, connect arduino boards and relaunch before running program")
+            if arduinoLaser is not None:
+                arduinoLaser.close()
+            if arduinoMotor is not None: 
+                arduinoMotor.close()
+            return arduinoLaser, arduinoMotor
+            
+
+
 
     # Program state methods
     # defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
