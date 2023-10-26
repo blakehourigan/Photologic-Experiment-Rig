@@ -534,8 +534,6 @@ class App:
                 # if blocks haven't been generated, let the user know that they need to do that before they can use this page.
                 messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
-        
-
     # this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
 
