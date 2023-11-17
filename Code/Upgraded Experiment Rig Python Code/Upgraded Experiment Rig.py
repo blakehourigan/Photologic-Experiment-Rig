@@ -25,15 +25,18 @@ class App:
         # Initialize the interval variables and their corresponding IntVars types in a dictionary
         # value = x sets the defalt value that shows when you first boot the program
 
-        self.interval_vars = {
+            
+        """        
+            self.interval_vars = {
             'ITI_var': tk.IntVar(value=30000),
             'TTC_var': tk.IntVar(value=15000),
             'sample_time_var': tk.IntVar(value=15000),
             'ITI_random_entry': tk.IntVar(value=5000),
             'TTC_random_entry': tk.IntVar(value=5000),
             'sample_time_entry': tk.IntVar(value=5000),
-        }
+        }"""
 
+        """        
         # initializing the lists that will hold the final calculated random interval values 
 
         self.ITI_intervals_final = []
@@ -44,14 +47,16 @@ class App:
 
         self.ITI_random_intervals = []
         self.TTC_random_intervals = []
-        self.sample_random_intervals = []
+        self.sample_random_intervals = []"""
 
         # Initialize dictionary full of stimulus variables and fill each entry to hold default value equal to the key value
 
+        """        
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
-            self.stimuli_vars[key].set(key)
+            self.stimuli_vars[key].set(key)"""
 
+        """        
         # initialize lists to hold original pairs and the list that will hold our dataframes.
 
         self.pairs = []
@@ -60,13 +65,11 @@ class App:
         # Initialize variables that will keep track of the total number of trials we will have, the total number of trial blocks that the user wants to run
         # and the total number of stimuli. These are of type IntVar because they are used in the GUI. 
 
-        self.num_trials = tk.IntVar()
-        self.num_trials.set(0)
-        self.num_trial_blocks = tk.IntVar()
-        self.num_trial_blocks.set(0)
-        self.num_stimuli = tk.IntVar()
-        self.num_stimuli.set(0)
+        self.num_trials = tk.IntVar(value=0)
+        self.num_trial_blocks = tk.IntVar(value=0)
+        self.num_stimuli = tk.IntVar(value=0)"""
 
+        """        
         # initializing variable for iteration through the trials in the program
 
         self.curr_trial_number = 1
@@ -78,10 +81,13 @@ class App:
 
         self.stamped_exists = False
 
-        self.data_window_open = False
+        self.data_window_open = False"""
 
-        BAUD_RATE = 9600   
+        # BAUD_RATE = 9600  
+         
+        """
         # Initialize the time, licks to 0
+        
         self.start_time = 0
         self.side_one_licks = 0
         self.side_two_licks = 0
@@ -92,7 +98,7 @@ class App:
         # This is what we call to cancel the function call to avoid errors when closing the program
         self.update_clock_id = None
         self.update_licks_id = None
-        self.update_plot_id = None
+        self.update_plot_id = None"""
 
         # Set program default to the off state
         self.state = "OFF"
