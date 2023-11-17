@@ -7,7 +7,6 @@ class Config:
         self.script_path = Path(__file__).resolve().parent
 
         self.main_gui_window_size = "1400x800"
-        pass
 
     def get_window_icon_path(self) -> str:
         # get directory path of project folder

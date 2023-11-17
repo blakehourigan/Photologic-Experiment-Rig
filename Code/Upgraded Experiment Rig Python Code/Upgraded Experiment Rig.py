@@ -99,16 +99,19 @@ class App:
         self.update_clock_id = None
         self.update_licks_id = None
         self.update_plot_id = None"""
-
+        
+        """
         # Set program default to the off state
         self.state = "OFF"
-
+        """
+        """
         # Configure the GUI grid layout
         for i in range(8):
             self.root.grid_rowconfigure(i, weight=1 if i == 3 else 0)
         # The column is also configured to expand
-        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)"""
 
+        """
         # Label headers
         self.time_label_header = tk.Label(text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
         self.time_label_header.grid(row=0, column=0, pady=10, padx=10, sticky='e')
@@ -132,7 +135,10 @@ class App:
 
         self.interval3_label = tk.Label(self.root, text="Time to Sample:", bg="light blue", font=("Helvetica", 24))
         self.interval3_label.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
-
+        """
+        
+        
+        """
         # Add Data Entry widgets for intervals
         self.interval1_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_var'], font=("Helvetica", 24))
         self.interval1_entry.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
@@ -141,28 +147,33 @@ class App:
         self.interval2_entry.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
 
         self.interval3_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_var'], font=("Helvetica", 24))
-        self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Labels for Interval Entry widgets
         self.interval1_label = tk.Label(self.root, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
         self.interval1_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
 
         # Label for # of trials
         self.num_trials_label = tk.Label(self.root, text="Trial Blocks", bg="light blue", font=("Helvetica", 24))
-        self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Entry for # of trials
         self.num_trial_blocks_entry = tk.Entry(self.root, textvariable=self.num_trial_blocks, font=("Helvetica", 24))
-        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Label for # stimuli
         self.num_stimuli_label = tk.Label(self.root, text="# of Stimuli", bg="light blue", font=("Helvetica", 24))
-        self.num_stimuli_label.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_label.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Entry for # of trials
         self.num_stimuli_entry = tk.Entry(self.root, textvariable=self.num_stimuli, font=("Helvetica", 24))
-        self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Add Data Entry widgets for random plus/minus intervals
         self.interval1Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
         self.interval1Rand_entry.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
@@ -171,12 +182,14 @@ class App:
         self.interval2Rand_entry.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
 
         self.interval3Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_entry'], font=("Helvetica", 24))
-        self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
-
+        self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')"""
+        
+        """
         # Program information label
         self.program_label = tk.Label(text="Program Information", bg="light blue", font=("Helvetica", 24))
-        self.program_label.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
+        self.program_label.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)"""
 
+        """
         # Start/stop button
         self.startButton = tk.Button(text="Start", command=self.start_toggle, bg="green", font=("Helvetica", 24))
         self.startButton.grid(row=1, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
@@ -198,19 +211,21 @@ class App:
 
         # button to save expirement data to excel sheets
         self.data_window_button = tk.Button(text="Save Data Externally", command=self.save_data, bg="grey", font=("Helvetica", 24))
-        self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')
+        self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.root)
         self.frame.grid(row=3, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
 
         # Configure the frame's column and row to expand as the window resizes
         self.frame.grid_columnconfigure(0, weight=1)
-        self.frame.grid_rowconfigure(0, weight=1)
+        self.frame.grid_rowconfigure(0, weight=1)"""
 
+        """
         # Create a scrolled text widget for displaying data, place it in the frame, and set it to expand with the frame
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
-        self.data_text.grid(row=0, column=0, sticky='nsew')
+        self.data_text.grid(row=0, column=0, sticky='nsew')"""
 
         # Open a serial connection to the first Arduino
         self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)
@@ -714,9 +729,10 @@ class App:
         except: 
             pass
         # destroy the root window and close the app
-        self.root.destroy();
+        self.root.destroy()
         self.root.quit()
 
+    """ 
     # Define the method for toggling the program state via the start/stop button
     def start_toggle(self):
         # If the program is running, stop it
@@ -745,7 +761,7 @@ class App:
                 self.curr_trial_number = 1
             # if it fails, then the arduinos are not connected
             except:
-                pass
+                pass"""
 
         # If the program is not running, start it
         else:

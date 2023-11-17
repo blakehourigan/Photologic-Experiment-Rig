@@ -1,9 +1,7 @@
 from program_control import ProgramController
-from main_gui import MainGUI
 
 def main():
-    program_controller = ProgramController()
-    program_controller.start_main_gui(MainGUI, program_controller)
-
+    program_control = ProgramController()
+    program_control.start_main_gui()
 if __name__ == "__main__":
     main()
