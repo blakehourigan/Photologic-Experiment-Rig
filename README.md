@@ -1,4 +1,4 @@
-# Upgraded-Experiment-Rig
+# Samuelsen Lab Photologic-Experiment-Rig
 All CAD files, code, circuity, and documentation for the new Samuelsen lab experiment rig. 
 
 This distribution package includes files relevant to building the lick detector, described in 
