@@ -1,25 +1,64 @@
-# Upgraded-Experiment-Rig
-All CAD files, code, circuity, and documentation for the new Samuelsen lab experiment rig. 
+# Samuelsen Lab Photologic-Experiment-Rig
 
-This distribution package includes files relevant to building the lick detector, described in 
-
+## Overview
 
 
-For more detailed instructions on how to construct the detector, refer to the appendix of the above publication.
+Overview of the project...
 
-Basic instructions:
-1. Download and print STL files on 3d printer. 
-2. Machine out rig faceplates/door. 
-3. Glue/screw together parts according to solidworks assembly file. 
-4. Secure optical fibers to lick spout faceplates. 
-5. Recreate circuitry on breadboards or order PCB for circuitry to interface the motor, solenoids and opical emitter/detector with the Arduino boards. 
-6. Download Arduino code and upload to two Arduino boards. Download Python code to control rig hardware.
-
-For an overall look at the final product, refer to the images in the Example folder.
+## Features
 
 
+Features
 
 
-Directory list:
+## Installation
 
 
+Detailed instructions on how to set up the rig. This section is divided into sub-sections for clarity.
+
+### Prerequisites
+
+
+- prerequisites 
+
+### Assembly Instructions
+1. **3D Printing:**   3d print instruc
+2. **Machining:**   machining parts 
+3. **Assembly:**   assembly instruc
+4. **Optical Fiber Setup:**   fiber instruc
+5. **Circuitry:** Circuitry details / instructions
+6. **Programming:** Downloading and running code
+
+### Configuration
+
+
+how to configure the system once assembled.
+
+## Usage
+
+
+usage guide
+
+
+## License
+
+
+This project is licensed under the MIT License - see LICENSE.txt for details.
+
+## Acknowledgements
+
+
+Acknowledging people
+
+## Contact Information
+
+contact details
+
+## Directory Structure
+A detailed list of the repository's directory structure, explaining what each folder contains. This helps users navigate the repository more effectively.
+
+- **CAD Files:** All CAD files for 3D printing and machining.
+- **Code:** Source code for Arduino and Python scripts.
+- **Documentation:** Detailed documents and instructions.
+- **Example:** Images and examples of the final assembled product.
+- **Circuitry:** Diagrams and files related to the electrical components.
