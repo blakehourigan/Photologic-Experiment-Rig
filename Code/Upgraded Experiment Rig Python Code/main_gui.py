@@ -120,11 +120,11 @@ class MainGUI:
         # Clear screen button
         self.clear_button = tk.Button(text="Clear", command=self.controller.clear_button_handler, bg="grey", font=("Helvetica", 24))
         self.clear_button.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
-        """
+        
         # button to open the stimuli window
-        self.experiment_control_button = tk.Button(text="Experiment CTL", command=self.experiment_control, bg="grey", font=("Helvetica", 24))
+        self.experiment_control_button = tk.Button(text="Experiment CTL", command= lambda: self.controller.show_experiment_ctl_window(self.master), bg="grey", font=("Helvetica", 24))
         self.experiment_control_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew',columnspan=1)
-
+        """
         self.lick_window_button = tk.Button(text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
         self.lick_window_button.grid(row=10, column=1, pady=10, padx=10, sticky='nsew',columnspan=1)
 

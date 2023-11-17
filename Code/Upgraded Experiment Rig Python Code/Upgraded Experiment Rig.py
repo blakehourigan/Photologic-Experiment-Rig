@@ -415,6 +415,7 @@ class App:
             self.initial_time_interval(i+1)     """                                   
 
     # this method is called when a user clicks on the experiment control button on the main screen
+    """
     def experiment_control(self):
         try:
             # Try to lift the window to the top so the user can see it (it will fail if the window is closed)
@@ -482,7 +483,7 @@ class App:
                     # creating the pandasTable table object and placing it in the stimuli frame, which is in tab 2
                     self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
                     self.trial_blocks.autoResizeColumns()
-                    self.trial_blocks.show()
+                    self.trial_blocks.show()"""
 
     # this function is called when the lick data window is opened
     def lick_window(self):
@@ -533,7 +534,7 @@ class App:
         self.running = False
         self.startButton.configure(text="Start", bg="green")"""
 
-    # method that is called when the 'View data' button is pressed in the main window
+    """# method that is called when the 'View data' button is pressed in the main window
     def data_window(self):
         try:
             # Try to lift the window on top of all windows (it will fail if the window is closed)
@@ -561,9 +562,9 @@ class App:
                 self.update_plot()
             else:
                 # if blocks haven't been generated, let the user know that they need to do that before they can use this page.
-                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
+                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")"""
 
-    # this is the function that will generate the full roster of stimuli for the duration of the program
+    """# this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
 
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
@@ -692,7 +693,7 @@ class App:
             messagebox.showinfo("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
         elif (self.num_trial_blocks.get() == 0):
             # if number of trial blocks is zero, inform the user that they must change this
-            messagebox.showinfo("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
+            messagebox.showinfo("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")"""
     
     # define method to update the plot in the 'view data' window
     def update_plot(self):
@@ -866,7 +867,7 @@ class App:
         # Scroll the scrolled text widget to the end of the data
         self.data_text.see(tk.END)"""
 
-    # method that brings up the windows file save dialogue menu to save the two data tables to external files
+    """ # method that brings up the windows file save dialogue menu to save the two data tables to external files
     def save_data(self):
         try:
             file_name = filedialog.asksaveasfilename(defaultextension='.xlsx',
@@ -884,7 +885,7 @@ class App:
             self.licks_df.to_excel(licks_file_name, index=False)
         except:
             messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
-
+"""
 # Create an App object
 app = App()
 # Start the Tkinter event loop

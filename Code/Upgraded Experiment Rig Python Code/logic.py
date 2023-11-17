@@ -1,8 +1,11 @@
 import tkinter as tk
 import time
+import random
+import numpy as np 
 
 class ExperimentLogic:
     def __init__(self, controller) -> None:
+        self.controller = controller 
         
         self.interval_vars = \
         {
@@ -19,17 +22,10 @@ class ExperimentLogic:
         self.ITI_intervals_final = []
         self.TTC_intervals_final = []
         self.sample_intervals_final = []
-
-        # These will be used to store the random +/- values to be added to the constant values
-
-        self.ITI_random_intervals = []
-        self.TTC_random_intervals = []
-        self.sample_random_intervals = []
     
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
-            
             
         # initialize lists to hold original pairs and the list that will hold our dataframes.
 
@@ -178,7 +174,7 @@ class ExperimentLogic:
             main_gui.master.after(int(self.df_stimuli.loc[i,'ITI']), lambda: self.time_to_contact(i, main_gui, arduino_mgr))
         else: 
             # if we have gone through every trial then end the program.
-            self.stop_program()
+            self.stop_program(main_gui)
 
     def time_to_contact(self, i, main_gui, arduino_mgr):
         """ defining the TTC state method, argument are self and i. i is passed from TTC to keep track of what stimuli we are on. """
@@ -324,4 +320,72 @@ class ExperimentLogic:
         # Call this method again every 100 ms
         self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
 
-            
+    def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
+        """ this is the function that will generate the full roster of stimuli for the duration of the program """
+        
+        # the total number of trials equals the number of stimuli times the number of trial blocks that we want
+        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         
+
+        # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
+        self.ITI_intervals_final.clear()
+        self.TTC_intervals_final.clear()
+        self.sample_intervals_final.clear()
+        
+        # Assuming 'num_entries' is the number of entries (rows) you need to process
+        for entry in range(self.num_trials.get()):
+            for interval_type in ['ITI', 'TTC', 'sample']:
+                random_entry_key = f'{interval_type}_random_entry'
+                var_key = f'{interval_type}_var'
+                final_intervals_key = f'{interval_type}_intervals_final'
+
+                # Generate a random interval
+                random_interval = random.randint(-self.interval_vars[random_entry_key].get(), 
+                                                self.interval_vars[random_entry_key].get())
+                
+                # Calculate the final interval by adding the random interval to the state constant
+                final_interval = self.interval_vars[var_key].get() + random_interval
+
+                # Append the final interval to the corresponding list
+                if not hasattr(self, final_intervals_key):
+                    setattr(self, final_intervals_key, [])
+                getattr(self, final_intervals_key).append(final_interval)
+
+
+        """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
+                            var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
+        self.changed_vars = [v for i, (k, v) in enumerate(self.stimuli_vars.items()) if v.get() != f'stimuli_var_{i+1}']
+                                                                                                   # f string used to incorporate var in string 
+        # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number    
+        if len(self.changed_vars) > self.num_stimuli.get():
+
+        # Start at the number of stimuli you now have               
+            start_index = self.num_stimuli.get()  
+            # and then set the rest of stimuli past that value back to default to avoid error                          
+            # create an index for each loop, loop through each key in stimuli_vars
+            for index, key in enumerate(self.stimuli_vars):
+                if index >= start_index:
+                    # if the loop we are on is greater than the start index calculated, then set the value to the value held by the key.
+                    self.stimuli_vars[key].set(key)
+
+        # from our list of variables that were changed from their default values, pair them together in a new pairs list.
+        # 1 is paired with 2. 3 with 4, etc
+        try:
+            # increment by 2 every loop to avoid placing the same stimuli in the list twice
+            self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
+        except:
+            # if a stimulus has not been changed, this error message will be thrown to tell the user to change it and try again.
+            self.controller.display_error("Stimulus Not Changed","One or more of the default stimuli have not been changed, please change the default value and try again")
+        # for each pair in pairs list, include each pair flipped
+        self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+
+        # if the stimuli frame is already open then destroy everything in it so we can write over it with a new one
+        if hasattr(self, 'stimuli_frame'):                                                        
+            # destroying table
+            self.trial_blocks.destroy()
+            # destroying frame
+            self.stimuli_frame.destroy()
+            # emptying list holding stimuli data
+            self.df_list = []
+
+
+
