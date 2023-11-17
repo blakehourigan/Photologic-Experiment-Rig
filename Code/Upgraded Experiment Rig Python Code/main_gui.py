@@ -167,5 +167,3 @@ class MainGUI:
     def display_error(self, error, message):
         messagebox.showinfo(error, message)
             
-    def start_program(self):
-        self.controller.start_logic()

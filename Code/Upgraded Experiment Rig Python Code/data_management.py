@@ -4,16 +4,17 @@ import numpy as np
 import random
 
 class DataManager:
-    def __init__(self, controller):
+    def __init__(self, controller, logic):
         self.stimuli_dataframe = None
         self.licks_dataframe = pd.DataFrame()
         self.controller = controller
+        self.logic = logic
         
     def generate_trial_blocks(self) -> pd.DataFrame:    
         # if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
         
-        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:                                             
-            for i in range(self.num_trial_blocks.get()):       
+        if self.logic.num_trial_blocks.get() != 0 and len(self.logic.changed_vars) > 0:                                             
+            for i in range(self.logic.num_trial_blocks.get()):       
                 # copy the entire list of pairs int pairs_copy                                                         
                 pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]                                    
                 # then shuffle the pairs so we get pseudo random generation 
@@ -43,37 +44,22 @@ class DataManager:
 
             # Create new column for the actual time elapsed in Time to contact state to be filled during program execution
             self.stimuli_dataframe['TTC Actual'] = np.nan
-        elif (len(self.changed_vars) == 0): 
+        elif (len(self.logic.changed_vars) == 0): 
             # if there have been no variables that have been changed, then inform the user to change them
             self.controller.display_error("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
-        elif (self.num_trial_blocks.get() == 0):
+        elif (self.logic.num_trial_blocks.get() == 0):
             # if number of trial blocks is zero, inform the user that they must change this
             self.controller.display_error("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
-
+        
+        self.logic.blocks_generated = True 
         return self.stimuli_dataframe
 
-        # creating the frame that will contain the data table
-        self.stimuli_frame = tk.Frame(tab2)     
-        # setting the place of the frame                       
-        self.stimuli_frame.grid(row=0, column=0, sticky='nsew') 
-
-        # setting the tab to expand when we expand the window 
-        tab2.grid_rowconfigure(0, weight=1)                            
-        tab2.grid_columnconfigure(0, weight=1)  
-
-        # Creating the main data table and adding the dataframe that we just created, adding a toolbar in and setting 
-        # weight to 1 to make sure that it expands as the window expands
-
-        self.trial_blocks = Table(self.stimuli_frame, dataframe=self.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
-        self.trial_blocks.autoResizeColumns()
-        self.trial_blocks.show()
-
-        self.blocks_generated = True      
-
+    def initalize_licks_dataframe(self):
         # setup the licks data frame that will hold the timestamps for the licks and which port was likced
         self.licks_dataframe = pd.DataFrame(columns=['Trial Number', 'Port Licked', 'Time Stamp'])
-        # set the row specified at .loc[len(self.licks_dataframe)] which is zero at this time
-        # so the zeroth row is set to np.nan so that the frame is not blank when the table is empty
+        
+        """set the row specified at .loc[len(self.licks_dataframe)] which is zero at this time
+        so the zeroth row is set to np.nan so that the frame is not blank when the table is empty"""
         self.licks_dataframe.loc[len(self.licks_dataframe)] = np.nan  
 
     def save_data_to_xlsx(self) -> None:

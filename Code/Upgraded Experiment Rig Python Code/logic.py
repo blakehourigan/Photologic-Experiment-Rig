@@ -46,7 +46,7 @@ class ExperimentLogic:
         # Initialize boolean flags to false
         self.running = False
 
-        self.blocks_generated = False
+        self._blocks_generated = False
 
         self.stamped_exists = False
 
@@ -69,47 +69,7 @@ class ExperimentLogic:
         
         self.state = "OFF"
             
-    def start_button_logic(self, main_gui, arduino_mgr):
-        """ Define the method for toggling the program state via the start/stop button """
-        # If the program is running, stop it
-        if self.running:
-            self.stop_program(main_gui)
-            #self.master.after_cancel(self.update_clock_id)
-            # if we have called the update licks function at all, then stop it from being called now, we're done with it 
-            if self.update_licks_id is not None:  
-                self.master.after_cancel(self.update_licks_id)
 
-            # if we have opened a data window and have a update for the plot scheduled, then cancel it and close the window
-            if self.update_plot_id is not None:
-                self.main_gui.master.after_cancel(self.update_plot_id)
-                #self.data_window_instance.destroy()
-            # try to send the reset command to reboot both Arduino boards 
-
-            arduino_mgr.reset_arduinos()
-            self.curr_trial_number = 1
-        # If the program is not running, start it
-        else:
-            # Start the program if it is not already runnning and generate random numbers
-            self.running = True
-            # program main start time begins now
-            self.start_time = time.time()
-            
-            self.update_clock(main_gui)
-            # turn the main button to the red stop button
-            main_gui.startButton.configure(text="Stop", bg="red")
-            # call the first ITI state with an iteration variable (i acts as a 
-            # variable to iterate throgh the program schedule data table) starting at 0
-            self.initial_time_interval(0, main_gui, arduino_mgr)
-            
-    def stop_program(self, main_gui):
-        """ Method to halt the program and set it to the off state, changing the button back to start. """
-        self.state = "OFF"
-        # set the state timer label
-        main_gui.state_time_label_header.configure(text=(self.state))
-        # set the running variable to false to halt execution in the state functions
-        self.running = False
-        # Turn the program execution button back to the green start button
-        main_gui.startButton.configure(text="Start", bg="green")
             
     def clear_button_logic(self, main_gui):
         # Clear the scrolled text widget
@@ -120,20 +80,7 @@ class ExperimentLogic:
         state_elapsed_time = 0
         main_gui.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
         
-    # Define the method for updating the clock
-    def update_clock(self, main_gui):
-        # If the program is running, update the elapsed time
-        if self.running:
-            # total elapsed time is current minus program start time
-            elapsed_time = time.time() - self.start_time
-            # update the main screen label and set the number of decimal points to 3 
-            main_gui.time_label.configure(text="{:.3f}s".format(elapsed_time))
-            # state elapsed time is current time minus the time we entered the state 
-            state_elapsed_time = time.time() - self.state_start_time
-            # update the main screen label and set the number of decimal points to 3
-            main_gui.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
-            # Call this method again after 100 ms
-            main_gui.master.after(50, lambda: self.update_clock(main_gui))
+
             
     def initial_time_interval(self, i, main_gui, arduino_mgr):
         """defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
@@ -279,6 +226,7 @@ class ExperimentLogic:
                 # if we detect a lick on spout one, then add it to the lick data table
                 # and add whether the lick was a TTC lick or a sample lick
 
+
                 # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
                 self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
                 self.licks_df.loc[self.total_licks, 'Port Licked'] = 'Stimulus 1'
@@ -320,7 +268,7 @@ class ExperimentLogic:
         # Call this method again every 100 ms
         self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
 
-    def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
+    def create_trial_blocks(self):
         """ this is the function that will generate the full roster of stimuli for the duration of the program """
         
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
@@ -388,4 +336,11 @@ class ExperimentLogic:
             self.df_list = []
 
 
+    @property
+    def blocks_generated(self):
+        return self._blocks_generated
 
+    @blocks_generated.setter
+    def blocks_generated(self, value):
+        # You can add validation or additional logic here
+        self._blocks_generated = value
