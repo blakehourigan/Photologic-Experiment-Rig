@@ -227,15 +227,20 @@ class App:
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
         self.data_text.grid(row=0, column=0, sticky='nsew')"""
 
+        """
         # Open a serial connection to the first Arduino
-        self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)
+        self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)"""
 
+        """
         self.arduinoLaser.flush() 
-        self.arduinoMotor.flush()  
+        self.arduinoMotor.flush()  """
 
+        """
         # Start the program clock function 
-        self.update_clock()
-
+        self.update_clock()"""
+    
+    
+    """
     # this function is defined to find which arduino contains the code for which function automatically 
     def identify_arduino(self, port, BAUD_RATE):
         try:
@@ -278,9 +283,10 @@ class App:
                 arduinoMotor.close()
             return arduinoLaser, arduinoMotor
             
+    """
 
 
-
+    """    
     # Program state methods
     # defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
     # the second argument is i, which is the iteration variable that we use to keep track of what trial we are on. 
@@ -406,7 +412,7 @@ class App:
             except:
                 pass
             # Jump to ITI state to begin ITI for next trial by incrementing the i variable
-            self.initial_time_interval(i+1)                                        
+            self.initial_time_interval(i+1)     """                                   
 
     # this method is called when a user clicks on the experiment control button on the main screen
     def experiment_control(self):
@@ -519,12 +525,13 @@ class App:
         # return the window to the variable that the user is assigning it to.
         return self.window_instance
 
+    """
     # Method to halt the program and set it to the off state, changing the button back to start.
     def stop_program(self):
         self.state = "OFF"
         self.state_time_label_header.configure(text=(self.state))
         self.running = False
-        self.startButton.configure(text="Start", bg="green")
+        self.startButton.configure(text="Start", bg="green")"""
 
     # method that is called when the 'View data' button is pressed in the main window
     def data_window(self):
@@ -761,7 +768,7 @@ class App:
                 self.curr_trial_number = 1
             # if it fails, then the arduinos are not connected
             except:
-                pass"""
+                pass
 
         # If the program is not running, start it
         else:
@@ -773,8 +780,8 @@ class App:
             self.startButton.configure(text="Stop", bg="red")
             # call the first ITI state with an iteration variable (i acts as a 
             # variable to iterate throgh the program schedule data table) starting at 0
-            self.initial_time_interval(0)
-
+            self.initial_time_interval(0)"""
+    """
     def clear_toggle(self):
         # Clear the scrolled text widget
         self.data_text.delete('1.0', tk.END)
@@ -782,8 +789,9 @@ class App:
         elapsed_time = 0 
         self.time_label.configure(text="{:.3f}s".format(elapsed_time))
         state_elapsed_time = 0
-        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))"""
 
+    """
     # Define the method for updating the clock
     def update_clock(self):
         # If the program is running, update the elapsed time
@@ -797,9 +805,9 @@ class App:
             # update the main screen label and set the number of decimal points to 3
             self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
         # Call this method again after 100 ms
-        self.update_clock_id = self.root.after(50, self.update_clock)
+        self.update_clock_id = self.root.after(50, self.update_clock)"""
         
-    # Define the method for reading data from the optical fiber Arduino
+    """# Define the method for reading data from the optical fiber Arduino
     def read_licks(self, i):
         # try to read licks if there is a arduino connected
         if(self.arduinoLaser.in_waiting > 0):
@@ -849,13 +857,14 @@ class App:
             self.sample_time(i)
 
         # Call this method again every 100 ms
-        self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
+        self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))"""
 
+    """
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
         self.data_text.insert(tk.END, data)
         # Scroll the scrolled text widget to the end of the data
-        self.data_text.see(tk.END)
+        self.data_text.see(tk.END)"""
 
     # method that brings up the windows file save dialogue menu to save the two data tables to external files
     def save_data(self):

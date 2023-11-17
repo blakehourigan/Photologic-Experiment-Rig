@@ -158,6 +158,12 @@ class MainGUI:
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
         self.data_text.grid(row=0, column=0, sticky='nsew')
         
+    # Define the method for appending data to the scrolled text widget
+    def append_data(self, data):
+        self.data_text.insert(tk.END, data)
+        # Scroll the scrolled text widget to the end of the data
+        self.data_text.see(tk.END)
+        
     def display_error(self, error, message):
         messagebox.showinfo(error, message)
             

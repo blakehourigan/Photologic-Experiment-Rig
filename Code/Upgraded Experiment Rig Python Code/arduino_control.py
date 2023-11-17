@@ -26,8 +26,8 @@ class AduinoManager:
             error_message = "1 or more Arduino boards are not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
             self.pg_controller.display_error("Serial Connection Error", error_message)
-
-        print("Connected to Arduino boards successfully.")
+        else:
+            print("Connected to Arduino boards successfully.")
 
     def identify_arduino(self, port) -> str:
         """Identify the Arduino on the given port."""
@@ -53,7 +53,6 @@ class AduinoManager:
                 print("Arduino boards not connected.")
         except Exception as e:
             self.pg_controller.display_error("Error resetting Arduino boards:", e)
-
 
     def send_command_to_motor(self, command) -> None:
         """Send a specific command to the motor Arduino."""

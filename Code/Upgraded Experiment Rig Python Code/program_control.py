@@ -22,12 +22,12 @@ class ProgramController:
         self.arduino_mgr.connect_to_arduino()
         self.root.mainloop()
     
-    def start_button_handler(self):
+    def start_button_handler(self) -> None:
         self.logic.start_button_logic(self.main_gui, self.arduino_mgr)
         
-    def clear_button_handler(self):
+    def clear_button_handler(self) -> None:
         self.logic.clear_button_logic(self.main_gui)
         
-    def display_error(self, label, error):
+    def display_error(self, label, error) -> None:
         self.main_gui.display_error(label, error)
     
