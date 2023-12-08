@@ -16,7 +16,6 @@ class ExperimentLogic:
         self.update_licks_id = None
         self.update_plot_id = None
         
-        self.state = "OFF"
             
             
     def clear_button_logic(self, main_gui):
