@@ -20,6 +20,7 @@ class MainGUI:
         self.display_buttons()
         self.create_frame()
         self.create_text_widget()
+        self.update_size()
 
     def setup_window(self) -> None:
         # Set the initial size of the window
@@ -29,6 +30,14 @@ class MainGUI:
         icon_path = self.config.get_window_icon_path() 
         self.set_program_icon(icon_path)
 
+    def update_size(self) -> None:
+        """update the size of the window to fit the contents
+        """
+        self.master.update_idletasks()
+        width = self.master.winfo_reqwidth()
+        height = self.master.winfo_reqheight()
+        self.master.geometry('{}x{}'.format(width, height))
+        
     def set_program_icon(self, icon_path) -> None:
         os_name = platform.system()
 
@@ -44,90 +53,142 @@ class MainGUI:
         for i in range(8):
             self.master.grid_rowconfigure(i, weight=1 if i == 3 else 0)
         # The first column is also configured to expand
-        self.master.grid_columnconfigure(0, weight=1)
+        # Configure all columns to have equal weight
+        for i in range(4):
+            self.master.columnconfigure(i, weight=1)
             
     def display_labels(self) -> None:
         # Label headers
-        self.time_label_header = tk.Label(text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
-        self.time_label_header.grid(row=0, column=0, pady=10, padx=10, sticky='e')
+        self.time_label_header_frame = tk.Frame(self.master)
+        self.time_label_header_frame.grid(row=0, column=0, pady=10, padx=10, sticky='e')
+        self.time_label_header = tk.Label(self.time_label_header_frame, text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
+        self.time_label_header.pack()
 
-        self.state_time_label_header = tk.Label(text=(self.logic.state), bg="light blue", font=("Helvetica", 24))
-        self.state_time_label_header.grid(row=0, column=2, pady=10, padx=10, sticky='e')
+        self.state_time_label_header_frame = tk.Frame(self.master)
+        self.state_time_label_header_frame.grid(row=0, column=2, pady=10, padx=10, sticky='e')
+        self.state_time_label_header = tk.Label(self.state_time_label_header_frame, text=(self.logic.state), bg="light blue", font=("Helvetica", 24))
+        self.state_time_label_header.pack()
 
         # Timer labels
-        self.time_label = tk.Label(text="", bg="light blue", font=("Helvetica", 24))
-        self.time_label.grid(row=0, column=1, pady=10, padx=10, sticky='w')
+        self.time_label_frame = tk.Frame(self.master)
+        self.time_label_frame.grid(row=0, column=1, pady=10, padx=10, sticky='w')
+        self.time_label = tk.Label(self.time_label_frame, text="", bg="light blue", font=("Helvetica", 24))
+        self.time_label.pack()
 
-        self.state_time_label = tk.Label(text="", bg="light blue", font=("Helvetica", 24))
-        self.state_time_label.grid(row=0, column=3, pady=10, padx=10, sticky='w')
+        self.state_time_label_frame = tk.Frame(self.master)
+        self.state_time_label_frame.grid(row=0, column=3, pady=10, padx=10, sticky='w')
+        self.state_time_label = tk.Label(self.state_time_label_frame, text="", bg="light blue", font=("Helvetica", 24))
+        self.state_time_label.pack()
 
         # Labels for Interval Entry widgets
-        self.interval1_label = tk.Label(self.master, text="Initial Interval:", bg="light blue", font=("Helvetica", 24))
-        self.interval1_label.grid(row=5, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1_label_frame = tk.Frame(self.master)
+        self.interval1_label_frame.grid(row=5, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1_label = tk.Label(self.interval1_label_frame, text="Initial Interval:", bg="light blue", font=("Helvetica", 24))
+        self.interval1_label.pack()
 
-        self.interval2_label = tk.Label(self.master, text="Time to Contact:", bg="light blue", font=("Helvetica", 24))
-        self.interval2_label.grid(row=5, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2_label_frame = tk.Frame(self.master)
+        self.interval2_label_frame.grid(row=5, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2_label = tk.Label(self.interval2_label_frame, text="Time to Contact:", bg="light blue", font=("Helvetica", 24))
+        self.interval2_label.pack()
 
-        self.interval3_label = tk.Label(self.master, text="Time to Sample:", bg="light blue", font=("Helvetica", 24))
-        self.interval3_label.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_label_frame = tk.Frame(self.master)
+        self.interval3_label_frame.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_label = tk.Label(self.interval3_label_frame, text="Time to Sample:", bg="light blue", font=("Helvetica", 24))
+        self.interval3_label.pack()
         
         # Labels for Interval Entry widgets
-        self.interval1_label = tk.Label(self.master, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
-        self.interval1_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
+        self.interval1_label_frame = tk.Frame(self.master)
+        self.interval1_label_frame.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
+        self.interval1_label = tk.Label(self.interval1_label_frame, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
+        self.interval1_label.pack()
 
         # Label for # of trials
-        self.num_trials_label = tk.Label(self.master, text="Trial Blocks", bg="light blue", font=("Helvetica", 24))
-        self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trials_label_frame = tk.Frame(self.master)
+        self.num_trials_label_frame.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trials_label = tk.Label(self.num_trials_label_frame, text="Trial Blocks", bg="light blue", font=("Helvetica", 24))
+        self.num_trials_label.pack()
         
         # Label for # stimuli
-        self.num_stimuli_label = tk.Label(self.master, text="# of Stimuli", bg="light blue", font=("Helvetica", 24))
-        self.num_stimuli_label.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_label_frame = tk.Frame(self.master)
+        self.num_stimuli_label_frame.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_label = tk.Label(self.num_stimuli_label_frame, text="# of Stimuli", bg="light blue", font=("Helvetica", 24))
+        self.num_stimuli_label.pack()
     
         # Program information label
-        self.program_label = tk.Label(text="Program Information", bg="light blue", font=("Helvetica", 24))
-        self.program_label.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
+        self.program_label_frame = tk.Frame(self.master)
+        self.program_label_frame.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
+        self.program_label = tk.Label(self.program_label_frame, text="Program Information", bg="light blue", font=("Helvetica", 24))
+        self.program_label.pack()
     
     def display_user_entry_widgets(self) -> None:
         # Add Data Entry widgets for intervals
-        self.interval1_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['ITI_var'], font=("Helvetica", 24))
-        self.interval1_entry.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1_frame = tk.Frame(self.master, width=200, height=50)
+        self.interval1_frame.grid_propagate(False)  
+        self.interval1_frame.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1_entry = tk.Entry(self.interval1_frame, textvariable=self.data.interval_vars['ITI_var'], font=("Helvetica", 24))
+        self.interval1_entry.pack(fill='both', expand=True)
 
-        self.interval2_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['TTC_var'], font=("Helvetica", 24))
-        self.interval2_entry.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2_frame = tk.Frame(self.master)
+        self.interval2_frame.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2_entry = tk.Entry(self.interval2_frame, textvariable=self.data.interval_vars['TTC_var'], font=("Helvetica", 24))
+        self.interval2_entry.pack(fill='both', expand=True)
 
-        self.interval3_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['sample_var'], font=("Helvetica", 24))
-        self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_frame = tk.Frame(self.master)
+        self.interval3_frame.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_entry = tk.Entry(self.interval3_frame, textvariable=self.data.interval_vars['sample_var'], font=("Helvetica", 24))
+        self.interval3_entry.pack(fill='both', expand=True)
         
         # Entry for # of trials
-        self.num_trial_blocks_entry = tk.Entry(self.master, textvariable=self.data.num_trial_blocks, font=("Helvetica", 24))
-        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trial_blocks_frame = tk.Frame(self.master)
+        self.num_trial_blocks_frame.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trial_blocks_entry = tk.Entry(self.num_trial_blocks_frame, textvariable=self.data.num_trial_blocks, font=("Helvetica", 24))
+        self.num_trial_blocks_entry.pack(fill='both', expand=True)
         
         # Entry for # of trials
-        self.num_stimuli_entry = tk.Entry(self.master, textvariable=self.data.num_stimuli, font=("Helvetica", 24))
-        self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_frame = tk.Frame(self.master)
+        self.num_stimuli_frame.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_entry = tk.Entry(self.num_stimuli_frame, textvariable=self.data.num_stimuli, font=("Helvetica", 24))
+        self.num_stimuli_entry.pack(fill='both', expand=True)
 
         # Add Data Entry widgets for random plus/minus intervals
-        self.interval1Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
-        self.interval1Rand_entry.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1Rand_frame = tk.Frame(self.master)
+        self.interval1Rand_frame.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
+        self.interval1Rand_entry = tk.Entry(self.interval1Rand_frame, textvariable=self.data.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
+        self.interval1Rand_entry.pack(fill='both', expand=True)
 
-        self.interval2Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['TTC_random_entry'], font=("Helvetica", 24))
-        self.interval2Rand_entry.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2Rand_frame = tk.Frame(self.master)
+        self.interval2Rand_frame.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
+        self.interval2Rand_entry = tk.Entry(self.interval2Rand_frame, textvariable=self.data.interval_vars['TTC_random_entry'], font=("Helvetica", 24))
+        self.interval2Rand_entry.pack(fill='both', expand=True)
 
-        self.interval3Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['sample_random_entry'], font=("Helvetica", 24))
-        self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3Rand_frame = tk.Frame(self.master)
+        self.interval3Rand_frame.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3Rand_entry = tk.Entry(self.interval3Rand_frame, textvariable=self.data.interval_vars['sample_random_entry'], font=("Helvetica", 24))
+        self.interval3Rand_entry.pack(fill='both', expand=True)
         
     def display_buttons(self) -> None:
-        # Start/stop button
-        self.startButton = tk.Button(text="Start", command=self.controller.start_button_handler, bg="green", font=("Helvetica", 24))
-        self.startButton.grid(row=1, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
 
-        # Clear screen button
-        self.clear_button = tk.Button(text="Clear", command=self.controller.clear_button_handler, bg="grey", font=("Helvetica", 24))
-        self.clear_button.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
+        # Start/stop button
+        self.startButton_frame = tk.Frame(self.master, width=200, height=50)
+        self.startButton_frame.grid_propagate(False)  # Disables resizing of frame
+        self.startButton_frame.grid(row=1, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+        self.startButton = tk.Button(self.startButton_frame, text="Start", command=self.controller.start_button_handler, bg="green", font=("Helvetica", 24))
+        self.startButton.pack(fill='both', expand=True)
+        
+        # clear button
+        self.clear_button_frame = tk.Frame(self.master, width=200, height=50)
+        self.clear_button_frame.grid_propagate(False)  # Disables resizing of frame
+        self.clear_button_frame.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
+        self.clear_button = tk.Button(self.clear_button_frame, text="Clear", command=self.controller.start_button_handler, bg="grey", font=("Helvetica", 24))
+        self.clear_button.pack(fill='both', expand=True)
         
         # button to open the stimuli window
-        self.experiment_control_button = tk.Button(text="Experiment CTL", command= lambda: self.controller.show_experiment_ctl_window(self.master), bg="grey", font=("Helvetica", 24))
-        self.experiment_control_button.grid(row=10, column=0, pady=10, padx=10, sticky='nsew',columnspan=1)
+        self.exp_ctrl_button_frame = tk.Frame(self.master, width=200, height=50)
+        self.exp_ctrl_button_frame.grid_propagate(False)  # Disables resizing of frame
+        self.exp_ctrl_button_frame.grid(row=9, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+        self.experiment_control_button = tk.Button(self.exp_ctrl_button_frame, text="Experiment CTL", command= lambda: self.controller.show_experiment_ctl_window(self.master), bg="grey", font=("Helvetica", 24))
+        self.experiment_control_button.pack(fill='both', expand=True)
+
         """
         self.lick_window_button = tk.Button(text="Lick Data", command=self.lick_window, bg="grey", font=("Helvetica", 24))
         self.lick_window_button.grid(row=10, column=1, pady=10, padx=10, sticky='nsew',columnspan=1)
@@ -140,6 +201,7 @@ class MainGUI:
         self.data_window_button = tk.Button(text="Save Data Externally", command=self.save_data, bg="grey", font=("Helvetica", 24))
         self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')
         """
+        
     def create_frame(self) -> None:
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.master)
@@ -173,12 +235,15 @@ class MainGUI:
             
     def update_clock_label(self) -> None:
         # total elapsed time is current minus program start time
-        elapsed_time = time.time() - self.logic.start_time
+        elapsed_time = time.time() - self.controller.data_mgr.start_time
         # update the main screen label and set the number of decimal points to 3 
         self.time_label.configure(text="{:.3f}s".format(elapsed_time))
         # state elapsed time is current time minus the time we entered the state 
-        state_elapsed_time = time.time() - self.logic.state_start_time
+        state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
         # update the main screen label and set the number of decimal points to 3
         self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
         # Call this method again after 100 ms
-        self.master.after(50, lambda: self.update_clock_label())
+        self.update_clock_id = self.master.after(50, lambda: self.update_clock_label())
+    
+    def cancel_clock(self):
+        self.master.after_cancel(self.update_clock_id)

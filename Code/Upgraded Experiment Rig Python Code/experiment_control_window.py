@@ -26,28 +26,13 @@ class ExperimentCtlWindow:
             exp_stimuli_tab = self.create_tab(notebook, "Experiment Stimuli Tab")
             self.populate_stimuli_tab(exp_stimuli_tab)
 
-            stim_sched_tab = self.create_tab(notebook,'Program Stimuli Schedule')
+            self.stim_sched_tab = self.create_tab(notebook,'Program Stimuli Schedule')
 
             # stimuli schedule button that calls the function to generate the program schedule when pressed 
             self.generate_stimulus = tk.Button(exp_stimuli_tab, text="Generate Stimulus", command=lambda: self.controller.generate_trial_blocks_data_mgr(), bg="green", font=("Helvetica", 24))
             
             # place the button after the last row
             self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
-            
-            # if blocks have been generated, then opening the experiment control window should show the df_stimuli dataframe in a table in the second tab 
-            if(self.controller.data_mgr.blocks_generated):
-                # creating the frame that will contain the data table
-                self.stimuli_frame = tk.Frame(stim_sched_tab)     
-                
-                # setting the place of the frame                       
-                self.stimuli_frame.grid(row=0, column=0, sticky='nsew') 
-                  
-                self.configure_tk_obj_grid(stim_sched_tab)
-
-                self.show_stimuli_table()
-        else: 
-            # if the user has not incremented the number of stimuli yet, tell them to
-            self.controller.display_error("Stimuli Not changed from 0", "No stimuli have been added, please close the window, set number of stimuli and try again")
     
     def create_window(self, master) -> tk.Toplevel:
         # Create a new window for AI solutions  
@@ -87,6 +72,14 @@ class ExperimentCtlWindow:
                 entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
                 
     def show_stimuli_table(self):
+        # creating the frame that will contain the data table
+        self.stimuli_frame = tk.Frame(self.stim_sched_tab)     
+        
+        # setting the place of the frame                       
+        self.stimuli_frame.grid(row=0, column=0, sticky='nsew') 
+            
+        self.configure_tk_obj_grid(self.stim_sched_tab)
+
         self.trial_blocks = Table(self.stimuli_frame, dataframe=self.data.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
         self.trial_blocks.autoResizeColumns()
         self.trial_blocks.show()

@@ -56,8 +56,8 @@ class DataManager:
         
         # Initialize the time, licks to 0
         
-        self.start_time = 0
-        self.state_start_time = 0
+        self.start_time = 0.0
+        self.state_start_time = 0.0
         
         self.side_one_licks = 0
         self.side_two_licks = 0
@@ -160,7 +160,7 @@ class DataManager:
             self.controller.display_error("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
         
         self.blocks_generated = True 
-        print(self.stimuli_dataframe)
+        self.controller.experiment_ctl_wind.show_stimuli_table()
         return self.stimuli_dataframe
 
     def initialize_stimuli_dataframe(self):

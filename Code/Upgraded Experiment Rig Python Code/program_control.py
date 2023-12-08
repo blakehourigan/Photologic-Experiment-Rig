@@ -27,6 +27,7 @@ class ProgramController:
         
         # Initialize running flag to false
         self.running = False
+        self.state = "OFF"
 
     def start_main_gui(self) -> None:
         """start the main GUI and connect to the arduino
@@ -49,12 +50,11 @@ class ProgramController:
             self.main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
             
             # update the state start time to now, so that it starts at 0
-            self.logic.state_start_time = time.time()  
+            self.data_mgr.state_start_time = time.time()  
             
             # Get trial number and stimuli in the trial and add them to the main information screen
             # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = f'\nTRIAL # ({self.curr_trial_number}) Stimulus 1:{self.data_mgr.stimuli_dataframe.loc[i, "Stimulus 1"]} vs. \
-                Stimulus 2:{self.data_mgr.stimuli_dataframe.loc[i, "Stimulus 2"]}\n'
+            string = f'\nTRIAL # ({self.data_mgr.curr_trial_number}) Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[i, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[i, "Stimulus 2"]}\n'
                 
             # this command is what adds things to the main information screen
             self.main_gui.append_data(string)
@@ -105,7 +105,7 @@ class ProgramController:
         self.running = False
         # Turn the program execution button back to the green start button
         self.main_gui.startButton.configure(text="Start", bg="green")
-        
+        self.main_gui.cancel_clock()
         #self.master.after_cancel(self.update_clock_id)
         # if we have called the update licks function at all, then stop it from being called now, we're done with it 
         if self.logic.update_licks_id is not None:  
@@ -124,7 +124,8 @@ class ProgramController:
         # Start the program if it is not already runnning and generate random numbers
         self.running = True
         # program main start time begins now
-        self.start_time = time.time()
+        self.data_mgr.start_time = time.time()
+        self.data_mgr.state_start_time = time.time()
         
         self.update_clock_label()
         # turn the main button to the red stop button

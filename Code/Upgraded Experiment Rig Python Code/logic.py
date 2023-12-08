@@ -184,4 +184,5 @@ class ExperimentLogic:
 
     def return_trials_remaining(self) -> bool:
         """ Method to return if there are trials remaining """
-        return (self.controller.data.curr_trial_number) <= (self.controller.data.num_stimuli.get() * self.controller.data.num_trial_blocks.get())
+        return (self.controller.data_mgr.curr_trial_number) \
+            <= (self.controller.data_mgr.num_stimuli.get() * self.controller.data_mgr.num_trial_blocks.get())
