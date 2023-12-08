@@ -1,14 +1,18 @@
 import platform
 import tkinter as tk 
 from tkinter import PhotoImage, messagebox, scrolledtext
+import time
 
 class MainGUI:
     def __init__(self, master, controller, config, logic) -> None:
         self.master = master
-        self.controller = controller
-        self.config = config
-        self.logic = logic
         
+        self.controller = controller
+        self.data = controller.data_mgr
+        self.config = controller.config
+        self.logic = controller.logic
+        
+    def setup_gui(self) -> None:
         self.setup_window()
         self.setup_grid()
         self.display_labels()
@@ -85,31 +89,31 @@ class MainGUI:
     
     def display_user_entry_widgets(self) -> None:
         # Add Data Entry widgets for intervals
-        self.interval1_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['ITI_var'], font=("Helvetica", 24))
+        self.interval1_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['ITI_var'], font=("Helvetica", 24))
         self.interval1_entry.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
 
-        self.interval2_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['TTC_var'], font=("Helvetica", 24))
+        self.interval2_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['TTC_var'], font=("Helvetica", 24))
         self.interval2_entry.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
 
-        self.interval3_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['sample_time_var'], font=("Helvetica", 24))
+        self.interval3_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['sample_var'], font=("Helvetica", 24))
         self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
         
         # Entry for # of trials
-        self.num_trial_blocks_entry = tk.Entry(self.master, textvariable=self.logic.num_trial_blocks, font=("Helvetica", 24))
+        self.num_trial_blocks_entry = tk.Entry(self.master, textvariable=self.data.num_trial_blocks, font=("Helvetica", 24))
         self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
         
         # Entry for # of trials
-        self.num_stimuli_entry = tk.Entry(self.master, textvariable=self.logic.num_stimuli, font=("Helvetica", 24))
+        self.num_stimuli_entry = tk.Entry(self.master, textvariable=self.data.num_stimuli, font=("Helvetica", 24))
         self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
 
         # Add Data Entry widgets for random plus/minus intervals
-        self.interval1Rand_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
+        self.interval1Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
         self.interval1Rand_entry.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
 
-        self.interval2Rand_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['TTC_random_entry'], font=("Helvetica", 24))
+        self.interval2Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['TTC_random_entry'], font=("Helvetica", 24))
         self.interval2Rand_entry.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
 
-        self.interval3Rand_entry = tk.Entry(self.master, textvariable=self.logic.interval_vars['sample_time_entry'], font=("Helvetica", 24))
+        self.interval3Rand_entry = tk.Entry(self.master, textvariable=self.data.interval_vars['sample_random_entry'], font=("Helvetica", 24))
         self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
         
     def display_buttons(self) -> None:
@@ -167,3 +171,14 @@ class MainGUI:
     def display_error(self, error, message):
         messagebox.showinfo(error, message)
             
+    def update_clock_label(self) -> None:
+        # total elapsed time is current minus program start time
+        elapsed_time = time.time() - self.logic.start_time
+        # update the main screen label and set the number of decimal points to 3 
+        self.time_label.configure(text="{:.3f}s".format(elapsed_time))
+        # state elapsed time is current time minus the time we entered the state 
+        state_elapsed_time = time.time() - self.logic.state_start_time
+        # update the main screen label and set the number of decimal points to 3
+        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+        # Call this method again after 100 ms
+        self.master.after(50, lambda: self.update_clock_label())

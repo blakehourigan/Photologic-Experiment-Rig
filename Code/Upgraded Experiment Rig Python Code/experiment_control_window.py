@@ -6,14 +6,16 @@ from pandastable import Table
 class ExperimentCtlWindow:
     def __init__(self, controller, logic, config):
         self.controller = controller
-        self.logic = logic
-        self.config = config
+        
+        self.logic = controller.logic
+        self.config = controller.config
+        self.data = controller.data_mgr
         
         self.num_tabs = 0
         
     def show_window(self, master) -> None:
         # if the number of simuli is currently set to zero, tell the user that they need to add stmiuli before we can more forward
-        if(self.logic.num_stimuli.get() > 0):        
+        if(self.data.num_stimuli.get() > 0):        
             top = self.create_window(master)
             self.configure_tk_obj_grid(top)
             
@@ -33,7 +35,7 @@ class ExperimentCtlWindow:
             self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
             
             # if blocks have been generated, then opening the experiment control window should show the df_stimuli dataframe in a table in the second tab 
-            if(self.logic.blocks_generated):
+            if(self.controller.data_mgr.blocks_generated):
                 # creating the frame that will contain the data table
                 self.stimuli_frame = tk.Frame(stim_sched_tab)     
                 
@@ -60,9 +62,9 @@ class ExperimentCtlWindow:
         return tab
 
     def populate_stimuli_tab(self, tab) -> None:
-        for i in range(self.logic.num_stimuli.get()):
+        for i in range(self.data.num_stimuli.get()):
              # for every stimuli that we will have in the program, create a text box that allows the user to enter the name of the stimuli
-            for i in range(self.logic.num_stimuli.get()):
+            for i in range(self.data.num_stimuli.get()):
 
                 # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
                 column = 0 if i < 4 else 1
@@ -79,13 +81,13 @@ class ExperimentCtlWindow:
                 label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
                 # sets up an entry box that will assign its held value to its stimulus var number in the stimuli_vars dictionary
                 
-                entry = tk.Entry(tab, textvariable=self.logic.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
+                entry = tk.Entry(tab, textvariable=self.data.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
                 
                 # placing the entry box 1 below the label box
                 entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
                 
     def show_stimuli_table(self):
-        self.trial_blocks = Table(self.stimuli_frame, dataframe=self.logic.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
+        self.trial_blocks = Table(self.stimuli_frame, dataframe=self.data.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
         self.trial_blocks.autoResizeColumns()
         self.trial_blocks.show()
                 
