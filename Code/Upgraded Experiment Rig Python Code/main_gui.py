@@ -66,7 +66,7 @@ class MainGUI:
 
         self.state_time_label_header_frame = tk.Frame(self.master)
         self.state_time_label_header_frame.grid(row=0, column=2, pady=10, padx=10, sticky='e')
-        self.state_time_label_header = tk.Label(self.state_time_label_header_frame, text=(self.logic.state), bg="light blue", font=("Helvetica", 24))
+        self.state_time_label_header = tk.Label(self.state_time_label_header_frame, text=(self.controller.state), bg="light blue", font=("Helvetica", 24))
         self.state_time_label_header.pack()
 
         # Timer labels

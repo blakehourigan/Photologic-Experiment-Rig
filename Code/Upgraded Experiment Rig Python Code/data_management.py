@@ -166,16 +166,19 @@ class DataManager:
     def initialize_stimuli_dataframe(self):
         """filling the dataframe with the values of the random intervals that were previously generated
         """
+        print(type(self.ITI_intervals_final[0]))
         for i in range(len(self.stimuli_dataframe)):
-            self.stimuli_dataframe.loc[i, 'ITI'] = self.ITI_intervals_final[i]
-            self.stimuli_dataframe.loc[i, 'TTC'] = self.TTC_intervals_final[i]
-            self.stimuli_dataframe.loc[i, 'Sample Time'] = self.sample_intervals_final[i]
+            self.stimuli_dataframe.loc[i, 'ITI'] = float(self.ITI_intervals_final[i])
+            self.stimuli_dataframe.loc[i, 'TTC'] = float(self.TTC_intervals_final[i])
+            self.stimuli_dataframe.loc[i, 'Sample Time'] = float(self.sample_intervals_final[i])
             self.stimuli_dataframe.loc[i, 'Trial Number'] = int(i + 1)
 
+        print(type(self.stimuli_dataframe['ITI'][0]))
+
         # Ensure 'ITI', 'TTC', and 'Sample Time' columns are of a numeric type
-        self.stimuli_dataframe['ITI'] = self.stimuli_dataframe['ITI'].astype(float)
-        self.stimuli_dataframe['TTC'] = self.stimuli_dataframe['TTC'].astype(float)
-        self.stimuli_dataframe['Sample Time'] = self.stimuli_dataframe['Sample Time'].astype(float)
+        self.stimuli_dataframe['ITI'] = self.stimuli_dataframe['ITI'].astype(int)
+        self.stimuli_dataframe['TTC'] = self.stimuli_dataframe['TTC'].astype(int)
+        self.stimuli_dataframe['Sample Time'] = self.stimuli_dataframe['Sample Time'].astype(int)
 
         # Create new column for the actual time elapsed in Time to contact state to be filled during program execution
         self.stimuli_dataframe['TTC Actual'] = np.nan
@@ -205,6 +208,20 @@ class DataManager:
             self.licks_dataframe.to_excel(licks_file_name, index=False)
         except:
             self.controller.display_error("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
+
+
+    def find_stimuli_positions(self, i) -> tuple:
+        # Create a list of the stimuli dictionary values, will give list of stimuli. 
+        stim_var_list = list(self.stimuli_vars.values())
+        for index, string_var in enumerate(stim_var_list):
+            if string_var.get() == self.stimuli_dataframe.loc[i,'Stimulus 1']:
+                self.stim1_position = str(index + 1)
+
+            # repeat process for the second stimulus
+            elif string_var.get() == self.stimuli_dataframe.loc[i,'Stimulus 2']:
+                self.stim2_position = str(index + 1)
+                
+        return self.stim1_position, self.stim2_position
 
 
     @property

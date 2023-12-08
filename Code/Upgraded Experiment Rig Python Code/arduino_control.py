@@ -18,9 +18,9 @@ class AduinoManager:
         for port in ports:
             identifier = self.identify_arduino(port)
             if identifier == "LASER":
-                self.arduinoLaser = serial.Serial(port, self.baud_rate)
+                self.arduinoLaser = serial.Serial(port, self.BAUD_RATE)
             elif identifier == "MOTOR":
-                self.arduinoMotor = serial.Serial(port, self.baud_rate)
+                self.arduinoMotor = serial.Serial(port, self.BAUD_RATE)
 
         if self.arduinoLaser is None or self.arduinoMotor is None:
             error_message = "1 or more Arduino boards are not connected. Connect Arduino boards and relaunch before running the program."
@@ -32,7 +32,7 @@ class AduinoManager:
     def identify_arduino(self, port) -> str:
         """Identify the Arduino on the given port."""
         try:
-            arduino = serial.Serial(port, self.baud_rate, timeout=1)
+            arduino = serial.Serial(port, self.BAUD_RATE, timeout=1)
             time.sleep(2)  # Wait for Arduino to initialize
             arduino.write(b'WHO_ARE_YOU\n')
             identifier = arduino.readline().decode('utf-8').strip()
@@ -40,7 +40,7 @@ class AduinoManager:
             return identifier
         except Exception as e:
             print(f"An error occurred while identifying Arduino: {e}")
-            return None
+            return "ERROR"
         
     def reset_arduinos(self) -> None:
         """Send a reset command to both Arduino boards."""

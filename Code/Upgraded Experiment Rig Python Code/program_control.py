@@ -74,6 +74,63 @@ class ProgramController:
             # if we have gone through every trial then end the program.
             self.stop_program()
 
+    def time_to_contact(self, i, main_gui, arduino_mgr):
+        """ defining the TTC state method, argument are self and i. i is passed from TTC to keep track of what stimuli we are on. """
+        if self.running:
+            self.state = "TTC"
+            
+            """start reading licks, we pass the same i into this function that we used in the previous function to
+            keep track of where we are storing the licks in the data table"""
+            self.logic.read_licks(i)
+            
+            # update state timer header
+            main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
+            
+            # state start time begins 
+            self.state_start_time = time.time()
+            
+            # tell motor arduino to move the door down              
+            command = 'DOWN\n'
+            arduino_mgr.send_command_to_motor(command)
+        
+            """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
+            valve number and save into stimulus position variables. """
+            
+            stimulus_1_position, stimulus_2_position = self.data_mgr.find_stimuli_positions(i)
+
+            """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
+            SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
+            valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
+            command = "SIDE_ONE\n" + str(stimulus_1_position) + "\nSIDE_TWO\n" + str(stimulus_2_position) + "\n"
+            
+            # send the command
+            self.arduino_mgr.send_command_to_motor(command)
+            
+            # write the time to contact to the program information box
+            self.main_gui.append_data("Time to Contact: " + str(self.data_mgr.stimuli_dataframe.loc[i,'TTC'] / 1000.0) + "s\n")
+            
+            """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
+            Lambda ensures the function is only called after the wait period and not immediately."""
+            self.after_sample_id = self.root.after(int(self.data_mgr.stimuli_dataframe.loc[i, 'TTC']), lambda: self.logic.save_licks(i))
+
+    def sample_time(self, i):
+        """ define sample time method, i is again passed to keep track of trial and stimuli """
+        if self.running:
+            self.state = "Sample"
+            
+            # change the state time label accordingly                                     
+            self.main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
+
+            # Update the state start time to the current time
+            self.state_start_time = time.time()        
+
+            # Appending the sample time interval to the main text box
+            self.main_gui.append_data('Sample Time Interval: ' + str(self.data_mgr.stimuli_dataframe.loc[i,'Sample Time'] / 1000.0) + "s\n\n\n")  
+
+            # After the sample time specified in the ith row of the 'Sample Time' table, we will jump to the save licks function
+            self.root.after(self.data_mgr.stimuli_dataframe.loc[i, 'Sample Time'], lambda: self.logic.save_licks(i))   
+
+
     def start_button_handler(self) -> None:
         """ Define the method for toggling the program state via the start/stop button """
         # If the program is running, stop it
