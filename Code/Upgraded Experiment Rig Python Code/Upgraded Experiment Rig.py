@@ -25,15 +25,18 @@ class App:
         # Initialize the interval variables and their corresponding IntVars types in a dictionary
         # value = x sets the defalt value that shows when you first boot the program
 
-        self.interval_vars = {
+            
+        """        
+            self.interval_vars = {
             'ITI_var': tk.IntVar(value=30000),
             'TTC_var': tk.IntVar(value=15000),
             'sample_time_var': tk.IntVar(value=15000),
             'ITI_random_entry': tk.IntVar(value=5000),
             'TTC_random_entry': tk.IntVar(value=5000),
             'sample_time_entry': tk.IntVar(value=5000),
-        }
+        }"""
 
+        """        
         # initializing the lists that will hold the final calculated random interval values 
 
         self.ITI_intervals_final = []
@@ -44,14 +47,16 @@ class App:
 
         self.ITI_random_intervals = []
         self.TTC_random_intervals = []
-        self.sample_random_intervals = []
+        self.sample_random_intervals = []"""
 
         # Initialize dictionary full of stimulus variables and fill each entry to hold default value equal to the key value
 
+        """        
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
-            self.stimuli_vars[key].set(key)
+            self.stimuli_vars[key].set(key)"""
 
+        """        
         # initialize lists to hold original pairs and the list that will hold our dataframes.
 
         self.pairs = []
@@ -60,13 +65,11 @@ class App:
         # Initialize variables that will keep track of the total number of trials we will have, the total number of trial blocks that the user wants to run
         # and the total number of stimuli. These are of type IntVar because they are used in the GUI. 
 
-        self.num_trials = tk.IntVar()
-        self.num_trials.set(0)
-        self.num_trial_blocks = tk.IntVar()
-        self.num_trial_blocks.set(0)
-        self.num_stimuli = tk.IntVar()
-        self.num_stimuli.set(0)
+        self.num_trials = tk.IntVar(value=0)
+        self.num_trial_blocks = tk.IntVar(value=0)
+        self.num_stimuli = tk.IntVar(value=0)"""
 
+        """        
         # initializing variable for iteration through the trials in the program
 
         self.curr_trial_number = 1
@@ -78,10 +81,13 @@ class App:
 
         self.stamped_exists = False
 
-        self.data_window_open = False
+        self.data_window_open = False"""
 
-        BAUD_RATE = 9600   
+        # BAUD_RATE = 9600  
+         
+        """
         # Initialize the time, licks to 0
+        
         self.start_time = 0
         self.side_one_licks = 0
         self.side_two_licks = 0
@@ -92,17 +98,20 @@ class App:
         # This is what we call to cancel the function call to avoid errors when closing the program
         self.update_clock_id = None
         self.update_licks_id = None
-        self.update_plot_id = None
-
+        self.update_plot_id = None"""
+        
+        """
         # Set program default to the off state
         self.state = "OFF"
-
+        """
+        """
         # Configure the GUI grid layout
         for i in range(8):
             self.root.grid_rowconfigure(i, weight=1 if i == 3 else 0)
         # The column is also configured to expand
-        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)"""
 
+        """
         # Label headers
         self.time_label_header = tk.Label(text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
         self.time_label_header.grid(row=0, column=0, pady=10, padx=10, sticky='e')
@@ -126,7 +135,10 @@ class App:
 
         self.interval3_label = tk.Label(self.root, text="Time to Sample:", bg="light blue", font=("Helvetica", 24))
         self.interval3_label.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
-
+        """
+        
+        
+        """
         # Add Data Entry widgets for intervals
         self.interval1_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_var'], font=("Helvetica", 24))
         self.interval1_entry.grid(row=6, column=0, pady=10, padx=10, sticky='nsew')
@@ -135,28 +147,33 @@ class App:
         self.interval2_entry.grid(row=6, column=1, pady=10, padx=10, sticky='nsew')
 
         self.interval3_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_var'], font=("Helvetica", 24))
-        self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')
+        self.interval3_entry.grid(row=6, column=2, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Labels for Interval Entry widgets
         self.interval1_label = tk.Label(self.root, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
         self.interval1_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
 
         # Label for # of trials
         self.num_trials_label = tk.Label(self.root, text="Trial Blocks", bg="light blue", font=("Helvetica", 24))
-        self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trials_label.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Entry for # of trials
         self.num_trial_blocks_entry = tk.Entry(self.root, textvariable=self.num_trial_blocks, font=("Helvetica", 24))
-        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_trial_blocks_entry.grid(row=6, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Label for # stimuli
         self.num_stimuli_label = tk.Label(self.root, text="# of Stimuli", bg="light blue", font=("Helvetica", 24))
-        self.num_stimuli_label.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_label.grid(row=7, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Entry for # of trials
         self.num_stimuli_entry = tk.Entry(self.root, textvariable=self.num_stimuli, font=("Helvetica", 24))
-        self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')
+        self.num_stimuli_entry.grid(row=8, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Add Data Entry widgets for random plus/minus intervals
         self.interval1Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['ITI_random_entry'], font=("Helvetica", 24))
         self.interval1Rand_entry.grid(row=8, column=0, pady=10, padx=10, sticky='nsew')
@@ -165,12 +182,14 @@ class App:
         self.interval2Rand_entry.grid(row=8, column=1, pady=10, padx=10, sticky='nsew')
 
         self.interval3Rand_entry = tk.Entry(self.root, textvariable=self.interval_vars['sample_time_entry'], font=("Helvetica", 24))
-        self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')
-
+        self.interval3Rand_entry.grid(row=8, column=2, pady=10, padx=10, sticky='nsew')"""
+        
+        """
         # Program information label
         self.program_label = tk.Label(text="Program Information", bg="light blue", font=("Helvetica", 24))
-        self.program_label.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
+        self.program_label.grid(row=2, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)"""
 
+        """
         # Start/stop button
         self.startButton = tk.Button(text="Start", command=self.start_toggle, bg="green", font=("Helvetica", 24))
         self.startButton.grid(row=1, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
@@ -192,29 +211,36 @@ class App:
 
         # button to save expirement data to excel sheets
         self.data_window_button = tk.Button(text="Save Data Externally", command=self.save_data, bg="grey", font=("Helvetica", 24))
-        self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')
+        self.data_window_button.grid(row=10, column=3, pady=10, padx=10, sticky='nsew')"""
 
+        """
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.root)
         self.frame.grid(row=3, column=0, pady=10, padx=10, sticky='nsew', columnspan=4)
 
         # Configure the frame's column and row to expand as the window resizes
         self.frame.grid_columnconfigure(0, weight=1)
-        self.frame.grid_rowconfigure(0, weight=1)
+        self.frame.grid_rowconfigure(0, weight=1)"""
 
+        """
         # Create a scrolled text widget for displaying data, place it in the frame, and set it to expand with the frame
         self.data_text = scrolledtext.ScrolledText(self.frame, font=("Helvetica", 24), height=10, width=30)
-        self.data_text.grid(row=0, column=0, sticky='nsew')
+        self.data_text.grid(row=0, column=0, sticky='nsew')"""
 
+        """
         # Open a serial connection to the first Arduino
-        self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)
+        self.arduinoLaser, self.arduinoMotor = self.connect_to_arduino(BAUD_RATE)"""
 
+        """
         self.arduinoLaser.flush() 
-        self.arduinoMotor.flush()  
+        self.arduinoMotor.flush()  """
 
+        """
         # Start the program clock function 
-        self.update_clock()
-
+        self.update_clock()"""
+    
+    
+    """
     # this function is defined to find which arduino contains the code for which function automatically 
     def identify_arduino(self, port, BAUD_RATE):
         try:
@@ -257,9 +283,10 @@ class App:
                 arduinoMotor.close()
             return arduinoLaser, arduinoMotor
             
+    """
 
 
-
+    """    
     # Program state methods
     # defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
     # the second argument is i, which is the iteration variable that we use to keep track of what trial we are on. 
@@ -385,9 +412,10 @@ class App:
             except:
                 pass
             # Jump to ITI state to begin ITI for next trial by incrementing the i variable
-            self.initial_time_interval(i+1)                                        
+            self.initial_time_interval(i+1)     """                                   
 
     # this method is called when a user clicks on the experiment control button on the main screen
+    """
     def experiment_control(self):
         try:
             # Try to lift the window to the top so the user can see it (it will fail if the window is closed)
@@ -455,7 +483,7 @@ class App:
                     # creating the pandasTable table object and placing it in the stimuli frame, which is in tab 2
                     self.trial_blocks = Table(self.stimuli_frame, dataframe=self.df_stimuli, showtoolbar=True, showstatusbar=True, weight=1)
                     self.trial_blocks.autoResizeColumns()
-                    self.trial_blocks.show()
+                    self.trial_blocks.show()"""
 
     # this function is called when the lick data window is opened
     def lick_window(self):
@@ -498,14 +526,15 @@ class App:
         # return the window to the variable that the user is assigning it to.
         return self.window_instance
 
+    """
     # Method to halt the program and set it to the off state, changing the button back to start.
     def stop_program(self):
         self.state = "OFF"
         self.state_time_label_header.configure(text=(self.state))
         self.running = False
-        self.startButton.configure(text="Start", bg="green")
+        self.startButton.configure(text="Start", bg="green")"""
 
-    # method that is called when the 'View data' button is pressed in the main window
+    """# method that is called when the 'View data' button is pressed in the main window
     def data_window(self):
         try:
             # Try to lift the window on top of all windows (it will fail if the window is closed)
@@ -533,9 +562,9 @@ class App:
                 self.update_plot()
             else:
                 # if blocks haven't been generated, let the user know that they need to do that before they can use this page.
-                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
+                messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")"""
 
-    # this is the function that will generate the full roster of stimuli for the duration of the program
+    """# this is the function that will generate the full roster of stimuli for the duration of the program
     def create_trial_blocks(self, tab2, notebook, row_offset, col_offset):
 
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
@@ -664,7 +693,7 @@ class App:
             messagebox.showinfo("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
         elif (self.num_trial_blocks.get() == 0):
             # if number of trial blocks is zero, inform the user that they must change this
-            messagebox.showinfo("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
+            messagebox.showinfo("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")"""
     
     # define method to update the plot in the 'view data' window
     def update_plot(self):
@@ -708,9 +737,10 @@ class App:
         except: 
             pass
         # destroy the root window and close the app
-        self.root.destroy();
+        self.root.destroy()
         self.root.quit()
 
+    """ 
     # Define the method for toggling the program state via the start/stop button
     def start_toggle(self):
         # If the program is running, stop it
@@ -751,8 +781,8 @@ class App:
             self.startButton.configure(text="Stop", bg="red")
             # call the first ITI state with an iteration variable (i acts as a 
             # variable to iterate throgh the program schedule data table) starting at 0
-            self.initial_time_interval(0)
-
+            self.initial_time_interval(0)"""
+    """
     def clear_toggle(self):
         # Clear the scrolled text widget
         self.data_text.delete('1.0', tk.END)
@@ -760,8 +790,9 @@ class App:
         elapsed_time = 0 
         self.time_label.configure(text="{:.3f}s".format(elapsed_time))
         state_elapsed_time = 0
-        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))"""
 
+    """
     # Define the method for updating the clock
     def update_clock(self):
         # If the program is running, update the elapsed time
@@ -775,9 +806,9 @@ class App:
             # update the main screen label and set the number of decimal points to 3
             self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
         # Call this method again after 100 ms
-        self.update_clock_id = self.root.after(50, self.update_clock)
+        self.update_clock_id = self.root.after(50, self.update_clock)"""
         
-    # Define the method for reading data from the optical fiber Arduino
+    """# Define the method for reading data from the optical fiber Arduino
     def read_licks(self, i):
         # try to read licks if there is a arduino connected
         if(self.arduinoLaser.in_waiting > 0):
@@ -827,15 +858,16 @@ class App:
             self.sample_time(i)
 
         # Call this method again every 100 ms
-        self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))
+        self.update_licks_id = self.root.after(100, lambda: self.read_licks(i))"""
 
+    """
     # Define the method for appending data to the scrolled text widget
     def append_data(self, data):
         self.data_text.insert(tk.END, data)
         # Scroll the scrolled text widget to the end of the data
-        self.data_text.see(tk.END)
+        self.data_text.see(tk.END)"""
 
-    # method that brings up the windows file save dialogue menu to save the two data tables to external files
+    """ # method that brings up the windows file save dialogue menu to save the two data tables to external files
     def save_data(self):
         try:
             file_name = filedialog.asksaveasfilename(defaultextension='.xlsx',
@@ -853,7 +885,7 @@ class App:
             self.licks_df.to_excel(licks_file_name, index=False)
         except:
             messagebox.showinfo("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
-
+"""
 # Create an App object
 app = App()
 # Start the Tkinter event loop
