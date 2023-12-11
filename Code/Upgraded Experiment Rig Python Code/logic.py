@@ -6,7 +6,6 @@ class ExperimentLogic:
     def __init__(self, controller) -> None:
         self.controller = controller 
         
-        
     def read_licks(self, i):
         """ Define the method for reading data from the optical fiber Arduino """
         # try to read licks if there is a arduino connected
@@ -57,13 +56,3 @@ class ExperimentLogic:
             self.side_one_licks = 0
             self.side_two_licks = 0
             self.controller.sample_time(iteration)
-
-
-            
-    def check_dataframe_entry_isfloat(self, iteration, state):
-        """ Method to check if the value in the dataframe is a numpy float. If it is, then we return the value. If not, we return -1. """
-        if isinstance(self.controller.data_mgr.stimuli_dataframe.loc[iteration, state], (int, np.integer, float)):
-           interval_value = self.controller.data_mgr.stimuli_dataframe.loc[iteration, state]
-        else:
-            interval_value = -1
-        return interval_value

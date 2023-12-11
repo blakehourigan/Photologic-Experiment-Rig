@@ -1,3 +1,4 @@
+from operator import call
 import tkinter as tk
 import time
 
@@ -22,7 +23,6 @@ class ProgramController:
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
 
-
         self.logic = ExperimentLogic(self)
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
@@ -32,6 +32,7 @@ class ProgramController:
         self.state = "OFF"
         
         self.after_ids = []
+        
 
     def start_main_gui(self) -> None:
         """start the main GUI and connect to the arduino
@@ -40,7 +41,7 @@ class ProgramController:
         self.arduino_mgr.connect_to_arduino()
         self.main_gui.root.mainloop()
     
-    def initial_time_interval(self, iteration) -> None:
+    def initial_time_interval(self, iteration: int) -> None:
         """ defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
             the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on. 
         """
@@ -82,17 +83,21 @@ class ProgramController:
                 self.main_gui.append_data("-")
             
             # add the initial interval to the program information box
-            ITI_Value = self.logic.check_dataframe_entry_isfloat(iteration, 'ITI')
+            ITI_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, 'ITI')
             
             self.main_gui.append_data('\nInitial Interval Time: ' +  str(ITI_Value/ 1000.0) + "s\n")
+
+            def callback():
+               self.time_to_contact(iteration)
+
             
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.main_gui.root.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
+            self.main_gui.root.after(int(ITI_Value), callback)
  
 
-    def time_to_contact(self, iteration):
-        """ defining the TTC state method, argument are self and i. i is passed from TTC to keep track of what stimuli we are on. """
+    def time_to_contact(self, iteration: int):
+        """ defining the TTC state method, argument are self and iteration. iteration is passed from ITI to keep track of what stimuli we are on. """
         if self.running:
             """start reading licks, we pass the same i into this function that we used in the previous function to
             keep track of where we are storing the licks in the data table"""
@@ -120,7 +125,7 @@ class ProgramController:
             # send the command
             self.arduino_mgr.send_command_to_motor(command)
             
-            TTC_Value = self.logic.check_dataframe_entry_isfloat(iteration, 'TTC')
+            TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, 'TTC')
             
             # write the time to contact to the program information box
             self.main_gui.append_data("Time to Contact: " + str(TTC_Value/ 1000.0) + "s\n")
@@ -141,7 +146,7 @@ class ProgramController:
             # Update the state start time to the current time
             self.state_start_time = time.time()        
 
-            sample_interval_value = self.logic.check_dataframe_entry_isfloat(iteration, 'Sample Time')
+            sample_interval_value = self.data_mgr.check_dataframe_entry_isfloat(iteration, 'Sample Time')
 
             # Appending the sample time interval to the main text box
             self.main_gui.append_data('Sample Time Interval: ' + str(sample_interval_value/ 1000.0) + "s\n\n\n")  
@@ -181,9 +186,7 @@ class ProgramController:
         
         self.after_ids.clear()
 
-        # send the reset command to reboot both Arduino boards 
-
-        self.arduino_mgr.reset_arduinos()
+        self.arduino_mgr.reset_arduinos()           # send the reset command to reboot both Arduino boards 
         self.current_trial_number = 1
         
     def start_program(self) -> None:

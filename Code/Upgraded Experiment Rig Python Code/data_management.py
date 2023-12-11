@@ -215,6 +215,15 @@ class DataManager:
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
         self.controller.initial_time_interval(interval+1)      
         
+
+    def check_dataframe_entry_isfloat(self, iteration, state) -> int:
+        """ Method to check if the value in the dataframe is a numpy float. If it is, then we return the value. If not, we return -1. """
+        if isinstance(self.stimuli_dataframe.loc[iteration, state], (int, np.integer, float)):
+           interval_value = self.stimuli_dataframe.loc[iteration, state]
+        else:
+            interval_value = -1
+        return interval_value
+        
     def save_data_to_xlsx(self) -> None:
         # method that brings up the windows file save dialogue menu to save the two data tables to external files
         try:

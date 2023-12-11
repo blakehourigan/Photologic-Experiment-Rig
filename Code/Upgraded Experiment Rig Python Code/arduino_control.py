@@ -4,7 +4,6 @@ from typing import Tuple
 
 import serial.tools.list_ports
 
-
 class AduinoManager:
     def __init__(self, controller) -> None:
         self.pg_controller = controller

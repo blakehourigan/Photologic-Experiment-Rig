@@ -97,7 +97,6 @@ class MainGUI:
         self.plus_minus_times_label = tk.Label(self.plus_minus_times_label_frame, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
         self.plus_minus_times_label.pack(fill='x')
 
-
         # Label for # of trials
         self.num_trials_label_frame = tk.Frame(self.root)
         self.num_trials_label_frame.grid(row=5, column=3, pady=10, padx=10, sticky='nsew')
@@ -252,5 +251,3 @@ class MainGUI:
         # Call this method again after 100 ms
         self.update_clock_id = self.root.after(50, lambda: self.update_clock_label())
         self.controller.after_ids.append(self.update_clock_id)
-        
-        
