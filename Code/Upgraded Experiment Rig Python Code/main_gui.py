@@ -92,10 +92,11 @@ class MainGUI:
         self.interval3_label.pack()
         
         # plus/minus label for intervals
-        self.plus_minus_times_label = tk.Frame(self.root, width=400, height=50)
-        self.plus_minus_times_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
-        self.plus_minus_times_label = tk.Label(self.plus_minus_times_label, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
-        self.plus_minus_times_label.pack()
+        self.plus_minus_times_label_frame = tk.Frame(self.root, width=600, height=50)
+        self.plus_minus_times_label_frame.grid(row=7, column=0, pady=10, padx=10, sticky='ew', columnspan=3)
+        self.plus_minus_times_label = tk.Label(self.plus_minus_times_label_frame, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
+        self.plus_minus_times_label.pack(fill='x')
+
 
         # Label for # of trials
         self.num_trials_label_frame = tk.Frame(self.root)
@@ -162,7 +163,6 @@ class MainGUI:
         self.interval3Rand_entry.pack(fill='both', expand=True)
         
     def display_buttons(self) -> None:
-
         # Start/stop button
         self.startButton_frame = tk.Frame(self.root, width=200, height=50)
         self.startButton_frame.grid_propagate(False)  # Disables resizing of frame
@@ -204,7 +204,6 @@ class MainGUI:
         self.save_data_button_frame.grid(row=9, column=3, pady=10, padx=10, sticky='nsew')
         self.save_data_button = tk.Button(self.save_data_button_frame, text="Save Data Externally", command=self.controller.data_mgr.save_data_to_xlsx, bg="grey", font=("Helvetica", 24))
         self.save_data_button.pack(fill='both', expand=True)
-        
         
     def create_frame(self) -> None:
         # Create a frame to contain the scrolled text widget and place it in the grid
