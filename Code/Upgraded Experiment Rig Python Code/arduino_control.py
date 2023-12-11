@@ -1,5 +1,6 @@
 import serial
 import time
+from typing import Tuple
 
 import serial.tools.list_ports
 
@@ -9,8 +10,8 @@ class AduinoManager:
         self.pg_controller = controller
         
         self.BAUD_RATE = 9600 
-        self.arduinoLaser = None
-        self.arduinoMotor = None
+        self.laser_arduino = None
+        self.motor_arduino = None
 
     def connect_to_arduino(self) -> None:
         """Connect to the Arduino boards and return status."""
@@ -18,11 +19,11 @@ class AduinoManager:
         for port in ports:
             identifier = self.identify_arduino(port)
             if identifier == "LASER":
-                self.arduinoLaser = serial.Serial(port, self.BAUD_RATE)
+                self.laser_arduino = serial.Serial(port, self.BAUD_RATE)
             elif identifier == "MOTOR":
-                self.arduinoMotor = serial.Serial(port, self.BAUD_RATE)
+                self.motor_arduino = serial.Serial(port, self.BAUD_RATE)
 
-        if self.arduinoLaser is None or self.arduinoMotor is None:
+        if self.laser_arduino is None or self.motor_arduino is None:
             error_message = "1 or more Arduino boards are not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
             self.pg_controller.display_error("Serial Connection Error", error_message)
@@ -45,9 +46,9 @@ class AduinoManager:
     def reset_arduinos(self) -> None:
         """Send a reset command to both Arduino boards."""
         try:
-            if self.arduinoLaser and self.arduinoMotor:
-                self.arduinoLaser.write(b'reset\n')
-                self.arduinoMotor.write(b'reset\n')
+            if self.laser_arduino and self.motor_arduino:
+                self.laser_arduino.write(b'reset\n')
+                self.motor_arduino.write(b'reset\n')
                 print("Arduino boards reset.")
             else:
                 print("Arduino boards not connected.")
@@ -57,18 +58,28 @@ class AduinoManager:
     def send_command_to_motor(self, command) -> None:
         """Send a specific command to the motor Arduino."""
         try:
-            if self.arduinoMotor:
-                self.arduinoMotor.write(command.encode('utf-8'))
-                self.arduinoMotor.flush()
+            if self.motor_arduino:
+                self.motor_arduino.write(command.encode('utf-8'))
+                self.motor_arduino.flush()
             else:
                 print("Motor Arduino not connected.")
         except Exception as e:
             self.pg_controller.display_error("Error sending command to motor Arduino:", e)
 
+    def read_from_laser(self) -> Tuple[bool, str]:
+        """Read data from the laser Arduino."""
+        data = ""
+        available = False
+        if self.laser_arduino is not None:           # if arduino laser is connected, read serial data
+            if(self.laser_arduino.in_waiting > 0):
+                data = self.laser_arduino.read(self.laser_arduino.in_waiting).decode('utf-8')
+                available = True
+        return available, data 
+
     def close_connections(self) -> None:
         """Close the serial connections to the Arduino boards."""
-        if self.arduinoLaser is not None:
-            self.arduinoLaser.close()
-        if self.arduinoMotor is not None:
-            self.arduinoMotor.close()
+        if self.laser_arduino is not None:
+            self.laser_arduino.close()
+        if self.motor_arduino is not None:
+            self.motor_arduino.close()
         print("Closed connections to Arduino boards.")

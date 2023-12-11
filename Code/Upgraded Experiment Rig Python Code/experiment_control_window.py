@@ -80,9 +80,9 @@ class ExperimentCtlWindow:
             
         self.configure_tk_obj_grid(self.stim_sched_tab)
 
-        self.trial_blocks = Table(self.stimuli_frame, dataframe=self.data.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
-        self.trial_blocks.autoResizeColumns()
-        self.trial_blocks.show()
+        self.trial_blocks_table = Table(self.stimuli_frame, dataframe=self.data.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
+        self.trial_blocks_table.autoResizeColumns()
+        self.trial_blocks_table.show()
                 
     def configure_tk_obj_grid(self, obj):
         # setting the tab to expand when we expand the window 

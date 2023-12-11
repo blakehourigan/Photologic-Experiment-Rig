@@ -6,10 +6,10 @@ import tkinter as tk
 
 class DataManager:
     def __init__(self, controller) -> None:
+        self.controller = controller
+        
         self.stimuli_dataframe = pd.DataFrame()
         self.licks_dataframe = pd.DataFrame()
-        self.controller = controller
-        self.logic = controller.logic
 
         self.stimuli_vars = {f'stimuli_var_{i+1}': tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
@@ -30,7 +30,6 @@ class DataManager:
         # initializing variable for iteration through the trials in the program
 
         self.curr_trial_number = 1
-
 
         self._blocks_generated = False
 
@@ -62,8 +61,6 @@ class DataManager:
         self.side_one_licks = 0
         self.side_two_licks = 0
         self.total_licks = 0
-        
-    
     
     def create_trial_blocks(self):
         """ this is the function that will generate the full roster of stimuli for the duration of the program """
@@ -155,7 +152,7 @@ class DataManager:
         elif (len(self.changed_vars) == 0): 
             # if there have been no variables that have been changed, then inform the user to change them
             self.controller.display_error("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
-        elif (self.logic.num_trial_blocks.get() == 0):
+        elif (self.controller.logic.num_trial_blocks.get() == 0):
             # if number of trial blocks is zero, inform the user that they must change this
             self.controller.display_error("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
         
@@ -166,19 +163,12 @@ class DataManager:
     def initialize_stimuli_dataframe(self):
         """filling the dataframe with the values of the random intervals that were previously generated
         """
-        print(type(self.ITI_intervals_final[0]))
         for i in range(len(self.stimuli_dataframe)):
             self.stimuli_dataframe.loc[i, 'ITI'] = float(self.ITI_intervals_final[i])
             self.stimuli_dataframe.loc[i, 'TTC'] = float(self.TTC_intervals_final[i])
             self.stimuli_dataframe.loc[i, 'Sample Time'] = float(self.sample_intervals_final[i])
             self.stimuli_dataframe.loc[i, 'Trial Number'] = int(i + 1)
-
-        print(type(self.stimuli_dataframe['ITI'][0]))
-
-        # Ensure 'ITI', 'TTC', and 'Sample Time' columns are of a numeric type
-        self.stimuli_dataframe['ITI'] = self.stimuli_dataframe['ITI'].astype(int)
-        self.stimuli_dataframe['TTC'] = self.stimuli_dataframe['TTC'].astype(int)
-        self.stimuli_dataframe['Sample Time'] = self.stimuli_dataframe['Sample Time'].astype(int)
+            
 
         # Create new column for the actual time elapsed in Time to contact state to be filled during program execution
         self.stimuli_dataframe['TTC Actual'] = np.nan

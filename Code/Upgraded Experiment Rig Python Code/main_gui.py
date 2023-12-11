@@ -179,7 +179,7 @@ class MainGUI:
         self.clear_button_frame = tk.Frame(self.master, width=200, height=50)
         self.clear_button_frame.grid_propagate(False)  # Disables resizing of frame
         self.clear_button_frame.grid(row=1, column=2, pady=10, padx=10, sticky='nsew', columnspan=2)
-        self.clear_button = tk.Button(self.clear_button_frame, text="Clear", command=self.controller.start_button_handler, bg="grey", font=("Helvetica", 24))
+        self.clear_button = tk.Button(self.clear_button_frame, text="Clear", command=self.controller.clear_button_handler, bg="grey", font=("Helvetica", 24))
         self.clear_button.pack(fill='both', expand=True)
         
         # button to open the stimuli window
@@ -236,14 +236,18 @@ class MainGUI:
     def update_clock_label(self) -> None:
         # total elapsed time is current minus program start time
         elapsed_time = time.time() - self.controller.data_mgr.start_time
+        
         # update the main screen label and set the number of decimal points to 3 
         self.time_label.configure(text="{:.3f}s".format(elapsed_time))
+        
         # state elapsed time is current time minus the time we entered the state 
         state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
+        
         # update the main screen label and set the number of decimal points to 3
         self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+        
         # Call this method again after 100 ms
         self.update_clock_id = self.master.after(50, lambda: self.update_clock_label())
-    
-    def cancel_clock(self):
-        self.master.after_cancel(self.update_clock_id)
+        self.controller.after_ids.append(self.update_clock_id)
+        
+        
