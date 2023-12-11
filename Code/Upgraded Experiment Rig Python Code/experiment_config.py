@@ -6,9 +6,6 @@ class Config:
     def __init__(self) -> None:
         self.script_path = Path(__file__).resolve().parent
 
-        self.main_gui_window_size = "1400x800"
-        self.experiment_ctl_gui_size = "1000x800"
-
     def get_window_icon_path(self) -> str:
         # get directory path of project folder
         base_path = os.path.dirname(os.path.abspath(__file__))

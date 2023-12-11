@@ -12,19 +12,21 @@ from data_management import DataManager
 from main_gui import MainGUI
 from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
+from licks_window import LicksWindow
 
 class ProgramController:
-    def __init__(self) -> None:
-        self.root = tk.Tk()
-        self.root.title("Samuelsen Lab Photologic Rig")
-        self.current_screen = None
-        
+    def __init__(self) -> None: 
         self.config = Config()
+        
+        self.main_gui = MainGUI(self)
+        self.data_window = DataWindow(self)
+        self.licks_window = LicksWindow(self)
+        self.experiment_ctl_wind = ExperimentCtlWindow(self)
+
+
         self.logic = ExperimentLogic(self)
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
-        self.experiment_ctl_wind = ExperimentCtlWindow(self, self.logic, self.config)
-        self.main_gui = MainGUI(self.root, self, self.config, self.logic)
         
         # Initialize running flag to false
         self.running = False
@@ -37,7 +39,7 @@ class ProgramController:
         """
         self.main_gui.setup_gui()
         self.arduino_mgr.connect_to_arduino()
-        self.root.mainloop()
+        self.main_gui.root.mainloop()
     
     def initial_time_interval(self, iteration) -> None:
         """defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
@@ -47,19 +49,17 @@ class ProgramController:
         # if we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, then continue running through more trials
         if self.running and self.logic.return_trials_remaining() and self.data_mgr.blocks_generated == True:
             
-            self.state = "ITI"
-            
-            self.logic.new_ITI_reset()
+            self.logic.new_ITI_reset()  # reset state time and 
             
             # configure the state time label in the top right of the main window to hold the value of the new state
             self.main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
-            
+                
             # update the state start time to now, so that it starts at 0
             self.data_mgr.state_start_time = time.time()  
             
             # Get trial number and stimuli in the trial and add them to the main information screen
             # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = f'\nTRIAL # ({self.data_mgr.curr_trial_number}) Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 2"]}\n'
+            string = f'\nTRIAL # {self.data_mgr.curr_trial_number}: Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 2"]}\n'
                 
             # this command is what adds things to the main information screen
             self.main_gui.append_data(string)
@@ -75,7 +75,7 @@ class ProgramController:
             
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.main_gui.master.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
+            self.main_gui.root.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
         else: 
             # if we have gone through every trial then end the program.
             self.stop_program()
@@ -119,7 +119,7 @@ class ProgramController:
             
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.after_sample_id = self.root.after(int(TTC_Value), lambda: self.logic.save_licks(iteration))
+            self.after_sample_id = self.main_gui.root.after(int(TTC_Value), lambda: self.data_mgr.save_licks(iteration))
             self.after_ids.append(self.after_sample_id)
 
     def sample_time(self, iteration):
@@ -139,20 +139,7 @@ class ProgramController:
             self.main_gui.append_data('Sample Time Interval: ' + str(sample_interval_value/ 1000.0) + "s\n\n\n")  
 
             # After the sample time specified in the ith row of the 'Sample Time' table, we will jump to the save licks function
-            self.root.after(int(sample_interval_value), lambda: self.logic.save_licks(iteration))   
-
-    def check_licks(self, iteration):
-        """ define method for checking licks during the TTC state """
-        # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time 
-        # state and continue the trial
-        if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
-            self.data_mgr.stimuli_dataframe.loc[self.data_mgr.curr_trial_number - 1,'TTC Actual'] = \
-                (time.time() - self.data_mgr.state_start_time) * 1000
-                
-            self.root.after_cancel(self.after_sample_id)
-            self.side_one_licks = 0
-            self.side_two_licks = 0
-            self.sample_time(iteration)
+            self.main_gui.root.after(int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration))   
 
     def start_button_handler(self) -> None:
         """ Define the method for toggling the program state via the start/stop button """
@@ -169,12 +156,6 @@ class ProgramController:
         self.main_gui.data_text.delete('1.0', tk.END)
         self.main_gui.time_label.configure(text="{:.3f}s".format(elapsed_time))
         self.main_gui.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
-        
-    def show_experiment_ctl_window(self, master) -> None:
-        self.experiment_ctl_wind.show_window(master)
-        
-    def generate_trial_blocks_data_mgr(self):
-        return self.data_mgr.initialize_stimuli_dataframe()
     
     def stop_program(self) -> None:
         """ Method to halt the program and set it to the off state, changing the button back to start. """
@@ -190,7 +171,7 @@ class ProgramController:
         self.main_gui.startButton.configure(text="Start", bg="green")
         
         for after_id in self.after_ids:         # cancel all after calls which cancels every recursive function call
-            self.root.after_cancel(after_id)
+            self.main_gui.root.after_cancel(after_id)
         
         self.after_ids.clear()
 

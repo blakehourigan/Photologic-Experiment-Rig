@@ -4,41 +4,43 @@ from tkinter import ttk
 from pandastable import Table
 
 class ExperimentCtlWindow:
-    def __init__(self, controller, logic, config):
+    def __init__(self, controller):
         self.controller = controller
         
-        self.logic = controller.logic
-        self.config = controller.config
-        self.data = controller.data_mgr
+        self.top = None
         
         self.num_tabs = 0
         
     def show_window(self, master) -> None:
         # if the number of simuli is currently set to zero, tell the user that they need to add stmiuli before we can more forward
-        if(self.data.num_stimuli.get() > 0):        
-            top = self.create_window(master)
-            self.configure_tk_obj_grid(top)
+        if(self.controller.data_mgr.num_stimuli.get() > 0): 
+            if self.top is not None and self.top.winfo_exists():
+                self.top.lift()       
+            else:
+                self.top = self.create_window(master)
+                self.configure_tk_obj_grid(self.top)
+                self.top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
             
-            # Create the notebook (method of creating tabs at the bottom of the window), and set items to expand in all directions if window is resized  
-            notebook = ttk.Notebook(top)
-            notebook.grid(sticky='nsew')     
+                # Create the notebook (method of creating tabs at the bottom of the window), and set items to expand in all directions if window is resized  
+                notebook = ttk.Notebook(self.top)
+                notebook.grid(sticky='nsew')     
             
-            exp_stimuli_tab = self.create_tab(notebook, "Experiment Stimuli Tab")
-            self.populate_stimuli_tab(exp_stimuli_tab)
+                exp_stimuli_tab = self.create_tab(notebook, "Experiment Stimuli Tab")
+                self.populate_stimuli_tab(exp_stimuli_tab)
 
-            self.stim_sched_tab = self.create_tab(notebook,'Program Stimuli Schedule')
+                self.stim_sched_tab = self.create_tab(notebook,'Program Stimuli Schedule')
 
-            # stimuli schedule button that calls the function to generate the program schedule when pressed 
-            self.generate_stimulus = tk.Button(exp_stimuli_tab, text="Generate Stimulus", command=lambda: self.controller.generate_trial_blocks_data_mgr(), bg="green", font=("Helvetica", 24))
-            
-            # place the button after the last row
-            self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
-    
+                # stimuli schedule button that calls the function to generate the program schedule when pressed 
+                self.generate_stimulus = tk.Button(exp_stimuli_tab, text="Generate Stimulus", command=lambda: self.controller.data_mgr.initialize_stimuli_dataframe(), bg="green", font=("Helvetica", 24))
+                
+                # place the button after the last row
+                self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+        
     def create_window(self, master) -> tk.Toplevel:
         # Create a new window for AI solutions  
         top = tk.Toplevel(master)
         top.title(f"Experiment Control")
-        top.geometry(self.config.experiment_ctl_gui_size)
+        self.update_size()
         return top
 
     def create_tab(self, notebook, tab_title) -> ttk.Frame:
@@ -47,9 +49,9 @@ class ExperimentCtlWindow:
         return tab
 
     def populate_stimuli_tab(self, tab) -> None:
-        for i in range(self.data.num_stimuli.get()):
+        for i in range(self.controller.data_mgr.num_stimuli.get()):
              # for every stimuli that we will have in the program, create a text box that allows the user to enter the name of the stimuli
-            for i in range(self.data.num_stimuli.get()):
+            for i in range(self.controller.data_mgr.num_stimuli.get()):
 
                 # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
                 column = 0 if i < 4 else 1
@@ -66,7 +68,7 @@ class ExperimentCtlWindow:
                 label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
                 # sets up an entry box that will assign its held value to its stimulus var number in the stimuli_vars dictionary
                 
-                entry = tk.Entry(tab, textvariable=self.data.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
+                entry = tk.Entry(tab, textvariable=self.controller.data_mgr.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
                 
                 # placing the entry box 1 below the label box
                 entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
@@ -80,7 +82,7 @@ class ExperimentCtlWindow:
             
         self.configure_tk_obj_grid(self.stim_sched_tab)
 
-        self.trial_blocks_table = Table(self.stimuli_frame, dataframe=self.data.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
+        self.trial_blocks_table = Table(self.stimuli_frame, dataframe=self.controller.data_mgr.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
         self.trial_blocks_table.autoResizeColumns()
         self.trial_blocks_table.show()
                 
@@ -89,3 +91,19 @@ class ExperimentCtlWindow:
         obj.grid_rowconfigure(0, weight=1)                            
         obj.grid_columnconfigure(0, weight=1)  
         
+        
+    def update_size(self) -> None:
+        """update the size of the window to fit the contents
+        """
+        if self.top is not None:
+            self.top.update_idletasks()
+            width = self.top.winfo_reqwidth()
+            height = self.top.winfo_reqheight()
+            self.top.geometry('{}x{}'.format(width, height))
+
+
+    def on_window_close(self) -> None:
+        """Handle the close event when the user clicks the X button on the window."""
+        if self.top is not None:
+            self.top.destroy()
+            self.top = None

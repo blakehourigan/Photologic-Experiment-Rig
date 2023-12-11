@@ -62,30 +62,8 @@ class DataManager:
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
         self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))         
 
-        # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
-        self.ITI_intervals_final.clear()
-        self.TTC_intervals_final.clear()
-        self.sample_intervals_final.clear()
-        
-        # Assuming 'num_entries' is the number of entries (rows) you need to process
-        for entry in range(self.num_trials.get()):
-            for interval_type in ['ITI', 'TTC', 'sample']:
-                random_entry_key = f'{interval_type}_random_entry'
-                var_key = f'{interval_type}_var'
-                final_intervals_key = f'{interval_type}_intervals_final'
 
-                # Generate a random interval
-                random_interval = random.randint(-self.interval_vars[random_entry_key].get(), 
-                                                self.interval_vars[random_entry_key].get())
-                
-                # Calculate the final interval by adding the random interval to the state constant
-                final_interval = self.interval_vars[var_key].get() + random_interval
-
-                # Append the final interval to the corresponding list
-                if not hasattr(self, final_intervals_key):
-                    setattr(self, final_intervals_key, [])
-                getattr(self, final_intervals_key).append(final_interval)
-
+        self.create_random_intervals()
 
         """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
                             var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
@@ -113,6 +91,32 @@ class DataManager:
             self.controller.main_gui.display_error("Stimulus Not Changed","One or more of the default stimuli have not been changed, please change the default value and try again")
         # for each pair in pairs list, include each pair flipped
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+
+
+    def create_random_intervals(self) -> None:
+        # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
+        self.ITI_intervals_final.clear()
+        self.TTC_intervals_final.clear()
+        self.sample_intervals_final.clear()
+        
+        # Assuming 'num_entries' is the number of entries (rows) you need to process
+        for entry in range(self.num_trials.get()):
+            for interval_type in ['ITI', 'TTC', 'sample']:
+                random_entry_key = f'{interval_type}_random_entry'
+                var_key = f'{interval_type}_var'
+                final_intervals_key = f'{interval_type}_intervals_final'
+
+                # Generate a random interval
+                random_interval = random.randint(-self.interval_vars[random_entry_key].get(), 
+                                                self.interval_vars[random_entry_key].get())
+                
+                # Calculate the final interval by adding the random interval to the state constant
+                final_interval = self.interval_vars[var_key].get() + random_interval
+
+                # Append the final interval to the corresponding list
+                if not hasattr(self, final_intervals_key):
+                    setattr(self, final_intervals_key, [])
+                getattr(self, final_intervals_key).append(final_interval)
 
         
     def generate_pairs(self) -> Tuple[list, list]:  
@@ -147,12 +151,15 @@ class DataManager:
     def initialize_stimuli_dataframe(self) -> None:
         """ filling the dataframe with the values that we have at this time
         """
-        
+        if(hasattr(self, 'stimuli_dataframe')):
+            del self.stimuli_dataframe
+            
         self.create_trial_blocks()  
         stimuli_1, stimuli_2 = self.generate_pairs()
+        
         data = \
             {
-                'Trial Block': np.repeat(range(1, self.controller.data_mgr.num_trial_blocks.get() + 1), self.num_trial_blocks.get()),
+                'Trial Block': np.repeat(range(1, self.controller.data_mgr.num_trial_blocks.get() + 1), self.num_stimuli.get()),
                 'Trial Number': np.repeat(range(1, self.num_trials.get() + 1), 1),
                 'Stimulus 1': stimuli_1,
                 'Stimulus 2': stimuli_2,
@@ -180,7 +187,34 @@ class DataManager:
         """
         self.licks_dataframe = pd.DataFrame([np.nan], columns=['Trial Number', 'Port Licked', 'Time Stamp'])
         
+    def save_licks(self, interval):
+        """ define method that saves the licks to the data table and increments our iteration variable. """
+        # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
+        if self.controller.state == 'TTC':
+            self.stimuli_dataframe.loc[self.curr_trial_number - 1,'TTC Actual'] = \
+                self.stimuli_dataframe.loc[self.curr_trial_number - 1, 'TTC']
+            
+            command = "SIDE_ONE\n" + str(self.stim1_position) + "\nSIDE_TWO\n" + str(self.stim2_position) + "\n"
+            self.controller.arduino_mgr.send_command_to_motor(command)
+            
+        command = b'UP\n'
+        # tell the motor arduino to move the door up
+        self.controller.arduino_mgr.send_command_to_motor(command)
+        
+        # increment the trial number                                     
+        self.curr_trial_number += 1        
 
+        # store licks in the ith rows in their respective stimuli column in the data table for the trial                                     
+        self.stimuli_dataframe.loc[interval, 'Stimulus 1 Licks'] = self.side_one_licks        
+        self.stimuli_dataframe.loc[interval, 'Stimulus 2 Licks'] = self.side_two_licks
+
+        # this is how processes that are set to execute after a certain amount of time are cancelled. 
+        # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
+        self.controller.root.after_cancel(self.controller.logic.update_licks_id)
+
+        # Jump to ITI state to begin ITI for next trial by incrementing the i variable
+        self.controller.initial_time_interval(interval+1)      
+        
     def save_data_to_xlsx(self) -> None:
         # method that brings up the windows file save dialogue menu to save the two data tables to external files
         try:

@@ -15,39 +15,14 @@ class ExperimentLogic:
         
     def new_ITI_reset(self):
         # Set the program state to initial time interval
-        self.state = "ITI"
+        self.controller.state = "ITI"
+    
         
         # new trial so reset the lick counters
-        self.side_one_licks = 0
-        self.side_two_licks = 0
+        self.controller.data_mgr.side_one_licks = 0
+        self.controller.data_mgr.side_two_licks = 0
 
-    def save_licks(self, i):
-        """ define method that saves the licks to the data table and increments our iteration variable. """
-        # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
-        if self.state == 'TTC':
-            self.controller.data_mgr.stimuli_dataframe.loc[self.controller.data_mgr.curr_trial_number - 1,'TTC Actual'] = \
-                self.controller.data_mgr.stimuli_dataframe.loc[self.controller.data_mgr.curr_trial_number - 1, 'TTC']
-            
-            command = "SIDE_ONE\n" + str(self.controller.data_mgr.stim1_position) + "\nSIDE_TWO\n" + str(self.controller.data_mgr.stim2_position) + "\n"
-            self.controller.arduino_mgr.arduinoMotor.write(command)
-            
-        command = b'UP\n'
-        # tell the motor arduino to move the door up
-        self.controller.arduino_mgr.arduinoMotor.write(command)
-           
-        # increment the trial number                                     
-        self.controller.data_mgr.curr_trial_number += 1        
-
-        # store licks in the ith rows in their respective stimuli column in the data table for the trial                                     
-        self.controller.data_mgr.stimuli_dataframe.loc[i, 'Stimulus 1 Licks'] = self.side_one_licks        
-        self.controller.data_mgr.stimuli_dataframe.loc[i, 'Stimulus 2 Licks'] = self.side_two_licks
-
-        # this is how processes that are set to execute after a certain amount of time are cancelled. 
-        # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
-        self.controller.root.after_cancel(self.update_licks_id)
-
-        # Jump to ITI state to begin ITI for next trial by incrementing the i variable
-        self.controller.initial_time_interval(i+1)     
+    
         
     def read_licks(self, i):
         """ Define the method for reading data from the optical fiber Arduino """
@@ -64,7 +39,7 @@ class ExperimentLogic:
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Trial Number'] = self.controller.data_mgr.curr_trial_number
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Port Licked'] = 'Stimulus 1'
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Time Stamp'] = time.time() - self.controller.data_mgr.start_time
-                self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'State'] = self.state
+                self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'State'] = self.controller.state
                 
                 self.controller.data_mgr.side_one_licks += 1
                 self.controller.data_mgr.total_licks += 1
@@ -77,7 +52,7 @@ class ExperimentLogic:
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Trial Number'] = self.controller.data_mgr.curr_trial_number
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Port Licked'] = 'Stimulus 2'
                 self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'Time Stamp'] = time.time() - self.controller.data_mgr.start_time
-                self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'State'] = self.state
+                self.controller.data_mgr.licks_dataframe.loc[self.controller.data_mgr.total_licks, 'State'] = self.controller.state
 
 
                 self.controller.data_mgr.side_two_licks += 1
@@ -87,6 +62,20 @@ class ExperimentLogic:
         self.update_licks_id = self.controller.root.after(100, lambda: self.read_licks(i))
         self.controller.after_ids.append(self.update_licks_id)
 
+
+
+    def check_licks(self, iteration):
+        """ define method for checking licks during the TTC state """
+        # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time 
+        # state and continue the trial
+        if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.controller.state == 'TTC':
+            self.controller.data_mgr.stimuli_dataframe.loc[self.controller.data_mgr.curr_trial_number - 1,'TTC Actual'] = \
+                (time.time() - self.controller.data_mgr.state_start_time) * 1000
+                
+            self.controller.root.after_cancel(self.controller.after_sample_id)
+            self.side_one_licks = 0
+            self.side_two_licks = 0
+            self.controller.sample_time(iteration)
 
     def return_trials_remaining(self) -> bool:
         """ Method to return if there are trials remaining """
