@@ -29,7 +29,7 @@ class DataManager:
         
         # initializing variable for iteration through the trials in the program
 
-        self.curr_trial_number = 1
+        self.current_trial_number = 1
         
         self.interval_vars = \
         {
@@ -191,8 +191,8 @@ class DataManager:
         """ define method that saves the licks to the data table and increments our iteration variable. """
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
         if self.controller.state == 'TTC':
-            self.stimuli_dataframe.loc[self.curr_trial_number - 1,'TTC Actual'] = \
-                self.stimuli_dataframe.loc[self.curr_trial_number - 1, 'TTC']
+            self.stimuli_dataframe.loc[self.current_trial_number - 1,'TTC Actual'] = \
+                self.stimuli_dataframe.loc[self.current_trial_number - 1, 'TTC']
             
             command = "SIDE_ONE\n" + str(self.stim1_position) + "\nSIDE_TWO\n" + str(self.stim2_position) + "\n"
             self.controller.arduino_mgr.send_command_to_motor(command)
@@ -202,7 +202,7 @@ class DataManager:
         self.controller.arduino_mgr.send_command_to_motor(command)
         
         # increment the trial number                                     
-        self.curr_trial_number += 1        
+        self.current_trial_number += 1        
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial                                     
         self.stimuli_dataframe.loc[interval, 'Stimulus 1 Licks'] = self.side_one_licks        
@@ -210,7 +210,7 @@ class DataManager:
 
         # this is how processes that are set to execute after a certain amount of time are cancelled. 
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
-        self.controller.root.after_cancel(self.controller.logic.update_licks_id)
+        self.controller.main_gui.root.after_cancel(self.controller.logic.update_licks_id)
 
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
         self.controller.initial_time_interval(interval+1)      

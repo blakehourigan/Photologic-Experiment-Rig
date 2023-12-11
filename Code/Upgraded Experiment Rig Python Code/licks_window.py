@@ -17,7 +17,7 @@ class LicksWindow:
     
     def create_window(self) -> None:
         if self.controller.data_mgr.blocks_generated:
-            self.top = tk.Toplevel(self.controller.root)
+            self.top = tk.Toplevel(self.controller.main_gui.root)
             self.top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
             
             # create the frame that the table will be held in

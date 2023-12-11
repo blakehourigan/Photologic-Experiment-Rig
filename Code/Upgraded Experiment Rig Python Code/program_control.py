@@ -1,11 +1,10 @@
 import tkinter as tk
 import time
-import numpy as np
 
+# Helper classes 
 from logic import ExperimentLogic
 from arduino_control import AduinoManager
 from experiment_config import Config
-
 from data_management import DataManager
 
 # GUI classses
@@ -42,14 +41,28 @@ class ProgramController:
         self.main_gui.root.mainloop()
     
     def initial_time_interval(self, iteration) -> None:
-        """defining the ITI state method, arguments given are self which says that the function should be called on the instance of the class, which is our app 
-        the second argument is i, which is the iteration variable that we use to keep track of what trial we are on. 
-        i is defined on line 650 where we first call the function."""
+        """ defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
+            the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on. 
+        """
 
-        # if we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, then continue running through more trials
-        if self.running and self.logic.return_trials_remaining() and self.data_mgr.blocks_generated == True:
-            
-            self.logic.new_ITI_reset()  # reset state time and 
+        """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
+            then continue running through more trials"""
+        
+        if not self.data_mgr.blocks_generated:
+            self.stop_program()
+            self.main_gui.display_error("Blocks not Generated","Please generate blocks before starting the program.")
+        
+        
+        elif self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
+            self.stop_program()         # if we have gone through every trial then end the program.
+
+        
+        elif self.running:
+            self.state = "ITI"
+    
+            # new trial so reset the lick counters
+            self.data_mgr.side_one_licks = 0
+            self.data_mgr.side_two_licks = 0
             
             # configure the state time label in the top right of the main window to hold the value of the new state
             self.main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
@@ -59,7 +72,7 @@ class ProgramController:
             
             # Get trial number and stimuli in the trial and add them to the main information screen
             # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = f'\nTRIAL # {self.data_mgr.curr_trial_number}: Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 2"]}\n'
+            string = f'\nTRIAL # {self.data_mgr.current_trial_number}: Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 2"]}\n'
                 
             # this command is what adds things to the main information screen
             self.main_gui.append_data(string)
@@ -76,27 +89,22 @@ class ProgramController:
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
             self.main_gui.root.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
-        else: 
-            # if we have gone through every trial then end the program.
-            self.stop_program()
+ 
 
     def time_to_contact(self, iteration):
         """ defining the TTC state method, argument are self and i. i is passed from TTC to keep track of what stimuli we are on. """
         if self.running:
-            self.state = "TTC"
-            
             """start reading licks, we pass the same i into this function that we used in the previous function to
             keep track of where we are storing the licks in the data table"""
+            self.state = "TTC"
+            
             self.logic.read_licks(iteration)
             
-            # update state timer header
-            self.main_gui.state_time_label_header.configure(text=(self.state + " Time:"))
+            self.main_gui.state_time_label_header.configure(text=(self.state + " Time:")) # update state timer header
             
-            # state start time begins 
-            self.data_mgr.state_start_time = time.time()
-            
-            # tell motor arduino to move the door down              
-            command = 'DOWN\n'
+            self.data_mgr.state_start_time = time.time()            # state start time begins 
+                    
+            command = 'DOWN\n'                                      # tell motor arduino to move the door down      
             self.arduino_mgr.send_command_to_motor(command)
         
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
@@ -142,17 +150,15 @@ class ProgramController:
             self.main_gui.root.after(int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration))   
 
     def start_button_handler(self) -> None:
-        """ Define the method for toggling the program state via the start/stop button """
-        # If the program is running, stop it
+        """ Handle toggling the program to running/not running on click of the start/stop button """
         if self.running:
             self.stop_program()
-
-        # If the program is not running, start it
         else:
             self.start_program()
         
     def clear_button_handler(self) -> None:
-        elapsed_time, state_elapsed_time = self.logic.reset_clock()
+        """ Handle clearing the data window on click of the clear button """
+        elapsed_time, state_elapsed_time = 0, 0             # reset the elapsed time variables
         self.main_gui.data_text.delete('1.0', tk.END)
         self.main_gui.time_label.configure(text="{:.3f}s".format(elapsed_time))
         self.main_gui.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
@@ -178,7 +184,7 @@ class ProgramController:
         # send the reset command to reboot both Arduino boards 
 
         self.arduino_mgr.reset_arduinos()
-        self.curr_trial_number = 1
+        self.current_trial_number = 1
         
     def start_program(self) -> None:
         # Start the program if it is not already runnning and generate random numbers

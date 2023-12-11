@@ -18,7 +18,7 @@ class DataWindow:
     def create_window(self, master) -> None:
         # if the program schedule has been generated, then create the window
         if self.controller.data_mgr.blocks_generated:
-            self.top = tk.Toplevel(self.controller.root)
+            self.top = tk.Toplevel(self.controller.main_gui.root)
             self.top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
 
             container = tk.Frame(self.top)

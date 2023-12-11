@@ -56,7 +56,7 @@ class MainGUI:
         # Label headers
         self.time_label_header_frame = tk.Frame(self.root)
         self.time_label_header_frame.grid(row=0, column=0, pady=10, padx=10, sticky='e')
-        self.time_label_header = tk.Label(self.time_label_header_frame, text="Elapsed Time:", bg="light blue", font=("Helvetica", 24))
+        self.time_label_header = tk.Label(self.time_label_header_frame, text="Elapsed Time", bg="light blue", font=("Helvetica", 24))
         self.time_label_header.pack()
 
         self.state_time_label_header_frame = tk.Frame(self.root)
@@ -78,24 +78,24 @@ class MainGUI:
         # Labels for Interval Entry widgets
         self.interval1_label_frame = tk.Frame(self.root)
         self.interval1_label_frame.grid(row=5, column=0, pady=10, padx=10, sticky='nsew')
-        self.interval1_label = tk.Label(self.interval1_label_frame, text="Initial Interval:", bg="light blue", font=("Helvetica", 24))
+        self.interval1_label = tk.Label(self.interval1_label_frame, text="Initial Interval", bg="light blue", font=("Helvetica", 24))
         self.interval1_label.pack()
 
         self.interval2_label_frame = tk.Frame(self.root)
         self.interval2_label_frame.grid(row=5, column=1, pady=10, padx=10, sticky='nsew')
-        self.interval2_label = tk.Label(self.interval2_label_frame, text="Time to Contact:", bg="light blue", font=("Helvetica", 24))
+        self.interval2_label = tk.Label(self.interval2_label_frame, text="Time to Contact", bg="light blue", font=("Helvetica", 24))
         self.interval2_label.pack()
 
         self.interval3_label_frame = tk.Frame(self.root)
         self.interval3_label_frame.grid(row=5, column=2, pady=10, padx=10, sticky='nsew')
-        self.interval3_label = tk.Label(self.interval3_label_frame, text="Time to Sample:", bg="light blue", font=("Helvetica", 24))
+        self.interval3_label = tk.Label(self.interval3_label_frame, text="Time to Sample", bg="light blue", font=("Helvetica", 24))
         self.interval3_label.pack()
         
-        # Labels for Interval Entry widgets
-        self.interval1_label_frame = tk.Frame(self.root)
-        self.interval1_label_frame.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=3)
-        self.interval1_label = tk.Label(self.interval1_label_frame, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
-        self.interval1_label.pack()
+        # plus/minus label for intervals
+        self.plus_minus_times_label = tk.Frame(self.root, width=400, height=50)
+        self.plus_minus_times_label.grid(row=7, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+        self.plus_minus_times_label = tk.Label(self.plus_minus_times_label, text="+/- (All times in ms)", bg="light blue", font=("Helvetica", 24))
+        self.plus_minus_times_label.pack()
 
         # Label for # of trials
         self.num_trials_label_frame = tk.Frame(self.root)

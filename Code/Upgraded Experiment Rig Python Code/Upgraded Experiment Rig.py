@@ -72,7 +72,7 @@ class App:
         """        
         # initializing variable for iteration through the trials in the program
 
-        self.curr_trial_number = 1
+        self.current_trial_number = 1
 
         # Initialize boolean flags to false
         self.running = False
@@ -293,7 +293,7 @@ class App:
     # i is defined on line 650 where we first call the function.
     def initial_time_interval(self, i):
         # if we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, then continue running through more trials
-        if self.running and (self.curr_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()) and self.blocks_generated == True:
+        if self.running and (self.current_trial_number) <= (self.num_stimuli.get() * self.num_trial_blocks.get()) and self.blocks_generated == True:
             # Set the program state to initial time interval
             self.state = "ITI"
             # new trial so reset the lick counters
@@ -305,7 +305,7 @@ class App:
             self.state_start_time = time.time()  
             # Get trial number and stimuli in the trial and add them to the main information screen
             # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = '\nTRIAL # (' + str(self.curr_trial_number) + ') Stimulus 1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. Stimulus 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n"
+            string = '\nTRIAL # (' + str(self.current_trial_number) + ') Stimulus 1:' + self.df_stimuli.loc[i, 'Stimulus 1'] + " vs. Stimulus 2:" + self.df_stimuli.loc[i, 'Stimulus 2'] + "\n"
             # this command is what adds things to the main information screen
             self.append_data(string)
             # for every letter in the string we just created, create a dash to separate the title of the trial from the contents
@@ -389,13 +389,13 @@ class App:
     def save_licks(self, i):
             # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
             if self.state == 'TTC':
-                self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = self.df_stimuli.loc[self.curr_trial_number - 1, 'TTC']
+                self.df_stimuli.loc[self.current_trial_number - 1,'TTC Actual'] = self.df_stimuli.loc[self.current_trial_number - 1, 'TTC']
                 self.command = "SIDE_ONE\n" + str(self.stim1_position) + "\nSIDE_TWO\n" + str(self.stim2_position) + "\n"
                 self.arduinoMotor.write(self.command.encode('utf-8'))
             # tell the motor arduino to move the door up
             self.arduinoMotor.write(b'UP\n')   
             # increment the trial number                                     
-            self.curr_trial_number += 1        
+            self.current_trial_number += 1        
 
             # store licks in the ith rows in their respective stimuli column in the data table for the trial                                     
             self.df_stimuli.loc[i, 'Stimulus 1 Licks'] = self.side_one_licks        
@@ -703,7 +703,7 @@ class App:
 
         # this line is continued on the next line
         # This sets up a bar plot, and gives data values for the x labels (stimulus 1, stimulus 2) and informs the program where to look for this data ([self.side_one_licks, self.side_two_licks])
-        self.axes.bar([self.df_stimuli.loc[self.curr_trial_number-1, 'Stimulus 1'], self.df_stimuli.loc[self.curr_trial_number - 1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks]) 
+        self.axes.bar([self.df_stimuli.loc[self.current_trial_number-1, 'Stimulus 1'], self.df_stimuli.loc[self.current_trial_number - 1, 'Stimulus 2']], [self.side_one_licks, self.side_two_licks]) 
 
         # Draw the plot
         self.canvas.draw()  
@@ -766,7 +766,7 @@ class App:
             try:
                 self.arduinoLaser.write(b'reset\n')
                 self.arduinoMotor.write(b'reset\n')
-                self.curr_trial_number = 1
+                self.current_trial_number = 1
             # if it fails, then the arduinos are not connected
             except:
                 pass
@@ -819,7 +819,7 @@ class App:
                 # and add whether the lick was a TTC lick or a sample lick
 
                 # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
-                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.current_trial_number
                 self.licks_df.loc[self.total_licks, 'Port Licked'] = 'Stimulus 1'
                 self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
                 self.licks_df.loc[self.total_licks, 'State'] = self.state
@@ -836,7 +836,7 @@ class App:
                 # and add whether the lick was a TTC lick or a sample lick
 
                 # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
-                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.curr_trial_number
+                self.licks_df.loc[self.total_licks, 'Trial Number'] = self.current_trial_number
                 self.licks_df.loc[self.total_licks, 'Port Licked'] = 'Stimulus 2'
                 self.licks_df.loc[self.total_licks, 'Time Stamp'] = time.time() - self.start_time
                 self.licks_df.loc[self.total_licks, 'State'] = self.state
@@ -850,7 +850,7 @@ class App:
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time 
         # state and continue the trial
         if (self.side_one_licks >= 3 or self.side_two_licks >= 3) and self.state == 'TTC':
-            self.df_stimuli.loc[self.curr_trial_number - 1,'TTC Actual'] = (time.time() - self.state_start_time) * 1000
+            self.df_stimuli.loc[self.current_trial_number - 1,'TTC Actual'] = (time.time() - self.state_start_time) * 1000
             self.trial_blocks.update()
             self.root.after_cancel(self.after_sample_id)
             self.side_one_licks = 0
