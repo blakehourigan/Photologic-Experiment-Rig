@@ -141,7 +141,6 @@ class ProgramController:
             # After the sample time specified in the ith row of the 'Sample Time' table, we will jump to the save licks function
             self.root.after(int(sample_interval_value), lambda: self.logic.save_licks(iteration))   
 
-
     def check_licks(self, iteration):
         """ define method for checking licks during the TTC state """
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time 
@@ -170,15 +169,12 @@ class ProgramController:
         self.main_gui.data_text.delete('1.0', tk.END)
         self.main_gui.time_label.configure(text="{:.3f}s".format(elapsed_time))
         self.main_gui.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
-
-    def display_error(self, label, error) -> None:
-        self.main_gui.display_error(label, error)
         
     def show_experiment_ctl_window(self, master) -> None:
         self.experiment_ctl_wind.show_window(master)
         
     def generate_trial_blocks_data_mgr(self):
-        return self.data_mgr.generate_trial_blocks()
+        return self.data_mgr.initialize_stimuli_dataframe()
     
     def stop_program(self) -> None:
         """ Method to halt the program and set it to the off state, changing the button back to start. """

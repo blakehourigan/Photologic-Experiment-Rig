@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import random
 import tkinter as tk
+from typing import Tuple
 
 class DataManager:
     def __init__(self, controller) -> None:
@@ -18,7 +19,6 @@ class DataManager:
         # initialize lists to hold original pairs and the list that will hold our dataframes.
 
         self.pairs = []
-        self.df_list = []
 
         # Initialize variables that will keep track of the total number of trials we will have, the total number of trial blocks that the user wants to run
         # and the total number of stimuli. These are of type IntVar because they are used in the GUI. 
@@ -30,12 +30,6 @@ class DataManager:
         # initializing variable for iteration through the trials in the program
 
         self.curr_trial_number = 1
-
-        self._blocks_generated = False
-
-        self.stamped_exists = False
-
-        self.data_window_open = False
         
         self.interval_vars = \
         {
@@ -116,62 +110,69 @@ class DataManager:
             self.pairs = [(self.changed_vars[i], self.changed_vars[i+1]) for i in range(0, len(self.changed_vars), 2)]
         except:
             # if a stimulus has not been changed, this error message will be thrown to tell the user to change it and try again.
-            self.controller.display_error("Stimulus Not Changed","One or more of the default stimuli have not been changed, please change the default value and try again")
+            self.controller.main_gui.display_error("Stimulus Not Changed","One or more of the default stimuli have not been changed, please change the default value and try again")
         # for each pair in pairs list, include each pair flipped
         self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
         
-    def generate_trial_blocks(self) -> pd.DataFrame:  
-        self.create_trial_blocks()  
-        # if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
-        
-        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:                                             
-            for i in range(self.controller.data_mgr.num_trial_blocks.get()):       
-                # copy the entire list of pairs int pairs_copy                                                         
-                pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]                                    
-                # then shuffle the pairs so we get pseudo random generation 
-                random.shuffle(pairs_copy)
-                # recreate the pairs_copy list, now inluding entries of strings for trial block, trial number which are np.nan, and the pairs                                                                             
-                pairs_copy = [(str(i+1), np.nan) + pair for k, pair in enumerate(pairs_copy)]
-                # create the dataframe skeleton, include column headings 
-                df = pd.DataFrame(pairs_copy, columns=['Trial Block', 'Trial Number', 'Stimulus 1', 'Stimulus 2'])  
-                # we don't have any licks yet so, fill with blank or 'nan' values    
-                df['Stimulus 1 Licks'] = np.nan                                                                         
-                df['Stimulus 2 Licks'] = np.nan
-                # add df to the list of data frames
-                self.df_list.append(df)  
-            # add the df list to the pandas stimuli_dataframe table, ignoring index because we have multiple blocks implemented
-            # if we leave the index, then the trial number column will repeat for every block that we added and throw off 
-            # the data table                                                                           
-            self.stimuli_dataframe = pd.concat(self.df_list, ignore_index=True)                                                
+    def generate_pairs(self) -> Tuple[list, list]:  
 
-            # fill the tables with the values of all random intervals that were previously generated
-            # from their respective lists  
-            self.initialize_stimuli_dataframe()
+        # if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
+
+        stimulus_1, stimulus_2, pairs_shuffled = [], [], []
+        
+        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:
+            for i in range(0, self.num_trial_blocks.get()):                                                     
+                # Create a copy of the pairs
+                pairs_copy = [(var1.get(), var2.get()) for var1, var2 in self.pairs]    # copy pairs list to pairs_copy
+
+                # Shuffle the copy
+                random.shuffle(pairs_copy)    # shuffling all pairs for psudeo randomization
+
+                pairs_shuffled.extend(pairs_copy)      # add every pair in pairs copy to larger shuffled pairs list, after loop we have num_stimuli * num_trial_blocks pairs
+
+            # Unpack the pairs_shuffled list into two lists, one for each stimulus
+            for tuple in pairs_shuffled:
+                stimulus_1.append(tuple[0])
+                stimulus_2.append(tuple[1])                                                                                              
 
         elif (len(self.changed_vars) == 0): 
-            # if there have been no variables that have been changed, then inform the user to change them
-            self.controller.display_error("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
+            self.controller.main_gui.display_error("Stimuli Variables Not Yet Changed","Stimuli variables have not yet been changed, to continue please change defaults and try again.")
+
         elif (self.controller.logic.num_trial_blocks.get() == 0):
-            # if number of trial blocks is zero, inform the user that they must change this
-            self.controller.display_error("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
+            self.controller.main_gui.display_error("Number of Trial Blocks 0","Number of trial blocks is currently still set to zero, please change the default value and try again.")
+
+        return stimulus_1, stimulus_2
+
+    def initialize_stimuli_dataframe(self) -> None:
+        """ filling the dataframe with the values that we have at this time
+        """
+        
+        self.create_trial_blocks()  
+        stimuli_1, stimuli_2 = self.generate_pairs()
+        data = \
+            {
+                'Trial Block': np.repeat(range(1, self.controller.data_mgr.num_trial_blocks.get() + 1), self.num_trial_blocks.get()),
+                'Trial Number': np.repeat(range(1, self.num_trials.get() + 1), 1),
+                'Stimulus 1': stimuli_1,
+                'Stimulus 2': stimuli_2,
+                'Stimulus 1 Licks': np.full(self.num_trials.get(), np.nan),
+                'Stimulus 2 Licks': np.full(self.num_trials.get(), np.nan),
+                'ITI': self.ITI_intervals_final,
+                'TTC': self.TTC_intervals_final,
+                'Sample Time': self.sample_intervals_final,
+                'TTC Actual': np.full(self.num_trials.get(), np.nan)
+                
+            }
+        
+        df = pd.DataFrame(data)  
+
+        
+        self.stimuli_dataframe = df
+        
         
         self.blocks_generated = True 
         self.controller.experiment_ctl_wind.show_stimuli_table()
-        return self.stimuli_dataframe
-
-    def initialize_stimuli_dataframe(self):
-        """filling the dataframe with the values of the random intervals that were previously generated
-        """
-        for i in range(len(self.stimuli_dataframe)):
-            self.stimuli_dataframe.loc[i, 'ITI'] = float(self.ITI_intervals_final[i])
-            self.stimuli_dataframe.loc[i, 'TTC'] = float(self.TTC_intervals_final[i])
-            self.stimuli_dataframe.loc[i, 'Sample Time'] = float(self.sample_intervals_final[i])
-            self.stimuli_dataframe.loc[i, 'Trial Number'] = int(i + 1)
-            
-
-        # Create new column for the actual time elapsed in Time to contact state to be filled during program execution
-        self.stimuli_dataframe['TTC Actual'] = np.nan
 
     def initalize_licks_dataframe(self):
         """ setup the licks data frame that will hold the timestamps for the licks and which port was licked
@@ -197,7 +198,7 @@ class DataManager:
 
             self.licks_dataframe.to_excel(licks_file_name, index=False)
         except:
-            self.controller.display_error("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
+            self.controller.main_gui.display_error("Blocks Not Generated","Experiment blocks haven't been generated yet, please generate trial blocks and try again")
 
 
     def find_stimuli_positions(self, i) -> tuple:

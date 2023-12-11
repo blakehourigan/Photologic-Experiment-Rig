@@ -95,7 +95,7 @@ class ExperimentLogic:
             
     def check_dataframe_entry_isfloat(self, iteration, state):
         """ Method to check if the value in the dataframe is a numpy float. If it is, then we return the value. If not, we return -1. """
-        if isinstance(self.controller.data_mgr.stimuli_dataframe.loc[iteration, state], float):
+        if isinstance(self.controller.data_mgr.stimuli_dataframe.loc[iteration, state], (int, np.integer, float)):
            interval_value = self.controller.data_mgr.stimuli_dataframe.loc[iteration, state]
         else:
             interval_value = -1

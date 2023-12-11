@@ -26,7 +26,7 @@ class AduinoManager:
         if self.laser_arduino is None or self.motor_arduino is None:
             error_message = "1 or more Arduino boards are not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
-            self.pg_controller.display_error("Serial Connection Error", error_message)
+            self.pg_controller.main_gui.display_error("Serial Connection Error", error_message)
         else:
             print("Connected to Arduino boards successfully.")
 
@@ -53,7 +53,7 @@ class AduinoManager:
             else:
                 print("Arduino boards not connected.")
         except Exception as e:
-            self.pg_controller.display_error("Error resetting Arduino boards:", e)
+            self.pg_controller.main_gui.display_error("Error resetting Arduino boards:", e)
 
     def send_command_to_motor(self, command) -> None:
         """Send a specific command to the motor Arduino."""
@@ -64,7 +64,7 @@ class AduinoManager:
             else:
                 print("Motor Arduino not connected.")
         except Exception as e:
-            self.pg_controller.display_error("Error sending command to motor Arduino:", e)
+            self.pg_controller.main_gui.display_error("Error sending command to motor Arduino:", e)
 
     def read_from_laser(self) -> Tuple[bool, str]:
         """Read data from the laser Arduino."""
