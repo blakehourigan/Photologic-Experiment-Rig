@@ -8,7 +8,7 @@ class Config:
 
     def get_window_icon_path(self) -> str:
         # get directory path of project folder
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))        
         
         # Determine the operating system
         os_name = platform.system()
