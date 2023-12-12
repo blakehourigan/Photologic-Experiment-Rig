@@ -39,7 +39,7 @@ class ExperimentCtlWindow:
     def create_window(self, master) -> tk.Toplevel:
         # Create a new window for AI solutions  
         top = tk.Toplevel(master)
-        top.title(f"Experiment Control")
+        top.title("Experiment Control")
         self.update_size()
         return top
 

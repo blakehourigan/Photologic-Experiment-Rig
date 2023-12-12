@@ -1,3 +1,4 @@
+from typing import Optional
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
@@ -6,14 +7,14 @@ import matplotlib.pyplot as plt
 class DataWindow:
     def __init__(self, controller) -> None:
         self.controller = controller 
-        self.top = None
+        self.top: Optional[tk.Toplevel] = None
         
             
     def show_window(self) -> None:
         if self.top is not None and self.top.winfo_exists():
             self.top.lift()       
         else:
-            self.top = self.create_window(self.top)
+            self.create_window(self.top)
 
     def create_window(self, master) -> None:
         # if the program schedule has been generated, then create the window

@@ -1,5 +1,5 @@
-from calendar import c
 import tkinter as tk
+from typing import Optional
 from tkinter import messagebox
 from pandastable import Table
 
@@ -7,7 +7,7 @@ class LicksWindow:
     def __init__(self, controller) -> None:
         self.controller = controller
         
-        self.top = None
+        self.top: Optional[tk.Toplevel] = None
         
     def show_window(self) -> None:
         if self.top is not None and self.top.winfo_exists():
