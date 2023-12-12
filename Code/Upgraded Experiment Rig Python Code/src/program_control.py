@@ -11,6 +11,7 @@ from main_gui import MainGUI
 from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
+from test_valves_window import valveTestWindow
 
 
 class ProgramController:
@@ -21,6 +22,7 @@ class ProgramController:
         self.data_window = DataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
+        self.valve_testing_window = valveTestWindow(self)
 
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
@@ -165,6 +167,9 @@ class ProgramController:
             self.main_gui.root.after(
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
+
+    def test_valves(self) -> None:
+        self.valve_testing_window.show_window()
 
     def read_licks(self, i):
         """Define the method for reading data from the optical fiber Arduino"""

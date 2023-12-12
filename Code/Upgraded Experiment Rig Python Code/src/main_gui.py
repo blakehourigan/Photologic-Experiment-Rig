@@ -43,7 +43,7 @@ class MainGUI:
 
     def setup_grid(self) -> None:
         # Configure the GUI grid expand settings
-        for i in range(14):
+        for i in range(12):
             self.root.grid_rowconfigure(i, weight=1)
         # The first column is also configured to expand
         # Configure all columns to have equal weight
@@ -291,6 +291,22 @@ class MainGUI:
             font=("Helvetica", 24),
         )
         self.clear_button.pack(fill="both", expand=True)
+
+        # Button to open the stimuli window
+        self.test_valves_button_frame = tk.Frame(self.root, width=200, height=50)
+        self.test_valves_button_frame.grid_propagate(False)  # Disables resizing of frame
+        self.test_valves_button_frame.grid(
+            row=10, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
+        )
+        self.test_valves_button = tk.Button(
+            self.test_valves_button_frame,
+            text="Calibrate Valves",
+            command=lambda: self.controller.test_valves(),
+            bg="grey",
+            font=("Helvetica", 24),
+        )
+        self.test_valves_button.pack(fill="both", expand=True)
+
 
         # Button to open the stimuli window
         self.exp_ctrl_button_frame = tk.Frame(self.root, width=200, height=50)
