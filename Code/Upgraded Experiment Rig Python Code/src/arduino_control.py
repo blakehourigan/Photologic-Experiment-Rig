@@ -129,7 +129,6 @@ class AduinoManager:
 
         # send the command
         self.arduino_mgr.send_command_to_motor(command)
-        
 
 
     def close_connections(self) -> None:
