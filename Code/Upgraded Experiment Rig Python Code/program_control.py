@@ -2,7 +2,6 @@ import tkinter as tk
 import time
 
 # Helper classes
-from logic import ExperimentLogic
 from arduino_control import AduinoManager
 from experiment_config import Config
 from data_management import DataManager
@@ -22,8 +21,7 @@ class ProgramController:
         self.data_window = DataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
-
-        self.logic = ExperimentLogic(self)
+        
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
 
@@ -31,7 +29,7 @@ class ProgramController:
         self.running = False
         self.state = "OFF"
 
-        self.after_ids = []
+        self.after_ids: list[str] = []
 
     def start_main_gui(self) -> None:
         """start the main GUI and connect to the arduino"""
@@ -104,7 +102,7 @@ class ProgramController:
             keep track of where we are storing the licks in the data table"""
             self.state = "TTC"
 
-            self.logic.read_licks(iteration)
+            self.read_licks(iteration)
 
             self.main_gui.state_time_label_header.configure(
                 text=(self.state + " Time:")
@@ -179,6 +177,83 @@ class ProgramController:
             self.main_gui.root.after(
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
+
+    def read_licks(self, i):
+        """Define the method for reading data from the optical fiber Arduino"""
+        # try to read licks if there is a arduino connected
+        available_data, data = self.controller.arduino_mgr.read_from_laser()
+
+        data_mgr = self.controller.data_mgr
+        licks_dataframe = data_mgr.licks_dataframe
+        total_licks = data_mgr.total_licks
+
+        if available_data:
+            # Append the data to the scrolled text widget
+            if "Stimulus One Lick" in data:
+                # if we detect a lick on spout one, then add it to the lick data table
+                # and add whether the lick was a TTC lick or a sample lick
+
+                # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+                data_mgr = self.controller.data_mgr
+                licks_dataframe = data_mgr.licks_dataframe
+                total_licks = data_mgr.total_licks
+
+                licks_dataframe.loc[
+                    total_licks, "Trial Number"
+                ] = data_mgr.current_trial_number
+                
+                licks_dataframe.loc[total_licks, "Port Licked"] = "Stimulus 1"
+                licks_dataframe.loc[total_licks, "Time Stamp"] = (
+                    time.time() - data_mgr.start_time
+                )
+                licks_dataframe.loc[total_licks, "State"] = self.controller.state
+
+                self.controller.data_mgr.side_one_licks += 1
+                self.controller.data_mgr.total_licks += 1
+
+            if "Stimulus Two Lick" in data:
+                # if we detect a lick on spout one, then add it to the lick data table
+                # and add whether the lick was a TTC lick or a sample lick
+
+                # format for this is self.dataFrame.loc[rowNumber, Column Title] = value
+
+                licks_dataframe.loc[
+                    total_licks, "Trial Number"
+                ] = data_mgr.current_trial_number
+
+                licks_dataframe.loc[total_licks, "Port Licked"] = "Stimulus 2"
+                licks_dataframe.loc[total_licks, "Time Stamp"] = (
+                    time.time() - data_mgr.start_time
+                )
+                licks_dataframe.loc[total_licks, "State"] = self.controller.state
+
+                self.controller.data_mgr.side_two_licks += 1
+                self.controller.data_mgr.total_licks += 1
+
+        # Call this method again every 100 ms
+        self.update_licks_id = self.controller.main_gui.root.after(
+            100, lambda: self.read_licks(i)
+        )
+        self.controller.after_ids.append(self.update_licks_id)
+
+    def check_licks(self, iteration):
+        """define method for checking licks during the TTC state"""
+        # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
+        # state and continue the trial
+        if (
+            self.side_one_licks >= 3 or self.side_two_licks >= 3
+        ) and self.controller.state == "TTC":
+            self.controller.data_mgr.stimuli_dataframe.loc[
+                self.controller.data_mgr.current_trial_number - 1, "TTC Actual"
+            ] = (time.time() - self.controller.data_mgr.state_start_time) * 1000
+
+            self.controller.main_gui.root.after_cancel(self.controller.after_sample_id)
+            self.side_one_licks = 0
+            self.side_two_licks = 0
+            self.controller.sample_time(iteration)
+
+
+
 
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button"""
