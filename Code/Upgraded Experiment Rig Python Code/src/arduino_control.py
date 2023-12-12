@@ -29,7 +29,7 @@ class AduinoManager:
             self.controller.main_gui.display_error(
                 "Laser Arduino Error", error_message
             )
-        elif self.motor_arduino is None:
+        if self.motor_arduino is None:
             error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
             self.controller.main_gui.display_error(
@@ -48,7 +48,10 @@ class AduinoManager:
             arduino.close()
             return identifier
         except Exception as e:
-            print(f"An error occurred while identifying Arduino: {e}")
+            error_message = f"An error occurred while identifying Arduino: {e}"
+            self.controller.main_gui.display_error(
+                "Error Identifying Arduino", error_message
+            )
             return "ERROR"
 
     def reset_arduinos(self) -> None:
@@ -97,6 +100,35 @@ class AduinoManager:
                 if "Stimulus Two Lick" in data:
                     stimulus = "Stimulus 2"
         return (available, stimulus)
+    
+    
+    """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
+    SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
+    valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
+    
+    def open_valves(self,stimulus_1_position, stimulus_2_position) -> None:
+        command = (
+            "SIDE_ONE\n"
+            + str(stimulus_1_position)
+            + "\nSIDE_TWO\n"
+            + str(stimulus_2_position)
+            + "\n"
+        )
+
+        # send the command
+        self.arduino_mgr.send_command_to_motor(command)
+    
+    def close_valves(self, stimulus_1_position, stimulus_2_position) -> None:
+        command = (
+            "SIDE_ONE\n"
+            + str(stimulus_1_position)
+            + "\nSIDE_TWO\n"
+            + str(stimulus_2_position)
+            + "\n"
+        )
+
+        # send the command
+        self.arduino_mgr.send_command_to_motor(command)
 
     def close_connections(self) -> None:
         """Close the serial connections to the Arduino boards."""

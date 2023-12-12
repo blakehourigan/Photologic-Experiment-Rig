@@ -21,7 +21,7 @@ class ProgramController:
         self.data_window = DataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
-        
+
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
 
@@ -121,20 +121,8 @@ class ProgramController:
                 stimulus_2_position,
             ) = self.data_mgr.find_stimuli_positions(iteration)
 
-            """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
-            SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
-            valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
-            command = (
-                "SIDE_ONE\n"
-                + str(stimulus_1_position)
-                + "\nSIDE_TWO\n"
-                + str(stimulus_2_position)
-                + "\n"
-            )
-
-            # send the command
-            self.arduino_mgr.send_command_to_motor(command)
-
+            self.arduino_mgr.open_valves(stimulus_1_position, stimulus_2_position)
+            
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
 
             # write the time to contact to the program information box
@@ -192,21 +180,20 @@ class ProgramController:
         )
         self.controller.after_ids.append(self.update_licks_id)
 
-
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.controller.data_mgr
         licks_dataframe = data_mgr.licks_dataframe
         total_licks = data_mgr.total_licks
-        
+
+        licks_dataframe.loc[total_licks, "Trial Number"] = data_mgr.current_trial_number
+
         licks_dataframe.loc[
-            total_licks, "Trial Number"
-        ] = data_mgr.current_trial_number
-        
-        licks_dataframe.loc[total_licks, "Port Licked"] = stimulus      # Send which stimulus was licked on this lick
+            total_licks, "Port Licked"
+        ] = stimulus  # Send which stimulus was licked on this lick
         licks_dataframe.loc[total_licks, "Time Stamp"] = (
             time.time() - data_mgr.start_time
         )
-        
+
         licks_dataframe.loc[total_licks, "State"] = self.controller.state
 
         if stimulus == "Stimulus 1":
@@ -220,9 +207,10 @@ class ProgramController:
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
         # state and continue the trial
         self.TTC_lick_threshold = self.controller.data_mgr.TTC_lick_threshold
-        
+
         if (
-            self.side_one_licks >=  self.TTC_lick_threshold or self.side_two_licks >= self.TTC_lick_threshold
+            self.side_one_licks >= self.TTC_lick_threshold
+            or self.side_two_licks >= self.TTC_lick_threshold
         ) and self.controller.state == "TTC":
             self.controller.data_mgr.stimuli_dataframe.loc[
                 self.controller.data_mgr.current_trial_number - 1, "TTC Actual"

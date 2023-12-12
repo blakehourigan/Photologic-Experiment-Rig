@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import PhotoImage, messagebox, scrolledtext
 import time
 
-
 class MainGUI:
     def __init__(self, controller) -> None:
         self.controller = controller

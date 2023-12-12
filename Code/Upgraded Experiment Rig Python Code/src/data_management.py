@@ -207,7 +207,7 @@ class DataManager:
             [np.nan], columns=["Trial Number", "Port Licked", "Time Stamp"]
         )
 
-    def save_licks(self, interval):
+    def save_licks(self, iteration):
         """define method that saves the licks to the data table and increments our iteration variable."""
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
         if self.controller.state == "TTC":
@@ -215,6 +215,12 @@ class DataManager:
                 self.current_trial_number - 1, "TTC Actual"
             ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
 
+            (
+                stimulus_1_position,
+                stimulus_2_position,
+            ) = self.data_mgr.find_stimuli_positions(iteration)
+
+            self.controller.arduino_mgr.close_valves(stimulus_1_position, stimulus_2_position)
             command = (
                 "SIDE_ONE\n"
                 + str(self.stim1_position)
@@ -232,8 +238,8 @@ class DataManager:
         self.current_trial_number += 1
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
-        self.stimuli_dataframe.loc[interval, "Stimulus 1 Licks"] = self.side_one_licks
-        self.stimuli_dataframe.loc[interval, "Stimulus 2 Licks"] = self.side_two_licks
+        self.stimuli_dataframe.loc[iteration, "Stimulus 1 Licks"] = self.side_one_licks
+        self.stimuli_dataframe.loc[iteration, "Stimulus 2 Licks"] = self.side_two_licks
 
         # this is how processes that are set to execute after a certain amount of time are cancelled.
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
@@ -242,7 +248,7 @@ class DataManager:
         )
 
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
-        self.controller.initial_time_interval(interval + 1)
+        self.controller.initial_time_interval(iteration + 1)
 
     def check_dataframe_entry_isfloat(self, iteration, state) -> int:
         """Method to check if the value in the dataframe is a numpy float. If it is, then we return the value. If not, we return -1."""
