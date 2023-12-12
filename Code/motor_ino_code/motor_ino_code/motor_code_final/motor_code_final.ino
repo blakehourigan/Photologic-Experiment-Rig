@@ -38,6 +38,8 @@ void loop() {
       stepper.moveTo(0);
     } else if (command == "DOWN") {
       stepper.moveTo(6400);
+    } else if (command == "WHO_ARE_YOU") {
+      Serial.println("MOTOR");
     }
   }
   stepper.run();

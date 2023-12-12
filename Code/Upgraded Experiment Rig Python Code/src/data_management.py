@@ -27,6 +27,7 @@ class DataManager:
         self.num_trials = tk.IntVar(value=0)
         self.num_trial_blocks = tk.IntVar(value=4)
         self.num_stimuli = tk.IntVar(value=4)
+        self.TTC_lick_threshold = tk.IntVar(value=3)
 
         # initializing variable for iteration through the trials in the program
 
@@ -85,7 +86,7 @@ class DataManager:
 
         # from our list of variables that were changed from their default values, pair them together in a new pairs list.
         # 1 is paired with 2. 3 with 4, etc
-        if len(self.changed_vars) > 0: 
+        if len(self.changed_vars) > 0:
             # increment by 2 every loop to avoid placing the same stimuli in the list twice
             self.pairs = [
                 (self.changed_vars[i], self.changed_vars[i + 1])
@@ -257,7 +258,6 @@ class DataManager:
         else:
             return -1
 
-
     def save_data_to_xlsx(self) -> None:
         # method that brings up the windows file save dialogue menu to save the two data tables to external files
         if not self.blocks_generated:
@@ -283,7 +283,6 @@ class DataManager:
             )
 
             self.licks_dataframe.to_excel(licks_file_name, index=False)
-
 
     def find_stimuli_positions(self, i) -> tuple:
         # Create a list of the stimuli dictionary values, will give list of stimuli.

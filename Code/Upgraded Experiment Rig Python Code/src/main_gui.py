@@ -44,8 +44,8 @@ class MainGUI:
 
     def setup_grid(self) -> None:
         # Configure the GUI grid expand settings
-        for i in range(8):
-            self.root.grid_rowconfigure(i, weight=1 if i == 3 else 0)
+        for i in range(14):
+            self.root.grid_rowconfigure(i, weight=1)
         # The first column is also configured to expand
         # Configure all columns to have equal weight
         for i in range(4):
@@ -226,7 +226,7 @@ class MainGUI:
 
         # Entry for # of trials
         self.num_stimuli_frame = tk.Frame(self.root)
-        self.num_stimuli_frame.grid(row=8, column=3, pady=10, padx=10, sticky="nsew")
+        self.num_stimuli_frame.grid(row=9, column=3, pady=10, padx=10, sticky="nsew")
         self.num_stimuli_entry = tk.Entry(
             self.num_stimuli_frame,
             textvariable=self.controller.data_mgr.num_stimuli,
@@ -236,7 +236,7 @@ class MainGUI:
 
         # Add Data Entry widgets for random plus/minus intervals
         self.interval1Rand_frame = tk.Frame(self.root)
-        self.interval1Rand_frame.grid(row=8, column=0, pady=10, padx=10, sticky="nsew")
+        self.interval1Rand_frame.grid(row=9, column=0, pady=10, padx=10, sticky="nsew")
         self.interval1Rand_entry = tk.Entry(
             self.interval1Rand_frame,
             textvariable=self.controller.data_mgr.interval_vars["ITI_random_entry"],
@@ -245,7 +245,7 @@ class MainGUI:
         self.interval1Rand_entry.pack(fill="both", expand=True)
 
         self.interval2Rand_frame = tk.Frame(self.root)
-        self.interval2Rand_frame.grid(row=8, column=1, pady=10, padx=10, sticky="nsew")
+        self.interval2Rand_frame.grid(row=9, column=1, pady=10, padx=10, sticky="nsew")
         self.interval2Rand_entry = tk.Entry(
             self.interval2Rand_frame,
             textvariable=self.controller.data_mgr.interval_vars["TTC_random_entry"],
@@ -254,7 +254,7 @@ class MainGUI:
         self.interval2Rand_entry.pack(fill="both", expand=True)
 
         self.interval3Rand_frame = tk.Frame(self.root)
-        self.interval3Rand_frame.grid(row=8, column=2, pady=10, padx=10, sticky="nsew")
+        self.interval3Rand_frame.grid(row=9, column=2, pady=10, padx=10, sticky="nsew")
         self.interval3Rand_entry = tk.Entry(
             self.interval3Rand_frame,
             textvariable=self.controller.data_mgr.interval_vars["sample_random_entry"],
@@ -297,7 +297,7 @@ class MainGUI:
         self.exp_ctrl_button_frame = tk.Frame(self.root, width=200, height=50)
         self.exp_ctrl_button_frame.grid_propagate(False)  # Disables resizing of frame
         self.exp_ctrl_button_frame.grid(
-            row=9, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
+            row=12, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
         )
         self.experiment_control_button = tk.Button(
             self.exp_ctrl_button_frame,
@@ -314,7 +314,7 @@ class MainGUI:
             False
         )  # Disables resizing of frame
         self.lick_window_button_frame.grid(
-            row=9, column=1, pady=10, padx=10, sticky="nsew", columnspan=1
+            row=12, column=1, pady=10, padx=10, sticky="nsew", columnspan=1
         )
         self.lick_window_button = tk.Button(
             self.lick_window_button_frame,
@@ -331,7 +331,7 @@ class MainGUI:
             False
         )  # Disables resizing of frame
         self.data_window_button_frame.grid(
-            row=9, column=2, pady=10, padx=10, sticky="nsew"
+            row=12, column=2, pady=10, padx=10, sticky="nsew"
         )
         self.data_window_button = tk.Button(
             self.data_window_button_frame,
@@ -346,7 +346,7 @@ class MainGUI:
         self.save_data_button_frame = tk.Frame(self.root, width=200, height=50)
         self.save_data_button_frame.grid_propagate(False)  # Disables resizing of frame
         self.save_data_button_frame.grid(
-            row=9, column=3, pady=10, padx=10, sticky="nsew"
+            row=12, column=3, pady=10, padx=10, sticky="nsew"
         )
         self.save_data_button = tk.Button(
             self.save_data_button_frame,

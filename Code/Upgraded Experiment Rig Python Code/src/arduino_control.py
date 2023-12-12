@@ -1,13 +1,13 @@
 import serial
 import time
-from typing import Tuple
+from typing import Optional, Tuple
 
 import serial.tools.list_ports
 
 
 class AduinoManager:
     def __init__(self, controller) -> None:
-        self.pg_controller = controller
+        self.controller = controller
 
         self.BAUD_RATE = 9600
         self.laser_arduino = None
@@ -23,11 +23,17 @@ class AduinoManager:
             elif identifier == "MOTOR":
                 self.motor_arduino = serial.Serial(port, self.BAUD_RATE)
 
-        if self.laser_arduino is None or self.motor_arduino is None:
-            error_message = "1 or more Arduino boards are not connected. Connect Arduino boards and relaunch before running the program."
+        if self.laser_arduino is None:
+            error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
+            self.close_connections() 
+            self.controller.main_gui.display_error(
+                "Laser Arduino Error", error_message
+            )
+        elif self.motor_arduino is None:
+            error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
-            self.pg_controller.main_gui.display_error(
-                "Serial Connection Error", error_message
+            self.controller.main_gui.display_error(
+                "Motor Arduino Error", error_message
             )
         else:
             print("Connected to Arduino boards successfully.")
@@ -55,7 +61,7 @@ class AduinoManager:
             else:
                 print("Arduino boards not connected.")
         except Exception as e:
-            self.pg_controller.main_gui.display_error(
+            self.controller.main_gui.display_error(
                 "Error resetting Arduino boards:", e
             )
 
@@ -68,14 +74,15 @@ class AduinoManager:
             else:
                 print("Motor Arduino not connected.")
         except Exception as e:
-            self.pg_controller.main_gui.display_error(
+            self.controller.main_gui.display_error(
                 "Error sending command to motor Arduino:", e
             )
 
-    def read_from_laser(self) -> Tuple[bool, str]:
+    def read_from_laser(self) -> Tuple[bool, Optional[str]]:
         """Read data from the laser Arduino."""
         data = ""
         available = False
+        stimulus: Optional[str] = None
         if (
             self.laser_arduino is not None
         ):  # if arduino laser is connected, read serial data
@@ -84,7 +91,12 @@ class AduinoManager:
                     "utf-8"
                 )
                 available = True
-        return available, data
+            if available:
+                if "Stimulus One Lick" in data:
+                    stimulus = "Stimulus 1"
+                if "Stimulus Two Lick" in data:
+                    stimulus = "Stimulus 2"
+        return (available, stimulus)
 
     def close_connections(self) -> None:
         """Close the serial connections to the Arduino boards."""
