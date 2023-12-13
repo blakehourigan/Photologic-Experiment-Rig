@@ -71,7 +71,9 @@ class valveTestWindow:
             font=("Helvetica", 16),
             wraplength=150,
         )
-        self.number_valves_label.pack(side='left', expand=True, fill="both", anchor="center")
+        self.number_valves_label.pack(
+            side="left", expand=True, fill="both", anchor="center"
+        )
 
     def create_entry_widgets(self) -> None:
         self.number_valves_entry_frame = tk.Frame(self.top)
@@ -83,9 +85,11 @@ class valveTestWindow:
             self.number_valves_frame,
             textvariable=self.num_valves_to_test,
             font=("Helvetica", 18),
-            width=10
+            width=10,
         )
-        self.number_valves_entry.pack(side='right', expand=True, fill="both", anchor="center", padx=10)
+        self.number_valves_entry.pack(
+            side="right", expand=True, fill="both", anchor="center", padx=10
+        )
 
     def create_valve_test_table(self, *args) -> None:
         if self.num_valves_to_test.get() in range(self.min_valve, self.max_valve + 1):
@@ -100,12 +104,12 @@ class valveTestWindow:
             self.valve_table.column("2", width=150, minwidth=150, stretch=tk.NO)
 
             # Define headings
-            self.valve_table.heading("#0", text="Valve", anchor='center')
-            self.valve_table.heading("1", text="Amount Dispensed", anchor='center')
-            self.valve_table.heading("2", text="Average Opening time", anchor='center')
+            self.valve_table.heading("#0", text="Valve", anchor="center")
+            self.valve_table.heading("1", text="Amount Dispensed", anchor="center")
+            self.valve_table.heading("2", text="Average Opening time", anchor="center")
 
             self.insert_rows_into_table()
-            
+
             self.valve_table.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
 
             self.update_size()
@@ -115,7 +119,7 @@ class valveTestWindow:
                 self.controller.main_gui.display_error(
                     "Invalid Number of Valves", "Please enter a number between 1 and 8"
                 )
-    
+
     def insert_rows_into_table(self) -> None:
         for i in range(self.num_valves_to_test.get()):
             self.valve_table.insert(
@@ -128,14 +132,10 @@ class valveTestWindow:
                 ),
             )  # Add items to our treeview
 
-
-
     def create__start_button(self) -> None:
         # Start test button
         self.start_test_frame = tk.Frame(self.top, width=150, height=50)
-        self.start_test_frame.grid(
-            row=3, column=0, pady=10, padx=10, sticky="nsew"
-        )
+        self.start_test_frame.grid(row=3, column=0, pady=10, padx=10, sticky="nsew")
         self.startButton = tk.Button(
             self.start_test_frame,
             text="Start testing",
@@ -169,7 +169,17 @@ class valveTestLogic:
     def __init__(self, controller):
         self.controller = controller
 
-        self.default_valve_opening_time, self.default_measured_volume = 0, 0
+        self.default_valve_opening_time = self.calculate_default_valve_opening_time() 
+        self.default_measured_volume = 0
 
     def run_valve_test(self):
+        for valve in range(self.controller.data_mgr.num_valves.get()):
+            
+            self.controller.arduino_mgr.open_valves(valve, valve)
+            self.controller.arduino_mgr.close_valves(valve, valve)
+
+    def calculate_default_valve_opening_time(self):
+        
+        pressure_difference = 0 
+        
         pass
