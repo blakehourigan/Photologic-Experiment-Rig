@@ -49,7 +49,7 @@ class MainGUI:
         # The first column is also configured to expand
         # Configure all columns to have equal weight
         for i in range(4):
-            self.root.columnconfigure(i, weight=1)
+            self.root.grid_columnconfigure(i, weight=0)
 
     def display_labels(self) -> None:
         # Label headers

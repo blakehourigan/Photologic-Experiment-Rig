@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 class DataWindow:
     def __init__(self, controller) -> None:
         self.controller = controller 
+        self.master = controller.main_gui.root
+        
         self.top: Optional[tk.Toplevel] = None
     
     def show_window(self) -> None:
@@ -21,7 +23,7 @@ class DataWindow:
 
     def create_window(self) -> tk.Toplevel:
         # if the program schedule has been generated, then create the window    
-            top = tk.Toplevel(self.controller.main_gui.root)
+            top = tk.Toplevel(self.master)
             top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
             top.bind("<Control-w>", lambda e: top.destroy())  # Close the window when the user presses ctl + w
             
