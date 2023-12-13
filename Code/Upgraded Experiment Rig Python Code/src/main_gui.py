@@ -21,6 +21,7 @@ class MainGUI:
         # Set the initial size of the window
         self.root = tk.Tk()
         self.root.title("Samuelsen Lab Photologic Rig")
+        self.root.bind("<Control-w>", lambda e: self.root.destroy())  # Close the window when the user presses ctl + w
         icon_path = self.controller.config.get_window_icon_path()
         self.set_program_icon(icon_path)
 

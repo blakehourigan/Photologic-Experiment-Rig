@@ -40,6 +40,7 @@ class ExperimentCtlWindow:
         # Create a new window for AI solutions  
         top = tk.Toplevel(master)
         top.title("Experiment Control")
+        top.bind ("<Control-w>", lambda e: top.destroy())  # Close the window when the user presses ctl + w
         self.update_size()
         return top
 

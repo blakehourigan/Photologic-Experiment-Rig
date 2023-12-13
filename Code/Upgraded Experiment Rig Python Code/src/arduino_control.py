@@ -116,7 +116,7 @@ class AduinoManager:
         )
 
         # send the command
-        self.arduino_mgr.send_command_to_motor(command)
+        self.send_command_to_motor(command)
     
     def close_valves(self, stimulus_1_position, stimulus_2_position) -> None:
         command = (
@@ -128,7 +128,7 @@ class AduinoManager:
         )
 
         # send the command
-        self.arduino_mgr.send_command_to_motor(command)
+        self.send_command_to_motor(command)
 
 
     def close_connections(self) -> None:

@@ -56,6 +56,8 @@ class DataManager:
         self.side_one_licks = 0
         self.side_two_licks = 0
         self.total_licks = 0
+        
+        self.blocks_generated = False
 
     def create_trial_blocks(self):
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
