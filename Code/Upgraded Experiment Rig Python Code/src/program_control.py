@@ -11,7 +11,7 @@ from main_gui import MainGUI
 from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
-from test_valves_window import valveTestWindow
+from test_valves_window import valveTestLogic, valveTestWindow 
 
 
 class ProgramController:
@@ -22,10 +22,13 @@ class ProgramController:
         self.data_window = DataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
-        self.valve_testing_window = valveTestWindow(self)
+
 
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
+        
+        self.valve_testing_window = valveTestWindow(self)
+        self.valve_test_logic = valveTestLogic(self)
 
         # Initialize running flag to false
         self.running = False

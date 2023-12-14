@@ -9,7 +9,7 @@ class AduinoManager:
     def __init__(self, controller) -> None:
         self.controller = controller
 
-        self.BAUD_RATE = 9600
+        self.BAUD_RATE = 115200
         self.laser_arduino = None
         self.motor_arduino = None
 
@@ -106,7 +106,7 @@ class AduinoManager:
     SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
     valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
     
-    def open_valves(self,stimulus_1_position, stimulus_2_position) -> None:
+    def open_both_valves(self,stimulus_1_position, stimulus_2_position) -> None:
         command = (
             "SIDE_ONE\n"
             + str(stimulus_1_position)
@@ -118,12 +118,34 @@ class AduinoManager:
         # send the command
         self.send_command_to_motor(command)
     
-    def close_valves(self, stimulus_1_position, stimulus_2_position) -> None:
+    def close_both_valves(self, stimulus_1_position, stimulus_2_position) -> None:
         command = (
             "SIDE_ONE\n"
             + str(stimulus_1_position)
             + "\nSIDE_TWO\n"
             + str(stimulus_2_position)
+            + "\n"
+        )
+
+        # send the command
+        self.send_command_to_motor(command)
+        
+    def open_one_valve(self, stimulus_position, side) -> None:
+        command = (
+            side
+            + "\n"
+            + str(stimulus_position)
+            + "\n"
+        )
+
+        # send the command
+        self.send_command_to_motor(command)
+        
+    def close_one_valve(self, stimulus_position, side) -> None:
+        command = (
+            side
+            + "\n"
+            + str(stimulus_position)
             + "\n"
         )
 

@@ -16,7 +16,7 @@ unsigned int side_2_licks = 0;
 String side; 
 
 void setup() {
-  Serial.begin(9600); // Start the serial communication
+  Serial.begin(115200); // Start the serial communication
   // Set up Timer 4 for 1 microsecond interval
   pinMode(10, OUTPUT); // Sets pin 10 as an output pin
   pinMode(11, OUTPUT); // Sets pin 11 as an output pin
