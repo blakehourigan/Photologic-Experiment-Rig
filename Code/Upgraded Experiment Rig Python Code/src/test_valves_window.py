@@ -1,9 +1,7 @@
 from typing import Optional
 from tkinter import ttk
 import tkinter as tk
-from math import sqrt, pi
-
-GRAVITY = 9.80665  # in meters per second squared
+from math import pi
 
 
 class valveTestWindow:
@@ -171,18 +169,22 @@ class valveTestWindow:
 class valveTestLogic:
     def __init__(self, controller) -> None:
         self.controller = controller
-        
+
         self.cylinder_radius = 1.25  # radius of the cylinder in cm
 
-        self.volume = 68.7223393  # volume of the cylinder assuming fill at lip
+        self.volume = (
+            self.calculate_current_cylinder_Volume()
+        )  # volume of the cylinder assuming fill at lip (14cm)
 
-        self.height = (
-            28.0  # height from the opening to the top of the liquid in the cylinder
+        self.height_surface_to_opening = (
+            14.0  # height from the opening to the top of the liquid in the cylinder
         )
+
+        self.length_tube = 14.0  # length of the tube in cm
 
         self.desired_volume = 0.15  # desired volume to dispense in ml
 
-        self.opening_time = self.calculate_default_valve_opening_time()
+        self.opening_time = self.calculate_valve_opening_time()
 
     def run_valve_test(self):
         self.valve_index = 0
@@ -192,10 +194,11 @@ class valveTestLogic:
     def test_valve_sequence(self):
         num_valves = self.controller.valve_testing_window.num_valves_to_test.get()
         num_test_runs = self.controller.valve_testing_window.number_test_runs.get()
-        
+
         if self.test_run_index < num_test_runs:
-            self.open_valves(self.valve_index + 1, self.valve_index + 1)
+            self.open_valve(self.valve_index + 1)
             self.test_run_index += 1
+            
         elif self.valve_index < num_valves - 1:
             self.valve_index += 1
             self.test_run_index = 0
@@ -203,38 +206,45 @@ class valveTestLogic:
         else:
             print("Valve testing completed.")
 
-    def open_valve(self, valve):
-        self.controller.arduino_mgr.open_valve(valve)
-        
-        self.controller.valve_testing_window.top.after(
-            int(self.opening_time * 1000), 
-            lambda: self.close_valve(valve)
-        )
-
-    def close_valve(self, valve):
-        self.controller.arduino_mgr.close_valve(valve)
-        
-        self.volume = self.calculate_current_cylinder_Volume()
-        self.height = self.calculate_height_of_liquid()
-        self.opening_time = self.calculate_default_valve_opening_time()
-        
-        self.controller.valve_testing_window.top.after(
-            500,  # Give some time before starting the next test run
-            self.test_valve_sequence
-        )
-
-
-    def calculate_default_valve_opening_time(self) -> float:
-        Q = sqrt(2 * GRAVITY * self.height)  # ml/s volume flow rate of the pump
-
-        time_to_open = self.desired_volume / Q
-
-        return time_to_open
-
     def calculate_current_cylinder_Volume(self) -> float:
-        volume = self.volume - self.desired_volume
+        volume = pi * (self.cylinder_radius**2) * self.height_surface_to_opening
         return volume
 
     def calculate_height_of_liquid(self) -> float:
         remaining_cylinder_height = self.volume / (pi * self.cylinder_radius**2)
         return remaining_cylinder_height
+
+    def calculate_valve_opening_time(self) -> float:
+        Q = self.calculate_volumetric_flow_rate()
+
+        time_to_open = self.desired_volume / Q
+
+        return time_to_open
+
+    def calculate_volumetric_flow_rate(self) -> float:
+        GRAVITY = 980.665  # gravity in centimeters per second squared
+
+        Q = (
+            pi * 1 * GRAVITY * self.height_surface_to_opening * self.cylinder_radius**4
+        ) / (8 * 1 * self.length_tube)
+
+        return Q
+
+    def open_valve(self, valve) -> None:
+        self.controller.arduino_mgr.open_valve(valve)
+
+        self.controller.valve_testing_window.top.after(
+            int(self.opening_time * 1000), lambda: self.close_valve(valve)
+        )
+
+    def close_valve(self, valve):
+        self.controller.arduino_mgr.close_valve(valve)
+
+        self.volume = self.calculate_current_cylinder_Volume()
+        self.height = self.calculate_height_of_liquid()
+        self.opening_time = self.calculate_default_valve_opening_time()
+
+        self.controller.valve_testing_window.top.after(
+            500,  # Give some time before starting the next test run
+            self.test_valve_sequence,
+        )
