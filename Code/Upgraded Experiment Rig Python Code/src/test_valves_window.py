@@ -172,52 +172,79 @@ class valveTestLogic:
 
         self.cylinder_radius = 1.25  # radius of the cylinder in cm
 
-        self.volume = (
-            self.calculate_current_cylinder_Volume()
-        )  # volume of the cylinder assuming fill at lip (14cm)
-
         self.height_surface_to_opening = (
             14.0  # height from the opening to the top of the liquid in the cylinder
         )
 
-        self.length_tube = 14.0  # length of the tube in cm
+        self.volume = (
+            self.calculate_current_cylinder_Volume()
+        )  # volume of the cylinder assuming fill at lip (14cm)
 
-        self.desired_volume = 0.15  # desired volume to dispense in ml
+        self.length_teflon_tube = 14.0  # length of the tube in cm
+        self.TERFLON_TUBE_RADIUS = .0396875  # radius of the tube in cm
+        
+        self.desired_volume = 0.05  # desired volume to dispense in ml
 
         self.opening_time = self.calculate_valve_opening_time()
+        
+        self.tubes_filled=False
 
     def run_valve_test(self):
+        """_controller function to run the testing sequence on given valves_
+        """
+        self.fill_tubes()
         self.valve_index = 0
         self.test_run_index = 0
         self.test_valve_sequence()
 
     def test_valve_sequence(self):
+        """_the test sequence that each valve will undergo_
+        """
         num_valves = self.controller.valve_testing_window.num_valves_to_test.get()
         num_test_runs = self.controller.valve_testing_window.number_test_runs.get()
-
-        if self.test_run_index < num_test_runs:
-            self.open_valve(self.valve_index + 1)
-            self.test_run_index += 1
-            
-        elif self.valve_index < num_valves - 1:
-            self.valve_index += 1
-            self.test_run_index = 0
-            self.test_valve_sequence()
-        else:
-            print("Valve testing completed.")
+        while(True):    
+            if self.test_run_index < num_test_runs: # if we have not reached the number of desired test runs, then we will continue to open the current valve
+                self.open_valve(self.valve_index + 1)
+                self.test_run_index += 1
+            elif self.valve_index < num_valves - 1: # else if we have reached the number of desired test runs, but we have not tested all the valves
+                self.valve_index += 1               # then we will move on to the next valve and continue the test
+                self.test_run_index = 0
+            else:
+                print("Valve testing completed.")
+                break
+                
+    def fill_tubes(self):
+        """_function to fill the tubes with water_
+        """
+        
+        
+        self.tubes_filled=True
+        self.length_teflon_tube = 14.0
+        self.opening_time = self.calculate_valve_opening_time()      
+        self.length_teflon_tube = .1 # tube is already filled to the tip, so we use a small value to approximate how long we need to open it only to get a drop          
 
     def calculate_current_cylinder_Volume(self) -> float:
+        """_ calculate cylinder volume based on the current height of the liquid_
+        """
         volume = pi * (self.cylinder_radius**2) * self.height_surface_to_opening
         return volume
 
     def calculate_height_of_liquid(self) -> float:
-        remaining_cylinder_height = self.volume / (pi * self.cylinder_radius**2)
+        """calculate the height of the liquid in the cylinder based on the current volume and the desired volume to dispense
+        """
+        current_height = self.volume / (pi * self.cylinder_radius**2)
+        
+        dispensed_height = self.desired_volume / (pi * self.cylinder_radius**2)
+        
+        remaining_cylinder_height = current_height - dispensed_height
+        
         return remaining_cylinder_height
 
     def calculate_valve_opening_time(self) -> float:
+        """ calculate the time that the valve needs to be open based on the desired volume to dispense """
         Q = self.calculate_volumetric_flow_rate()
 
-        time_to_open = self.desired_volume / Q
+        time_to_open = self.desired_volume / Q  # time to open the valve in seconds
 
         return time_to_open
 
@@ -225,10 +252,14 @@ class valveTestLogic:
         GRAVITY = 980.665  # gravity in centimeters per second squared
 
         Q = (
-            pi * 1 * GRAVITY * self.height_surface_to_opening * self.cylinder_radius**4
-        ) / (8 * 1 * self.length_tube)
+            pi
+            * 1 # g / cm^3 density of water
+            * GRAVITY
+            * self.height_surface_to_opening # height from the opening to the top of the liquid in the cylinder
+            * self.TERFLON_TUBE_RADIUS**4          # radius of the cylinder in cm ^ 4
+        ) / (8 * 1 * self.length_teflon_tube)  # 8 * (viscosity of water g / cm * s)* length of tube in cm
 
-        return Q
+        return Q  # volumetric flow rate in cm^3/s
 
     def open_valve(self, valve) -> None:
         self.controller.arduino_mgr.open_valve(valve)
@@ -242,7 +273,7 @@ class valveTestLogic:
 
         self.volume = self.calculate_current_cylinder_Volume()
         self.height = self.calculate_height_of_liquid()
-        self.opening_time = self.calculate_default_valve_opening_time()
+        self.opening_time = self.calculate_valve_opening_time()
 
         self.controller.valve_testing_window.top.after(
             500,  # Give some time before starting the next test run

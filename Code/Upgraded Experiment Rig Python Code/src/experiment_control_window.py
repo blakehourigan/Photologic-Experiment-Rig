@@ -50,30 +50,51 @@ class ExperimentCtlWindow:
         return tab
 
     def populate_stimuli_tab(self, tab) -> None:
+        row = 0 
         for i in range(self.controller.data_mgr.num_stimuli.get()):
-             # for every stimuli that we will have in the program, create a text box that allows the user to enter the name of the stimuli
-            for i in range(self.controller.data_mgr.num_stimuli.get()):
+            # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
+            column = 1 if (i % 2 != 0) else 0
 
-                # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
-                column = 0 if i < 4 else 1
-                
-                # spaces each row out 2 spaces to make room for both a label and a text entry box
-                # 0 % 4 = 0, 1 % 4 = 1, 2 % 4 = 2, etc
-                row = 2 * (i % 4)
+            # Labels/Entry boxes for Stimuli, adds to tab 1 with a label of the number of stimulus that it is
+            entry_frame = tk.Frame(tab, bg="light blue")
+            entry_frame.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
 
-                # Labels/Entry boxes for Stimuli, adds to tab 1 with a label of the number of stimulus that it is
+            label = tk.Label(entry_frame, text=f"Valve {i+1}", bg="light blue", font=("Helvetica", 24))
+            # .grid is how items are placed using tkinter. Place in the row and column that we calculated earlier
+            label.pack()
+            # sets up an entry box that will assign its held value to its stimulus var number in the stimuli_vars dictionary
+            
+            text_variable = self.controller.data_mgr.stimuli_vars[f'Valve {i+1} substance']
+            text_variable.trace_add('write', lambda *args: self.fill_reverse_stimuli(args))
+            
+            entry = tk.Entry(entry_frame, textvariable=self.controller.data_mgr.stimuli_vars[f'Valve {i+1} substance'], font=("Helvetica", 24))
+            
+            
+            # placing the entry box 1 below the label box
+            entry.pack()
+            
+            row += 1 if (i % 2 != 0) else 0 
                 
-                label = tk.Label(tab, text=f"Stimulus {i+1}", bg="light blue", font=("Helvetica", 24))
-                # .grid is how items are placed using tkinter. Place in the row and column that we calculated earlier
-                
-                label.grid(row=row, column=column, pady=10, padx=10, sticky='nsew')
-                # sets up an entry box that will assign its held value to its stimulus var number in the stimuli_vars dictionary
-                
-                entry = tk.Entry(tab, textvariable=self.controller.data_mgr.stimuli_vars[f'stimuli_var_{i+1}'], font=("Helvetica", 24))
-                
-                # placing the entry box 1 below the label box
-                entry.grid(row=row+1, column=column, pady=10, padx=10, sticky='nsew')
-                
+    def fill_reverse_stimuli(self, args):
+        name, index, mode = args
+        
+        index = int(name[6:]) + 1
+
+        if index % 2 == 0:
+            change_var_index = index + 1
+        else:
+            change_var_index = index + 3
+        
+
+        var_to_change = self.controller.data_mgr.stimuli_vars[f'Valve {change_var_index} substance']
+        print(index)
+        callback_id = var_to_change.trace_info()[0][1]
+        var_to_change.trace_vdelete('w', callback_id)
+        
+        var_to_change.set(self.controller.data_mgr.stimuli_vars[f'Valve {index} substance'].get())
+        
+        var_to_change.trace('w', callback_id)   
+            
     def show_stimuli_table(self):
         # creating the frame that will contain the data table
         self.stimuli_frame = tk.Frame(self.stim_sched_tab)     

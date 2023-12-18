@@ -13,7 +13,7 @@ class DataManager:
         self.stimuli_dataframe = pd.DataFrame()
         self.licks_dataframe = pd.DataFrame()
 
-        self.stimuli_vars = {f"stimuli_var_{i+1}": tk.StringVar() for i in range(8)}
+        self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
 
@@ -63,7 +63,7 @@ class DataManager:
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
         # the total number of trials equals the number of stimuli times the number of trial blocks that we want
-        self.num_trials.set((self.num_stimuli.get() * self.num_trial_blocks.get()))
+        self.num_trials.set(((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
 
         self.create_random_intervals()
 
@@ -72,7 +72,7 @@ class DataManager:
         self.changed_vars = [
             v
             for i, (k, v) in enumerate(self.stimuli_vars.items())
-            if v.get() != f"stimuli_var_{i+1}"
+            if v.get() != f"Valve {i+1} substance"
         ]
         # f string used to incorporate var in string
         # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number
@@ -136,7 +136,7 @@ class DataManager:
         stimulus_1, stimulus_2, pairs_shuffled = [], [], []
 
         if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:
-            for i in range(0, self.num_trial_blocks.get()):
+            for i in range(0, int(self.num_stimuli.get() /2 )):
                 # Create a copy of the pairs
                 pairs_copy = [
                     (var1.get(), var2.get()) for var1, var2 in self.pairs
@@ -155,7 +155,7 @@ class DataManager:
             for tuple in pairs_shuffled:
                 stimulus_1.append(tuple[0])
                 stimulus_2.append(tuple[1])
-
+            print(stimulus_1, stimulus_2)
         elif len(self.changed_vars) == 0:
             self.controller.main_gui.display_error(
                 "Stimuli Variables Not Yet Changed",
@@ -178,11 +178,12 @@ class DataManager:
         self.create_trial_blocks()
         stimuli_1, stimuli_2 = self.generate_pairs()
 
+        block_size = int(self.num_stimuli.get() / 2)
         data = {
-            "Trial Block": np.repeat(
-                range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
-                self.num_stimuli.get(),
-            ),
+             "Trial Block": np.repeat(
+                 range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
+                 block_size,
+             ),
             "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
             "Stimulus 1": stimuli_1,
             "Stimulus 2": stimuli_2,
