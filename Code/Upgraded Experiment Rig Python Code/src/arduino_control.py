@@ -137,7 +137,7 @@ class AduinoManager:
             + str(stimulus_position)
             + "\n"
         )
-
+        print(command)
         # send the command
         self.send_command_to_motor(command)
         

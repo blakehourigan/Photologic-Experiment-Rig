@@ -1,10 +1,11 @@
 from tkinter import filedialog
 import pandas as pd
 import numpy as np
-import random
 import tkinter as tk
-from typing import Tuple
+from typing import Tuple, List
 
+import random
+import itertools
 
 class DataManager:
     def __init__(self, controller) -> None:
@@ -56,25 +57,30 @@ class DataManager:
         self.side_one_licks = 0
         self.side_two_licks = 0
         self.total_licks = 0
-        
+
         self.blocks_generated = False
 
     def create_trial_blocks(self):
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
-        # the total number of trials equals the number of stimuli times the number of trial blocks that we want
-        self.num_trials.set(((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
+        # the total number of trials equals (number stimuli / 2) because each stimuli is paired up, times the number of trial blocks that we want
+        self.num_trials.set(
+            ((self.num_stimuli.get() / 2) * self.num_trial_blocks.get())
+        )
 
         self.create_random_intervals()
 
         """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
                             var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
         self.changed_vars = [
-            v
-            for i, (k, v) in enumerate(self.stimuli_vars.items())
-            if v.get() != f"Valve {i+1} substance"
+            stimulus
+            for i, (key, stimulus) in enumerate(
+                self.stimuli_vars.items()
+            )  # for each key and value in stimuli_vars, check if the value is the default value, if not add it to changed list
+            if stimulus.get()
+            != f"Valve {i+1} substance"  # f string used to incorporate var in string
         ]
-        # f string used to incorporate var in string
+
         # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number
         if len(self.changed_vars) > self.num_stimuli.get():
             # Start at the number of stimuli you now have
@@ -88,7 +94,7 @@ class DataManager:
 
         # from our list of variables that were changed from their default values, pair them together in a new pairs list.
         # 1 is paired with 2. 3 with 4, etc
-        if len(self.changed_vars) > 0:
+        if self.changed_vars:
             # increment by 2 every loop to avoid placing the same stimuli in the list twice
             self.pairs = [
                 (self.changed_vars[i], self.changed_vars[i + 1])
@@ -100,8 +106,9 @@ class DataManager:
                 "Stimulus Not Changed",
                 "One or more of the default stimuli have not been changed, please change the default value and try again",
             )
+
         # for each pair in pairs list, include each pair flipped
-        self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
+        # self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
 
     def create_random_intervals(self) -> None:
         # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
@@ -131,42 +138,37 @@ class DataManager:
                 getattr(self, final_intervals_key).append(final_interval)
 
     def generate_pairs(self) -> Tuple[list, list]:
-        # if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
+        """if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
+        """
+        pseudo_random_lineup: List[tuple] = []
+        stimulus_1: List[str] = []
+        stimulus_2: List[str] = []
+        for i in range(self.num_trial_blocks.get()):
+            if self.num_trial_blocks.get() != 0 and self.changed_vars:
+                # Generate all possible permutations of these pairs
+                all_permutations = list(itertools.permutations(self.pairs))
 
-        stimulus_1, stimulus_2, pairs_shuffled = [], [], []
+                # Shuffle the permutations to randomize the order
+                random.shuffle(all_permutations)
 
-        if self.num_trial_blocks.get() != 0 and len(self.changed_vars) > 0:
-            for i in range(0, int(self.num_stimuli.get() /2 )):
-                # Create a copy of the pairs
-                pairs_copy = [
-                    (var1.get(), var2.get()) for var1, var2 in self.pairs
-                ]  # copy pairs list to pairs_copy
+                # Select the first permutation as the random lineup, and add each entry of the permutation to the pseudo_random_lineup list
+                pseudo_random_lineup.extend(all_permutations[0])
 
-                # Shuffle the copy
-                random.shuffle(
-                    pairs_copy
-                )  # shuffling all pairs for psudeo randomization
+            elif len(self.changed_vars) == 0:
+                self.controller.main_gui.display_error(
+                    "Stimuli Variables Not Yet Changed",
+                    "Stimuli variables have not yet been changed, to continue please change defaults and try again.",
+                )
 
-                pairs_shuffled.extend(
-                    pairs_copy
-                )  # add every pair in pairs copy to larger shuffled pairs list, after loop we have num_stimuli * num_trial_blocks pairs
-
-            # Unpack the pairs_shuffled list into two lists, one for each stimulus
-            for tuple in pairs_shuffled:
-                stimulus_1.append(tuple[0])
-                stimulus_2.append(tuple[1])
-            print(stimulus_1, stimulus_2)
-        elif len(self.changed_vars) == 0:
-            self.controller.main_gui.display_error(
-                "Stimuli Variables Not Yet Changed",
-                "Stimuli variables have not yet been changed, to continue please change defaults and try again.",
-            )
-
-        elif self.controller.logic.num_trial_blocks.get() == 0:
-            self.controller.main_gui.display_error(
-                "Number of Trial Blocks 0",
-                "Number of trial blocks is currently still set to zero, please change the default value and try again.",
-            )
+            elif self.controller.logic.num_trial_blocks.get() == 0:
+                self.controller.main_gui.display_error(
+                    "Number of Trial Blocks 0",
+                    "Number of trial blocks is currently still set to zero, please change the default value and try again.",
+                )
+        # Unpack the pairs_shuffled list into two lists, one for each stimulus
+        for entry in pseudo_random_lineup:
+            stimulus_1.append(entry[0].get())
+            stimulus_2.append(entry[1].get())
 
         return stimulus_1, stimulus_2
 
@@ -180,15 +182,15 @@ class DataManager:
 
         block_size = int(self.num_stimuli.get() / 2)
         data = {
-             "Trial Block": np.repeat(
-                 range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
-                 block_size,
-             ),
+            "Trial Block": np.repeat(
+                range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
+                block_size,
+            ),
             "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
-            "Stimulus 1": stimuli_1,
-            "Stimulus 2": stimuli_2,
-            "Stimulus 1 Licks": np.full(self.num_trials.get(), np.nan),
-            "Stimulus 2 Licks": np.full(self.num_trials.get(), np.nan),
+            "Side 1": stimuli_1,
+            "Side 2": stimuli_2,
+            "Side 1 Licks": np.full(self.num_trials.get(), np.nan),
+            "Side 2 Licks": np.full(self.num_trials.get(), np.nan),
             "ITI": self.ITI_intervals_final,
             "TTC": self.TTC_intervals_final,
             "Sample Time": self.sample_intervals_final,
@@ -223,7 +225,9 @@ class DataManager:
                 stimulus_2_position,
             ) = self.data_mgr.find_stimuli_positions(iteration)
 
-            self.controller.arduino_mgr.close_valves(stimulus_1_position, stimulus_2_position)
+            self.controller.arduino_mgr.close_valves(
+                stimulus_1_position, stimulus_2_position
+            )
             command = (
                 "SIDE_ONE\n"
                 + str(self.stim1_position)

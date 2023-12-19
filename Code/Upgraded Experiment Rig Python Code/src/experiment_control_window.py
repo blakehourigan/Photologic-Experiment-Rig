@@ -87,7 +87,7 @@ class ExperimentCtlWindow:
         
 
         var_to_change = self.controller.data_mgr.stimuli_vars[f'Valve {change_var_index} substance']
-        print(index)
+        
         callback_id = var_to_change.trace_info()[0][1]
         var_to_change.trace_vdelete('w', callback_id)
         

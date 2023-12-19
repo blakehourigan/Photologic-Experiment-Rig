@@ -11,7 +11,8 @@ from main_gui import MainGUI
 from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
-from test_valves_window import valveTestLogic, valveTestWindow 
+from test_valves_window import valveTestWindow
+from test_valves_logic import valveTestLogic 
 
 
 class ProgramController:
@@ -126,7 +127,7 @@ class ProgramController:
                 stimulus_2_position,
             ) = self.data_mgr.find_stimuli_positions(iteration)
 
-            self.arduino_mgr.open_valves(stimulus_1_position, stimulus_2_position)
+            self.arduino_mgr.open_both_valves(stimulus_1_position, stimulus_2_position)
             
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
 
