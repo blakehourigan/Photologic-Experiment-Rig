@@ -35,7 +35,6 @@ class valveTestLogic:
         """the test sequence that each valve will undergo
         """
         num_valves = self.controller.valve_testing_window.num_valves_to_test.get()
-        num_test_runs = self.controller.valve_testing_window.number_test_runs.get()
         # Check if all valves have been tested
         if self.valve_index > num_valves:
             print("Valve testing completed.")
@@ -113,3 +112,18 @@ class valveTestLogic:
             1000,  # Give some time before starting the next test run
             self.test_valve_sequence
         )
+        
+    def run_valves(self):
+        self.controller.valve_testing_window.change_run_button_state()
+        
+        for i in range(1,5):
+            self.controller.arduino_mgr.open_one_valve(i, "SIDE_ONE")
+            self.controller.arduino_mgr.open_one_valve(i, "SIDE_TWO")
+
+
+    def stop_valves(self):
+        self.controller.valve_testing_window.change_run_button_state()
+        
+        for i in range(1,5):
+            self.controller.arduino_mgr.close_one_valve(i, "SIDE_ONE")
+            self.controller.arduino_mgr.close_one_valve(i, "SIDE_TWO")

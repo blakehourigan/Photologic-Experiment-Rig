@@ -2,6 +2,7 @@ from typing import Optional
 from tkinter import ttk
 import tkinter as tk
 
+
 class valveTestWindow:
     def __init__(self, controller):
         self.controller = controller
@@ -13,12 +14,14 @@ class valveTestWindow:
         self.num_valves_to_test.trace_add(
             "write", lambda *args: self.validate_and_create_valve_test_table()
         )  # we call create table, whenever the number of valves to test variable is written to
-        
-        self.desired_volume = tk.DoubleVar(value=0.05)  # desired volume to dispense in ml
+
+        self.desired_volume = tk.DoubleVar(
+            value=0.05
+        )  # desired volume to dispense in ml
         self.desired_volume.trace_add(
             "write", lambda *args: self.validate_and_create_valve_test_table()
         )  # we call create table, whenever the number of valves to test variable is written to
-        
+
         self.number_test_runs = tk.IntVar(value=10)
 
         self.min_valve = 1
@@ -51,7 +54,7 @@ class valveTestWindow:
                 self.create_labels()
                 self.create_entry_widgets()
                 self.create_valve_test_table()
-                self.create__start_button()
+                self.create_buttons()
 
         self.update_size()
 
@@ -78,10 +81,10 @@ class valveTestWindow:
         self.number_valves_label.pack(
             side="left", expand=True, fill="both", anchor="center"
         )
-        
+
         self.desired_volume_frame = tk.Frame(self.top)
         self.desired_volume_frame.grid(row=1, column=0, pady=10, padx=10, sticky="nsew")
-        
+
         self.desired_volume_label = tk.Label(
             self.desired_volume_frame,
             text="Desired Volume to Dispense",
@@ -112,7 +115,7 @@ class valveTestWindow:
         self.desired_volume_entry.pack(
             side="right", expand=True, fill="both", anchor="center", padx=10
         )
-        
+
     def validate_and_create_valve_test_table(self):
         # Check if the entry is not empty and is a valid integer
         entry_value = self.number_valves_entry.get().strip()
@@ -123,30 +126,30 @@ class valveTestWindow:
                 self.controller.main_gui.display_error(
                     "Invalid Number of Valves", "Please enter a number between 1 and 8"
                 )
-        self.controller.valve_test_logic.calculate_valve_opening_time() 
-        
-    def create_valve_test_table(self, *args) -> None:            
-            self.valve_table = ttk.Treeview(self.top)
+        self.controller.valve_test_logic.calculate_valve_opening_time()
 
-            # Define columns
-            self.valve_table["columns"] = ("1", "2")
+    def create_valve_test_table(self, *args) -> None:
+        self.valve_table = ttk.Treeview(self.top)
 
-            # Format our columns
-            self.valve_table.column("#0", width=150, minwidth=150, stretch=tk.NO)
-            self.valve_table.column("1", width=150, minwidth=150, stretch=tk.NO)
-            self.valve_table.column("2", width=150, minwidth=150, stretch=tk.NO)
+        # Define columns
+        self.valve_table["columns"] = ("1", "2")
 
-            # Define headings
-            self.valve_table.heading("#0", text="Valve", anchor="center")
-            self.valve_table.heading("1", text="Amount Dispensed", anchor="center")
-            self.valve_table.heading("2", text="Average Opening time", anchor="center")
+        # Format our columns
+        self.valve_table.column("#0", width=150, minwidth=150, stretch=tk.NO)
+        self.valve_table.column("1", width=150, minwidth=150, stretch=tk.NO)
+        self.valve_table.column("2", width=150, minwidth=150, stretch=tk.NO)
 
-            self.insert_rows_into_table()
+        # Define headings
+        self.valve_table.heading("#0", text="Valve", anchor="center")
+        self.valve_table.heading("1", text="Amount Dispensed", anchor="center")
+        self.valve_table.heading("2", text="Average Opening time", anchor="center")
 
-            self.valve_table.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
+        self.insert_rows_into_table()
 
-            self.update_size()
-            self.table_exists = True
+        self.valve_table.grid(row=2, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.update_size()
+        self.table_exists = True
 
     def insert_rows_into_table(self) -> None:
         for i in range(self.num_valves_to_test.get()):
@@ -160,18 +163,38 @@ class valveTestWindow:
                 ),
             )  # Add items to our treeview
 
-    def create__start_button(self) -> None:
+    def create_buttons(self) -> None:
         # Start test button
         self.start_test_frame = tk.Frame(self.top, width=150, height=50)
         self.start_test_frame.grid(row=3, column=0, pady=10, padx=10, sticky="nsew")
-        self.startButton = tk.Button(
+        self.start_button = tk.Button(
             self.start_test_frame,
             text="Start testing",
             command=self.controller.valve_test_logic.run_valve_test,
             bg="green",
             font=("Helvetica", 24),
         )
-        self.startButton.pack(fill="both", expand=True)
+        self.start_button.pack(fill="both", expand=True)
+
+        self.run_valves_frame = tk.Frame(self.top, width=150, height=50)
+        self.run_valves_frame.grid(row=4, column=0, pady=10, padx=10, sticky="nsew")
+
+        self.run_valves_button = tk.Button(
+            self.run_valves_frame,
+            text="Run Valves",
+            command=self.controller.valve_test_logic.run_valves,
+            bg="light blue",
+            font=("Helvetica", 24),
+        )
+        self.run_valves_button.pack(fill="both", expand=True)
+
+    def change_run_button_state(self):
+        button_color = self.run_valves_button.cget("bg")
+        
+        if button_color == "light blue":
+            self.run_valves_button.config(bg="red", text="Stop Valves")
+        else: 
+            self.run_valves_button.config(bg="light blue", text="Run Valves")
 
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""
@@ -191,4 +214,3 @@ class valveTestWindow:
         # setting the tab to expand when we expand the window
         obj.grid_rowconfigure(0, weight=1)
         obj.grid_columnconfigure(0, weight=1)
-
