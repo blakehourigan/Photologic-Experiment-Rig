@@ -16,7 +16,7 @@ void toggleSolenoid(int solenoidPin) {
 void setup() {
   stepper.setMaxSpeed(1800);
   stepper.setAcceleration(1800);
-  Serial.begin(9600);
+  Serial.begin(115200);
   for (int i = 0; i < 8; i++) {
     pinMode(sideOneSolenoids[i], OUTPUT);
     pinMode(sideTwoSolenoids[i], OUTPUT);

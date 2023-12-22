@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import PhotoImage, messagebox, scrolledtext
 import time
 
-
 class MainGUI:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -22,6 +21,7 @@ class MainGUI:
         # Set the initial size of the window
         self.root = tk.Tk()
         self.root.title("Samuelsen Lab Photologic Rig")
+        self.root.bind("<Control-w>", lambda e: self.root.destroy())  # Close the window when the user presses ctl + w
         icon_path = self.controller.config.get_window_icon_path()
         self.set_program_icon(icon_path)
 
@@ -44,12 +44,12 @@ class MainGUI:
 
     def setup_grid(self) -> None:
         # Configure the GUI grid expand settings
-        for i in range(14):
+        for i in range(12):
             self.root.grid_rowconfigure(i, weight=1)
         # The first column is also configured to expand
         # Configure all columns to have equal weight
         for i in range(4):
-            self.root.columnconfigure(i, weight=1)
+            self.root.grid_columnconfigure(i, weight=0)
 
     def display_labels(self) -> None:
         # Label headers
@@ -292,6 +292,22 @@ class MainGUI:
             font=("Helvetica", 24),
         )
         self.clear_button.pack(fill="both", expand=True)
+
+        # Button to open the stimuli window
+        self.test_valves_button_frame = tk.Frame(self.root, width=200, height=50)
+        self.test_valves_button_frame.grid_propagate(False)  # Disables resizing of frame
+        self.test_valves_button_frame.grid(
+            row=10, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
+        )
+        self.test_valves_button = tk.Button(
+            self.test_valves_button_frame,
+            text="Calibrate Valves",
+            command=lambda: self.controller.test_valves(),
+            bg="grey",
+            font=("Helvetica", 24),
+        )
+        self.test_valves_button.pack(fill="both", expand=True)
+
 
         # Button to open the stimuli window
         self.exp_ctrl_button_frame = tk.Frame(self.root, width=200, height=50)
