@@ -6,6 +6,11 @@
 int sideOneSolenoids[] = {30, 31, 32, 33, 34, 35, 36, 37};
 int sideTwoSolenoids[] = {38, 39, 40, 41, 42, 43, 44, 45};
 
+unsigned long startTime;
+unsigned long endTime;
+unsigned long duration;
+unsigned long valveOpenTimeD, valveOpenTimeC, temp, temp1;
+
 AccelStepper stepper = AccelStepper(1, stepPin, dirPin);
 
 void toggleSolenoid(int solenoidPin) {
@@ -33,14 +38,62 @@ void loop() {
       int* solenoids = command == "SIDE_ONE" ? sideOneSolenoids : sideTwoSolenoids;
       toggleSolenoid(solenoids[solenoidValue - 1]);
     } else if (command == "reset") {
-      asm volatile ("jmp 0");
+        asm volatile ("jmp 0");
     } else if (command == "UP") {
-      stepper.moveTo(0);
+        stepper.moveTo(0);
     } else if (command == "DOWN") {
-      stepper.moveTo(6400);
+        stepper.moveTo(6400);
     } else if (command == "WHO_ARE_YOU") {
-      Serial.println("MOTOR");
+        Serial.println("MOTOR");
+    } else if (command == "test"){
+        DDRC |= (1 << PC7); // Set pin 30 as an output
+        DDRD |= (1 << PD7); // Set pin 30 as an output
+
+        for(int i = 0; i < 1000; i++){
+          Serial.println(i);
+          temp = millis();
+          PORTD |= (1 << PD7); // Set pin 30 to HIGH
+          delay(32);
+          PORTD &= ~(1 << PD7); // Set pin 30 to LOW
+          delay(25);
+          temp1 = millis();
+          valveOpenTimeD += (temp1 - temp);
+
+          temp = millis();
+          
+          PORTC |= (1 << PC7); // Set pin 38 to HIGH
+          delay(25);
+          PORTC &= ~(1 << PC7); // Set pin 30 to 
+          delay(25);
+          temp1 = millis();
+          valveOpenTimeD += (temp1 - temp);
+
+          delay(100);
+    } 
+    Serial.println(valveOpenTimeD, valveOpenTimeC);
+    } else if (command =="OPEN"){
+//          DDRD |= (1 << PD7); // Set pin 38 as an output
+//          PORTD |= (1 << PD7); // Set pin 38 to HIGH
+
+        DDRC |= (1 << PC7); // Set pin 30 as an output
+        PORTC |= (1 << PC7); // Set pin 30 to HIGH
+        startTime = millis();
+    } else if (command =="CLOSE"){
+//        PORTD &= ~(1 << PD7); // Set pin 30 to LOW
+
+        PORTC &= ~(1 << PC7); // Set pin 38 to LOW
+        endTime = millis();
+
+        // Calculate duration
+        duration = endTime - startTime;
+      
+        // Print the duration
+        Serial.print("Time taken to drain 10mL: ");
+        Serial.print(duration);
+        Serial.println(" milliseconds");
+
     }
+      
   }
   stepper.run();
 }

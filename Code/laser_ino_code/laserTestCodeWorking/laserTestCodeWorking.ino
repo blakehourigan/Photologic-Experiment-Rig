@@ -18,8 +18,9 @@ String side;
 void setup() {
   Serial.begin(115200); // Start the serial communication
   // Set up Timer 4 for 1 microsecond interval
-  pinMode(10, OUTPUT); // Sets pin 10 as an output pin
-  pinMode(11, OUTPUT); // Sets pin 11 as an output pin
+  // Set the pins to high impedance
+  DDRB |= (1 << OUTPUT_BIT_SIDE1);
+  DDRB |= (1 << OUTPUT_BIT_SIDE2);
   cli(); // Disable global interrupts
   TCCR4A = 0; // Set entire TCCR4A register to 0
   TCCR4B = 0; // Set entire TCCR4B register to 0
@@ -42,6 +43,16 @@ void loop() {
   
   detect_licks("One", side_1_pin_state, side_1_previous_state, side_1_licks, OUTPUT_BIT_SIDE1);
   detect_licks("Two", side_2_pin_state, side_2_previous_state, side_2_licks, OUTPUT_BIT_SIDE2);
+
+  update_leds();
+
+}
+
+void update_leds() 
+{
+  // Update both LEDs in the same operation
+  PINB = (side_1_pin_state ? PINB | (1 << OUTPUT_BIT_SIDE1) : PINB & ~(1 << OUTPUT_BIT_SIDE1)) |
+         (side_2_pin_state ? PINB | (1 << OUTPUT_BIT_SIDE2) : PINB & ~(1 << OUTPUT_BIT_SIDE2));
 }
 
 void check_serial_command() {
@@ -64,12 +75,12 @@ void check_serial_command() {
 void detect_licks(String side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) {
     if (current_state == 0 && previous_state == 1) {
         start_time = millis();
-        PINB |= (1 << output_bit);
+        //PINB |= (1 << output_bit);
         previous_state = 0;
     } 
-    if (current_state == 1 && previous_state == 0) {
+    else if (current_state == 1 && previous_state == 0) {
         end_time = millis();
-        PINB &= ~(1 << output_bit);
+        //PINB |= ~(1 << output_bit);
         licks++;
         send_lick_details(licks, start_time, end_time, side);
         previous_state = 1;
