@@ -36,6 +36,8 @@ class AduinoManager:
                 "Motor Arduino Error", error_message
             )
         else:
+            command = 'S'
+            self.send_command_to_laser(command)
             print("Connected to Arduino boards successfully.")
 
     def identify_arduino(self, port) -> str:
@@ -43,8 +45,9 @@ class AduinoManager:
         try:
             arduino = serial.Serial(port, self.BAUD_RATE, timeout=1)
             time.sleep(2)  # Wait for Arduino to initialize
-            arduino.write(b"WHO_ARE_YOU\n")
+            arduino.write(b'W')
             identifier = arduino.readline().decode("utf-8").strip()
+            print(identifier)
             arduino.close()
             return identifier
         except Exception as e:
@@ -58,8 +61,8 @@ class AduinoManager:
         """Send a reset command to both Arduino boards."""
         try:
             if self.laser_arduino and self.motor_arduino:
-                self.laser_arduino.write(b"reset\n")
-                self.motor_arduino.write(b"reset\n")
+                self.laser_arduino.write(b'R')
+                self.motor_arduino.write(b'R')
                 print("Arduino boards reset.")
             else:
                 print("Arduino boards not connected.")
@@ -80,6 +83,34 @@ class AduinoManager:
             self.controller.main_gui.display_error(
                 "Error sending command to motor Arduino:", e
             )
+        
+    def send_command_to_laser(self, command) -> None:            
+        """Send a specific command to the laser Arduino."""
+        try:
+            if self.laser_arduino:
+                self.laser_arduino.write(command.encode("utf-8"))
+                self.laser_arduino.flush()
+            else:
+                print("Laser Arduino not connected.")
+        except Exception as e:
+            self.controller.main_gui.display_error(
+                "Error sending command to laser Arduino:", e
+            )
+
+
+    def send_schedule_to_motor(self, schedule) -> None:
+        """Send a schedule to the motor Arduino."""
+        try:
+            if self.motor_arduino:
+                for item in schedule:
+                    self.send
+                    string_data = f"{item[0]},{item[1]}\n"
+                    self.laser_arduino.write(string_data.encode())
+        except Exception as e:
+            self.controller.main_gui.display_error(
+                "Error sending schedule to motor Arduino:", e
+            )
+
 
     def read_from_laser(self) -> Tuple[bool, Optional[str]]:
         """Read data from the laser Arduino."""
@@ -106,53 +137,7 @@ class AduinoManager:
     SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
     valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
     
-    def open_both_valves(self,stimulus_1_position, stimulus_2_position) -> None:
-        command = (
-            "SIDE_ONE\n"
-            + str(stimulus_1_position)
-            + "\nSIDE_TWO\n"
-            + str(stimulus_2_position)
-            + "\n"
-        )
-
-        # send the command
-        self.send_command_to_motor(command)
     
-    def close_both_valves(self, stimulus_1_position, stimulus_2_position) -> None:
-        command = (
-            "SIDE_ONE\n"
-            + str(stimulus_1_position)
-            + "\nSIDE_TWO\n"
-            + str(stimulus_2_position)
-            + "\n"
-        )
-
-        # send the command
-        self.send_command_to_motor(command)
-        
-    def open_one_valve(self, stimulus_position, side) -> None:
-        command = (
-            side
-            + "\n"
-            + str(stimulus_position)
-            + "\n"
-        )
-        print(command)
-        # send the command
-        self.send_command_to_motor(command)
-        
-    def close_one_valve(self, stimulus_position, side) -> None:
-        command = (
-            side
-            + "\n"
-            + str(stimulus_position)
-            + "\n"
-        )
-
-        # send the command
-        self.send_command_to_motor(command)
-
-
     def close_connections(self) -> None:
         """Close the serial connections to the Arduino boards."""
         if self.laser_arduino is not None:

@@ -35,6 +35,10 @@ class ExperimentCtlWindow:
                 
                 # place the button after the last row
                 self.generate_stimulus.grid(row=8, column=0, pady=10, padx=10, sticky='nsew', columnspan=2)
+                
+                if(self.controller.data_mgr.blocks_generated):
+                    self.show_stimuli_table()
+                    self.update_table()
         
     def create_window(self, master) -> tk.Toplevel:
         # Create a new window for AI solutions  
@@ -107,6 +111,13 @@ class ExperimentCtlWindow:
         self.trial_blocks_table = Table(self.stimuli_frame, dataframe=self.controller.data_mgr.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
         self.trial_blocks_table.autoResizeColumns()
         self.trial_blocks_table.show()
+        
+    def update_table(self):
+        self.trial_blocks_table.redraw()
+        
+        self.stimuli_frame.update_idletasks()
+        
+        self.stimuli_frame.after(250, self.update_table)
                 
     def configure_tk_obj_grid(self, obj):
         # setting the tab to expand when we expand the window 

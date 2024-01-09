@@ -170,6 +170,14 @@ class DataManager:
             stimulus_1.append(entry[0].get())
             stimulus_2.append(entry[1].get())
 
+        #stim_pairs_to_motor_arduino = self.pair_stimuli(stimulus_1, stimulus_2)
+        """
+        command = "SCHEDULE\n"
+        self.controller.arduino_mgr.send_command_to_motor(command)
+        self.controller.arduino_mgr.send_schedule_to_motor(stim_pairs_to_motor_arduino)
+        command = "SCHEDULE\n"
+        self.controller.arduino_mgr.send_command_to_motor(command)"""
+        
         return stimulus_1, stimulus_2
 
     def initialize_stimuli_dataframe(self) -> None:
@@ -215,6 +223,8 @@ class DataManager:
     def save_licks(self, iteration):
         """define method that saves the licks to the data table and increments our iteration variable."""
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
+        command = 'E' # stop opening the valves on lick detection. 
+        self.controller.arduino_mgr.send_command_to_laser(command)
         if self.controller.state == "TTC":
             self.stimuli_dataframe.loc[
                 self.current_trial_number - 1, "TTC Actual"
@@ -223,21 +233,9 @@ class DataManager:
             (
                 stimulus_1_position,
                 stimulus_2_position,
-            ) = self.data_mgr.find_stimuli_positions(iteration)
+            ) = self.find_stimuli_positions(iteration)
 
-            self.controller.arduino_mgr.close_valves(
-                stimulus_1_position, stimulus_2_position
-            )
-            command = (
-                "SIDE_ONE\n"
-                + str(self.stim1_position)
-                + "\nSIDE_TWO\n"
-                + str(self.stim2_position)
-                + "\n"
-            )
-            self.controller.arduino_mgr.send_command_to_motor(command)
-
-        command = b"UP\n"
+        command = 'U'
         # tell the motor arduino to move the door up
         self.controller.arduino_mgr.send_command_to_motor(command)
 
@@ -245,13 +243,13 @@ class DataManager:
         self.current_trial_number += 1
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
-        self.stimuli_dataframe.loc[iteration, "Stimulus 1 Licks"] = self.side_one_licks
-        self.stimuli_dataframe.loc[iteration, "Stimulus 2 Licks"] = self.side_two_licks
+        self.stimuli_dataframe.loc[iteration, "Side 1 Licks"] = self.side_one_licks
+        self.stimuli_dataframe.loc[iteration, "Side 2 Licks"] = self.side_two_licks
 
         # this is how processes that are set to execute after a certain amount of time are cancelled.
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
         self.controller.main_gui.root.after_cancel(
-            self.controller.logic.update_licks_id
+            self.controller.update_licks_id
         )
 
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
@@ -296,16 +294,22 @@ class DataManager:
             )
 
             self.licks_dataframe.to_excel(licks_file_name, index=False)
+            
+    def pair_stimuli(self, stimulus_1, stimulus_2):
+        """Preparing to send the data to the motor arduino"""
+        paired_stimuli = list(zip(stimulus_1, stimulus_2))
+        return paired_stimuli
+        
 
     def find_stimuli_positions(self, i) -> tuple:
         # Create a list of the stimuli dictionary values, will give list of stimuli.
         stim_var_list = list(self.stimuli_vars.values())
         for index, string_var in enumerate(stim_var_list):
-            if string_var.get() == self.stimuli_dataframe.loc[i, "Stimulus 1"]:
+            if string_var.get() == self.stimuli_dataframe.loc[i, "Side 1"]:
                 self.stim1_position = str(index + 1)
 
             # repeat process for the second stimulus
-            elif string_var.get() == self.stimuli_dataframe.loc[i, "Stimulus 2"]:
+            elif string_var.get() == self.stimuli_dataframe.loc[i, "Side 2"]:
                 self.stim2_position = str(index + 1)
 
         return self.stim1_position, self.stim2_position

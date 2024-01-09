@@ -78,7 +78,7 @@ class ProgramController:
 
             # Get trial number and stimuli in the trial and add them to the main information screen
             # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = f'\nTRIAL # {self.data_mgr.current_trial_number}: Stimulus 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 1"]} vs. Stimulus 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Stimulus 2"]}\n'
+            string = f'\nTRIAL # {self.data_mgr.current_trial_number}: Side 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"]} vs. Side 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"]}\n'
 
             # this command is what adds things to the main information screen
             self.main_gui.append_data(string)
@@ -109,6 +109,7 @@ class ProgramController:
             self.state = "TTC"
 
             self.read_licks(iteration)
+            self.arduino_mgr.send_command_to_laser('B')
 
             self.main_gui.state_time_label_header.configure(
                 text=(self.state + " Time:")
@@ -116,7 +117,7 @@ class ProgramController:
 
             self.data_mgr.state_start_time = time.time()  # state start time begins
 
-            command = "DOWN\n"  # tell motor arduino to move the door down
+            command = 'D'  # tell motor arduino to move the door down
             self.arduino_mgr.send_command_to_motor(command)
 
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
@@ -127,7 +128,6 @@ class ProgramController:
                 stimulus_2_position,
             ) = self.data_mgr.find_stimuli_positions(iteration)
 
-            self.arduino_mgr.open_both_valves(stimulus_1_position, stimulus_2_position)
             
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
 
@@ -139,7 +139,7 @@ class ProgramController:
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
             self.after_sample_id = self.main_gui.root.after(
-                int(TTC_Value), lambda: self.data_mgr.save_licks(iteration)
+                int(TTC_Value), lambda: self.sample_time(iteration)
             )
             self.after_ids.append(self.after_sample_id)
 
@@ -154,7 +154,7 @@ class ProgramController:
             )
 
             # Update the state start time to the current time
-            self.state_start_time = time.time()
+            self.data_mgr.state_start_time = time.time()
 
             sample_interval_value = self.data_mgr.check_dataframe_entry_isfloat(
                 iteration, "Sample Time"
@@ -178,19 +178,20 @@ class ProgramController:
     def read_licks(self, i):
         """Define the method for reading data from the optical fiber Arduino"""
         # try to read licks if there is a arduino connected
-        available_data, stimulus = self.controller.arduino_mgr.read_from_laser()
+        available_data, stimulus = self.arduino_mgr.read_from_laser()
 
         if available_data:
+            self.check_licks_above_TTC_threshold(i) # check if we have 3 licks from either side
             # send the lick data to the data frame
             self.send_lick_data_to_dataframe(stimulus)
         # Call this method again every 100 ms
-        self.update_licks_id = self.controller.main_gui.root.after(
+        self.update_licks_id = self.main_gui.root.after(
             100, lambda: self.read_licks(i)
         )
-        self.controller.after_ids.append(self.update_licks_id)
+        self.after_ids.append(self.update_licks_id)
 
     def send_lick_data_to_dataframe(self, stimulus):
-        data_mgr = self.controller.data_mgr
+        data_mgr = self.data_mgr
         licks_dataframe = data_mgr.licks_dataframe
         total_licks = data_mgr.total_licks
 
@@ -203,32 +204,33 @@ class ProgramController:
             time.time() - data_mgr.start_time
         )
 
-        licks_dataframe.loc[total_licks, "State"] = self.controller.state
+        licks_dataframe.loc[total_licks, "State"] = self.state
 
         if stimulus == "Stimulus 1":
-            self.controller.data_mgr.side_one_licks += 1
+            self.data_mgr.side_one_licks += 1
         elif stimulus == "Stimulus 2":
-            self.controller.data_mgr.side_two_licks += 1
-        self.controller.data_mgr.total_licks += 1
+            self.data_mgr.side_two_licks += 1
+        self.data_mgr.total_licks += 1
 
     def check_licks_above_TTC_threshold(self, iteration):
         """define method for checking licks during the TTC state"""
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
         # state and continue the trial
-        self.TTC_lick_threshold = self.controller.data_mgr.TTC_lick_threshold
+        self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
+    
 
         if (
-            self.side_one_licks >= self.TTC_lick_threshold
-            or self.side_two_licks >= self.TTC_lick_threshold
-        ) and self.controller.state == "TTC":
-            self.controller.data_mgr.stimuli_dataframe.loc[
-                self.controller.data_mgr.current_trial_number - 1, "TTC Actual"
-            ] = (time.time() - self.controller.data_mgr.state_start_time) * 1000
+            self.data_mgr.side_one_licks >= self.data_mgr.TTC_lick_threshold.get()
+            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()
+        ) and self.state == "TTC":
+            self.data_mgr.stimuli_dataframe.loc[
+                self.data_mgr.current_trial_number - 1, "TTC Actual"
+            ] = (time.time() - self.data_mgr.state_start_time) * 1000
 
-            self.controller.main_gui.root.after_cancel(self.controller.after_sample_id)
-            self.side_one_licks = 0
-            self.side_two_licks = 0
-            self.controller.sample_time(iteration)
+            self.main_gui.root.after_cancel(self.after_sample_id)
+            self.data_mgr.side_one_licks = 0
+            self.data_mgr.side_two_licks = 0
+            self.sample_time(iteration)
 
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button"""

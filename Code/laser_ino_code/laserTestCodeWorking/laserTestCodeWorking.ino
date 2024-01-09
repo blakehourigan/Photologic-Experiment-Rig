@@ -1,6 +1,6 @@
 #define INPUT_BIT_SIDE1 PH5
-#define INPUT_BIT_SIDE2 PH6
-#define OUTPUT_BIT_SIDE1 PB4
+#define OUTPUT_BIT_SIDE1 PH6
+#define INPUT_BIT_SIDE2 PB4
 #define OUTPUT_BIT_SIDE2 PB5
 
 unsigned long start_time, end_time; // Variables to store start and end time of licks
@@ -16,16 +16,16 @@ unsigned int side_2_licks = 0;
 String side; 
 
 void setup() {
-  Serial.begin(115200); // Start the serial communication
+  Serial.begin(9600); // Start the serial communication
   // Set up Timer 4 for 1 microsecond interval
   // Set the pins to high impedance
-  DDRB |= (1 << OUTPUT_BIT_SIDE1);
+  DDRH |= (1 << OUTPUT_BIT_SIDE1);
   DDRB |= (1 << OUTPUT_BIT_SIDE2);
   cli(); // Disable global interrupts
   TCCR4A = 0; // Set entire TCCR4A register to 0
   TCCR4B = 0; // Set entire TCCR4B register to 0
   TCNT4 = 0; // Initialize counter value to 0
-  OCR4A = 15; // Set compare match register for 1us intervals
+  OCR4A = 16000; // Set compare match register for 1us intervals
   TCCR4B |= (1 << WGM42); // Turn on CTC mode
   TCCR4B |= (1 << CS40); // Set prescaler to 1 (no prescaling)
   TIMSK4 |= (1 << OCIE4A); // Enable timer compare interrupt
@@ -35,7 +35,7 @@ void setup() {
 
 ISR(TIMER4_COMPA_vect) {
   side_1_pin_state = (PINH & (1 << INPUT_BIT_SIDE1));
-  side_2_pin_state = (PINH & (1 << INPUT_BIT_SIDE2));
+  side_2_pin_state = (PINB & (1 << INPUT_BIT_SIDE2));
 }
 
 void loop() {
@@ -50,9 +50,19 @@ void loop() {
 
 void update_leds() 
 {
-  // Update both LEDs in the same operation
-  PINB = (side_1_pin_state ? PINB | (1 << OUTPUT_BIT_SIDE1) : PINB & ~(1 << OUTPUT_BIT_SIDE1)) |
-         (side_2_pin_state ? PINB | (1 << OUTPUT_BIT_SIDE2) : PINB & ~(1 << OUTPUT_BIT_SIDE2));
+
+    if (side_1_pin_state) {
+    PORTH |= (1 << OUTPUT_BIT_SIDE1);
+  } else {
+    PORTH &= ~(1 << OUTPUT_BIT_SIDE1);
+  }
+
+  if (side_2_pin_state) {
+    PORTB |= (1 << OUTPUT_BIT_SIDE2);
+  } else {
+    PORTB &= ~(1 << OUTPUT_BIT_SIDE2);
+  }
+
 }
 
 void check_serial_command() {
@@ -75,12 +85,10 @@ void check_serial_command() {
 void detect_licks(String side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) {
     if (current_state == 0 && previous_state == 1) {
         start_time = millis();
-        //PINB |= (1 << output_bit);
         previous_state = 0;
     } 
     else if (current_state == 1 && previous_state == 0) {
         end_time = millis();
-        //PINB |= ~(1 << output_bit);
         licks++;
         send_lick_details(licks, start_time, end_time, side);
         previous_state = 1;
