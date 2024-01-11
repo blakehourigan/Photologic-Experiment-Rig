@@ -41,7 +41,6 @@ class ExperimentCtlWindow:
                     self.update_table()
         
     def create_window(self, master) -> tk.Toplevel:
-        # Create a new window for AI solutions  
         top = tk.Toplevel(master)
         top.title("Experiment Control")
         top.bind ("<Control-w>", lambda e: top.destroy())  # Close the window when the user presses ctl + w
@@ -109,8 +108,9 @@ class ExperimentCtlWindow:
         self.configure_tk_obj_grid(self.stim_sched_tab)
 
         self.trial_blocks_table = Table(self.stimuli_frame, dataframe=self.controller.data_mgr.stimuli_dataframe, showtoolbar=True, showstatusbar=True, weight=1)
-        self.trial_blocks_table.autoResizeColumns()
+        
         self.trial_blocks_table.show()
+        self.trial_blocks_table.adjustColumnWidths()
         
     def update_table(self):
         self.trial_blocks_table.redraw()
@@ -123,7 +123,6 @@ class ExperimentCtlWindow:
         # setting the tab to expand when we expand the window 
         obj.grid_rowconfigure(0, weight=1)                            
         obj.grid_columnconfigure(0, weight=1)  
-        
         
     def update_size(self) -> None:
         """update the size of the window to fit the contents

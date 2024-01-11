@@ -1,8 +1,8 @@
-import serial
+import serial # type: ignore
 import time
 from typing import Optional, Tuple
 
-import serial.tools.list_ports
+import serial.tools.list_ports #type: ignore
 
 
 class AduinoManager:

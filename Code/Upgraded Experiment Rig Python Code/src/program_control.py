@@ -51,6 +51,9 @@ class ProgramController:
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
 
+        self.arduino_mgr.send_command_to_laser('S')
+
+
         if not self.data_mgr.blocks_generated:
             self.stop_program()
             self.main_gui.display_error(
@@ -109,7 +112,7 @@ class ProgramController:
             self.state = "TTC"
 
             self.read_licks(iteration)
-            self.arduino_mgr.send_command_to_laser('B')
+
 
             self.main_gui.state_time_label_header.configure(
                 text=(self.state + " Time:")
@@ -139,7 +142,7 @@ class ProgramController:
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
             self.after_sample_id = self.main_gui.root.after(
-                int(TTC_Value), lambda: self.sample_time(iteration)
+                int(TTC_Value), lambda: self.data_mgr.save_licks(iteration)
             )
             self.after_ids.append(self.after_sample_id)
 
@@ -147,6 +150,8 @@ class ProgramController:
         """define sample time method, i is again passed to keep track of trial and stimuli"""
         if self.running:
             self.state = "Sample"
+            command = 'B'
+            self.arduino_mgr.send_command_to_laser(command)
 
             # change the state time label accordingly
             self.main_gui.state_time_label_header.configure(
@@ -184,9 +189,9 @@ class ProgramController:
             self.check_licks_above_TTC_threshold(i) # check if we have 3 licks from either side
             # send the lick data to the data frame
             self.send_lick_data_to_dataframe(stimulus)
-        # Call this method again every 100 ms
+        # Call this method again every 5 ms
         self.update_licks_id = self.main_gui.root.after(
-            100, lambda: self.read_licks(i)
+            10, lambda: self.read_licks(i)
         )
         self.after_ids.append(self.update_licks_id)
 
@@ -247,6 +252,10 @@ class ProgramController:
         self.main_gui.state_time_label.configure(
             text="{:.3f}s".format(state_elapsed_time)
         )
+        self.data_mgr = DataManager(self)
+        self.arduino_mgr.close_connections()
+        self.arduino_mgr = AduinoManager(self)
+
 
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state, changing the button back to start."""
@@ -266,9 +275,10 @@ class ProgramController:
         ):  # cancel all after calls which cancels every recursive function call
             self.main_gui.root.after_cancel(after_id)
 
-        self.after_ids.clear()
+        self.main_gui.root.after(5000, self.arduino_mgr.reset_arduinos)  # send the reset command to reboot both Arduino boards
 
-        self.arduino_mgr.reset_arduinos()  # send the reset command to reboot both Arduino boards
+        self.after_ids.clear()
+        
         self.current_trial_number = 1
 
     def start_program(self) -> None:
