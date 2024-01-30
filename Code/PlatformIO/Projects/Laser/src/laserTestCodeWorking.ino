@@ -2,11 +2,10 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
 
-
-#define INPUT_BIT_SIDE1 PH5   // digital 8, from photologic
-#define OUTPUT_BIT_SIDE1 PH6  // digital 9, to led for side 1
-#define INPUT_BIT_SIDE2 PB4   // digital 10, from photologic
-#define OUTPUT_BIT_SIDE2 PB5  // digital 11, to led for side 2
+#define OPTICAL_DETECTOR_BIT_SIDE1 PC6   // digital 31, from photologic
+#define LED_BIT_SIDE1 PC4  // digital 33, to LED for side 1
+#define OPTICAL_DETECTOR_BIT_SIDE2 PA1   // digital 23, from photologic
+#define LED_BIT_SIDE2 PA3  // digital 25, to led for side 2
 #define LICK_SIGNAL_BIT PH4   // digital 7, to lick signal
 
 unsigned long start_time, end_time; // Variables to store start and end time of licks
