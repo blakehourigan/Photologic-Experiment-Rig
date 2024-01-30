@@ -31,13 +31,14 @@ void setup()
   
   // Set the pins to high impedance
   DDRH |= (1 << LICK_SIGNAL_BIT);
-  DDRH |= (1 << OUTPUT_BIT_SIDE1);
-  DDRB |= (1 << OUTPUT_BIT_SIDE2);
+  DDRH |= (1 << LED_BIT_SIDE1);
+  DDRB |= (1 << LED_BIT_SIDE2);
 
-  PINH |= (1 << INPUT_BIT_SIDE1);
-  PINB |= (1 << INPUT_BIT_SIDE2);
+  PINH |= (1 << OPTICAL_DETECTOR_BIT_SIDE1);
+  PINB |= (1 << OPTICAL_DETECTOR_BIT_SIDE2);
 
-  DDRA |= (15); // Set the first 4 pins of PORTA to output
+  DDRA |= (4); // Set pin 1 to output
+  DDRC |= (32); // Set pin 4 to output 
 
   cli(); // Disable global interrupts
   
@@ -55,16 +56,16 @@ void setup()
 
 ISR(TIMER4_COMPA_vect) 
 {
-  side_1_pin_state = (PINH & (1 << INPUT_BIT_SIDE1));
-  side_2_pin_state = (PINB & (1 << INPUT_BIT_SIDE2));
+  side_1_pin_state = (PINA & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+  side_2_pin_state = (PINC & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
 }
 
 void loop() 
 {
   check_serial_command();
   
-  detect_licks("One", side_1_pin_state, side_1_previous_state, side_1_licks, OUTPUT_BIT_SIDE1);
-  detect_licks("Two", side_2_pin_state, side_2_previous_state, side_2_licks, OUTPUT_BIT_SIDE2);
+  detect_licks("One", side_1_pin_state, side_1_previous_state, side_1_licks, LED_BIT_SIDE1);
+  detect_licks("Two", side_2_pin_state, side_2_previous_state, side_2_licks, LED_BIT_SIDE2);
 
   update_leds();
 
@@ -74,20 +75,20 @@ void update_leds()
 {
   if (side_1_pin_state) 
   {
-    PORTH |= (1 << OUTPUT_BIT_SIDE1);
+    PORTA |= (1 << LED_BIT_SIDE1);
   } 
   else
   {
-    PORTH &= ~(1 << OUTPUT_BIT_SIDE1);
+    PORTA &= ~(1 << LED_BIT_SIDE1);
   }
 
   if (side_2_pin_state) 
   {
-    PORTB |= (1 << OUTPUT_BIT_SIDE2);
+    PORTC |= (1 << LED_BIT_SIDE2);
   } 
   else 
   {
-    PORTB &= ~(1 << OUTPUT_BIT_SIDE2);
+    PORTC &= ~(1 << LED_BIT_SIDE2);
   }
 }
 

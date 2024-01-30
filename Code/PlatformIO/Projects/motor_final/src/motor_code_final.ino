@@ -1,6 +1,11 @@
 #include <AccelStepper.h>
 #include <avr/wdt.h>
 
+#define SET_BIT(PORT, BIT) ((PORT) |= (1 << (BIT)))
+#define CLEAR_BIT(PORT, BIT) ((PORT) &= ~(1 << (BIT)))
+#define TOGGLE_BIT(PORT, BIT) ((PORT) ^= (1 << (BIT)))
+
+
 #define dir_pin 26
 #define step_pin 28
 
@@ -28,11 +33,11 @@ void toggle_solenoid(int side, int solenoid_pin)
 {
   if (side == 0)
   {
-    PORTA ^= (1 << solenoid_pin);
+    TOGGLE_BIT(PORTA, solenoid_pin);
   }
   else if (side == 1)
   {
-    PORTC ^= (1 << solenoid_pin);
+    TOGGLE_BIT(PORTC, solenoid_pin);
   }
 }
 
@@ -40,11 +45,11 @@ void untoggle_solenoid(int side, int solenoid_pin)
 {
   if (side == 0)
   {
-    PORTA &= ~(1 << solenoid_pin);
+    CLEAR_BIT(PORTA, solenoid_pin);
   }
   else if (side == 1)
   {
-    PORTC &= ~(1 << solenoid_pin);
+    CLEAR_BIT(PORTC, solenoid_pin);
   }
 }
 
@@ -161,14 +166,17 @@ void test_volume()
     delayMicroseconds(10000);
     delayMicroseconds(10000);
     delayMicroseconds(7500);
-    PORTD &= ~(1 << PD7); // Set pin 38 to LOW (close)
+    
+    CLEAR_BIT(PORTD, PD7); // Set pin 38 to LOW (close)
+    
     delay(25);
     close_time = millis();
     valve_open_time_d += (close_time - open_start);
 
     open_start = millis();
     
-    PORTC |= (1 << PC7); // Set pin 30 to HIGH (valve 2) 
+    SET_BIT(PORTC, PC7); // Set pin 30 to HIGH (valve 2)
+
     delayMicroseconds(10000);
     delayMicroseconds(10000);
     delayMicroseconds(4125);
