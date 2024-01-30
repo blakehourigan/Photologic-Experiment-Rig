@@ -1,7 +1,7 @@
-#define INPUT_BIT_SIDE1 PH5
-#define OUTPUT_BIT_SIDE1 PH6
-#define INPUT_BIT_SIDE2 PB4
-#define OUTPUT_BIT_SIDE2 PB5
+#define INPUT_BIT_SIDE1 PA3
+#define OUTPUT_BIT_SIDE1 PA1
+#define INPUT_BIT_SIDE2 PC4
+#define OUTPUT_BIT_SIDE2 PC6
 
 unsigned long start_time, end_time; // Variables to store start and end time of licks
 unsigned long program_start;
@@ -19,8 +19,8 @@ void setup() {
   Serial.begin(9600); // Start the serial communication
   // Set up Timer 4 for 1 microsecond interval
   // Set the pins to high impedance
-  DDRH |= (1 << OUTPUT_BIT_SIDE1);
-  DDRB |= (1 << OUTPUT_BIT_SIDE2);
+  DDRA |= (1 << OUTPUT_BIT_SIDE1);
+  DDRC |= (1 << OUTPUT_BIT_SIDE2);
   cli(); // Disable global interrupts
   TCCR4A = 0; // Set entire TCCR4A register to 0
   TCCR4B = 0; // Set entire TCCR4B register to 0
@@ -34,8 +34,8 @@ void setup() {
 }
 
 ISR(TIMER4_COMPA_vect) {
-  side_1_pin_state = (PINH & (1 << INPUT_BIT_SIDE1));
-  side_2_pin_state = (PINB & (1 << INPUT_BIT_SIDE2));
+  side_1_pin_state = (PINA & (1 << INPUT_BIT_SIDE1));
+  side_2_pin_state = (PINC & (1 << INPUT_BIT_SIDE2));
 }
 
 void loop() {
