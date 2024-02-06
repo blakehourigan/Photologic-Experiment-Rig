@@ -5,9 +5,16 @@
 #define CLEAR_BIT(PORT, BIT) ((PORT) &= ~(1 << (BIT)))
 #define TOGGLE_BIT(PORT, BIT) ((PORT) ^= (1 << (BIT)))
 
+#define dir_pin 53
+#define step_pin 51
 
-#define dir_pin 26
-#define step_pin 28
+struct ValvePair {
+  int valve_side_one;
+  int valve_side_two;
+};
+
+ValvePair schedule[10]; // Array to store up to 10 valve pairs
+int scheduleCount = 0;
 
 const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
 const int SIDE_TWO_SOLENOIDS[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
@@ -244,6 +251,24 @@ void loop()
         PORTC &= ~(255); // close all valves on side 2
       }
       break;
+      
+    case 'S':
+      while (Serial.available() > 0) {
+        String valvePairStr = Serial.readStringUntil('\n');
+        // Assume the format is "valve_side_one,valve_side_two"
+        int commaIndex = valvePairStr.indexOf(',');
+        int valveOne = valvePairStr.substring(0, commaIndex).toInt();
+        int valveTwo = valvePairStr.substring(commaIndex + 1).toInt();
+
+        // Store in schedule array
+        if (scheduleCount < 10) {
+          schedule[scheduleCount].valve_side_one = valveOne;
+          schedule[scheduleCount].valve_side_two = valveTwo;
+          scheduleCount++;
+        }
+      }
+      break;
+
     default:
       break;
   }

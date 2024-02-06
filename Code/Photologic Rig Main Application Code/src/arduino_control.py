@@ -103,9 +103,9 @@ class AduinoManager:
         try:
             if self.motor_arduino:
                 for item in schedule:
-                    self.send
+                    self.send_command_to_motor('S')
                     string_data = f"{item[0]},{item[1]}\n"
-                    self.laser_arduino.write(string_data.encode())
+                    self.send_command_to_motor(string_data) 
         except Exception as e:
             self.controller.main_gui.display_error(
                 "Error sending schedule to motor Arduino:", e

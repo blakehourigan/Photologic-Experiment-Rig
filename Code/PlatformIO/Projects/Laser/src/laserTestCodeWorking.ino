@@ -2,11 +2,25 @@
 #include <avr/io.h>
 #include <avr/wdt.h>
 
+// side one defs
+#define SIDE_ONE_READ PINC
+#define SIDE_ONE_WRITE PORTC
+
 #define OPTICAL_DETECTOR_BIT_SIDE1 PC6   // digital 31, from photologic
 #define LED_BIT_SIDE1 PC4  // digital 33, to LED for side 1
+
+// side two defs
+#define SIDE_TWO_READ PINA
+#define SIDE_TWO_WRITE PORTA
+
 #define OPTICAL_DETECTOR_BIT_SIDE2 PA1   // digital 23, from photologic
 #define LED_BIT_SIDE2 PA3  // digital 25, to led for side 2
+
+// lick signal defs
+#define LICK_SIGNAL_WRITE PORTH
+#define LICK_SIGNAL_READ PINH
 #define LICK_SIGNAL_BIT PH4   // digital 7, to lick signal
+#define LICK_SIDE_BIT PH5
 
 unsigned long start_time, end_time; // Variables to store start and end time of licks
 unsigned long program_start;
@@ -30,18 +44,18 @@ void setup()
   
   // Set the pins to high impedance
   DDRH |= (1 << LICK_SIGNAL_BIT);
-  DDRH |= (1 << LED_BIT_SIDE1);
-  DDRB |= (1 << LED_BIT_SIDE2);
+  DDRH |= (1 << LICK_SIDE_BIT);
 
-  PINH |= (1 << OPTICAL_DETECTOR_BIT_SIDE1);
-  PINB |= (1 << OPTICAL_DETECTOR_BIT_SIDE2);
+  DDRC |= (1 << LED_BIT_SIDE1);
+  DDRA |= (1 << LED_BIT_SIDE2);
 
-  DDRA |= (4); // Set pin 1 to output
-  DDRC |= (32); // Set pin 4 to output 
+  SIDE_ONE_WRITE |= (1 << LED_BIT_SIDE1);
+  SIDE_TWO_WRITE |= (1 << LED_BIT_SIDE2);
+
 
   cli(); // Disable global interrupts
   
-  // Set up Timer 4 for 1 microsecond interval
+  // Set up Timer 4 for 50ms interval
   TCCR4A = 0; // Set entire TCCR4A register to 0
   TCCR4B = 0; // Set entire TCCR4B register to 0
   TCNT4 = 0; // Initialize counter value to 0
@@ -55,8 +69,8 @@ void setup()
 
 ISR(TIMER4_COMPA_vect) 
 {
-  side_1_pin_state = (PINA & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
-  side_2_pin_state = (PINC & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+  side_1_pin_state = (SIDE_ONE_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+  side_2_pin_state = (SIDE_TWO_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
 }
 
 void loop() 
@@ -71,25 +85,26 @@ void loop()
 }
 
 void update_leds() 
-{
+{    
   if (side_1_pin_state) 
   {
-    PORTA |= (1 << LED_BIT_SIDE1);
+    SIDE_ONE_WRITE |= (1 << LED_BIT_SIDE1); // Turn on LED for side 1
   } 
   else
   {
-    PORTA &= ~(1 << LED_BIT_SIDE1);
+    SIDE_ONE_WRITE &= ~(1 << LED_BIT_SIDE1); // Turn off LED for side 1
   }
 
   if (side_2_pin_state) 
   {
-    PORTC |= (1 << LED_BIT_SIDE2);
+    SIDE_TWO_WRITE |= (1 << LED_BIT_SIDE2); // Turn on LED for side 2
   } 
   else 
   {
-    PORTC &= ~(1 << LED_BIT_SIDE2);
+    SIDE_TWO_WRITE &= ~(1 << LED_BIT_SIDE2); // Turn off LED for side 2
   }
 }
+
 
 void check_serial_command() 
 {
@@ -129,22 +144,22 @@ void check_side_and_port(String side)
 {
 if(side == "One")
 {
-PORTA |= (0 << PA0); // Keep the first pin low
+LICK_SIGNAL_WRITE |= (0 << LICK_SIDE_BIT); // Keep the first pin low
 }
 else if(side == "Two")
 {
-PORTA |= (1 << PA0); // Set the first pin high
+LICK_SIGNAL_WRITE |= (1 << LICK_SIDE_BIT); // Set the first pin high
 }
 
-PORTH |= (1 << LICK_SIGNAL_BIT); // Set the bit high
+LICK_SIGNAL_WRITE |= (1 << LICK_SIGNAL_BIT); // Set the bit high
 flipStartTime = micros();
 }
 
 void reset_side_and_port()
 {
-  PORTA &= ~(1 << PA0); // Set the first pin low
+  LICK_SIGNAL_WRITE &= ~(1 << LICK_SIDE_BIT); // Set the first pin low
 
-  PORTH &= ~(1 << LICK_SIGNAL_BIT); // Set the bit low
+  LICK_SIGNAL_WRITE &= ~(1 << LICK_SIGNAL_BIT); // Set the bit low
 }
 
 void detect_licks(String side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) 
