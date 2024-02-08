@@ -170,13 +170,11 @@ class DataManager:
             stimulus_1.append(entry[0].get())
             stimulus_2.append(entry[1].get())
 
-        #stim_pairs_to_motor_arduino = self.pair_stimuli(stimulus_1, stimulus_2)
-        """
-        command = "SCHEDULE\n"
-        self.controller.arduino_mgr.send_command_to_motor(command)
+        stim_pairs_to_motor_arduino = self.pair_stimuli(stimulus_1, stimulus_2)
+        for i, pair in enumerate(stim_pairs_to_motor_arduino):
+            print(i+1, pair)
+
         self.controller.arduino_mgr.send_schedule_to_motor(stim_pairs_to_motor_arduino)
-        command = "SCHEDULE\n"
-        self.controller.arduino_mgr.send_command_to_motor(command)"""
         
         return stimulus_1, stimulus_2
 
