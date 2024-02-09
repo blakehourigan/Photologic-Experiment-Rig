@@ -1049,7 +1049,7 @@
     (descr "Mounting Hole 3.7mm, no annular")
     (tags "mounting hole 3.7mm no annular")
     (attr exclude_from_pos_files exclude_from_bom)
-    (fp_text reference "MOUNT" (at 0 -4.7) (layer "F.SilkS")
+    (fp_text reference "MOUNT" (at 0 -3.7) (layer "F.SilkS")
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 29e87dc9-8395-4d1f-a263-193af2265413)
     )

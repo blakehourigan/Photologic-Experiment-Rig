@@ -3373,14 +3373,14 @@
     (property "Value" "1 uF" (at 379.73 170.18 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" (at 376.8852 172.72 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 376.8852 172.72 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 375.92 168.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid a33f3a7e-a804-4dbc-86fd-9b55256b1907))
-    (pin "2" (uuid 51f4fe74-2d14-49b7-b931-6c7484e41b84))
+    (pin "1" (uuid 82576c5c-ee45-4f28-bcdf-2304994fd786))
+    (pin "2" (uuid 952f8664-310b-40ee-96c6-0f7c73037455))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -3549,14 +3549,14 @@
     (property "Value" "1 uF" (at 381 128.27 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" (at 378.1552 130.81 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 378.1552 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 377.19 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid c2031e1e-c321-44f6-8d1a-f578818b69e8))
-    (pin "2" (uuid 3c816346-4daa-4c37-8038-164bcb5edaae))
+    (pin "1" (uuid 5d8b6bea-0531-4220-a628-5f9d06b8a46e))
+    (pin "2" (uuid 417d3eac-1d7d-4e33-9ea5-bcef629c5b69))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -3797,14 +3797,14 @@
     (property "Value" "10 uF" (at 394.97 170.18 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (at 392.1252 172.72 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 392.1252 172.72 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 391.16 168.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 131d25b4-162c-41dc-b165-f1746c546610))
-    (pin "2" (uuid ad3db78b-05b5-40ee-b276-7757ccc5e77a))
+    (pin "1" (uuid d4f454e0-4281-4109-ba60-3c01390c20b2))
+    (pin "2" (uuid 484f7c3d-b1bf-4fe7-92c8-991bcc9ec7e4))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -3823,14 +3823,14 @@
     (property "Value" "1 uF" (at 411.48 170.18 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" (at 408.6352 172.72 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 408.6352 172.72 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 407.67 168.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid f0aa602a-64c7-4ca6-b15d-6cc9f94f767f))
-    (pin "2" (uuid 2756666d-a7a5-408a-9606-126e95f0809b))
+    (pin "1" (uuid c53ec292-c62b-4d75-abcd-dac3fa0fcb0f))
+    (pin "2" (uuid 90be12f0-ccf5-4056-83a2-3452dddaee14))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -4020,14 +4020,14 @@
     (property "Value" "1 uF " (at 412.75 128.27 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" (at 409.9052 130.81 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 409.9052 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 408.94 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 82cd4d32-48e4-44da-807d-db7e82b5532e))
-    (pin "2" (uuid 78e951dc-53a5-4611-ac10-96029ef77d15))
+    (pin "1" (uuid 81315f87-e46c-4d3c-bf5a-2eee3c44ee19))
+    (pin "2" (uuid e6a642b1-78be-41c1-afde-d294be975f80))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -5368,14 +5368,14 @@
     (property "Value" "10 uF" (at 396.24 128.27 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" (at 393.3952 130.81 0)
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 393.3952 130.81 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 392.43 127 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 948e2ec8-07b6-4452-b302-41eb7e994df9))
-    (pin "2" (uuid e546b14a-f0f4-48b2-a117-7a6752fb8a7f))
+    (pin "1" (uuid 4dd72bb4-1dc3-4c7e-8359-ebca9a3b74d2))
+    (pin "2" (uuid 4a30109b-fb59-4ac5-82a1-aba6fbd583d1))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"
@@ -5425,19 +5425,19 @@
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f7dd719b-9224-4780-bd4f-f0444453717a)
     (property "Reference" "C7" (at 396.24 212.09 0)
-      (effects (font (size 1.27 1.27)) (justify left))
-    )
-    (property "Value" "47 uF" (at 396.24 214.63 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" (at 393.3952 217.17 0)
+    (property "Value" "47 uF" (at 396.24 214.63 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" (at 393.3952 217.17 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 392.43 213.36 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid ab82cf5c-a68f-4e07-b380-97bcc9769e4b))
-    (pin "2" (uuid dde802d4-5f34-45ee-bfe5-3acf7dcf5e9b))
+    (pin "1" (uuid be34f159-607f-4f2d-89b5-9c42384ca453))
+    (pin "2" (uuid d7c0c383-c3d9-48d5-86e5-881cc24d613f))
     (instances
       (project "Final_PCB"
         (path "/3aa8d99f-bc88-4d2c-936c-bff7aa7008c1"

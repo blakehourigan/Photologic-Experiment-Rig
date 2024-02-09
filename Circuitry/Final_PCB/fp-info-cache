@@ -1,4 +1,4 @@
-21867529627475282
+21876103609876833
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -53697,6 +53697,13 @@ Motor_Driver_A4988
 16
 16
 Final_PCB_Footprint
+TO-220-3_Vertical
+TO-220-3, Vertical, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf
+TO-220-3 Vertical RM 2.54mm
+0
+3
+3
+Final_PCB_Footprint
 TSOP6_MOSFET
 
 
@@ -83467,6 +83474,34 @@ rotary encoder
 0
 7
 6
+Samtech Components
+SAMTEC_IPL1-102-01-L-S-RE1-K-WT
+
+
+0
+4
+4
+Samtech Components
+SAMTEC_IPL1-102-01-X-D-RE1-K-WT
+
+
+0
+6
+6
+Samtech Components
+SAMTEC_IPL1-108-01-L-D-RE1-K-WT
+
+
+0
+18
+18
+Samtech Components
+SAMTEC_IPL1-116-01-X-D-RE1-K-WT
+
+
+0
+34
+34
 Sensor
 Aosong_DHT11_5.5x12.0_P2.54mm
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/DHT11.pdf
