@@ -105,6 +105,9 @@ class AduinoManager:
                 side_one_vars = []
                 side_two_vars = []
                 
+                for sv in stim_var_list:
+                    print(sv.get(), end="\n")    
+                                
                 for i in range(len(stim_var_list)):
                     if i in range(0,len(stim_var_list)/2):
                         side_one_vars.append(stim_var_list[i])
@@ -119,6 +122,13 @@ class AduinoManager:
                         # repeat process for the second stimulus
                         if string_var.get() == item :
                             self.stim2_position = str(index + 1)
+                            
+                    for sv in side_one_vars:
+                        print(sv.get(), end="hi")    
+                    
+                    for sv in side_two_vars:
+                        print(sv.get())                        
+                    
                     
                     print(item[0], self.stim1_position, item[1], self.stim2_position)
                     
