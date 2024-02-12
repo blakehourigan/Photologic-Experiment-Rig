@@ -97,19 +97,54 @@ class AduinoManager:
                 "Error sending command to laser Arduino:", e
             )
 
-
     def send_schedule_to_motor(self, schedule) -> None:
-        """Send a schedule to the motor Arduino."""
+        """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
-            if self.motor_arduino:
+            if self.motor_arduino:     
+                stim_var_list = list(self.controller.data_mgr.stimuli_vars.values())
+                side_one_vars = []
+                side_two_vars = []
+                
+                for i in range(len(stim_var_list)):
+                    if i in range(0,len(stim_var_list)/2):
+                        side_one_vars.append(stim_var_list[i])
+                    else:
+                        side_two_vars.append(stim_var_list[i])
+           
                 for item in schedule:
-                    self.send_command_to_motor('S')
-                    string_data = f"{item[0]},{item[1]}\n"
-                    self.send_command_to_motor(string_data) 
+                    for index, string_var in enumerate(side_one_vars):
+                        if string_var.get() == item :
+                            self.stim1_position = str(index + 1)
+                    for index, string_var in enumerate(side_two_vars):
+                        # repeat process for the second stimulus
+                        if string_var.get() == item :
+                            self.stim2_position = str(index + 1)
+                    
+                    print(item[0], self.stim1_position, item[1], self.stim2_position)
+                    
+                    self.send_command_to_motor('S') # tell the arduino that we're about to start sending the sched
+                    
+                    clean_item_0 = item[0].replace(" ", "")
+                    clean_item_1 = item[1].replace(" ", "")
+                    
+                    string = f'{clean_item_0},{clean_item_1}'
+                    print(f"Sending: {string}")
+                    
+                    self.send_command_to_motor(string)
+                    self.motor_arduino.reset_input_buffer()  # Clear buffer before reading
+                    
+                    time.sleep(2)
+
+                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode(
+                        "utf-8"
+                    )                    
+                    print(f"Received Echo: {data}")
+                print('Schedule Send Complete.')
         except Exception as e:
             self.controller.main_gui.display_error(
                 "Error sending schedule to motor Arduino:", e
             )
+
 
 
     def read_from_laser(self) -> Tuple[bool, Optional[str]]:

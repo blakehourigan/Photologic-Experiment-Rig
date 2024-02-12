@@ -104,7 +104,7 @@ void lick_handler(int valve_side, int valve_number)
 
 void myISR() 
 {
-  valve_side = (PINB & (1 << PB5)) >> PB5;
+  valve_side = (PINH & (1 << PH5)) >> PH5;
 
   lick_available = true;
 
@@ -158,6 +158,8 @@ void test_valve_operation()
     Serial.println(" milliseconds");
 }
 
+
+// this function needs rewritten it probably doesn't work at all
 void test_volume()
 {
   DDRC |= (1 << PC7); // Set pin 30 as an output
@@ -200,6 +202,24 @@ void test_volume()
     Serial.print("Valve two opened for: ");
     Serial.print(valve_open_time_c);
     Serial.println(" milliseconds.");
+}
+
+void recieve_schedule()
+{
+  // Wait until data is available
+  while (Serial.available() == 0) 
+  {
+  }
+
+  // Now read the data
+  String valvePairStr = Serial.readStringUntil('\n');
+
+  // Echo back the received data
+  Serial.print(valvePairStr);
+
+  // Wait a little bit for the Python side to be ready to receive
+  delay(100); // Delay for 100 milliseconds
+
 }
 
 void loop() 
@@ -252,22 +272,12 @@ void loop()
       }
       break;
       
-    case 'S':
-      while (Serial.available() > 0) {
-        String valvePairStr = Serial.readStringUntil('\n');
-        // Assume the format is "valve_side_one,valve_side_two"
-        int commaIndex = valvePairStr.indexOf(',');
-        int valveOne = valvePairStr.substring(0, commaIndex).toInt();
-        int valveTwo = valvePairStr.substring(commaIndex + 1).toInt();
+    case 'S':{
 
-        // Store in schedule array
-        if (scheduleCount < 10) {
-          schedule[scheduleCount].valve_side_one = valveOne;
-          schedule[scheduleCount].valve_side_two = valveTwo;
-          scheduleCount++;
-        }
-      }
+
+
       break;
+    }
 
     default:
       break;
