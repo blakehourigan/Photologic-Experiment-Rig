@@ -13,8 +13,7 @@ struct ValvePair {
   int valve_side_two;
 };
 
-ValvePair schedule[10]; // Array to store up to 10 valve pairs
-int scheduleCount = 0;
+int current_trial = 0;
 
 const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
 const int SIDE_TWO_SOLENOIDS[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
@@ -78,10 +77,11 @@ void untoggle_solenoid(int side, int solenoid_pin)
   }
 }
 
-void lick_handler(int valve_side, int valve_number)
+void lick_handler(int valve_side)
 {
   const int * solenoids;
   long int duration = 0;
+  int valve_number = -1; 
 
   noInterrupts();
 
@@ -89,11 +89,13 @@ void lick_handler(int valve_side, int valve_number)
   {
     duration = side_one_lick_duration;
     solenoids = SIDE_ONE_SOLENOIDS;
+    valve_number = SIDE_ONE_SCHEDULE[current_trial];
   }
   else if(valve_side == 1)
   {
     duration = side_two_lick_duration;
     solenoids = SIDE_TWO_SOLENOIDS;
+    valve_number = SIDE_TWO_SCHEDULE[current_trial];
   }
   else
   {
@@ -107,7 +109,7 @@ void lick_handler(int valve_side, int valve_number)
   int remaining_delay = duration - (quotient * 10000);  
 
   
-  toggle_solenoid(valve_side, solenoids[0]);
+  toggle_solenoid(valve_side, solenoids[valve_number]);
 
   for (int i = 0; i < quotient; i++)
   {
@@ -115,7 +117,7 @@ void lick_handler(int valve_side, int valve_number)
   }
 
   delayMicroseconds(remaining_delay); // we add the remaining delay to the end of the loop to ensure the total duration is correct
-  untoggle_solenoid(valve_side, solenoids[0]);
+  untoggle_solenoid(valve_side, solenoids[valve_number]);
   interrupts();
 
 }
@@ -224,20 +226,22 @@ void test_volume()
 
 void recieve_schedule(int side)
 {
+
+  if(side == 1)
+  {
     // Wait until data is available
     while (Serial.available() == 0) 
     {
     }
 
-  if(side == 1)
-  {
+
     // Now read the data
     String valvePairStr = Serial.readStringUntil('\n');
+    // Echo back the received data
+    Serial.println(valvePairStr);
 
     int position = valvePairStr.toInt();
 
-    // Echo back the received data
-    Serial.print(valvePairStr);
     addToArray(SIDE_ONE_SCHEDULE, position, side_one_size);
 
     // Wait a little bit for the Python side to be ready to receive
@@ -246,19 +250,21 @@ void recieve_schedule(int side)
   }
   if(side == 2)
   {
+    while (Serial.available() == 0) 
+    {
+    }
+
     // Now read the data
     String valvePairStr = Serial.readStringUntil('\n');
-
+   // Echo back the received data
+    Serial.print(valvePairStr);
     int position = valvePairStr.toInt();
 
-    // Echo back the received data
-    Serial.print(valvePairStr);
     addToArray(SIDE_TWO_SCHEDULE, position, side_two_size);
 
     // Wait a little bit for the Python side to be ready to receive
     delay(100); // Delay for 100 milliseconds
   }
-
 }
 
 void loop() 
@@ -266,7 +272,7 @@ void loop()
   if(lick_available)
   {
     Serial.print(valve_side);
-    lick_handler(valve_side, valve_number);
+    lick_handler(valve_side);
     lick_available = false;
   }
 
@@ -310,7 +316,9 @@ void loop()
         PORTC &= ~(255); // close all valves on side 2
       }
       break;
-      
+    case 'I':
+      current_trial += 1;
+      break;
     case '1':
     {
       recieve_schedule(1);

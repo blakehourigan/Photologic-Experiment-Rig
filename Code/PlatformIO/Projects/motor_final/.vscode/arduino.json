@@ -1,3 +1,5 @@
 {
-    "port": "COM4"
+    "port": "COM4",
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega"
 }

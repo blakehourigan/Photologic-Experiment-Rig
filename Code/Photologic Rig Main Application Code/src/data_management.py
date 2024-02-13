@@ -229,12 +229,16 @@ class DataManager:
                 stimulus_2_position,
             ) = self.find_stimuli_positions(iteration)
 
+        # increment the trial number
+        self.current_trial_number += 1
+        
+        command = 'I'
+        self.controller.aruduino_mgr.send_command_to_motor(command)
+
         command = 'U'
         # tell the motor arduino to move the door up
         self.controller.arduino_mgr.send_command_to_motor(command)
 
-        # increment the trial number
-        self.current_trial_number += 1
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
         self.stimuli_dataframe.loc[iteration, "Side 1 Licks"] = self.side_one_licks

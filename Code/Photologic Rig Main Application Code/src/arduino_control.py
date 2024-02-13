@@ -1,5 +1,6 @@
 import serial # type: ignore
 import time
+import re
 import traceback
 from typing import Optional, Tuple
 
@@ -102,19 +103,33 @@ class AduinoManager:
     def send_schedule_to_motor(self) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
+            stim_var_list = list(self.controller.data_mgr.stimuli_vars.values())
+            
+            filtered_stim_var_list = [item for item in stim_var_list if not re.match(r'Valve \d+ substance', item.get())]
+            
+            side_one_vars = []
+            side_two_vars = []
+            
+            for i in range(len(filtered_stim_var_list)):
+                if i < len(filtered_stim_var_list) // 2:  
+                    side_one_vars.append(filtered_stim_var_list[i].get())
+                else:
+                    side_two_vars.append(filtered_stim_var_list[i].get())
+
             if self.motor_arduino:            
-                side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1']
-                print(side_one_schedule)
+                side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1'] # separating the schedules based on side
                 
                 side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
-                print(side_two_schedule)
-            
+                    
+                # for each entry in the schedule for side 1 , we find its place in the side_one_vars list which gives the physical valve and vial 
+                    
+                for entry in side_one_schedule:     
 
-                for i in side_one_schedule.index:
-                    print(f"Sending index {i}")
-
+                    index = side_one_vars.index(entry)
+                    print(f"Sending index: {index}")
+                    
                     # Convert index to string for transmission
-                    index_str = str(i)
+                    index_str = str(index) + '\n'
                     self.send_command_to_motor('1')  # Signal to Arduino about the upcoming command
                     
                     # Send the index string, encoded as bytes
@@ -126,16 +141,32 @@ class AduinoManager:
                     data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
                     print(f"Received Echo: {data}")
                 print('Schedule Send Complete.')
+                
+                for entry in side_two_schedule:
+                    
+                    index = side_two_vars.index(entry)
+                    print(f"Sending index: {index}")
 
+                    # Convert index to string for transmission
+                    index_str = str(index) + '\n'
+                    self.send_command_to_motor('2')  # Signal to Arduino about the upcoming command
+                    
+                    # Send the index string, encoded as bytes
+                    self.send_command_to_motor(index_str)
+                    self.motor_arduino.reset_input_buffer()  # Clear buffer before reading
 
+                    time.sleep(2)
+
+                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
+                    
+                    print(f"Received Echo: {data}")
+                print('Schedule Send Complete.')
+                
                 
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
             print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
             self.controller.main_gui.display_error("Error sending schedule to motor Arduino:", str(e))
-            # Optionally, log the detailed error message or write it to a file for further analysis
-
-
 
 
     def read_from_laser(self) -> Tuple[bool, Optional[str]]:
