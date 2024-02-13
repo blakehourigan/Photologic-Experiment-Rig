@@ -8,11 +8,6 @@
 #define dir_pin 53
 #define step_pin 51
 
-struct ValvePair {
-  int valve_side_one;
-  int valve_side_two;
-};
-
 int current_trial = 0;
 
 const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
