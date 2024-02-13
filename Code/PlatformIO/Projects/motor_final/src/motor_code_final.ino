@@ -19,6 +19,9 @@ int scheduleCount = 0;
 const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
 const int SIDE_TWO_SOLENOIDS[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
 
+int SIDE_ONE_SCHEDULE[50];
+int SIDE_TWO_SCHEDULE[50];
+
 unsigned long start_time;
 unsigned long end_time;
 unsigned long duration;
@@ -33,8 +36,23 @@ bool lick_available = false;
 long int side_one_lick_duration = 37500; // 37.5 milliseconds vale 1 
 long int side_two_lick_duration = 24125; // 24.125 milliseconds valve 2  
 
+const int MAX_SIZE = 50; // Maximum size of the array
+int side_one_size = 0; // Keep track of the current number of elements
+int side_two_size = 0;
 
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
+
+
+// Function to add an element to the array
+void addToArray(int *array,  int element, int size) {
+  if (size < MAX_SIZE) {
+    array[size] = element; // Add element at the next available index
+    size++; // Increment the size counter
+  } else {
+    // Array is full, handle error or ignore
+    Serial.println("Error: Array is full.");
+  }
+}
 
 void toggle_solenoid(int side, int solenoid_pin) 
 {
@@ -204,21 +222,42 @@ void test_volume()
     Serial.println(" milliseconds.");
 }
 
-void recieve_schedule()
+void recieve_schedule(int side)
 {
-  // Wait until data is available
-  while (Serial.available() == 0) 
+    // Wait until data is available
+    while (Serial.available() == 0) 
+    {
+    }
+
+  if(side == 1)
   {
+    // Now read the data
+    String valvePairStr = Serial.readStringUntil('\n');
+
+    int position = valvePairStr.toInt();
+
+    // Echo back the received data
+    Serial.print(valvePairStr);
+    addToArray(SIDE_ONE_SCHEDULE, position, side_one_size);
+
+    // Wait a little bit for the Python side to be ready to receive
+    delay(100); // Delay for 100 milliseconds
+
   }
+  if(side == 2)
+  {
+    // Now read the data
+    String valvePairStr = Serial.readStringUntil('\n');
 
-  // Now read the data
-  String valvePairStr = Serial.readStringUntil('\n');
+    int position = valvePairStr.toInt();
 
-  // Echo back the received data
-  Serial.print(valvePairStr);
+    // Echo back the received data
+    Serial.print(valvePairStr);
+    addToArray(SIDE_TWO_SCHEDULE, position, side_two_size);
 
-  // Wait a little bit for the Python side to be ready to receive
-  delay(100); // Delay for 100 milliseconds
+    // Wait a little bit for the Python side to be ready to receive
+    delay(100); // Delay for 100 milliseconds
+  }
 
 }
 
@@ -272,10 +311,15 @@ void loop()
       }
       break;
       
-    case 'S':{
+    case '1':
+    {
+      recieve_schedule(1);
 
-
-
+      break;
+    }
+    case '2':
+    {
+      recieve_schedule(2);
       break;
     }
 

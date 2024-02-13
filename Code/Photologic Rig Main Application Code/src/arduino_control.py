@@ -1,5 +1,6 @@
 import serial # type: ignore
 import time
+import traceback
 from typing import Optional, Tuple
 
 import serial.tools.list_ports #type: ignore
@@ -97,63 +98,43 @@ class AduinoManager:
                 "Error sending command to laser Arduino:", e
             )
 
-    def send_schedule_to_motor(self, schedule) -> None:
+
+    def send_schedule_to_motor(self) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
-            if self.motor_arduino:     
-                stim_var_list = list(self.controller.data_mgr.stimuli_vars.values())
-                side_one_vars = []
-                side_two_vars = []
+            if self.motor_arduino:            
+                side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1']
+                print(side_one_schedule)
                 
-                for sv in stim_var_list:
-                    print(sv.get(), end="\n")    
-                                
-                for i in range(len(stim_var_list)):
-                    if i in range(0,len(stim_var_list)/2):
-                        side_one_vars.append(stim_var_list[i])
-                    else:
-                        side_two_vars.append(stim_var_list[i])
-           
-                for item in schedule:
-                    for index, string_var in enumerate(side_one_vars):
-                        if string_var.get() == item :
-                            self.stim1_position = str(index + 1)
-                    for index, string_var in enumerate(side_two_vars):
-                        # repeat process for the second stimulus
-                        if string_var.get() == item :
-                            self.stim2_position = str(index + 1)
-                            
-                    for sv in side_one_vars:
-                        print(sv.get(), end="hi")    
+                side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
+                print(side_two_schedule)
+            
+
+                for i in side_one_schedule.index:
+                    print(f"Sending index {i}")
+
+                    # Convert index to string for transmission
+                    index_str = str(i)
+                    self.send_command_to_motor('1')  # Signal to Arduino about the upcoming command
                     
-                    for sv in side_two_vars:
-                        print(sv.get())                        
-                    
-                    
-                    print(item[0], self.stim1_position, item[1], self.stim2_position)
-                    
-                    self.send_command_to_motor('S') # tell the arduino that we're about to start sending the sched
-                    
-                    clean_item_0 = item[0].replace(" ", "")
-                    clean_item_1 = item[1].replace(" ", "")
-                    
-                    string = f'{clean_item_0},{clean_item_1}'
-                    print(f"Sending: {string}")
-                    
-                    self.send_command_to_motor(string)
+                    # Send the index string, encoded as bytes
+                    self.send_command_to_motor(index_str)
                     self.motor_arduino.reset_input_buffer()  # Clear buffer before reading
-                    
+
                     time.sleep(2)
 
-                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode(
-                        "utf-8"
-                    )                    
+                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
                     print(f"Received Echo: {data}")
                 print('Schedule Send Complete.')
+
+
+                
         except Exception as e:
-            self.controller.main_gui.display_error(
-                "Error sending schedule to motor Arduino:", e
-            )
+            error_message = traceback.format_exc()  # Capture the full traceback
+            print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
+            self.controller.main_gui.display_error("Error sending schedule to motor Arduino:", str(e))
+            # Optionally, log the detailed error message or write it to a file for further analysis
+
 
 
 

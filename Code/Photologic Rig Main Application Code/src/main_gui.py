@@ -26,11 +26,22 @@ class MainGUI:
         self.set_program_icon(icon_path)
 
     def update_size(self) -> None:
-        """update the size of the window to fit the contents"""
-        self.root.update_idletasks()
-        width = self.root.winfo_reqwidth()
-        height = self.root.winfo_reqheight()
-        self.root.geometry("{}x{}".format(width, height))
+        """update the size of the window to fit the contents dynamically based on display size."""
+        self.root.update_idletasks()  # Ensure all widgets are updated
+        screen_width = self.root.winfo_screenwidth()  # Get screen width
+        screen_height = self.root.winfo_screenheight()  # Get screen height
+
+        # Calculate desired size as a fraction of screen size for demonstration
+        desired_width = int(screen_width * 0.8)  # 80% of the screen width
+        desired_height = int(screen_height * 0.8)  # 80% of the screen height
+
+        # Center the window on the screen
+        x_position = (screen_width - desired_width) // 2
+        y_position = (screen_height - desired_height) // 2
+
+        # Apply the new geometry
+        self.root.geometry("{}x{}+{}+{}".format(desired_width, desired_height, x_position, y_position))
+
 
     def set_program_icon(self, icon_path) -> None:
         os_name = platform.system()

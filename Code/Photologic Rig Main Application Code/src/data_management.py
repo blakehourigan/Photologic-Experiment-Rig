@@ -169,10 +169,6 @@ class DataManager:
         for entry in pseudo_random_lineup:
             stimulus_1.append(entry[0].get())
             stimulus_2.append(entry[1].get())
-
-        stim_pairs_to_motor_arduino = self.pair_stimuli(stimulus_1, stimulus_2)
-
-        self.controller.arduino_mgr.send_schedule_to_motor(stim_pairs_to_motor_arduino)
         
         return stimulus_1, stimulus_2
 
@@ -207,6 +203,8 @@ class DataManager:
 
         self.blocks_generated = True
         self.controller.experiment_ctl_wind.show_stimuli_table()
+        self.controller.arduino_mgr.send_schedule_to_motor()
+
 
     def initalize_licks_dataframe(self):
         """setup the licks data frame that will hold the timestamps for the licks and which port was licked
