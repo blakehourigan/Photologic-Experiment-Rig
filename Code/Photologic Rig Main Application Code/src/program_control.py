@@ -186,6 +186,15 @@ class ProgramController:
         available_data, stimulus = self.arduino_mgr.read_from_laser()
 
         if available_data:
+            
+            print(stimulus)
+            
+            if stimulus == "Stimulus One":
+                self.data_mgr.side_one_licks += 1
+            elif stimulus == "Stimulus Two":
+                self.data_mgr.side_two_licks += 1
+            self.data_mgr.total_licks += 1
+
             self.check_licks_above_TTC_threshold(i) # check if we have 3 licks from either side
             # send the lick data to the data frame
             self.send_lick_data_to_dataframe(stimulus)
@@ -211,22 +220,16 @@ class ProgramController:
 
         licks_dataframe.loc[total_licks, "State"] = self.state
 
-        if stimulus == "Stimulus 1":
-            self.data_mgr.side_one_licks += 1
-        elif stimulus == "Stimulus 2":
-            self.data_mgr.side_two_licks += 1
-        self.data_mgr.total_licks += 1
-
     def check_licks_above_TTC_threshold(self, iteration):
         """define method for checking licks during the TTC state"""
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
         # state and continue the trial
         self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
     
-
+        print(self.state, self.data_mgr.side_one_licks, self.data_mgr.side_two_licks)
         if (
             self.data_mgr.side_one_licks >= self.data_mgr.TTC_lick_threshold.get()
-            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()
+            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()  
         ) and self.state == "TTC":
             self.data_mgr.stimuli_dataframe.loc[
                 self.data_mgr.current_trial_number - 1, "TTC Actual"

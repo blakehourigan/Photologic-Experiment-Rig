@@ -183,10 +183,10 @@ class AduinoManager:
                 )
                 available = True
             if available:
-                if "Stimulus One Lick" in data:
-                    stimulus = "Stimulus 1"
-                if "Stimulus Two Lick" in data:
-                    stimulus = "Stimulus 2"
+                if "Stimulus One" in data:
+                    stimulus = "Stimulus One"
+                if "Stimulus Two" in data:
+                    stimulus = "Stimulus Two"
         return (available, stimulus)
     
     

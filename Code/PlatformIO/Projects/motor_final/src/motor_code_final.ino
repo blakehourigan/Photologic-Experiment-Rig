@@ -317,7 +317,7 @@ void loop()
       }
       break;
     case 'I':
-      current_trial += 1;
+      current_trial++;
       break;
     case '1':
     {

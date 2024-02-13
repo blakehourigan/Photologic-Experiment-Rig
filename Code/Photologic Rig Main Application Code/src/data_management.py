@@ -233,8 +233,8 @@ class DataManager:
         self.current_trial_number += 1
         
         command = 'I'
-        self.controller.aruduino_mgr.send_command_to_motor(command)
-
+        self.controller.arduino_mgr.send_command_to_motor(command)
+        
         command = 'U'
         # tell the motor arduino to move the door up
         self.controller.arduino_mgr.send_command_to_motor(command)
