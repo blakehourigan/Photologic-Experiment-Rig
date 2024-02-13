@@ -72,7 +72,7 @@ class ProgramController:
             self.data_mgr.side_two_licks = 0
 
             # configure the state time label in the top right of the main window to hold the value of the new state
-            self.main_gui.state_time_label_header.configure(
+            self.main_gui.state_timer_text.configure(
                 text=(self.state + " Time:")
             )
 
@@ -114,7 +114,7 @@ class ProgramController:
             self.read_licks(iteration)
 
 
-            self.main_gui.state_time_label_header.configure(
+            self.main_gui.state_timer_text.configure(
                 text=(self.state + " Time:")
             )  # update state timer header
 
@@ -247,12 +247,11 @@ class ProgramController:
         else:
             self.start_program()
 
-    def clear_button_handler(self) -> None:
+    def reset_button_handler(self) -> None:
         """Handle clearing the data window on click of the clear button"""
         elapsed_time, state_elapsed_time = 0, 0  # reset the elapsed time variables
-        self.main_gui.data_text.delete("1.0", tk.END)
-        self.main_gui.time_label.configure(text="{:.3f}s".format(elapsed_time))
-        self.main_gui.state_time_label.configure(
+        self.main_gui.main_timer_text.configure(text="{:.3f}s".format(elapsed_time))
+        self.main_gui.state_timer_text.configure(
             text="{:.3f}s".format(state_elapsed_time)
         )
         self.data_mgr = DataManager(self)
@@ -265,7 +264,7 @@ class ProgramController:
         self.state = "OFF"
 
         # set the state timer label
-        self.main_gui.state_time_label_header.configure(text=(self.state))
+        self.main_gui.state_timer_text.configure(text=(self.state))
 
         # set the running variable to false to halt execution in the state functions
         self.running = False

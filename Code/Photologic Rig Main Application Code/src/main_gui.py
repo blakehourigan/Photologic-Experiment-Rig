@@ -14,6 +14,7 @@ class MainGUI:
         self.display_timers()
         self.entry_widgets()
         self.display_main_control_buttons()
+        self.lower_control_buttons()
         self.create_frame()
         self.create_status_widget()
         self.update_size()
@@ -74,11 +75,11 @@ class MainGUI:
         label = tk.Label(frame, text=timer_name, bg="light blue", font=("Helvetica", 24))
         label.grid(row=0, column=0)
 
-        label_2 = tk.Label(frame, text=default_text, bg="light blue", font=("Helvetica", 24))
-        label_2.grid(row=0, column=1) 
+        time_label = tk.Label(frame, text=default_text, bg="light blue", font=("Helvetica", 24))
+        time_label.grid(row=0, column=1) 
 
         # No need to configure row weight since all widgets are in the same row
-        return frame, label, label_2
+        return frame, label, time_label
 
     def display_timers(self) -> None:
         self.timers_frame = tk.Frame(self.root)
@@ -86,8 +87,8 @@ class MainGUI:
         for i in range(2):
             self.timers_frame.grid_columnconfigure(i, weight=1)
             
-        self.main_timer_frame, _, _ = self.create_timer(self.timers_frame, "Time Elapsed:", "0.000s", 0,0)
-        self.state_timer_frame, _, _ = self.create_timer(self.timers_frame, "State Time:", "0.000s", 1,0)
+        self.main_timer_frame, _, self.main_timer_text = self.create_timer(self.timers_frame, "Time Elapsed:", "0.000s", 0,0)
+        self.state_timer_frame, _, self.state_timer_text = self.create_timer(self.timers_frame, "State Time:", "0.000s", 1,0)
             
         
         # self.timers_frame = tk.Frame(self.root)
@@ -171,7 +172,6 @@ class MainGUI:
         frame.grid_rowconfigure(1, weight=1)
         return frame, label, entry
 
-
     def entry_widgets(self) -> None:
         self.entry_widgets_frame = tk.Frame(self.root)
         self.entry_widgets_frame.grid(row=4, column=0, sticky="nsew", columnspan=4)
@@ -190,6 +190,17 @@ class MainGUI:
         self.Sample_Interval_Random_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "+/- Sample", self.controller.data_mgr.interval_vars["sample_random_entry"], 1, 2)
         self.num_stimuli_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Number of Stimuli", self.controller.data_mgr.num_stimuli, 1, 3)
 
+    def create_button(self, parent, button_text, command, bg, row, column):
+        frame = tk.Frame(parent)
+        frame.grid(row=row, column=column, padx=5, sticky="nsew")
+
+        button = tk.Button(frame, text=button_text, command=command, bg=bg, font=("Helvetica", 24))
+        button.grid(row=0, pady=10)
+
+        frame.grid_columnconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=1)
+        return frame, button
+
     def display_main_control_buttons(self) -> None:
         self.main_control_button_frame = tk.Frame(self.root)
         self.main_control_button_frame.grid(row=0, sticky='nsew')
@@ -197,112 +208,24 @@ class MainGUI:
         
         for i in range(2):
             self.main_control_button_frame.grid_columnconfigure(i, weight=1)
+            
+        self.start_button_frame, _ = self.create_button(self.main_control_button_frame, "Start", self.controller.start_button_handler, "green", 0, 0)
 
-        self.start_button_frame = tk.Frame(self.main_control_button_frame)
-        self.start_button_frame.grid(
-            row=0, column=0, pady=10, padx=10, sticky="nsew"
-        )
-        self.startButton = tk.Button(
-            self.start_button_frame,
-            text="Start",
-            command=self.controller.start_button_handler,
-            bg="green",
-            font=("Helvetica", 24),
-        )
-        self.startButton.grid(row=0, column=0)  # Adjusted sticky
+        self.reset_button_frame, _ = self.create_button(self.main_control_button_frame, "Reset", self.controller.start_button_handler, "grey", 0, 2)
+ 
+    def lower_control_buttons(self):
+        self.lower_control_buttons_frame = tk.Frame(self.root)
+        self.lower_control_buttons_frame.grid(row=6, sticky='nsew')
+        self.lower_control_buttons_frame.grid_rowconfigure(0, weight=1)
 
-        self.clear_button_frame = tk.Frame(self.main_control_button_frame)
-        self.clear_button_frame.grid(
-            row=0, column=2, pady=10, padx=10, sticky="nsew"
-        )
-        self.clear_button = tk.Button(
-            self.clear_button_frame,
-            text="Clear",
-            command=self.controller.clear_button_handler,
-            bg="grey",
-            font=("Helvetica", 24),
-        )
-        self.clear_button.grid(
-            row=0, column=0, sticky="nsew"
-        )  # Adjusted column and sticky
-
-        # # Button to open the stimuli window
-        # self.test_valves_button_frame = tk.Frame(self.root)
-        # self.test_valves_button_frame.grid_propagate(True)  # Disables resizing of frame
-        # self.test_valves_button_frame.grid(
-        #     row=10, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
-        # )
-        # self.test_valves_button = tk.Button(
-        #     self.test_valves_button_frame,
-        #     text="Calibrate Valves",
-        #     command=lambda: self.controller.test_valves(),
-        #     bg="grey",
-        #     font=("Helvetica", 24),
-        # )
-        # self.test_valves_button.pack(fill="both", expand=True)
-
-        # # Button to open the stimuli window
-        # self.exp_ctrl_button_frame = tk.Frame(self.root)
-        # self.exp_ctrl_button_frame.grid_propagate(True)
-        # self.exp_ctrl_button_frame.grid(
-        #     row=12, column=0, pady=10, padx=10, sticky="nsew", columnspan=1
-        # )
-        # self.experiment_control_button = tk.Button(
-        #     self.exp_ctrl_button_frame,
-        #     text="Experiment CTL",
-        #     command=lambda: self.controller.experiment_ctl_wind.show_window(self.root),
-        #     bg="grey",
-        #     font=("Helvetica", 24),
-        # )
-        # self.experiment_control_button.pack(fill="both", expand=True)
-
-        # # Lick data button
-        # self.lick_window_button_frame = tk.Frame(self.root)
-        # self.lick_window_button_frame.grid_propagate(True)  # Disables resizing of frame
-        # self.lick_window_button_frame.grid(
-        #     row=12, column=1, pady=10, padx=10, sticky="nsew", columnspan=1
-        # )
-        # self.lick_window_button = tk.Button(
-        #     self.lick_window_button_frame,
-        #     text="Lick Data",
-        #     command=self.controller.licks_window.show_window,
-        #     bg="grey",
-        #     font=("Helvetica", 24),
-        # )
-        # self.lick_window_button.pack(fill="both", expand=True)
-
-        # # Button to open the data window
-        # self.data_window_button_frame = tk.Frame(self.root, width=200, height=50)
-        # self.data_window_button_frame.grid_propagate(
-        #     False
-        # )  # Disables resizing of frame
-        # self.data_window_button_frame.grid(
-        #     row=12, column=2, pady=10, padx=10, sticky="nsew"
-        # )
-        # self.data_window_button = tk.Button(
-        #     self.data_window_button_frame,
-        #     text="View Data",
-        #     command=self.controller.data_window.show_window,
-        #     bg="grey",
-        #     font=("Helvetica", 24),
-        # )
-        # self.data_window_button.pack(fill="both", expand=True)
-
-        # # Button to save experiment data to excel sheets
-        # self.save_data_button_frame = tk.Frame(self.root, width=200, height=50)
-        # self.save_data_button_frame.grid_propagate(False)  # Disables resizing of frame
-        # self.save_data_button_frame.grid(
-        #     row=12, column=3, pady=10, padx=10, sticky="nsew"
-        # )
-        # self.save_data_button = tk.Button(
-        #     self.save_data_button_frame,
-        #     text="Save Data Externally",
-        #     command=self.controller.data_mgr.save_data_to_xlsx,
-        #     bg="grey",
-        #     font=("Helvetica", 24),
-        # )
-        # self.save_data_button.pack(fill="both", expand=True)
-
+        # Button to open the stimuli window
+        self.test_valves_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Test Valves", lambda: self.controller.test_valves(), "grey", 0,0)
+        self.exp_ctrl_button_frame = self.create_button(self.lower_control_buttons_frame, "Experiment CTL", lambda: self.controller.experiment_ctl_wind.show_window(self.root), "grey", 1, 0)
+        self.lick_window_button_frame = self.create_button(self.lower_control_buttons_frame, "Lick Data", self.controller.licks_window.show_window, "grey", 1, 1)
+        self.data_window_button_frame = self.create_button(self.lower_control_buttons_frame, "View Data", self.controller.data_window.show_window, "grey", 1, 2)
+        self.save_data_button_frame = self.create_button(self.lower_control_buttons_frame, "Save Data", self.controller.data_mgr.save_data_to_xlsx, "grey", 1, 3)
+        
+        
     def create_frame(self) -> None:
         # Create a frame to contain the scrolled text widget and place it in the grid
         self.frame = tk.Frame(self.root)
@@ -369,13 +292,13 @@ class MainGUI:
         elapsed_time = time.time() - self.controller.data_mgr.start_time
 
         # update the main screen label and set the number of decimal points to 3
-        self.time_label.configure(text="{:.3f}s".format(elapsed_time))
+        self.main_timer_text.configure(text="{:.3f}s".format(elapsed_time))
 
         # state elapsed time is current time minus the time we entered the state
         state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
 
         # update the main screen label and set the number of decimal points to 3
-        self.state_time_label.configure(text="{:.3f}s".format(state_elapsed_time))
+        self.state_timer_text.configure(text="{:.3f}s".format(state_elapsed_time))
 
         # Call this method again after 100 ms
         self.update_clock_id = self.root.after(50, lambda: self.update_clock_label())
