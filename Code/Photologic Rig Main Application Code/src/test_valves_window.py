@@ -61,7 +61,7 @@ class valveTestWindow:
     def configure_grid(self) -> None:
         if self.top is not None:
             for i in range(12):
-                self.top.grid_rowconfigure(i, weight=0)
+                self.top.grid_rowconfigure(i, weight=1)
             # The first column is also configured to expand
             # Configure all columns to have equal weight
             for i in range(1):
