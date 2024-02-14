@@ -1,4 +1,3 @@
-import tkinter as tk
 import time
 
 # Helper classes
@@ -52,16 +51,8 @@ class ProgramController:
             then continue running through more trials"""
 
         self.arduino_mgr.send_command_to_laser('S')
-
-
-        if not self.data_mgr.blocks_generated:
-            self.stop_program()
-            self.main_gui.display_error(
-                "Blocks not Generated",
-                "Please generate blocks before starting the program.",
-            )
-
-        elif self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
+        
+        if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
             self.stop_program()  # if we have gone through every trial then end the program.
 
         elif self.running:
@@ -79,24 +70,13 @@ class ProgramController:
             # update the state start time to now, so that it starts at 0
             self.data_mgr.state_start_time = time.time()
 
-            # Get trial number and stimuli in the trial and add them to the main information screen
-            # self.df_stimuli.loc is what we use to get values that are held in the main data table. Accessed using .loc[row_num, 'Column Name']
-            string = f'\nTRIAL # {self.data_mgr.current_trial_number}: Side 1)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"]} vs. Side 2)  {self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"]}\n'
-
-            # this command is what adds things to the main information screen
-            self.main_gui.append_data(string)
-
-            # for every letter in the string we just created, create a dash to separate the title of the trial from the contents
-            for letter in range(len(string)):
-                self.main_gui.append_data("-")
+            self.main_gui.update_on_new_trial(self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"], self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"])
 
             # add the initial interval to the program information box
             ITI_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "ITI")
-
-            self.main_gui.append_data(
-                "\nInitial Interval Time: " + str(ITI_Value / 1000.0) + "s\n"
-            )
-
+            
+            self.main_gui.update_on_state_change(ITI_Value, self.state)
+                    
             def callback():
                 self.time_to_contact(iteration)
 
@@ -133,11 +113,8 @@ class ProgramController:
 
             
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
-
-            # write the time to contact to the program information box
-            self.main_gui.append_data(
-                "Time to Contact: " + str(TTC_Value / 1000.0) + "s\n"
-            )
+            
+            self.main_gui.update_on_state_change(TTC_Value, self.state)
 
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
@@ -164,13 +141,8 @@ class ProgramController:
             sample_interval_value = self.data_mgr.check_dataframe_entry_isfloat(
                 iteration, "Sample Time"
             )
-
-            # Appending the sample time interval to the main text box
-            self.main_gui.append_data(
-                "Sample Time Interval: "
-                + str(sample_interval_value / 1000.0)
-                + "s\n\n\n"
-            )
+            
+            self.main_gui.update_on_state_change(sample_interval_value, self.state)
 
             # After the sample time specified in the ith row of the 'Sample Time' table, we will jump to the save licks function
             self.main_gui.root.after(
@@ -249,11 +221,7 @@ class ProgramController:
 
     def reset_button_handler(self) -> None:
         """Handle clearing the data window on click of the clear button"""
-        elapsed_time, state_elapsed_time = 0, 0  # reset the elapsed time variables
-        self.main_gui.main_timer_text.configure(text="{:.3f}s".format(elapsed_time))
-        self.main_gui.state_timer_text.configure(
-            text="{:.3f}s".format(state_elapsed_time)
-        )
+        self.main_gui.update_on_reset()
         self.data_mgr = DataManager(self)
         self.arduino_mgr.close_connections()
         self.arduino_mgr = AduinoManager(self)
@@ -263,14 +231,10 @@ class ProgramController:
         """Method to halt the program and set it to the off state, changing the button back to start."""
         self.state = "OFF"
 
-        # set the state timer label
-        self.main_gui.state_timer_text.configure(text=(self.state))
-
         # set the running variable to false to halt execution in the state functions
         self.running = False
-
-        # Turn the program execution button back to the green start button
-        self.main_gui.startButton.configure(text="Start", bg="green")
+        
+        self.main_gui.update_on_stop()
 
         for after_id in (
             self.after_ids
@@ -285,20 +249,28 @@ class ProgramController:
 
     def start_program(self) -> None:
         # Start the program if it is not already runnning and generate random numbers
-        self.running = True
+        
+        if not self.data_mgr.blocks_generated:
+            self.main_gui.display_error(
+                "Blocks not Generated",
+                "Please generate blocks before starting the program.",
+            )
+            self.experiment_ctl_wind.show_window(self.main_gui.root)
+        else:
+            self.running = True
 
-        # program main start time begins now
-        self.data_mgr.start_time = time.time()
-        self.data_mgr.state_start_time = time.time()
+            # program main start time begins now
+            self.data_mgr.start_time = time.time()
+            self.data_mgr.state_start_time = time.time()
 
-        self.update_clock_label()
+            self.update_clock_label()
 
-        # turn the main button to the red stop button
-        self.main_gui.startButton.configure(text="Stop", bg="red")
+            # turn the main button to the red stop button
+            self.main_gui.start_button.configure(text="Stop", bg="red")
 
-        # call the first ITI state with an iteration variable (i acts as a
-        # variable to iterate throgh the program schedule data table) starting at 0
-        self.initial_time_interval(0)
+            # call the first ITI state with an iteration variable (i acts as a
+            # variable to iterate throgh the program schedule data table) starting at 0
+            self.initial_time_interval(0)
 
     def update_clock_label(self) -> None:
         # if the program is running, update the clock label

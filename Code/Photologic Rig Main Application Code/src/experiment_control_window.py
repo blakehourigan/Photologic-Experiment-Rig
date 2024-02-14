@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from pandastable import Table
+from pandastable import Table # type: ignore
 
 class ExperimentCtlWindow:
     def __init__(self, controller):
@@ -128,10 +128,27 @@ class ExperimentCtlWindow:
         """update the size of the window to fit the contents
         """
         if self.top is not None:
+    
+            """update the size of the window to fit the contents dynamically based on display size."""
+            self.top.update_idletasks()  # Ensure all widgets are updated
+            screen_width = self.top.winfo_screenwidth()  # Get screen width
+            screen_height = self.top.winfo_screenheight()  # Get screen height
+
+            # Calculate desired size as a fraction of screen size for demonstration
+            desired_width = self.top.winfo_reqwidth()
+            desired_height = self.top.winfo_reqheight()
+
+            # Center the window on the screen
+            x_position = (screen_width - desired_width) // 2
+            y_position = (screen_height - desired_height) // 2
+
+            # Apply the new geometry
+            self.top.geometry(
+                "{}x{}+{}+{}".format(desired_width, desired_height, x_position, y_position)
+            )
+            
             self.top.update_idletasks()
-            width = self.top.winfo_reqwidth()
-            height = self.top.winfo_reqheight()
-            self.top.geometry('{}x{}'.format(width, height))
+            self.top.geometry('{}x{}'.format(desired_width, desired_height))
 
 
     def on_window_close(self) -> None:

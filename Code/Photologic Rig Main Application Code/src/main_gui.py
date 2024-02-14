@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import PhotoImage, messagebox, ttk
 import time
 
-
 class MainGUI:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -15,8 +14,7 @@ class MainGUI:
         self.entry_widgets()
         self.display_main_control_buttons()
         self.lower_control_buttons()
-        self.create_frame()
-        self.create_status_widget()
+        self.display_status_widget()
         self.update_size()
 
     def setup_window(self) -> None:
@@ -61,16 +59,61 @@ class MainGUI:
 
     def setup_grid(self) -> None:
         # Configure the GUI grid expand settings
-        for i in range(12):
-            self.root.grid_rowconfigure(i, weight=1)
-        # The first column is also configured to expand
-        # Configure all columns to have equal weight
         for i in range(4):
-            self.root.grid_columnconfigure(i, weight=1)
+            self.root.grid_rowconfigure(i, weight=1)
 
-    def create_timer(self, parent, timer_name, default_text, row, column):
+        # Configure all columns to have equal weight
+        self.root.grid_columnconfigure(0, weight=1)
+
+    def create_button(self, parent, button_text, command, bg, row, column):
+        frame = tk.Frame(parent, highlightthickness=1, highlightbackground='black')
+        frame.grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
+
+        button = tk.Button(frame, text=button_text, command=command, bg=bg, font=("Helvetica", 24))
+        button.grid(row=0, sticky="nsew", ipadx=10, ipady=10)
+
+        frame.grid_columnconfigure(0, weight=1)
+        return frame, button
+
+    def create_status_frame(self, parent, row, column, sticky):
+        """
+        Helper function to create and return a frame with standard configuration
+        and custom grid placement options.
+        """
+        frame = tk.Frame(parent, highlightthickness=1, highlightbackground='black')
+        frame.grid(row=row, column=column, padx=5, pady=5, sticky=sticky)
+        frame.grid_columnconfigure(0, weight=1)
+        return frame
+    
+    def create_labeled_entry(self, parent: tk.Frame, label_text: str, text_var: tk.StringVar, row: int, column: int) -> tuple[tk.Frame, tk.Label, tk.Entry]:        
         frame = tk.Frame(parent)
-        frame.grid(row=row, column=column, padx=10, pady=5, sticky="nsew")
+        frame.grid(row=row, column=column, padx=5, sticky="nsew")
+
+        label = tk.Label(frame, text=label_text, bg="light blue", font=("Helvetica", 24), highlightthickness=1, highlightbackground='dark blue')
+        label.grid(row=0, pady=10)
+
+        entry = tk.Entry(frame, textvariable=text_var, font=("Helvetica", 24), highlightthickness=1, highlightbackground='black')
+        entry.grid(row=1, sticky="nsew")
+
+        frame.grid_columnconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=1)
+        return frame, label, entry
+
+    def display_main_control_buttons(self) -> None:
+        # setup master frame for the main control buttons on row zero in main frame
+        self.main_control_button_frame = tk.Frame(self.root, highlightthickness=2, highlightbackground='black')
+        self.main_control_button_frame.grid(row=0, column=0, pady=5, sticky="nsew")
+        self.main_control_button_frame.grid_rowconfigure(0, weight=0)
+        for i in range(2):
+            self.main_control_button_frame.grid_columnconfigure(i, weight=1)
+            
+        self.start_button_frame, self.start_button = self.create_button(self.main_control_button_frame, "Start", self.controller.start_button_handler, "green", 0, 0)
+
+        self.reset_button_frame, _ = self.create_button(self.main_control_button_frame, "Reset", self.controller.reset_button_handler, "grey", 0, 1)
+ 
+    def create_timer(self, parent, timer_name, default_text, row, column):
+        frame = tk.Frame(parent, highlightthickness=1, highlightbackground='dark blue')
+        frame.grid(row=row, column=column, padx=10, pady=5, sticky="nsw", )
 
         label = tk.Label(frame, text=timer_name, bg="light blue", font=("Helvetica", 24))
         label.grid(row=0, column=0)
@@ -78,228 +121,177 @@ class MainGUI:
         time_label = tk.Label(frame, text=default_text, bg="light blue", font=("Helvetica", 24))
         time_label.grid(row=0, column=1) 
 
-        # No need to configure row weight since all widgets are in the same row
         return frame, label, time_label
 
     def display_timers(self) -> None:
-        self.timers_frame = tk.Frame(self.root)
-        self.timers_frame.grid(row=1, column=0, sticky="nsew", columnspan=4)
+        self.timers_frame = tk.Frame(self.root, highlightthickness=2, highlightbackground='Black')
+        self.timers_frame.grid(row=1, column=0, sticky="nsew")
         for i in range(2):
             self.timers_frame.grid_columnconfigure(i, weight=1)
             
-        self.main_timer_frame, _, self.main_timer_text = self.create_timer(self.timers_frame, "Time Elapsed:", "0.000s", 0,0)
-        self.state_timer_frame, _, self.state_timer_text = self.create_timer(self.timers_frame, "State Time:", "0.000s", 1,0)
+        self.main_timer_frame, _, self.main_timer_text = self.create_timer(self.timers_frame, "Time Elapsed:", "0.0s", 0,0)
+        self.main_timer_min_sec_text = tk.Label(self.main_timer_frame, text="",bg="light blue", font=("Helvetica", 24))
+        self.main_timer_min_sec_text.grid(row=0, column=2)
+        
+        self.maximum_total_time_frame, _, self.maximum_total_time = self.create_timer(self.timers_frame, "Maximum Total Time:", "0 Minutes, 0 Seconds", 0,1)
+        self.maximum_total_time_frame.grid(sticky='e')
+
+        self.state_timer_frame, _, self.state_timer_text = self.create_timer(self.timers_frame, "State Time:", "0.0s", 1,0)
+        self.full_state_time_text = tk.Label(self.state_timer_frame, text="/ 0.0s",bg="light blue", font=("Helvetica", 24))
+        self.full_state_time_text.grid(row=0, column=2)
+
+    def display_status_widget(self):
+        # Create main status frame
+        self.status_frame= tk.Frame(self.root, highlightthickness=2, highlightbackground='black')
+        self.status_frame.grid(row=2, column=0, pady=5, sticky="nsew")
+        self.status_frame.grid_rowconfigure(0, weight=1)        
+        
+        for i in range(2):
+            self.status_frame.grid_columnconfigure(i, weight=1)
+
+        # Create sub-frames within the main status frame
+        self.program_status_statistic_frame = self.create_status_frame(self.status_frame, row=0, column=0, sticky="nsew")
+        self.program_status_statistic_frame.grid_rowconfigure(0, weight=1)
+        
+        self.stimuli_information_frame = self.create_status_frame(self.status_frame, row=0, column=1, sticky="nsew")
+        self.stimuli_information_frame.grid_rowconfigure(0, weight=1)
+
+        # Create labels and progress bar within the program_status_statistic_frame
+        self.status_label = tk.Label(self.program_status_statistic_frame, text="Status: Idle", font=("Helvetica", 24), bg="light blue", highlightthickness=1, highlightbackground='dark blue')
+        self.status_label.grid(row=0, column=0)
+
+        self.trials_completed_label = tk.Label(self.program_status_statistic_frame, text="0 / 0 Trials Completed", font=("Helvetica", 20), bg="light blue", highlightthickness=1, highlightbackground='dark blue')
+        self.trials_completed_label.grid(row=1, column=0)
+
+        self.progress = ttk.Progressbar(self.program_status_statistic_frame, orient="horizontal", length=300, mode="determinate", value=0)
+        self.progress.grid(row=2, column=0, pady=5)
+        
+        self.stimuli_label = tk.Label(self.stimuli_information_frame, text="Side One | VS | Side Two", font=("Helvetica", 24), bg="light blue", highlightthickness=1, highlightbackground='dark blue')
+        self.stimuli_label.grid(row=0, column=0, pady=5)
             
-        
-        # self.timers_frame = tk.Frame(self.root)
-        # self.timers_frame.grid(row=1, column=0, padx=5, sticky="ew")
-
-        # self.main_timer_frame = tk.Frame(self.timers_frame)
-        # self.main_timer_frame.grid(row=0)
-
-        # self.time_label_header = tk.Label(
-        #     self.main_timer_frame,
-        #     text="Elapsed Time:",
-        #     bg="light blue",
-        #     font=("Helvetica", 24),
-        # )
-
-        # self.time_label = tk.Label(
-        #     self.main_timer_frame, text="0.000s", bg="light blue", font=("Helvetica", 24)
-        # )
-
-        # self.time_label_header.grid(row=0, column=0)
-        # self.time_label.grid(row=0, column=1, sticky='ew')
-
-        # self.state_timer_frame = tk.Frame(self.timers_frame)
-        # self.state_timer_frame.grid(
-        #     row=1, column=0, pady=10, sticky="ew"
-        # )
-        # self.state_time_label_header = tk.Label(
-        #     self.state_timer_frame,
-        #     text=(self.controller.state) + ':',
-        #     bg="light blue",
-        #     font=("Helvetica", 24),
-        # )
-        # self.state_time_label_header.grid(row=0)
-        
-        # self.state_time_label = tk.Label(
-        #     self.state_timer_frame,
-        #     text="0.000s",
-        #     bg="light blue",
-        #     font=("Helvetica", 24),
-        # )
-        # self.state_time_label.grid(row=0, column=1)
-
-        # # plus/minus label for intervals
-        # self.plus_minus_times_label_frame = tk.Frame(self.root, width=600, height=50)
-        # self.plus_minus_times_label_frame.grid(
-        #     row=8, column=0, pady=10, padx=10, sticky="ew", columnspan=3
-        # )
-        # self.plus_minus_times_label = tk.Label(
-        #     self.plus_minus_times_label_frame,
-        #     text="+/- (All times in ms)",
-        #     bg="light blue",
-        #     font=("Helvetica", 24),
-        # )
-        # self.plus_minus_times_label.pack(fill="x")
-
-        # # Label for # stimuli
-        # self.num_stimuli_label_frame = tk.Frame(self.root)
-        # self.num_stimuli_label_frame.grid(
-        #     row=8, column=3, pady=10, padx=10, sticky="nsew"
-        # )
-        # self.num_stimuli_label = tk.Label(
-        #     self.num_stimuli_label_frame,
-        #     text="# of Stimuli",
-        #     bg="light blue",
-        #     font=("Helvetica", 24),
-        # )
-        # self.num_stimuli_label.pack()
-
-
-    def create_labeled_entry(self, parent, label_text, text_var, row, column):
-        frame = tk.Frame(parent)
-        frame.grid(row=row, column=column, padx=5, sticky="nsew")
-
-        label = tk.Label(frame, text=label_text, bg="light blue", font=("Helvetica", 24))
-        label.grid(row=0, pady=10)
-
-        entry = tk.Entry(frame, textvariable=text_var, font=("Helvetica", 24))
-        entry.grid(row=1, sticky="nsew")
-
-        frame.grid_columnconfigure(0, weight=1)
-        frame.grid_rowconfigure(1, weight=1)
-        return frame, label, entry
+        self.trial_number_label = tk.Label(self.stimuli_information_frame, text="Trial Number: ", font=("Helvetica", 24), bg="light blue", highlightthickness=1, highlightbackground='dark blue')
+        self.trial_number_label.grid(row=1, column=0, pady=5)
 
     def entry_widgets(self) -> None:
-        self.entry_widgets_frame = tk.Frame(self.root)
-        self.entry_widgets_frame.grid(row=4, column=0, sticky="nsew", columnspan=4)
+        self.entry_widgets_frame = tk.Frame(self.root, highlightthickness=2, highlightbackground='black')
+        self.entry_widgets_frame.grid(row=3, column=0, pady=5, sticky="nsew")
         for i in range(4):
             self.entry_widgets_frame.grid_columnconfigure(i, weight=1)
 
         # Simplify the creation of labeled entries
-        self.ITI_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Initial Interval", self.controller.data_mgr.interval_vars["ITI_var"], 0, 0)
-        self.TTC_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Time to Contact", self.controller.data_mgr.interval_vars["TTC_var"], 0, 1)
-        self.Sample_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Time to Sample", self.controller.data_mgr.interval_vars["sample_var"], 0, 2)
-        self.num_trial_blocks_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Trial Blocks", self.controller.data_mgr.num_trial_blocks, 0, 3)
+        self.ITI_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "ITI Time", self.controller.data_mgr.interval_vars["ITI_var"], 0, 0)
+        self.TTC_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "TTC Time", self.controller.data_mgr.interval_vars["TTC_var"], 0, 1)
+        self.Sample_Interval_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Sample Time", self.controller.data_mgr.interval_vars["sample_var"], 0, 2)
+        self.num_trial_blocks_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "# Trial Blocks", self.controller.data_mgr.num_trial_blocks, 0, 3)
 
         # Similarly for random plus/minus intervals and the number of stimuli
         self.ITI_Random_Interval_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "+/- ITI", self.controller.data_mgr.interval_vars["ITI_random_entry"], 1, 0)
         self.TTC_Random_Interval_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "+/- TTC", self.controller.data_mgr.interval_vars["TTC_random_entry"], 1, 1)
         self.Sample_Interval_Random_Frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "+/- Sample", self.controller.data_mgr.interval_vars["sample_random_entry"], 1, 2)
-        self.num_stimuli_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "Number of Stimuli", self.controller.data_mgr.num_stimuli, 1, 3)
+        self.num_stimuli_frame, _, _ = self.create_labeled_entry(self.entry_widgets_frame, "# Stimuli", self.controller.data_mgr.num_stimuli, 1, 3)
 
-    def create_button(self, parent, button_text, command, bg, row, column):
-        frame = tk.Frame(parent)
-        frame.grid(row=row, column=column, padx=5, sticky="nsew")
-
-        button = tk.Button(frame, text=button_text, command=command, bg=bg, font=("Helvetica", 24))
-        button.grid(row=0, pady=10)
-
-        frame.grid_columnconfigure(0, weight=1)
-        frame.grid_rowconfigure(1, weight=1)
-        return frame, button
-
-    def display_main_control_buttons(self) -> None:
-        self.main_control_button_frame = tk.Frame(self.root)
-        self.main_control_button_frame.grid(row=0, sticky='nsew')
-        self.main_control_button_frame.grid_rowconfigure(0, weight=1)
-        
-        for i in range(2):
-            self.main_control_button_frame.grid_columnconfigure(i, weight=1)
-            
-        self.start_button_frame, _ = self.create_button(self.main_control_button_frame, "Start", self.controller.start_button_handler, "green", 0, 0)
-
-        self.reset_button_frame, _ = self.create_button(self.main_control_button_frame, "Reset", self.controller.start_button_handler, "grey", 0, 2)
- 
     def lower_control_buttons(self):
-        self.lower_control_buttons_frame = tk.Frame(self.root)
-        self.lower_control_buttons_frame.grid(row=6, sticky='nsew')
-        self.lower_control_buttons_frame.grid_rowconfigure(0, weight=1)
+        # setup the master frame that will hold the lower buttons
+        self.lower_control_buttons_frame = tk.Frame(self.root, highlightthickness=2, highlightbackground='black')
+        self.lower_control_buttons_frame.grid(row=4, sticky='nsew')
+        self.lower_control_buttons_frame.grid_rowconfigure(0, weight=0)
+        for i in range(4):
+            self.lower_control_buttons_frame.grid_columnconfigure(i, weight=1)
 
-        # Button to open the stimuli window
+        # Create a new frame for each new button, and store the button inside of that frame
         self.test_valves_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Test Valves", lambda: self.controller.test_valves(), "grey", 0,0)
         self.exp_ctrl_button_frame = self.create_button(self.lower_control_buttons_frame, "Experiment CTL", lambda: self.controller.experiment_ctl_wind.show_window(self.root), "grey", 1, 0)
         self.lick_window_button_frame = self.create_button(self.lower_control_buttons_frame, "Lick Data", self.controller.licks_window.show_window, "grey", 1, 1)
         self.data_window_button_frame = self.create_button(self.lower_control_buttons_frame, "View Data", self.controller.data_window.show_window, "grey", 1, 2)
         self.save_data_button_frame = self.create_button(self.lower_control_buttons_frame, "Save Data", self.controller.data_mgr.save_data_to_xlsx, "grey", 1, 3)
         
-        
-    def create_frame(self) -> None:
-        # Create a frame to contain the scrolled text widget and place it in the grid
-        self.frame = tk.Frame(self.root)
-        self.frame.grid(row=3, column=0, pady=10, padx=10, sticky="nsew", columnspan=4)
-
-        # Configure the frame's column and row to expand as the window resizes
-        self.frame.grid_columnconfigure(0, weight=1)
-        self.frame.grid_rowconfigure(0, weight=1)
-
-    def create_status_widget(self):
-        self.status_frame = tk.Frame(self.root)
-        self.status_frame.grid(
-            row=3, column=0, pady=5, padx=10, sticky="nsew", columnspan=2
-        )
-        self.status_frame.grid_columnconfigure(0, weight=1)
-
-        self.stimuli_frame = tk.Frame(self.status_frame)
-        self.stimuli_frame.grid(
-            row=0, column=0, pady=10, padx=10, sticky="nsew", columnspan=4
-        )
-        self.stimuli_frame.grid_columnconfigure(0, weight=1)
-
-        # Create labels for displaying status information in status_frame
-        self.status_label = tk.Label(
-            self.status_frame,
-            text="Status: Idle",
-            font=("Helvetica", 24),
-            bg="light blue",
-        )
-        self.status_label.grid(row=0, column=0)
-
-        self.detail_label = tk.Label(
-            self.status_frame,
-            text="0 / 0 Trials Completed",
-            font=("Helvetica", 20),
-            bg="light blue",
-        )
-        self.detail_label.grid(row=1, column=0)
-
-        # Create a progress bar in status_frame
-        self.progress = ttk.Progressbar(
-            self.status_frame, orient="horizontal", length=500, mode="determinate"
-        )
-        self.progress.grid(row=2, column=0, pady=10)
-        self.progress["value"] = 0  # Set initial progress value
-
-        # Configure the frames to expand with the window
-        self.status_frame.grid_rowconfigure([0, 1, 2], weight=1)
-
-    def update_progress_bar(self):
-        print("do something here")
-
-    # Define the method for appending data to the scrolled text widget
-    def append_data(self, data):  # this is gonna be deleted soon
-        self.data_text.insert(tk.END, data)
-        # Scroll the scrolled text widget to the end of the data
-        self.data_text.see(tk.END)
-
     def display_error(self, error, message):
         messagebox.showinfo(error, message)
+
+    def convert_seconds_to_minutes_seconds(self, total_seconds):
+        """Converts a given number of seconds to minutes and seconds.
+        """
+        minutes = total_seconds // 60  # Integer division to get whole minutes
+        seconds = total_seconds % 60   # Modulo to get remaining seconds
+
+        return minutes, seconds
 
     def update_clock_label(self) -> None:
         # total elapsed time is current minus program start time
         elapsed_time = time.time() - self.controller.data_mgr.start_time
+        
+        min, sec = self.convert_seconds_to_minutes_seconds(elapsed_time)
 
         # update the main screen label and set the number of decimal points to 3
-        self.main_timer_text.configure(text="{:.3f}s".format(elapsed_time))
-
+        self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
+    
+        self.main_timer_min_sec_text.configure(text="| {:.0f} Minutes, {:.1f} Seconds".format(min, sec))
+        
         # state elapsed time is current time minus the time we entered the state
         state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
 
         # update the main screen label and set the number of decimal points to 3
-        self.state_timer_text.configure(text="{:.3f}s".format(state_elapsed_time))
+        self.state_timer_text.configure(text="{:.1f}s".format(state_elapsed_time))
 
         # Call this method again after 100 ms
-        self.update_clock_id = self.root.after(50, lambda: self.update_clock_label())
+        self.update_clock_id = self.root.after(100, lambda: self.update_clock_label())
         self.controller.after_ids.append(self.update_clock_id)
+        
+    def update_max_time(self, minutes, seconds) -> None:
+        self.maximum_total_time.configure(text="{:.0f}Minutes ,{:.1f} Seconds".format(minutes, seconds))        
+        
+    def update_on_new_trial(self, side_1_stimulus, side_2_stimulus) -> None:
+        self.trials_completed_label.configure(text="{} / {} Trials Completed".format(self.controller.data_mgr.current_trial_number, self.controller.data_mgr.num_trials.get()))
+        self.stimuli_label.configure(text="Side One: {} | VS | Side Two: {}".format(side_1_stimulus, side_2_stimulus))
+        
+        self.trial_number_label.configure(text="Trial Number: {}".format(self.controller.data_mgr.current_trial_number))
+        
+        self.update_progress_bar()
+        
+    def update_progress_bar(self, reset=False):
+        if reset:
+            self.progress["value"] = 0
+        else:
+            self.progress["value"] = (self.controller.data_mgr.current_trial_number / self.controller.data_mgr.num_trials.get()) * 100 # Set the new value for the progress
+        self.progress.update_idletasks()  # Update the progress bar display
+        
+        
+    def update_on_state_change(self, state_time_value, state) -> None:
+        self.update_full_state_time(state_time_value)
+        self.update_status(state)
+        
+    def update_status(self, state) -> None: 
+        self.status_label.configure(text="Status: {}".format(state))
+        
+    def update_full_state_time(self, state_time_value) -> None:
+        full_state_time = state_time_value
+
+        self.full_state_time_text.configure(text="/ {:.1f}s".format(full_state_time/1000.0))
+        
+    def update_on_stop(self) -> None:
+        # set the state timer label
+        self.state_timer_text.configure(text="0.0s")
+        
+        # Turn the program execution button back to the green start button
+        self.start_button.configure(text="Start", bg="green")
+        
+        self.update_on_state_change(0, "Idle")
+
+    def update_on_reset(self) -> None:
+        elapsed_time, state_elapsed_time = 0, 0  # reset the elapsed time variables
+        self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
+        self.state_timer_text.configure(
+            text="{:.3f}s".format(state_elapsed_time)
+        )
+        
+        self.main_timer_min_sec_text.configure(text="| 0 Minutes, 0 Seconds")
+
+        
+        self.maximum_total_time.configure(text="0 Minutes, 0 Seconds")        
+        self.trials_completed_label.configure(text="0 / 0 Trials Completed")
+        self.stimuli_label.configure(text="Side One | VS | Side Two")
+        self.trial_number_label.configure(text="Trial Number: 0")
+        self.update_progress_bar(True)
+        
+        
+        self.update_on_state_change(0, "Idle")

@@ -60,6 +60,39 @@ class DataManager:
 
         self.blocks_generated = False
 
+    def initialize_stimuli_dataframe(self) -> None:
+        """filling the dataframe with the values that we have at this time"""
+        if hasattr(self, "stimuli_dataframe"):
+            del self.stimuli_dataframe
+
+        self.create_trial_blocks()
+        stimuli_1, stimuli_2 = self.generate_pairs()
+
+        block_size = int(self.num_stimuli.get() / 2)
+        data = {
+            "Trial Block": np.repeat(
+                range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
+                block_size,
+            ),
+            "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
+            "Side 1": stimuli_1,
+            "Side 2": stimuli_2,
+            "Side 1 Licks": np.full(self.num_trials.get(), np.nan),
+            "Side 2 Licks": np.full(self.num_trials.get(), np.nan),
+            "ITI": self.ITI_intervals_final,
+            "TTC": self.TTC_intervals_final,
+            "Sample Time": self.sample_intervals_final,
+            "TTC Actual": np.full(self.num_trials.get(), np.nan),
+        }
+
+        df = pd.DataFrame(data)
+
+        self.stimuli_dataframe = df
+
+        self.blocks_generated = True
+        self.controller.experiment_ctl_wind.show_stimuli_table()
+        self.controller.arduino_mgr.send_schedule_to_motor()
+
     def create_trial_blocks(self):
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
@@ -68,8 +101,11 @@ class DataManager:
             ((self.num_stimuli.get() / 2) * self.num_trial_blocks.get())
         )
 
-        self.create_random_intervals()
+        max_time = self.create_random_intervals()
 
+        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(max_time/1000) # converting our max runtime in ms to max time in minues, seconds format
+        self.controller.main_gui.update_max_time(minutes, seconds)
+        
         """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
                             var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
         self.changed_vars = [
@@ -107,10 +143,7 @@ class DataManager:
                 "One or more of the default stimuli have not been changed, please change the default value and try again",
             )
 
-        # for each pair in pairs list, include each pair flipped
-        # self.pairs.extend([(pair[1], pair[0]) for pair in self.pairs])
-
-    def create_random_intervals(self) -> None:
+    def create_random_intervals(self) -> int:
         # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
         self.ITI_intervals_final.clear()
         self.TTC_intervals_final.clear()
@@ -128,7 +161,7 @@ class DataManager:
                     -self.interval_vars[random_entry_key].get(),
                     self.interval_vars[random_entry_key].get(),
                 )
-
+                
                 # Calculate the final interval by adding the random interval to the state constant
                 final_interval = self.interval_vars[var_key].get() + random_interval
 
@@ -136,6 +169,10 @@ class DataManager:
                 if not hasattr(self, final_intervals_key):
                     setattr(self, final_intervals_key, [])
                 getattr(self, final_intervals_key).append(final_interval)
+        
+        max_time = sum(self.ITI_intervals_final) + sum(self.TTC_intervals_final) + sum(self.sample_intervals_final)
+        
+        return max_time
 
     def generate_pairs(self) -> Tuple[list, list]:
         """if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
@@ -172,38 +209,6 @@ class DataManager:
         
         return stimulus_1, stimulus_2
 
-    def initialize_stimuli_dataframe(self) -> None:
-        """filling the dataframe with the values that we have at this time"""
-        if hasattr(self, "stimuli_dataframe"):
-            del self.stimuli_dataframe
-
-        self.create_trial_blocks()
-        stimuli_1, stimuli_2 = self.generate_pairs()
-
-        block_size = int(self.num_stimuli.get() / 2)
-        data = {
-            "Trial Block": np.repeat(
-                range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
-                block_size,
-            ),
-            "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
-            "Side 1": stimuli_1,
-            "Side 2": stimuli_2,
-            "Side 1 Licks": np.full(self.num_trials.get(), np.nan),
-            "Side 2 Licks": np.full(self.num_trials.get(), np.nan),
-            "ITI": self.ITI_intervals_final,
-            "TTC": self.TTC_intervals_final,
-            "Sample Time": self.sample_intervals_final,
-            "TTC Actual": np.full(self.num_trials.get(), np.nan),
-        }
-
-        df = pd.DataFrame(data)
-
-        self.stimuli_dataframe = df
-
-        self.blocks_generated = True
-        self.controller.experiment_ctl_wind.show_stimuli_table()
-        self.controller.arduino_mgr.send_schedule_to_motor()
 
 
     def initalize_licks_dataframe(self):
