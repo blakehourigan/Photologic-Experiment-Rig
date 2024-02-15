@@ -130,12 +130,31 @@ class DataManager:
 
         # from our list of variables that were changed from their default values, pair them together in a new pairs list.
         # 1 is paired with 2. 3 with 4, etc
+        
+        def get_paired_index(i, total_entries):
+            if total_entries == 2:
+                # If there are only two entries, pair them directly
+                return 1 - i  # This will swap 0 with 1 and 1 with 0
+            elif total_entries == 4:
+                # For 4 entries, pair 1 with 4 (0 with 3) and 2 with 3 (1 with 2)
+                return total_entries - i - 1
+            elif total_entries == 8:
+                # For 8 entries, the pattern is a bit more complex
+                if i % 2 == 0:  # even index (0 or 2)
+                    return (i + 5) % total_entries  # Pair 1 (0) with 6 (5) and 3 (2) with 8 (7)
+                else:  # odd index (1 or 3)
+                    return (i + 3) % total_entries  # Pair 2 (1) with 5 (4) and 4 (3) with 7 (6)
+            else:
+                raise ValueError("Unexpected number of entries")
         if self.changed_vars:
-            # increment by 2 every loop to avoid placing the same stimuli in the list twice
-            self.pairs = [
-                (self.changed_vars[i], self.changed_vars[i + 1])
-                for i in range(0, len(self.changed_vars), 2)
-            ]
+            self.pairs = []
+            total_entries = len(self.changed_vars)  # Can be 2, 4, or 8
+
+            # Loop through the first half of the entries for pairing
+            for i in range(total_entries // 2):
+                pair_index = get_paired_index(i, total_entries)
+                self.pairs.append((self.changed_vars[i], self.changed_vars[pair_index]))
+
         else:
             # if a stimulus has not been changed, this error message will be thrown to tell the user to change it and try again.
             self.controller.main_gui.display_error(
@@ -197,7 +216,7 @@ class DataManager:
                     "Stimuli variables have not yet been changed, to continue please change defaults and try again.",
                 )
 
-            elif self.controller.logic.num_trial_blocks.get() == 0:
+            elif self.num_trial_blocks.get() == 0:
                 self.controller.main_gui.display_error(
                     "Number of Trial Blocks 0",
                     "Number of trial blocks is currently still set to zero, please change the default value and try again.",
