@@ -12,6 +12,7 @@ from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
 from test_valves_window import valveTestWindow
 from test_valves_logic import valveTestLogic 
+from program_schedule import ProgramScheduleWindow
 
 
 class ProgramController:
@@ -22,6 +23,7 @@ class ProgramController:
         self.data_window = DataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
+        self.program_schedule_window = ProgramScheduleWindow(self)
 
 
         self.data_mgr = DataManager(self)
@@ -245,7 +247,7 @@ class ProgramController:
 
         self.after_ids.clear()
         
-        self.current_trial_number = 1
+        self.data_mgr.current_trial_number = 1
 
     def start_program(self) -> None:
         # Start the program if it is not already runnning and generate random numbers

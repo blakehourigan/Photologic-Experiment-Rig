@@ -200,6 +200,7 @@ class MainGUI:
 
         # Create a new frame for each new button, and store the button inside of that frame
         self.test_valves_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Test Valves", lambda: self.controller.test_valves(), "grey", 0,0)
+        self.program_schedule_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Program Schedule", lambda: self.controller.program_schedule_window.show_stimuli_table(), "grey", 0,1)
         self.exp_ctrl_button_frame = self.create_button(self.lower_control_buttons_frame, "Experiment CTL", lambda: self.controller.experiment_ctl_wind.show_window(self.root), "grey", 1, 0)
         self.lick_window_button_frame = self.create_button(self.lower_control_buttons_frame, "Lick Data", self.controller.licks_window.show_window, "grey", 1, 1)
         self.data_window_button_frame = self.create_button(self.lower_control_buttons_frame, "View Data", self.controller.data_window.show_window, "grey", 1, 2)
@@ -238,15 +239,22 @@ class MainGUI:
         self.controller.after_ids.append(self.update_clock_id)
         
     def update_max_time(self, minutes, seconds) -> None:
-        self.maximum_total_time.configure(text="{:.0f}Minutes ,{:.1f} Seconds".format(minutes, seconds))        
+        self.maximum_total_time.configure(text="{:.0f} Minutes, {:.1f} Seconds".format(minutes, seconds))        
         
     def update_on_new_trial(self, side_1_stimulus, side_2_stimulus) -> None:
-        self.trials_completed_label.configure(text="{} / {} Trials Completed".format(self.controller.data_mgr.current_trial_number, self.controller.data_mgr.num_trials.get()))
+        
+        trial_number = self.controller.data_mgr.current_trial_number
+        
+        
+        self.trials_completed_label.configure(text="{} / {} Trials Completed".format(trial_number, self.controller.data_mgr.num_trials.get()))
         self.stimuli_label.configure(text="Side One: {} | VS | Side Two: {}".format(side_1_stimulus, side_2_stimulus))
         
-        self.trial_number_label.configure(text="Trial Number: {}".format(self.controller.data_mgr.current_trial_number))
+        self.trial_number_label.configure(text="Trial Number: {}".format(trial_number))
         
         self.update_progress_bar()
+        
+        self.controller.program_schedule_window.update_row_color(trial_number)
+        self.controller.program_schedule_window.update_licks_and_TTC_actual(trial_number)
         
     def update_progress_bar(self, reset=False):
         if reset:

@@ -90,7 +90,7 @@ class DataManager:
         self.stimuli_dataframe = df
 
         self.blocks_generated = True
-        self.controller.experiment_ctl_wind.show_stimuli_table()
+        self.controller.program_schedule_window.show_stimuli_table()
         self.controller.arduino_mgr.send_schedule_to_motor()
 
     def create_trial_blocks(self):
