@@ -178,3 +178,5 @@ class ProgramScheduleWindow:
         # Make sure the last separator is not placed outside the data rows
         if len(df) % 2 == 0:
             self.stimuli_frame.grid_rowconfigure(current_row-1, minsize=0)
+
+

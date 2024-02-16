@@ -7,6 +7,7 @@ from typing import Tuple, List
 import random
 import itertools
 
+
 class DataManager:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -103,9 +104,11 @@ class DataManager:
 
         max_time = self.create_random_intervals()
 
-        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(max_time/1000) # converting our max runtime in ms to max time in minues, seconds format
+        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(
+            max_time / 1000
+        )  # converting our max runtime in ms to max time in minues, seconds format
         self.controller.main_gui.update_max_time(minutes, seconds)
-        
+
         """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
                             var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
         self.changed_vars = [
@@ -130,7 +133,7 @@ class DataManager:
 
         # from our list of variables that were changed from their default values, pair them together in a new pairs list.
         # 1 is paired with 2. 3 with 4, etc
-        
+
         def get_paired_index(i, total_entries):
             if total_entries == 2:
                 # If there are only two entries, pair them directly
@@ -141,11 +144,16 @@ class DataManager:
             elif total_entries == 8:
                 # For 8 entries, the pattern is a bit more complex
                 if i % 2 == 0:  # even index (0 or 2)
-                    return (i + 5) % total_entries  # Pair 1 (0) with 6 (5) and 3 (2) with 8 (7)
+                    return (
+                        i + 5
+                    ) % total_entries  # Pair 1 (0) with 6 (5) and 3 (2) with 8 (7)
                 else:  # odd index (1 or 3)
-                    return (i + 3) % total_entries  # Pair 2 (1) with 5 (4) and 4 (3) with 7 (6)
+                    return (
+                        i + 3
+                    ) % total_entries  # Pair 2 (1) with 5 (4) and 4 (3) with 7 (6)
             else:
                 raise ValueError("Unexpected number of entries")
+
         if self.changed_vars:
             self.pairs = []
             total_entries = len(self.changed_vars)  # Can be 2, 4, or 8
@@ -180,7 +188,7 @@ class DataManager:
                     -self.interval_vars[random_entry_key].get(),
                     self.interval_vars[random_entry_key].get(),
                 )
-                
+
                 # Calculate the final interval by adding the random interval to the state constant
                 final_interval = self.interval_vars[var_key].get() + random_interval
 
@@ -188,14 +196,17 @@ class DataManager:
                 if not hasattr(self, final_intervals_key):
                     setattr(self, final_intervals_key, [])
                 getattr(self, final_intervals_key).append(final_interval)
-        
-        max_time = sum(self.ITI_intervals_final) + sum(self.TTC_intervals_final) + sum(self.sample_intervals_final)
-        
+
+        max_time = (
+            sum(self.ITI_intervals_final)
+            + sum(self.TTC_intervals_final)
+            + sum(self.sample_intervals_final)
+        )
+
         return max_time
 
     def generate_pairs(self) -> Tuple[list, list]:
-        """if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule
-        """
+        """if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule"""
         pseudo_random_lineup: List[tuple] = []
         stimulus_1: List[str] = []
         stimulus_2: List[str] = []
@@ -225,10 +236,8 @@ class DataManager:
         for entry in pseudo_random_lineup:
             stimulus_1.append(entry[0].get())
             stimulus_2.append(entry[1].get())
-        
+
         return stimulus_1, stimulus_2
-
-
 
     def initalize_licks_dataframe(self):
         """setup the licks data frame that will hold the timestamps for the licks and which port was licked
@@ -241,7 +250,7 @@ class DataManager:
     def save_licks(self, iteration):
         """define method that saves the licks to the data table and increments our iteration variable."""
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
-        command = 'E' # stop opening the valves on lick detection. 
+        command = "E"  # stop opening the valves on lick detection.
         self.controller.arduino_mgr.send_command_to_laser(command)
         if self.controller.state == "TTC":
             self.stimuli_dataframe.loc[
@@ -255,14 +264,13 @@ class DataManager:
 
         # increment the trial number
         self.current_trial_number += 1
-        
-        command = 'I'
-        self.controller.arduino_mgr.send_command_to_motor(command)
-        
-        command = 'U'
-        # tell the motor arduino to move the door up
+
+        command = "I"
         self.controller.arduino_mgr.send_command_to_motor(command)
 
+        command = "U"
+        # tell the motor arduino to move the door up
+        self.controller.arduino_mgr.send_command_to_motor(command)
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
         self.stimuli_dataframe.loc[iteration, "Side 1 Licks"] = self.side_one_licks
@@ -270,9 +278,7 @@ class DataManager:
 
         # this is how processes that are set to execute after a certain amount of time are cancelled.
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
-        self.controller.main_gui.root.after_cancel(
-            self.controller.update_licks_id
-        )
+        self.controller.main_gui.root.after_cancel(self.controller.update_licks_id)
 
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
         self.controller.initial_time_interval(iteration + 1)
@@ -316,12 +322,11 @@ class DataManager:
             )
 
             self.licks_dataframe.to_excel(licks_file_name, index=False)
-            
+
     def pair_stimuli(self, stimulus_1, stimulus_2):
         """Preparing to send the data to the motor arduino"""
         paired_stimuli = list(zip(stimulus_1, stimulus_2))
         return paired_stimuli
-        
 
     def find_stimuli_positions(self, i) -> tuple:
         # Create a list of the stimuli dictionary values, will give list of stimuli.
@@ -335,6 +340,30 @@ class DataManager:
                 self.stim2_position = str(index + 1)
 
         return self.stim1_position, self.stim2_position
+
+    def reset_all(self):
+        # Reset or clear all internal state that could persist
+        self.stimuli_dataframe = pd.DataFrame()
+        self.licks_dataframe = pd.DataFrame()
+        self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
+        for key in self.stimuli_vars:
+            self.stimuli_vars[key].set(key)  # Reset to default
+
+        self.pairs.clear()
+        self.current_trial_number = 1
+        self.ITI_intervals_final.clear()
+        self.TTC_intervals_final.clear()
+        self.sample_intervals_final.clear()
+
+        # Reset numeric and boolean attributes as necessary
+        self.num_trials.set(0)
+        self.num_trial_blocks.set(4)
+        self.num_stimuli.set(4)
+        self.TTC_lick_threshold.set(3)
+
+        # Add similar resets for any other relevant attributes
+
+        self.blocks_generated = False
 
     @property
     def blocks_generated(self):

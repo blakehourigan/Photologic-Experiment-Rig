@@ -224,10 +224,14 @@ class ProgramController:
     def reset_button_handler(self) -> None:
         """Handle clearing the data window on click of the clear button"""
         self.main_gui.update_on_reset()
-        self.data_mgr = DataManager(self)
+        self.experiment_ctl_wind.reset_traces()  
+        if self.experiment_ctl_wind.top is not None and self.experiment_ctl_wind.top.winfo_exists():
+            self.experiment_ctl_wind.on_window_close()
+            self.experiment_ctl_wind.show_window(self.main_gui.root)
+        self.data_mgr.reset_all()
         self.arduino_mgr.close_connections()
-        self.arduino_mgr = AduinoManager(self)
 
+        self.arduino_mgr = AduinoManager(self)
 
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state, changing the button back to start."""

@@ -118,13 +118,13 @@ class AduinoManager:
 
             if self.motor_arduino:            
                 side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1'] # separating the schedules based on side
-                
+
                 side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
+
                     
                 # for each entry in the schedule for side 1 , we find its place in the side_one_vars list which gives the physical valve and vial 
                     
                 for entry in side_one_schedule:     
-
                     index = side_one_vars.index(entry)
                     print(f"Sending index: {index}")
                     
