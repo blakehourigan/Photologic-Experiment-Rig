@@ -37,16 +37,15 @@ int side_two_size = 0;
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 
 
-// Function to add an element to the array
-void addToArray(int *array,  int element, int size) {
+void addToArray(int *array, int &size, int element) {
   if (size < MAX_SIZE) {
-    array[size] = element; // Add element at the next available index
-    size++; // Increment the size counter
+    array[size] = element;
+    size++; // This now correctly increments the size.
   } else {
-    // Array is full, handle error or ignore
     Serial.println("Error: Array is full.");
   }
 }
+
 
 void toggle_solenoid(int side, int solenoid_pin) 
 {
@@ -237,7 +236,8 @@ void recieve_schedule(int side)
 
     int position = valvePairStr.toInt();
 
-    addToArray(SIDE_ONE_SCHEDULE, position, side_one_size);
+    // Example call
+    addToArray(SIDE_ONE_SCHEDULE, side_one_size, position);
 
     // Wait a little bit for the Python side to be ready to receive
     delay(100); // Delay for 100 milliseconds
@@ -255,12 +255,35 @@ void recieve_schedule(int side)
     Serial.print(valvePairStr);
     int position = valvePairStr.toInt();
 
-    addToArray(SIDE_TWO_SCHEDULE, position, side_two_size);
+    addToArray(SIDE_TWO_SCHEDULE, side_two_size, position);
+
+    // addToArray(SIDE_TWO_SCHEDULE, position, side_two_size);
 
     // Wait a little bit for the Python side to be ready to receive
     delay(100); // Delay for 100 milliseconds
   }
 }
+
+void send_schedule_back(int side) {
+  if (side == 1) 
+  {
+    for (int i = 0; i < side_one_size; i++) {
+      Serial.println(SIDE_ONE_SCHEDULE[i]);
+      delay(50); // Short delay to ensure Python can keep up
+    }
+    Serial.println("end side one");
+  } 
+  else if (side == 2) {
+    for (int i = 0; i < side_two_size; i++) {
+      Serial.println(SIDE_TWO_SCHEDULE[i]);
+      delay(50); // Short delay to ensure Python can keep up
+    }
+    Serial.println("end");
+  } else {
+    Serial.println("Invalid Side for Schedule Transmission");
+  }
+}
+
 
 void loop() 
 {
@@ -323,6 +346,13 @@ void loop()
     case '2':
     {
       recieve_schedule(2);
+      break;
+    }
+    case 'S':
+    {
+      send_schedule_back(1); // Send Side One schedule
+      delay(100); // Optional delay between sending each side
+      send_schedule_back(2); // Send Side Two schedule
       break;
     }
 
