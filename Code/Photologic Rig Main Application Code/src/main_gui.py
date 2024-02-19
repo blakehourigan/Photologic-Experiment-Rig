@@ -133,7 +133,7 @@ class MainGUI:
         self.main_timer_min_sec_text = tk.Label(self.main_timer_frame, text="",bg="light blue", font=("Helvetica", 24))
         self.main_timer_min_sec_text.grid(row=0, column=2)
         
-        self.maximum_total_time_frame, _, self.maximum_total_time = self.create_timer(self.timers_frame, "Maximum Total Time:", "0 Minutes, 0 Seconds", 0,1)
+        self.maximum_total_time_frame, _, self.maximum_total_time = self.create_timer(self.timers_frame, "Maximum Total Time:", "0 Minutes, 0 S", 0,1)
         self.maximum_total_time_frame.grid(sticky='e')
 
         self.state_timer_frame, _, self.state_timer_text = self.create_timer(self.timers_frame, "State Time:", "0.0s", 1,0)
@@ -226,7 +226,7 @@ class MainGUI:
         # update the main screen label and set the number of decimal points to 3
         self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
     
-        self.main_timer_min_sec_text.configure(text="| {:.0f} Minutes, {:.1f} Seconds".format(min, sec))
+        self.main_timer_min_sec_text.configure(text="| {:.0f} Minutes, {:.1f} S".format(min, sec))
         
         # state elapsed time is current time minus the time we entered the state
         state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
@@ -239,7 +239,7 @@ class MainGUI:
         self.controller.after_ids.append(self.update_clock_id)
         
     def update_max_time(self, minutes, seconds) -> None:
-        self.maximum_total_time.configure(text="{:.0f} Minutes, {:.1f} Seconds".format(minutes, seconds))        
+        self.maximum_total_time.configure(text="{:.0f} Minutes, {:.1f} S".format(minutes, seconds))        
         
     def update_on_new_trial(self, side_1_stimulus, side_2_stimulus) -> None:
         
@@ -292,10 +292,10 @@ class MainGUI:
             text="{:.3f}s".format(state_elapsed_time)
         )
         
-        self.main_timer_min_sec_text.configure(text="| 0 Minutes, 0 Seconds")
+        self.main_timer_min_sec_text.configure(text="| 0 Minutes, 0 S")
 
         
-        self.maximum_total_time.configure(text="0 Minutes, 0 Seconds")        
+        self.maximum_total_time.configure(text="0 Minutes, 0 S")        
         self.trials_completed_label.configure(text="0 / 0 Trials Completed")
         self.stimuli_label.configure(text="Side One | VS | Side Two")
         self.trial_number_label.configure(text="Trial Number: 0")

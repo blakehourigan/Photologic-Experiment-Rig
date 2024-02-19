@@ -141,6 +141,11 @@ class ProgramScheduleWindow:
 
             # Now, center the window 
             self.center_window(total_width, height)
+        else:
+            self.controller.main_gui.display_error(
+                "Blocks not Generated",
+                "Please generate blocks before starting the program.",
+            )
         if self.controller.running:
             self.update_row_color(self.controller.data_mgr.current_trial_number)    # if the program is running, then highlight the current trial row 
 
