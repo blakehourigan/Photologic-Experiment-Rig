@@ -2,7 +2,7 @@ import serial # type: ignore
 import time
 import re
 import traceback
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
 import serial.tools.list_ports #type: ignore
 
@@ -110,6 +110,9 @@ class AduinoManager:
             side_one_vars = []
             side_two_vars = []
             
+            side_one_indexes: List[int] = [] 
+            side_two_indexes: List[int] = []
+            
             for i in range(len(filtered_stim_var_list)):
                 if i < len(filtered_stim_var_list) // 2:  
                     side_one_vars.append(filtered_stim_var_list[i].get())
@@ -120,14 +123,13 @@ class AduinoManager:
                 side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1'] # separating the schedules based on side
 
                 side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
-
-                    
+                
                 # for each entry in the schedule for side 1 , we find its place in the side_one_vars list which gives the physical valve and vial 
-                    
+                side_one_verification = []
+                side_two_verification = []
                 for entry in side_one_schedule:     
                     index = side_one_vars.index(entry)
-                    print(f"Sending index: {index}")
-                    
+                    side_one_indexes.append(index)
                     # Convert index to string for transmission
                     index_str = str(index) + '\n'
                     self.send_command_to_motor('1')  # Signal to Arduino about the upcoming command
@@ -139,14 +141,12 @@ class AduinoManager:
                     time.sleep(2)
 
                     data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
-                    print(f"Received Echo: {data}")
-                print('Schedule Send Complete.')
-                
+                    print(f"Received: {data}")
+
                 for entry in side_two_schedule:
                     
                     index = side_two_vars.index(entry)
-                    print(f"Sending index: {index}")
-
+                    side_two_indexes.append(index)
                     # Convert index to string for transmission
                     index_str = str(index) + '\n'
                     self.send_command_to_motor('2')  # Signal to Arduino about the upcoming command
@@ -159,10 +159,57 @@ class AduinoManager:
 
                     data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
                     
-                    print(f"Received Echo: {data}")
-                print('Schedule Send Complete.')
-                
-                
+                    print(f"Received: {data}")
+
+                # After sending all data to Arduino
+                self.send_command_to_motor('S')
+
+                # Reset the counter for reading echoed data
+                i = 0  
+
+                # First loop to collect echoed data for side one
+                while True:
+                    if self.motor_arduino.in_waiting:
+                        line = self.motor_arduino.readline().decode('utf-8').rstrip()
+                        if line == "end side one":
+                            break
+                        try:
+                            line_int = int(line)
+                            side_one_verification.append(line_int)
+                        except ValueError:
+                            print(f"Error: Received non-integer value: {line}")
+
+                # Reset the counter for the next part
+                i = 0
+
+                # Second loop to collect echoed data for side two
+                while True:
+                    if self.motor_arduino.in_waiting:
+                        line = self.motor_arduino.readline().decode('utf-8').rstrip()
+                        if line == "end":
+                            break
+                        try:
+                            line_int = int(line)
+                            side_two_verification.append(line_int)
+                        except ValueError:
+                            print(f"Error: Received non-integer value: {line}")
+
+                    for i in range(len(side_one_verification)):
+                        print((side_one_schedule[i], side_one_verification[i]))
+
+                    for i in range(len(side_two_verification)):
+                        print((side_two_schedule[i], side_two_verification[i]))
+
+
+
+                are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
+                are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
+                if are_equal_side_one and are_equal_side_two:
+                    print("Both lists are identical.")
+                    print('Schedule Send Complete.')
+                else:
+                    print("Lists are not identical.")
+                    
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
             print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
