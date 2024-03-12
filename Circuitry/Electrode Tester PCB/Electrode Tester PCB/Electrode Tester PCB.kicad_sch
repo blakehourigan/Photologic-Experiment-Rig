@@ -361,11 +361,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 119.38 117.475 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0cc156a7-75b3-4c4b-87ca-19b169197ad5)
-    (property "Reference" "J29" (at 120.015 113.03 0)
+    (property "Reference" "CH1_11" (at 120.015 113.03 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 120.015 115.57 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 119.38 117.475 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -377,7 +377,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J29") (unit 1)
+          (reference "CH1_11") (unit 1)
         )
       )
     )
@@ -386,11 +386,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 147.32 59.055 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 150cfe5b-4357-47c5-af63-d713f8433438)
-    (property "Reference" "J34" (at 147.955 54.61 0)
+    (property "Reference" "CH6_16" (at 147.955 54.61 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 147.955 57.15 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 147.32 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -402,7 +402,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J34") (unit 1)
+          (reference "CH6_16") (unit 1)
         )
       )
     )
@@ -411,11 +411,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 37.465 131.445 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 15d90a71-98d2-46b7-9f7f-fce8bb69604c)
-    (property "Reference" "CH2_12" (at 38.1 127 0)
+    (property "Reference" "CH2_12_pad1" (at 38.1 129.54 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 38.1 129.54 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "test pad:Test Pad" (at 37.465 131.445 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -427,7 +427,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH2_12") (unit 1)
+          (reference "CH2_12_pad1") (unit 1)
         )
       )
     )
@@ -436,7 +436,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 36.195 85.09 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1b85b61d-9686-43cb-96d4-efc9b1c5ffe1)
-    (property "Reference" "CH14_7" (at 36.83 80.645 0)
+    (property "Reference" "CH14_7_pad1" (at 36.83 82.55 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.83 83.185 0)
@@ -452,7 +452,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH14_7") (unit 1)
+          (reference "CH14_7_pad1") (unit 1)
         )
       )
     )
@@ -461,11 +461,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 115.57 59.055 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 37b29127-eacc-4f86-bd70-b3a166481d9e)
-    (property "Reference" "J23" (at 116.205 54.61 0)
+    (property "Reference" "CH12_5" (at 116.205 54.61 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 116.205 57.15 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 115.57 59.055 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -477,7 +477,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J23") (unit 1)
+          (reference "CH12_5") (unit 1)
         )
       )
     )
@@ -486,7 +486,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 36.195 113.665 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3bed190e-5a89-427a-b8d2-9353fb13e3e8)
-    (property "Reference" "GND_10" (at 36.83 109.22 0)
+    (property "Reference" "GND_10_pad1" (at 36.83 111.76 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.83 111.76 0)
@@ -502,7 +502,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "GND_10") (unit 1)
+          (reference "GND_10_pad1") (unit 1)
         )
       )
     )
@@ -511,7 +511,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 67.945 57.15 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3d1d9d00-8cc4-4fc1-b03d-4f98bf3488b5)
-    (property "Reference" "CH6_16" (at 68.58 52.705 0)
+    (property "Reference" "CH6_16_pad1" (at 68.58 54.61 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 68.58 55.245 0)
@@ -527,7 +527,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH6_16") (unit 1)
+          (reference "CH6_16_pad1") (unit 1)
         )
       )
     )
@@ -536,7 +536,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 69.215 76.835 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 40d985f7-831c-48b1-b030-876174256bb5)
-    (property "Reference" "CH8_18" (at 69.85 72.39 0)
+    (property "Reference" "CH8_18_pad1" (at 69.85 74.93 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 69.85 74.93 0)
@@ -552,7 +552,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH8_18") (unit 1)
+          (reference "CH8_18_pad1") (unit 1)
         )
       )
     )
@@ -561,11 +561,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 115.57 52.07 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4efa4f47-7814-4a27-b3c2-d2f6aa2157ef)
-    (property "Reference" "J22" (at 116.205 47.625 0)
+    (property "Reference" "CH11_4" (at 116.205 47.625 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 116.205 50.165 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 115.57 52.07 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -577,7 +577,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J22") (unit 1)
+          (reference "CH11_4") (unit 1)
         )
       )
     )
@@ -586,7 +586,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 36.195 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5880c260-c5e9-45d2-b309-e91576f08d9e)
-    (property "Reference" "CH15_8" (at 36.83 89.535 0)
+    (property "Reference" "CH15_8_pad1" (at 36.83 91.44 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.83 92.075 0)
@@ -602,7 +602,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH15_8") (unit 1)
+          (reference "CH15_8_pad1") (unit 1)
         )
       )
     )
@@ -611,11 +611,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 114.3 27.305 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 684cdcb9-2b29-4f17-8f07-a9744059e8c2)
-    (property "Reference" "J19" (at 114.935 22.86 0)
+    (property "Reference" "R/G_1" (at 114.935 22.86 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 114.935 25.4 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 114.3 27.305 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -627,7 +627,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J19") (unit 1)
+          (reference "R/G_1") (unit 1)
         )
       )
     )
@@ -636,11 +636,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 144.145 34.925 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 685dd08b-8050-4967-9e83-425f17259527)
-    (property "Reference" "J31" (at 144.78 30.48 0)
+    (property "Reference" "CH3_13" (at 144.78 30.48 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 144.78 33.02 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 144.145 34.925 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -652,7 +652,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J31") (unit 1)
+          (reference "CH3_13") (unit 1)
         )
       )
     )
@@ -661,7 +661,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 67.31 38.735 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7550a32d-379b-4a1a-8b35-7602c996cbfc)
-    (property "Reference" "CH4_14" (at 67.945 34.29 0)
+    (property "Reference" "CH4_14_pad1" (at 67.945 36.83 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 67.945 36.83 0)
@@ -677,7 +677,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH4_14") (unit 1)
+          (reference "CH4_14_pad1") (unit 1)
         )
       )
     )
@@ -686,7 +686,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 35.56 56.515 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7d76afe7-a55e-462c-9957-186b2239cf6a)
-    (property "Reference" "CH11_4" (at 36.195 52.07 0)
+    (property "Reference" "CH11_4_pad1" (at 36.195 54.61 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.195 54.61 0)
@@ -702,7 +702,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH11_4") (unit 1)
+          (reference "CH11_4_pad1") (unit 1)
         )
       )
     )
@@ -711,11 +711,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 146.05 43.815 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7ef711cc-cf0c-439b-aeb0-3382012f4444)
-    (property "Reference" "J32" (at 146.685 39.37 0)
+    (property "Reference" "CH4_14" (at 146.685 39.37 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 146.685 41.91 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 146.05 43.815 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -727,7 +727,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J32") (unit 1)
+          (reference "CH4_14") (unit 1)
         )
       )
     )
@@ -736,11 +736,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 117.475 67.945 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7f54fd26-d7ca-47e1-9c1d-a47e0f61c1cb)
-    (property "Reference" "J24" (at 118.11 63.5 0)
+    (property "Reference" "CH13_6" (at 118.11 63.5 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 118.11 66.04 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 117.475 67.945 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -752,7 +752,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J24") (unit 1)
+          (reference "CH13_6") (unit 1)
         )
       )
     )
@@ -761,7 +761,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 67.945 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 87755ed4-6a12-4b47-bece-0d4af8c0e5d8)
-    (property "Reference" "CH5_15" (at 68.58 43.815 0)
+    (property "Reference" "CH5_15_pad1" (at 68.58 45.72 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 68.58 46.355 0)
@@ -777,7 +777,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH5_15") (unit 1)
+          (reference "CH5_15_pad1") (unit 1)
         )
       )
     )
@@ -786,7 +786,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 67.945 29.845 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 96dfd43c-54a0-4bd3-99ea-324941812e29)
-    (property "Reference" "CH3_13" (at 68.58 25.4 0)
+    (property "Reference" "CH3_13_pad1" (at 68.58 27.94 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 68.58 27.94 0)
@@ -802,7 +802,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH3_13") (unit 1)
+          (reference "CH3_13_pad1") (unit 1)
         )
       )
     )
@@ -811,11 +811,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 118.745 88.9 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 982d9cf2-bf08-4bb8-a223-4f4600198f47)
-    (property "Reference" "J26" (at 119.38 84.455 0)
+    (property "Reference" "CH15_8" (at 119.38 84.455 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 119.38 86.995 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 118.745 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -827,7 +827,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J26") (unit 1)
+          (reference "CH15_8") (unit 1)
         )
       )
     )
@@ -836,7 +836,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 35.56 76.2 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 98d364b1-8684-4441-9597-7cdad2042695)
-    (property "Reference" "CH13_6" (at 36.195 71.755 0)
+    (property "Reference" "CH13_6_pad1" (at 36.195 73.66 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.195 74.295 0)
@@ -852,7 +852,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH13_6") (unit 1)
+          (reference "CH13_6_pad1") (unit 1)
         )
       )
     )
@@ -861,7 +861,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 35.56 29.845 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 99112a92-8fa0-4313-a90a-70e4747a830d)
-    (property "Reference" "R/G1" (at 36.195 25.4 0)
+    (property "Reference" "R/G_1_pad1" (at 36.195 27.94 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.195 27.94 0)
@@ -877,7 +877,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "R/G1") (unit 1)
+          (reference "R/G_1_pad1") (unit 1)
         )
       )
     )
@@ -886,11 +886,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 146.685 51.435 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9d695e4d-fa21-4106-bf9a-dd3fd8c56893)
-    (property "Reference" "J33" (at 147.32 46.99 0)
+    (property "Reference" "CH5_15" (at 147.32 46.99 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 147.32 49.53 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 146.685 51.435 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -902,7 +902,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J33") (unit 1)
+          (reference "CH5_15") (unit 1)
         )
       )
     )
@@ -911,11 +911,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 144.145 27.305 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9f3fe9ea-20c4-4d64-97ac-fa369ce811fe)
-    (property "Reference" "J30" (at 144.78 22.86 0)
+    (property "Reference" "CH2_12" (at 144.78 22.86 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 144.78 25.4 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 144.145 27.305 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -927,7 +927,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J30") (unit 1)
+          (reference "CH2_12") (unit 1)
         )
       )
     )
@@ -936,11 +936,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 118.745 106.68 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a8cd666a-40ca-4a10-bad0-17f98b237522)
-    (property "Reference" "J28" (at 119.38 102.235 0)
+    (property "Reference" "GND_10" (at 119.38 102.235 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 119.38 104.775 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 118.745 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -952,7 +952,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J28") (unit 1)
+          (reference "GND_10") (unit 1)
         )
       )
     )
@@ -961,11 +961,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 118.11 97.155 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a9afd5d2-604e-4f0f-a27b-1c2b35a3fa4f)
-    (property "Reference" "J27" (at 118.745 92.71 0)
+    (property "Reference" "CH16_9" (at 118.745 92.71 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 118.745 95.25 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 118.11 97.155 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -977,7 +977,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J27") (unit 1)
+          (reference "CH16_9") (unit 1)
         )
       )
     )
@@ -986,11 +986,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 117.475 78.105 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b1c298dd-6d5c-48a4-8cde-e2db37af813f)
-    (property "Reference" "J25" (at 118.11 73.66 0)
+    (property "Reference" "CH14_7" (at 118.11 73.66 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 118.11 76.2 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 117.475 78.105 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1002,7 +1002,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J25") (unit 1)
+          (reference "CH14_7") (unit 1)
         )
       )
     )
@@ -1011,7 +1011,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 35.56 67.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bb257306-4b40-4cca-86b1-d901c709d6c7)
-    (property "Reference" "CH12_5" (at 36.195 62.865 0)
+    (property "Reference" "CH12_5_pad1" (at 36.195 64.77 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.195 65.405 0)
@@ -1027,7 +1027,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH12_5") (unit 1)
+          (reference "CH12_5_pad1") (unit 1)
         )
       )
     )
@@ -1036,7 +1036,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 36.195 122.555 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c280edee-77a5-4b84-8d59-238fba6adc2a)
-    (property "Reference" "CH1_11" (at 36.83 118.11 0)
+    (property "Reference" "CH1_11_pad1" (at 36.83 120.65 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.83 120.65 0)
@@ -1052,7 +1052,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH1_11") (unit 1)
+          (reference "CH1_11_pad1") (unit 1)
         )
       )
     )
@@ -1061,11 +1061,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 147.955 75.565 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c970c240-9ba8-45a4-a490-19e2eb714756)
-    (property "Reference" "J36" (at 148.59 71.12 0)
+    (property "Reference" "CH8_18" (at 148.59 71.12 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 148.59 73.66 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 147.955 75.565 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1077,7 +1077,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J36") (unit 1)
+          (reference "CH8_18") (unit 1)
         )
       )
     )
@@ -1086,11 +1086,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 115.57 35.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid cba23ed1-46fc-4d6d-a48f-67b873affb6f)
-    (property "Reference" "J20" (at 116.205 31.115 0)
+    (property "Reference" "CH9_2" (at 116.205 31.115 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 116.205 33.655 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 115.57 35.56 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1102,7 +1102,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J20") (unit 1)
+          (reference "CH9_2") (unit 1)
         )
       )
     )
@@ -1111,7 +1111,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 34.925 48.26 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d7c97fbc-a559-4fb9-84df-b52e1752ccc2)
-    (property "Reference" "CH10_3" (at 35.56 43.815 0)
+    (property "Reference" "CH10_3_pad1" (at 35.56 45.72 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 35.56 46.355 0)
@@ -1127,7 +1127,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH10_3") (unit 1)
+          (reference "CH10_3_pad1") (unit 1)
         )
       )
     )
@@ -1136,11 +1136,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 116.205 43.18 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d8579ad9-8837-4ba2-a804-a160acd4d2a9)
-    (property "Reference" "J21" (at 116.84 38.735 0)
+    (property "Reference" "CH10_3" (at 116.84 38.735 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 116.84 41.275 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 116.205 43.18 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1152,7 +1152,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J21") (unit 1)
+          (reference "CH10_3") (unit 1)
         )
       )
     )
@@ -1161,7 +1161,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 35.56 39.37 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid db6ad68b-b159-4479-9781-2027c2648934)
-    (property "Reference" "CH9_2" (at 36.195 34.925 0)
+    (property "Reference" "CH9_2_pad1" (at 36.195 36.83 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.195 37.465 0)
@@ -1177,7 +1177,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH9_2") (unit 1)
+          (reference "CH9_2_pad1") (unit 1)
         )
       )
     )
@@ -1186,11 +1186,11 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 147.32 67.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e2f47575-6f7e-456c-9460-2c132f52adc9)
-    (property "Reference" "J35" (at 147.955 62.865 0)
+    (property "Reference" "CH7_17" (at 147.955 62.865 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 147.955 65.405 0)
-      (effects (font (size 1.27 1.27)))
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "Connector_Pin:Pin_D1.3mm_L11.0mm" (at 147.32 67.31 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -1202,7 +1202,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "J35") (unit 1)
+          (reference "CH7_17") (unit 1)
         )
       )
     )
@@ -1211,7 +1211,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 36.195 104.14 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e85f1e7f-bc99-4ec3-876c-99f9d65ab911)
-    (property "Reference" "CH16_9" (at 36.83 99.695 0)
+    (property "Reference" "CH16_9_pad1" (at 36.83 101.6 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 36.83 102.235 0)
@@ -1227,7 +1227,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH16_9") (unit 1)
+          (reference "CH16_9_pad1") (unit 1)
         )
       )
     )
@@ -1236,7 +1236,7 @@
   (symbol (lib_id "Connector:Conn_01x01_Pin") (at 69.215 67.31 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid fc5f7d2e-56fc-4e63-a08d-38ef20ae3486)
-    (property "Reference" "CH7_17" (at 69.85 62.865 0)
+    (property "Reference" "CH7_17_pad1" (at 69.85 64.77 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Conn_01x01_Pin" (at 69.85 65.405 0)
@@ -1252,7 +1252,7 @@
     (instances
       (project "Electrode Tester PCB"
         (path "/df361965-9c8b-4882-b1f9-044c008713f0"
-          (reference "CH7_17") (unit 1)
+          (reference "CH7_17_pad1") (unit 1)
         )
       )
     )
