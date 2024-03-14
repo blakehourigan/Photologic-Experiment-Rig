@@ -4,25 +4,29 @@ class valveTestLogic:
         
         self.tubes_filled=False
 
-    def run_valve_test(self):
+    def run_valve_test(self, num_valves):
         """_controller function to run the testing sequence on given valves_
         """
+        self.valves_to_test = num_valves
         self.valve_index = 1
         self.test_run_index = 0
-        self.test_valve_sequence()
+        self.test_valve_sequence(num_valves)
         
 
-    def test_valve_sequence(self):
+    def test_valve_sequence(self, num_valves):
         """the test sequence that each valve will undergo
         """
-        num_valves = self.controller.valve_testing_window.num_valves_to_test.get()
+        
+        for i in range(num_valves):
+            # Open and close the current valve
+            self.open_valve(self.valve_index)
+        
         # Check if all valves have been tested
         if self.valve_index > num_valves:
             print("Valve testing completed.")
             return
 
-        # Open and close the current valve
-        self.open_valve(self.valve_index)
+
                 
 
     def calculate_current_cylinder_Volume(self) -> float:

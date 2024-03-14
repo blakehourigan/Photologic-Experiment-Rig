@@ -74,13 +74,9 @@ class ValveTestWindow:
     def create_buttons(self):
         start_test_button_frame = tk.Frame(self.top, highlightbackground='black', highlightthickness=1)
         start_test_button_frame.grid(row=3, column=0, pady=10, padx=10, sticky="ew")
-        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command=self.run_valve_test, bg="green", font=("Helvetica", 16))
+        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command=self.controller.valve_test_logic.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
         start_test_button.pack(fill='both', expand=True)
 
-        run_valves_button_frame = tk.Frame(self.top, highlightbackground='black', highlightthickness=1)
-        run_valves_button_frame.grid(row=4, column=0, pady=10, padx=10, sticky="ew")
-        run_valves_button = tk.Button(run_valves_button_frame, text="Run Valves", command=self.run_valves, bg="light blue", font=("Helvetica", 16))
-        run_valves_button.pack(fill='both', expand=True)
 
     def auto_resize_and_center(self):
         self.top.update_idletasks()  
@@ -97,6 +93,3 @@ class ValveTestWindow:
         # Placeholder for the method to start valve testing logic
         pass
 
-    def run_valves(self):
-        # Placeholder for the method to run valves logic
-        pass
