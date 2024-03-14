@@ -1,5 +1,6 @@
 #include <AccelStepper.h>
 #include <avr/wdt.h>
+#include <EEPROM.h>
 
 #define SET_BIT(PORT, BIT) ((PORT) |= (1 << (BIT)))
 #define CLEAR_BIT(PORT, BIT) ((PORT) &= ~(1 << (BIT)))
@@ -24,17 +25,49 @@ unsigned long valve_open_time_d, valve_open_time_c, open_start, close_time;
 int combined_value;
 
 int valve_side, valve_number;
-volatile int pin0, pin1, pin2, pin3;
 bool lick_available = false;
 
-long int side_one_lick_duration = 37500; // 37.5 milliseconds vale 1 
-long int side_two_lick_duration = 24125; // 24.125 milliseconds valve 2  
+const int FLAG_ADDRESS = 0;
+const byte INITIALIZED_FLAG = 0xA5;
+const int DATA_START_ADDRESS = 1; // Start after the flag
+
+long int side_one_lick_durations[8]; 
+long int side_two_lick_durations[8];
 
 const int MAX_SIZE = 50; // Maximum size of the array
 int side_one_size = 0; // Keep track of the current number of elements
 int side_two_size = 0;
 
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
+
+bool checkEEPROMInitialized() 
+{
+    byte flag;
+    EEPROM.get(FLAG_ADDRESS, flag);
+    return (flag == INITIALIZED_FLAG);
+}
+
+void markEEPROMInitialized() 
+{
+    EEPROM.update(FLAG_ADDRESS, INITIALIZED_FLAG);
+}
+
+// Function to write default or new values to EEPROM
+void writeValuesToEEPROM(long int values[], int startAddress, int numValues) 
+{
+    for (int i = 0; i < numValues; i++) {
+        EEPROM.put(startAddress + i * sizeof(long int), values[i]);
+    }
+}
+
+// Function to read values from EEPROM
+void readValuesFromEEPROM(long int values[], int startAddress, int numValues) 
+{
+    for (int i = 0; i < numValues; i++) {
+        EEPROM.get(startAddress + i * sizeof(long int), values[i]);
+    }
+}
+
 
 
 void addToArray(int *array, int &size, int element) {
@@ -81,13 +114,13 @@ void lick_handler(int valve_side)
 
   if(valve_side == 0)
   {
-    duration = side_one_lick_duration;
+    duration = side_one_lick_durations[valve_number];
     solenoids = SIDE_ONE_SOLENOIDS;
     valve_number = SIDE_ONE_SCHEDULE[current_trial];
   }
   else if(valve_side == 1)
   {
-    duration = side_two_lick_duration;
+    duration = side_two_lick_durations[valve_number];
     solenoids = SIDE_TWO_SOLENOIDS;
     valve_number = SIDE_TWO_SCHEDULE[current_trial];
   }
@@ -129,6 +162,29 @@ void setup()
   stepper.setMaxSpeed(5500);
   stepper.setAcceleration(5500);
   Serial.begin(115200);
+  
+  // Check if EEPROM is initialized
+  if (!checkEEPROMInitialized()) 
+  {
+      // Initialize with default values
+      for (int i = 0; i < 8; i++) 
+      {
+          side_one_lick_durations[i] = 24125; // Default value
+          side_two_lick_durations[i] = 24125; // Default value
+      }
+
+      writeValuesToEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
+      writeValuesToEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      markEEPROMInitialized();
+      Serial.println("EEPROM initialized with default values.");
+  }
+  else 
+  {
+      // Read the existing values from EEPROM
+      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
+      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      //Serial.println("Values read from EEPROM.");
+  }
 
   DDRA |= (255); // Set pins 22-29 as outputs
   DDRC |= (255); // Set pins 30-37 as outputs 
