@@ -306,14 +306,13 @@ void test_volume()
       }
     }
     
+
+    delay(500);
     clear_serial_buffer();
-    Serial.println("Testing complete");
-    delay(500);
-
     Serial.println("side one");
-    delay(500);
 
-    for (int i = 0; i < num_valves; i++) 
+
+    for (int i = 0; i < (num_valves / 2); i++) 
     {
 
       Serial.println(side_one_lick_durations[i]);
@@ -323,9 +322,8 @@ void test_volume()
     Serial.println("end side one");
 
     Serial.println("side two");
-    delay(500);
 
-    for (int i = 0; i < num_valves; i++) 
+    for (int i = 0; i < (num_valves / 2); i++) 
     {
       Serial.println(side_two_lick_durations[i]);
       delay(50); // Short delay to ensure Python can keep up

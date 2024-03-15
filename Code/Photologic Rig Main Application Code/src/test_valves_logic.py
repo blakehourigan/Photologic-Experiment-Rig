@@ -29,7 +29,6 @@ class valveTestLogic:
         while True:
             if self.controller.arduino_mgr.motor_arduino.in_waiting:
                 line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
-                print(line)
                 if line == "Finished loop":
                         if valve != 0:
                             side_one_volumes.append(self.controller.valve_testing_window.input_popup(valve))
@@ -60,6 +59,7 @@ class valveTestLogic:
                         else:
                             print(line)
                             side_two_durations.append(line)
+                    break
                             
         print(side_one_durations, end="\n")
         print(side_two_durations, end="\n")
