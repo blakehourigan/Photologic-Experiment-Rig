@@ -199,7 +199,7 @@ class MainGUI:
             self.lower_control_buttons_frame.grid_columnconfigure(i, weight=1)
 
         # Create a new frame for each new button, and store the button inside of that frame
-        self.test_valves_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Test Valves", lambda: self.controller.test_valves(), "grey", 0,0)
+        self.test_valves_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Test Valves", lambda:self.controller.valve_testing_window.show_window(), "grey", 0,0)
         self.open_all_valves_button_frame ,_ = self.create_button(self.lower_control_buttons_frame, "Valve Control", lambda: print('test'), "grey", 0,1)
         self.program_schedule_button_frame, _ = self.create_button(self.lower_control_buttons_frame, "Program Schedule", lambda: self.controller.program_schedule_window.show_stimuli_table(), "grey", 0,2)
         self.exp_ctrl_button_frame = self.create_button(self.lower_control_buttons_frame, "Valves / Stimuli", lambda: self.controller.experiment_ctl_wind.show_window(self.root), "grey", 1, 0)

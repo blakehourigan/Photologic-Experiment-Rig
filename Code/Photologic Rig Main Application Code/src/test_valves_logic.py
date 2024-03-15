@@ -30,22 +30,26 @@ class valveTestLogic:
             if self.controller.arduino_mgr.motor_arduino.in_waiting:
                 line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
                 if line == "Finished loop":
-                    valve += 1
-                    if self.controller.valve_testing_window.ask_continue():    
-                        side_one_volumes.append(self.controller.valve_testing_window.input_popup(valve))
-                        side_two_volumes.append(self.controller.valve_testing_window.input_popup(valve + 4))
+                        if valve != 0:
+                            side_one_volumes.append(self.controller.valve_testing_window.input_popup(valve))
+                            side_two_volumes.append(self.controller.valve_testing_window.input_popup(valve + 4))
+                            if self.controller.valve_testing_window.ask_continue():    
+                                pass
+                            else:
+                                self.controller.valve_testing_window.tesing_aborted()
+                                break
                         command = "continue\n"
                         self.controller.arduino_mgr.send_command_to_motor(command)
-                    else:
-                        self.controller.valve_testing_window.tesing_aborted()
-                        break
+                        valve += 1
+
                 elif line == "side one":
                     while(self.controller.arduino_mgr.motor_arduino.in_waiting):
                         line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
                         if line == "end side one":
                             break
                         else:
-                            side_one_durations.append(self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip())
+                            print(line)
+                            side_one_durations.append(line)
 
                 elif line == "side two":
                     while(self.controller.arduino_mgr.motor_arduino.in_waiting):
@@ -53,4 +57,8 @@ class valveTestLogic:
                         if line == "end side two":
                             break
                         else:
-                            side_two_durations.append(self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip())
+                            print(line)
+                            side_two_durations.append(line)
+                            
+        print(side_one_durations, end="\n")
+        print(side_two_durations, end="\n")

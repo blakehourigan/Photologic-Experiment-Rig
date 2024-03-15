@@ -146,9 +146,6 @@ class ProgramController:
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
 
-    def test_valves(self) -> None:
-        self.valve_testing_window.show_window()
-
     def read_licks(self, i):
         """Define the method for reading data from the optical fiber Arduino"""
         # try to read licks if there is a arduino connected

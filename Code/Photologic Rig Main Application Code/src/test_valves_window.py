@@ -94,7 +94,7 @@ class ValveTestWindow:
     def create_buttons(self):
         start_test_button_frame = tk.Frame(self.top, highlightbackground='black', highlightthickness=1)
         start_test_button_frame.grid(row=3, column=0, pady=10, padx=10, sticky="ew")
-        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command=self.controller.valve_test_logic.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
+        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command= lambda: self.controller.valve_test_logic.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
         start_test_button.pack(fill='both', expand=True)
 
 
