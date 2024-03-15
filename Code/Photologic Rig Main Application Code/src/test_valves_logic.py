@@ -16,8 +16,7 @@ class valveTestLogic:
     def test_valve_sequence(self, num_valves):
         """the test sequence that each valve will undergo
         """
-        
-        for i in range(num_valves):
+        for i in range(num_valves.get()):
             # Open and close the current valve
             self.open_valve(self.valve_index)
         
@@ -25,9 +24,7 @@ class valveTestLogic:
         if self.valve_index > num_valves:
             print("Valve testing completed.")
             return
-
-
-                
+        
 
     def calculate_current_cylinder_Volume(self) -> float:
         """_ calculate cylinder volume based on the current height of the liquid_

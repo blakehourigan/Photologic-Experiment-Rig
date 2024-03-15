@@ -63,11 +63,11 @@ void writeValuesToEEPROM(long int values[], int startAddress, int numValues)
 // Function to read values from EEPROM
 void readValuesFromEEPROM(long int values[], int startAddress, int numValues) 
 {
-    for (int i = 0; i < numValues; i++) {
+    for (int i = 0; i < numValues; i++) 
+    {
         EEPROM.get(startAddress + i * sizeof(long int), values[i]);
     }
 }
-
 
 
 void addToArray(int *array, int &size, int element) {
@@ -162,7 +162,7 @@ void setup()
   stepper.setMaxSpeed(5500);
   stepper.setAcceleration(5500);
   Serial.begin(115200);
-  
+
   // Check if EEPROM is initialized
   if (!checkEEPROMInitialized()) 
   {
@@ -411,7 +411,13 @@ void loop()
       send_schedule_back(2); // Send Side Two schedule
       break;
     }
-
+    case 'P':
+    {
+      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
+      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      break;
+    }
+    
     default:
       break;
   }
