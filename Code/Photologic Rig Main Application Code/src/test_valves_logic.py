@@ -17,14 +17,14 @@ class valveTestLogic:
         command = 'T'
         self.controller.arduino_mgr.send_command_to_motor(command)
         
-        print(num_valves)
-        num_valves = str(num_valves) + '\n'
-        command = num_valves
+        num_valves_send = str(num_valves.get()) + '\n'
+        command = num_valves_send
         self.controller.arduino_mgr.send_command_to_motor(command)
-
+    
         while True:
-            if self.motor_arduino.in_waiting:
-                line = self.motor_arduino.readline().decode('utf-8').rstrip()
+            if self.controller.arduino_mgr.motor_arduino.in_waiting:
+                line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
+                print(line)
                 if line == "Finished loop":
                     self.controller.valve_testing_window.ask_continue()
                     command = "continue\n"

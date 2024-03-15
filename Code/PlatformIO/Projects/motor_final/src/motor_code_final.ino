@@ -274,7 +274,8 @@ void test_volume()
 
     for(int i=0; i < num_valves / 2; i++)
     {
-      Serial.println("Finished loop");
+      delay(100);
+      Serial.println("");
 
       while(true)
       {
