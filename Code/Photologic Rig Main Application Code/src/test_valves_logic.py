@@ -14,6 +14,9 @@ class valveTestLogic:
         side_one_volumes = []
         side_two_volumes = []
         
+        side_one_durations = []
+        side_two_durations = []
+        
         command = 'T'
         self.controller.arduino_mgr.send_command_to_motor(command)
         
@@ -26,7 +29,6 @@ class valveTestLogic:
         while True:
             if self.controller.arduino_mgr.motor_arduino.in_waiting:
                 line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
-                print(line)
                 if line == "Finished loop":
                     valve += 1
                     if self.controller.valve_testing_window.ask_continue():    
@@ -37,8 +39,18 @@ class valveTestLogic:
                     else:
                         self.controller.valve_testing_window.tesing_aborted()
                         break
+                elif line == "side one":
+                    while(self.controller.arduino_mgr.motor_arduino.in_waiting):
+                        line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
+                        if line == "end side one":
+                            break
+                        else:
+                            side_one_durations.append(self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip())
 
-        """     
-        amt_dispensed = self.controller.valve_testing_window.desired_volume
-        command = amt_dispensed
-        self.controller.arduino_mgr.send_command_to_motor(command)"""
+                elif line == "side two":
+                    while(self.controller.arduino_mgr.motor_arduino.in_waiting):
+                        line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
+                        if line == "end side two":
+                            break
+                        else:
+                            side_two_durations.append(self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip())
