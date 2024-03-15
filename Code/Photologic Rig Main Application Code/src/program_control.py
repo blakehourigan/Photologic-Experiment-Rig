@@ -132,11 +132,6 @@ class ProgramController:
             command = 'B'
             self.arduino_mgr.send_command_to_laser(command)
 
-            # change the state time label accordingly
-            self.main_gui.state_time_label_header.configure(
-                text=(self.state + " Time:")
-            )
-
             # Update the state start time to the current time
             self.data_mgr.state_start_time = time.time()
 

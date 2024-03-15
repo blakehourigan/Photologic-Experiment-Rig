@@ -277,19 +277,14 @@ void test_volume()
   //   recieved_transmission = Serial.readStringUntil('\n');
 
   //   float amt_requested = recieved_transmission.toFloat();
+    for(int i=0; i < num_valves / 2; i++)
+    {
+      for(int j=0; j < 500; j++)
+      {
 
-    for(int j=0; j < 500; j++)
-    {
-      for(int i=0; i < num_valves / 2; i++)
-      {
         lick_handler(0, i);
-      }
-    }
-    for(int j=0; j < 500; j++)
-    {
-      for(int i=0; i < num_valves / 2; i++)
-      {
         lick_handler(1, i);
+        delay(100);
       }
     }
 } 
