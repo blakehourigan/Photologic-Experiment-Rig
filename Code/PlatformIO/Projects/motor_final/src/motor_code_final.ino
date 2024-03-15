@@ -281,11 +281,6 @@ void test_volume()
 
     for(int i=0; i < num_valves / 2; i++)
     {
-      clear_serial_buffer();
-      delay(100);
-      Serial.println("");
-      Serial.println("Finished loop");
-
       while(true)
       {
         while (Serial.available() == 0) {}
@@ -304,6 +299,11 @@ void test_volume()
         lick_handler(1, i);
         delay(100);
       }
+      clear_serial_buffer();
+      delay(100);
+      Serial.println("");
+      Serial.println("Finished loop");
+
     }
     
 
