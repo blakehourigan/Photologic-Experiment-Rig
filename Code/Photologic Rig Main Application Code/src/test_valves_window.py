@@ -20,6 +20,11 @@ class ValveTestWindow:
         self.num_valves_to_test.trace_add("write", self.validate_and_update)
         self.desired_volume.trace_add("write", self.validate_and_update)
 
+    def ask_continue(self):
+        root = tk.Tk()
+        root.withdraw()  # Hide the root window
+        return messagebox.askyesno("Continue", "Are you ready to continue?")
+
     def show_window(self):
         if self.controller.data_mgr.num_stimuli.get() > 0:
             if self.top and self.top.winfo_exists():

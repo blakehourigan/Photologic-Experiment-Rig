@@ -272,21 +272,41 @@ void test_volume()
 
     int num_valves = recieved_transmission.toInt();
 
-  // while (Serial.available() == 0) {}
-
-  //   recieved_transmission = Serial.readStringUntil('\n');
-
-  //   float amt_requested = recieved_transmission.toFloat();
     for(int i=0; i < num_valves / 2; i++)
     {
+      Serial.println("Finished loop");
+
+      while(true)
+      {
+        while (Serial.available() == 0) {}
+
+        recieved_transmission = Serial.readStringUntil('\n');
+
+        if(recieved_transmission == "continue")
+        {
+          break;
+        }
+      }
+
       for(int j=0; j < 500; j++)
       {
-
         lick_handler(0, i);
         lick_handler(1, i);
         delay(100);
       }
     }
+    
+    for (int i = 0; i < num_valves; i++) 
+    {
+      Serial.println(side_one_lick_durations[i]);
+      delay(50); // Short delay to ensure Python can keep up
+    }
+    for (int i = 0; i < num_valves; i++) 
+    {
+      Serial.println(side_two_lick_durations[i]);
+      delay(50); // Short delay to ensure Python can keep up
+    }
+
 } 
 
 void recieve_schedule(int side)
@@ -295,15 +315,12 @@ void recieve_schedule(int side)
   if(side == 1)
   {
     // Wait until data is available
-    while (Serial.available() == 0) 
-    {
-    }
-
+    while (Serial.available() == 0) {}
 
     // Now read the data
     String valvePairStr = Serial.readStringUntil('\n');
     // Echo back the received data
-    Serial.println(valvePairStr);
+    Serial.print(valvePairStr);
 
     int position = valvePairStr.toInt();
 
@@ -316,9 +333,7 @@ void recieve_schedule(int side)
   }
   if(side == 2)
   {
-    while (Serial.available() == 0) 
-    {
-    }
+    while (Serial.available() == 0) {}
 
     // Now read the data
     String valvePairStr = Serial.readStringUntil('\n');
@@ -328,8 +343,6 @@ void recieve_schedule(int side)
 
     addToArray(SIDE_TWO_SCHEDULE, side_two_size, position);
 
-    // addToArray(SIDE_TWO_SCHEDULE, position, side_two_size);
-
     // Wait a little bit for the Python side to be ready to receive
     delay(100); // Delay for 100 milliseconds
   }
@@ -338,19 +351,24 @@ void recieve_schedule(int side)
 void send_schedule_back(int side) {
   if (side == 1) 
   {
-    for (int i = 0; i < side_one_size; i++) {
+    for (int i = 0; i < side_one_size; i++) 
+    {
       Serial.println(SIDE_ONE_SCHEDULE[i]);
       delay(50); // Short delay to ensure Python can keep up
     }
     Serial.println("end side one");
   } 
-  else if (side == 2) {
-    for (int i = 0; i < side_two_size; i++) {
+  else if (side == 2) 
+  {
+    for (int i = 0; i < side_two_size; i++) 
+    {
       Serial.println(SIDE_TWO_SCHEDULE[i]);
       delay(50); // Short delay to ensure Python can keep up
     }
     Serial.println("end");
-  } else {
+  } 
+  else 
+  {
     Serial.println("Invalid Side for Schedule Transmission");
   }
 }
