@@ -104,30 +104,50 @@ void untoggle_solenoid(int side, int solenoid_pin)
   }
 }
 
-void lick_handler(int valve_side)
+void lick_handler(int valve_side, int valve_number = -1)
 {
   const int * solenoids;
   long int duration = 0;
-  int valve_number = -1; 
 
   noInterrupts();
 
-  if(valve_side == 0)
+
+  if (valve_number != -1) 
   {
-    duration = side_one_lick_durations[valve_number];
-    solenoids = SIDE_ONE_SOLENOIDS;
-    valve_number = SIDE_ONE_SCHEDULE[current_trial];
-  }
-  else if(valve_side == 1)
-  {
-    duration = side_two_lick_durations[valve_number];
-    solenoids = SIDE_TWO_SOLENOIDS;
-    valve_number = SIDE_TWO_SCHEDULE[current_trial];
+    // Use the provided valve number
+    if (valve_side == 0) 
+    {
+      duration = side_one_lick_durations[valve_number];
+      solenoids = SIDE_ONE_SOLENOIDS;
+    } else if (valve_side == 1) 
+    {
+      duration = side_two_lick_durations[valve_number];
+      solenoids = SIDE_TWO_SOLENOIDS;
+    } else 
+    {
+      Serial.println("Invalid solenoid value");
+      return;
+    }
   }
   else
   {
-    Serial.println("Invalid solenoid value");
-    return;
+    if(valve_side == 0)
+    {
+      duration = side_one_lick_durations[valve_number];
+      solenoids = SIDE_ONE_SOLENOIDS;
+      valve_number = SIDE_ONE_SCHEDULE[current_trial];
+    }
+    else if(valve_side == 1)
+    {
+      duration = side_two_lick_durations[valve_number];
+      solenoids = SIDE_TWO_SOLENOIDS;
+      valve_number = SIDE_TWO_SCHEDULE[current_trial];
+    }
+    else
+    {
+      Serial.println("Invalid solenoid value");
+      return;
+    }
   }
 
   int quotient = duration / 10000; // delayMicroseconds only allows for values up to 16383, we use multiple instances of 
@@ -201,40 +221,8 @@ void setup()
 
 }
 
-void test_valve_operation() 
+void prime_valves()
 {
-    // Set pin 38 as an output
-    DDRD |= (1 << PD7);
-
-    // Open the valve
-    PORTD |= (1 << PD7); 
-    unsigned long start_time = millis();
-
-    // Wait for 3 minutes (180000 milliseconds)
-    while(millis() - start_time < 150000) {
-        // Keep the loop running for 3 minutes
-    }
-
-    // Close the valve
-    PORTD &= ~(1 << PD7);
-    unsigned long end_time = millis();
-
-    // Calculate duration
-    unsigned long duration = end_time - start_time;
-  
-    // Print the duration
-    Serial.print("Time valve was open: ");
-    Serial.print(duration);
-    Serial.println(" milliseconds");
-}
-
-
-// this function needs rewritten it probably doesn't work at all
-void test_volume()
-{
-  DDRC |= (1 << PC7); // Set pin 30 as an output
-  DDRD |= (1 << PD7); // Set pin 30 as an output
-
   for(int i = 0; i < 1000; i++)
   {
     Serial.println(i);
@@ -273,6 +261,38 @@ void test_volume()
     Serial.print(valve_open_time_c);
     Serial.println(" milliseconds.");
 }
+
+
+void test_volume()
+{
+
+  while (Serial.available() == 0) {}
+  
+    String recieved_transmission = Serial.readStringUntil('\n');
+
+    int num_valves = recieved_transmission.toInt();
+
+  // while (Serial.available() == 0) {}
+
+  //   recieved_transmission = Serial.readStringUntil('\n');
+
+  //   float amt_requested = recieved_transmission.toFloat();
+
+    for(int j=0; j < 500; j++)
+    {
+      for(int i=0; i < num_valves / 2; i++)
+      {
+        lick_handler(0, i);
+      }
+    }
+    for(int j=0; j < 500; j++)
+    {
+      for(int i=0; i < num_valves / 2; i++)
+      {
+        lick_handler(1, i);
+      }
+    }
+} 
 
 void recieve_schedule(int side)
 {
@@ -374,7 +394,7 @@ void loop()
       test_volume();
       break;
     case 'F':
-      test_valve_operation();
+      prime_valves();
       break;
     case 'O':
       for(int i = 0; i < 8; i++)

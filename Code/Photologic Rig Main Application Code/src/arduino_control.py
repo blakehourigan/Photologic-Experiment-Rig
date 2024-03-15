@@ -127,6 +127,7 @@ class AduinoManager:
                 # for each entry in the schedule for side 1 , we find its place in the side_one_vars list which gives the physical valve and vial 
                 side_one_verification = []
                 side_two_verification = []
+                
                 for entry in side_one_schedule:     
                     index = side_one_vars.index(entry)
                     side_one_indexes.append(index)
