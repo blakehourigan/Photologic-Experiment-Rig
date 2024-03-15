@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, simpledialog
 
 class ValveTestWindow:
     def __init__(self, controller):
@@ -16,13 +16,28 @@ class ValveTestWindow:
         self.min_valve = 1
         self.max_valve = 8
 
+    def input_popup(self, valve ) -> float:
+        while True:  # Loop until valid input is received
+            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume for valve: " + str(valve))
+            
+            if user_input is None:
+                print("Input canceled, please enter a value.")
+                continue  # If the user cancels, prompt again
+            
+            try:
+                return float(user_input)  # Attempt to return the user input as a float
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+                # The loop will continue, prompting the user again
+
     def setup_trace_variables(self):
         self.num_valves_to_test.trace_add("write", self.validate_and_update)
         self.desired_volume.trace_add("write", self.validate_and_update)
 
+    def tesing_aborted(self):
+        messagebox("Testing Aborted", "Testing has been aborted, run testing again or continue with experiement.")
+
     def ask_continue(self):
-        root = tk.Tk()
-        root.withdraw()  # Hide the root window
         return messagebox.askyesno("Continue", "Are you ready to continue?")
 
     def show_window(self):

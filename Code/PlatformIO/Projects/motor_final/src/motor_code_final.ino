@@ -40,6 +40,13 @@ int side_two_size = 0;
 
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 
+void clear_serial_buffer() 
+{
+  while (Serial.available() > 0) {
+    Serial.read(); // Read and discard the incoming byte
+  }
+}
+
 bool checkEEPROMInitialized() 
 {
     byte flag;
@@ -262,7 +269,6 @@ void prime_valves()
     Serial.println(" milliseconds.");
 }
 
-
 void test_volume()
 {
 
@@ -274,6 +280,7 @@ void test_volume()
 
     for(int i=0; i < num_valves / 2; i++)
     {
+      clear_serial_buffer();
       delay(100);
       Serial.println("");
       Serial.println("Finished loop");
