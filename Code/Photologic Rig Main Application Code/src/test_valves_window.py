@@ -18,7 +18,7 @@ class ValveTestWindow:
 
     def input_popup(self, valve ) -> float:
         while True:  # Loop until valid input is received
-            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume for valve: " + str(valve))
+            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume (ml) for valve " + str(valve))
             
             if user_input is None:
                 print("Input canceled, please enter a value.")

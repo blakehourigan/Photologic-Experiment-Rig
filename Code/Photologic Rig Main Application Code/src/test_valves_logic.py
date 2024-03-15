@@ -49,7 +49,7 @@ class valveTestLogic:
                         if line == "end side one":
                             break
                         else:
-                            side_one_durations.append(line)
+                            side_one_durations.append(int(line))
 
                 elif line == "side two":
                     while(self.controller.arduino_mgr.motor_arduino.in_waiting):
@@ -57,7 +57,7 @@ class valveTestLogic:
                         if line == "end side two":
                             break
                         else:
-                            side_two_durations.append(line)
+                            side_two_durations.append(int(line))
                     break
                             
         print(side_one_durations, end="\n")
