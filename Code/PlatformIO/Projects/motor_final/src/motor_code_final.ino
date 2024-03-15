@@ -276,6 +276,7 @@ void test_volume()
     {
       delay(100);
       Serial.println("");
+      Serial.println("Finished loop");
 
       while(true)
       {

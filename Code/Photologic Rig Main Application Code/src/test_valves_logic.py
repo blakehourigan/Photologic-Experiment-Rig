@@ -26,9 +26,9 @@ class valveTestLogic:
                 line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
                 print(line)
                 if line == "Finished loop":
-                    self.controller.valve_testing_window.ask_continue()
-                    command = "continue\n"
-                    self.controller.arduino_mgr.send_command_to_motor(command)
+                    if self.controller.valve_testing_window.ask_continue():    
+                        command = "continue\n"
+                        self.controller.arduino_mgr.send_command_to_motor(command)
 
         """     
         amt_dispensed = self.controller.valve_testing_window.desired_volume
