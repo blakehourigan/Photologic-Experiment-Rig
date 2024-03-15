@@ -277,8 +277,8 @@ void test_volume()
     String recieved_transmission = Serial.readStringUntil('\n');
 
     int num_valves = recieved_transmission.toInt();
-
-
+    Serial.println("");
+    Serial.println("start");
     for(int i=0; i < num_valves / 2; i++)
     {
       while(true)
@@ -301,7 +301,6 @@ void test_volume()
       }
       clear_serial_buffer();
       delay(100);
-      Serial.println("");
       Serial.println("Finished loop");
 
     }

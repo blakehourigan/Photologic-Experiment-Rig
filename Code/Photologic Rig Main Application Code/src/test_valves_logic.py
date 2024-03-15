@@ -24,24 +24,26 @@ class valveTestLogic:
         command = num_valves_send
         self.controller.arduino_mgr.send_command_to_motor(command)
     
-        valve = 0
+        valve = 1
     
         while True:
             if self.controller.arduino_mgr.motor_arduino.in_waiting:
                 line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
+                print(line)
                 if line == "Finished loop":
-                        if valve != 0:
-                            side_one_volumes.append(self.controller.valve_testing_window.input_popup(valve))
-                            side_two_volumes.append(self.controller.valve_testing_window.input_popup(valve + 4))
-                            if self.controller.valve_testing_window.ask_continue():    
-                                pass
-                            else:
-                                self.controller.valve_testing_window.tesing_aborted()
-                                break
-                        command = "continue\n"
-                        self.controller.arduino_mgr.send_command_to_motor(command)
-                        valve += 1
-
+                    side_one_volumes.append(self.controller.valve_testing_window.input_popup(valve))
+                    side_two_volumes.append(self.controller.valve_testing_window.input_popup(valve + 4))
+                    if self.controller.valve_testing_window.ask_continue():    
+                        pass
+                    else:
+                        self.controller.valve_testing_window.tesing_aborted()
+                        break
+                    command = "continue\n"
+                    self.controller.arduino_mgr.send_command_to_motor(command)
+                    valve += 1
+                elif line == "start":
+                    command = "continue\n"
+                    self.controller.arduino_mgr.send_command_to_motor(command)
                 elif line == "side one":
                     while(self.controller.arduino_mgr.motor_arduino.in_waiting):
                         line = self.controller.arduino_mgr.motor_arduino.readline().decode('utf-8').rstrip()
