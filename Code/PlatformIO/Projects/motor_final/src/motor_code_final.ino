@@ -396,6 +396,79 @@ void send_schedule_back(int side) {
   }
 }
 
+void update_opening_times()
+{
+    long int durations[16]; 
+
+    int current_element = 0;
+    int current_element_in_side = 0;
+
+
+    while(true)
+    {
+    // Wait until data is available
+    while (Serial.available() == 0) {}
+
+    // Now read the data
+    String identifier = Serial.readStringUntil('\n');
+    // Echo back the received data
+    Serial.print(identifier);
+
+    if(identifier == "end") 
+    {
+      break;
+    }
+
+    int ident_int = identifier.toInt();
+
+    if(ident_int == 1)
+    {
+    while (Serial.available() == 0) {}
+    String duration = Serial.readStringUntil('\n');
+    int new_duration = duration.toInt();
+
+    if(new_duration == side_one_lick_durations[current_element_in_side])
+    {
+      durations[current_element] = side_one_lick_durations[current_element_in_side];
+    }
+    else
+    {
+      durations[current_element] = new_duration; 
+    }
+
+    current_element++;
+    current_element_in_side++;
+    }
+
+    current_element_in_side = 0;
+
+    if(ident_int == 2)
+    {
+    while (Serial.available() == 0) {}
+    String duration = Serial.readStringUntil('\n');
+    int new_duration = duration.toInt();
+
+    if(new_duration == side_two_lick_durations[current_element_in_side])
+    {
+      durations[current_element] = side_two_lick_durations[current_element_in_side];
+    }
+    else
+    {
+      durations[current_element] = new_duration; 
+    }
+
+    current_element++;
+    current_element_in_side++;
+    }
+    }
+
+
+    // Wait a little bit for the Python side to be ready to receive
+    delay(100); // Delay for 100 milliseconds
+    writeValuesToEEPROM(durations, DATA_START_ADDRESS, current_element + 1);
+}
+
+
 
 void loop() 
 {
@@ -463,7 +536,7 @@ void loop()
     case 'S':
     {
       send_schedule_back(1); // Send Side One schedule
-      delay(100); // Optional delay between sending each side
+      delay(100); 
       send_schedule_back(2); // Send Side Two schedule
       break;
     }
@@ -472,6 +545,10 @@ void loop()
       readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
       readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
       break;
+    }
+    case 'V':
+    {
+      update_opening_times();
     }
     
     default:

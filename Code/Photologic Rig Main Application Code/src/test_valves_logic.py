@@ -59,9 +59,33 @@ class valveTestLogic:
                         else:
                             side_two_durations.append(int(line))
                     break
-                            
+        
         print(side_one_durations, end="\n")
         print(side_two_durations, end="\n")
         
         print(side_one_volumes)
         print(side_two_volumes)
+        self.update_and_send_opening_times(num_valves, side_one_durations, side_one_volumes, 1)
+        self.update_and_send_opening_times(num_valves, side_two_durations, side_two_volumes, 2)
+                      
+    def update_and_send_opening_times(self, num_valves, durations, volumes, side):
+        opening_time = 0
+        
+        desired_volume = self.controller.valve_testing_window.desired_volume
+        
+        command = "V"
+        self.controller.arduino_mgr.send_command_to_motor(command)
+        
+        command = str(side)
+        self.controller.arduino_mgr.send_command_to_motor(command)
+        
+        for i in range(num_valves.get()/2):
+            v_per_open_previous = (volumes[i] / 500)
+            
+            opening_time = durations[i] * (desired_volume / v_per_open_previous)
+            print(opening_time)
+            self.controller.arduino_mgr.send_command_to_motor(opening_time)
+
+            
+            
+            
