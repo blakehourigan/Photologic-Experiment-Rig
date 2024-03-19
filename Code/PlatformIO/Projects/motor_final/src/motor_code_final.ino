@@ -28,11 +28,11 @@ int valve_side, valve_number;
 bool lick_available = false;
 
 const int FLAG_ADDRESS = 0;
-const byte INITIALIZED_FLAG = 0xA5;
+const byte INITIALIZED_FLAG = 1;
 const int DATA_START_ADDRESS = 1; // Start after the flag
 
-long int side_one_lick_durations[8]; 
-long int side_two_lick_durations[8];
+long int side_one_lick_durations[4]; 
+long int side_two_lick_durations[4];
 
 const int MAX_SIZE = 50; // Maximum size of the array
 int side_one_size = 0; // Keep track of the current number of elements
@@ -51,7 +51,7 @@ bool checkEEPROMInitialized()
 {
     byte flag;
     EEPROM.get(FLAG_ADDRESS, flag);
-    return (flag == INITIALIZED_FLAG);
+    return (flag == 1);
 }
 
 void markEEPROMInitialized() 
@@ -68,11 +68,15 @@ void writeValuesToEEPROM(long int values[], int startAddress, int numValues)
 }
 
 // Function to read values from EEPROM
-void readValuesFromEEPROM(long int values[], int startAddress, int numValues) 
+void readValuesFromEEPROM(long int values[], int startAddress, int numValues, bool print = false) 
 {
     for (int i = 0; i < numValues; i++) 
     {
         EEPROM.get(startAddress + i * sizeof(long int), values[i]);
+        if(print)
+        {
+          Serial.println(values[i]);
+        }
     }
 }
 
@@ -194,22 +198,25 @@ void setup()
   if (!checkEEPROMInitialized()) 
   {
       // Initialize with default values
-      for (int i = 0; i < 8; i++) 
+      for (int i = 0; i < 4; i++) 
       {
           side_one_lick_durations[i] = 24125; // Default value
+      }
+      for (int i = 0; i < 4; i++) 
+      {
           side_two_lick_durations[i] = 24125; // Default value
       }
 
-      writeValuesToEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      writeValuesToEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      writeValuesToEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 4);
+      writeValuesToEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 4 * sizeof(long int), 4);
       markEEPROMInitialized();
       Serial.println("EEPROM initialized with default values.");
   }
   else 
   {
       // Read the existing values from EEPROM
-      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 4);
+      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 4 * sizeof(long int), 4);
       //Serial.println("Values read from EEPROM.");
   }
 
@@ -232,41 +239,16 @@ void prime_valves()
 {
   for(int i = 0; i < 1000; i++)
   {
-    Serial.println(i);
-    open_start = millis();
-    PORTD |= (1 << PD7); // Set pin 38 to HIGH (Valve 1)
-    // max value of delayMicroseconds is 16383, using smaller multiples of 10000 to avoid overflow
-    delayMicroseconds(10000);
-    delayMicroseconds(10000);
-    delayMicroseconds(10000);
-    delayMicroseconds(7500);
-    
-    CLEAR_BIT(PORTD, PD7); // Set pin 38 to LOW (close)
-    
-    delay(25);
-    close_time = millis();
-    valve_open_time_d += (close_time - open_start);
-
-    open_start = millis();
-    
-    SET_BIT(PORTC, PC7); // Set pin 30 to HIGH (valve 2)
-
-    delayMicroseconds(10000);
-    delayMicroseconds(10000);
-    delayMicroseconds(4125);
-    PORTC &= ~(1 << PC7); // Set pin 30 to low (close)
-    delay(25);
-    close_time = millis();
-    valve_open_time_c += (close_time - open_start);
-
+    lick_handler(0, 0);
+    lick_handler(0, 1);
+    lick_handler(0, 2);
+    lick_handler(0, 3);
+    lick_handler(1, 0);
+    lick_handler(1, 1);
+    lick_handler(1, 2);
+    lick_handler(1, 3);
     delay(100);
   } 
-    Serial.print("Valve one opened for: ");
-    Serial.print(valve_open_time_d);
-    Serial.println(" milliseconds.");
-    Serial.print("Valve two opened for: ");
-    Serial.print(valve_open_time_c);
-    Serial.println(" milliseconds.");
 }
 
 void test_volume()
@@ -293,7 +275,7 @@ void test_volume()
         }
       }
 
-      for(int j=0; j < 500; j++)
+      for(int j=0; j < 1000; j++)
       {
         lick_handler(0, i);
         lick_handler(1, i);
@@ -398,14 +380,14 @@ void send_schedule_back(int side) {
 
 void update_opening_times()
 {
-    long int durations[16]; 
+    long int durations[8]; 
 
     int current_element = 0;
     int current_element_in_side = 0;
 
-
     while(true)
     {
+    Serial.println("here");
     // Wait until data is available
     while (Serial.available() == 0) {}
 
@@ -423,9 +405,16 @@ void update_opening_times()
 
     if(ident_int == 1)
     {
+    while(true)
+    {
     while (Serial.available() == 0) {}
     String duration = Serial.readStringUntil('\n');
-    int new_duration = duration.toInt();
+    long int new_duration = duration.toInt();
+
+    if(new_duration == -1) // if we get a -1, then this side is done
+    {
+      break;
+    }
 
     if(new_duration == side_one_lick_durations[current_element_in_side])
     {
@@ -440,13 +429,22 @@ void update_opening_times()
     current_element_in_side++;
     }
 
+    }
+
     current_element_in_side = 0;
 
     if(ident_int == 2)
     {
+    while(true)
+    {
     while (Serial.available() == 0) {}
     String duration = Serial.readStringUntil('\n');
-    int new_duration = duration.toInt();
+    long int new_duration = duration.toInt();
+
+    if(new_duration == -1) // if we get a -1, then this side is done
+    {
+      break;
+    }
 
     if(new_duration == side_two_lick_durations[current_element_in_side])
     {
@@ -460,21 +458,24 @@ void update_opening_times()
     current_element++;
     current_element_in_side++;
     }
-    }
 
+    }
+    }
+    for(int i = 0; i<8 ; i++)
+    {
+      Serial.println(durations[i]);
+    }
 
     // Wait a little bit for the Python side to be ready to receive
     delay(100); // Delay for 100 milliseconds
+    Serial.println(current_element);
     writeValuesToEEPROM(durations, DATA_START_ADDRESS, current_element + 1);
 }
-
-
 
 void loop() 
 {
   if(lick_available)
   {
-    Serial.print(valve_side);
     lick_handler(valve_side);
     lick_available = false;
   }
@@ -542,8 +543,8 @@ void loop()
     }
     case 'P':
     {
-      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      readValuesFromEEPROM(side_one_lick_durations, DATA_START_ADDRESS, 4, true);
+      readValuesFromEEPROM(side_two_lick_durations, DATA_START_ADDRESS + 4 * sizeof(long int), 4, true);
       break;
     }
     case 'V':

@@ -11,8 +11,9 @@ from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
 from test_valves_window import ValveTestWindow
-from test_valves_logic import valveTestLogic 
+from test_valves_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
+from valve_control import ValveControl
 
 
 class ProgramController:
@@ -25,10 +26,9 @@ class ProgramController:
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
         self.program_schedule_window = ProgramScheduleWindow(self)
 
-
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
-        
+
         self.valve_testing_window = ValveTestWindow(self)
         self.valve_test_logic = valveTestLogic(self)
 
@@ -52,8 +52,8 @@ class ProgramController:
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
 
-        self.arduino_mgr.send_command_to_laser('S')
-        
+        self.arduino_mgr.send_command_to_laser("S")
+
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -65,20 +65,21 @@ class ProgramController:
             self.data_mgr.side_two_licks = 0
 
             # configure the state time label in the top right of the main window to hold the value of the new state
-            self.main_gui.state_timer_text.configure(
-                text=(self.state + " Time:")
-            )
+            self.main_gui.state_timer_text.configure(text=(self.state + " Time:"))
 
             # update the state start time to now, so that it starts at 0
             self.data_mgr.state_start_time = time.time()
 
-            self.main_gui.update_on_new_trial(self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"], self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"])
+            self.main_gui.update_on_new_trial(
+                self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"],
+                self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"],
+            )
 
             # add the initial interval to the program information box
             ITI_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "ITI")
-            
+
             self.main_gui.update_on_state_change(ITI_Value, self.state)
-                    
+
             def callback():
                 self.time_to_contact(iteration)
 
@@ -95,14 +96,13 @@ class ProgramController:
 
             self.read_licks(iteration)
 
-
             self.main_gui.state_timer_text.configure(
                 text=(self.state + " Time:")
             )  # update state timer header
 
             self.data_mgr.state_start_time = time.time()  # state start time begins
 
-            command = 'D'  # tell motor arduino to move the door down
+            command = "D"  # tell motor arduino to move the door down
             self.arduino_mgr.send_command_to_motor(command)
 
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
@@ -113,9 +113,8 @@ class ProgramController:
                 stimulus_2_position,
             ) = self.data_mgr.find_stimuli_positions(iteration)
 
-            
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
-            
+
             self.main_gui.update_on_state_change(TTC_Value, self.state)
 
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
@@ -129,7 +128,7 @@ class ProgramController:
         """define sample time method, i is again passed to keep track of trial and stimuli"""
         if self.running:
             self.state = "Sample"
-            command = 'B'
+            command = "B"
             self.arduino_mgr.send_command_to_laser(command)
 
             # Update the state start time to the current time
@@ -138,7 +137,7 @@ class ProgramController:
             sample_interval_value = self.data_mgr.check_dataframe_entry_isfloat(
                 iteration, "Sample Time"
             )
-            
+
             self.main_gui.update_on_state_change(sample_interval_value, self.state)
 
             # After the sample time specified in the ith row of the 'Sample Time' table, we will jump to the save licks function
@@ -152,22 +151,21 @@ class ProgramController:
         available_data, stimulus = self.arduino_mgr.read_from_laser()
 
         if available_data:
-            
             print(stimulus)
-            
+
             if stimulus == "Stimulus One":
                 self.data_mgr.side_one_licks += 1
             elif stimulus == "Stimulus Two":
                 self.data_mgr.side_two_licks += 1
             self.data_mgr.total_licks += 1
 
-            self.check_licks_above_TTC_threshold(i) # check if we have 3 licks from either side
+            self.check_licks_above_TTC_threshold(
+                i
+            )  # check if we have 3 licks from either side
             # send the lick data to the data frame
             self.send_lick_data_to_dataframe(stimulus)
         # Call this method again every 5 ms
-        self.update_licks_id = self.main_gui.root.after(
-            10, lambda: self.read_licks(i)
-        )
+        self.update_licks_id = self.main_gui.root.after(10, lambda: self.read_licks(i))
         self.after_ids.append(self.update_licks_id)
 
     def send_lick_data_to_dataframe(self, stimulus):
@@ -177,9 +175,9 @@ class ProgramController:
 
         licks_dataframe.loc[total_licks, "Trial Number"] = data_mgr.current_trial_number
 
-        licks_dataframe.loc[
-            total_licks, "Port Licked"
-        ] = stimulus  # Send which stimulus was licked on this lick
+        licks_dataframe.loc[total_licks, "Port Licked"] = (
+            stimulus  # Send which stimulus was licked on this lick
+        )
         licks_dataframe.loc[total_licks, "Time Stamp"] = (
             time.time() - data_mgr.start_time
         )
@@ -191,11 +189,11 @@ class ProgramController:
         # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
         # state and continue the trial
         self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
-    
+
         print(self.state, self.data_mgr.side_one_licks, self.data_mgr.side_two_licks)
         if (
             self.data_mgr.side_one_licks >= self.data_mgr.TTC_lick_threshold.get()
-            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()  
+            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()
         ) and self.state == "TTC":
             self.data_mgr.stimuli_dataframe.loc[
                 self.data_mgr.current_trial_number - 1, "TTC Actual"
@@ -216,8 +214,11 @@ class ProgramController:
     def reset_button_handler(self) -> None:
         """Handle clearing the data window on click of the clear button"""
         self.main_gui.update_on_reset()
-        self.experiment_ctl_wind.reset_traces()  
-        if self.experiment_ctl_wind.top is not None and self.experiment_ctl_wind.top.winfo_exists():
+        self.experiment_ctl_wind.reset_traces()
+        if (
+            self.experiment_ctl_wind.top is not None
+            and self.experiment_ctl_wind.top.winfo_exists()
+        ):
             self.experiment_ctl_wind.on_window_close()
             self.experiment_ctl_wind.show_window(self.main_gui.root)
         self.data_mgr.reset_all()
@@ -231,7 +232,7 @@ class ProgramController:
 
         # set the running variable to false to halt execution in the state functions
         self.running = False
-        
+
         self.main_gui.update_on_stop()
 
         for after_id in (
@@ -239,15 +240,17 @@ class ProgramController:
         ):  # cancel all after calls which cancels every recursive function call
             self.main_gui.root.after_cancel(after_id)
 
-        self.main_gui.root.after(5000, self.arduino_mgr.reset_arduinos)  # send the reset command to reboot both Arduino boards
+        self.main_gui.root.after(
+            5000, self.arduino_mgr.reset_arduinos
+        )  # send the reset command to reboot both Arduino boards
 
         self.after_ids.clear()
-        
+
         self.data_mgr.current_trial_number = 1
 
     def start_program(self) -> None:
         # Start the program if it is not already runnning and generate random numbers
-        
+
         if not self.data_mgr.blocks_generated:
             self.main_gui.display_error(
                 "Blocks not Generated",
@@ -274,3 +277,7 @@ class ProgramController:
         # if the program is running, update the clock label
         if self.running:
             self.main_gui.update_clock_label()
+
+    def open_valve_control_window(self):
+        # Assuming ValveControl is imported at the top of this file
+        self.valve_control_window = ValveControl(self)

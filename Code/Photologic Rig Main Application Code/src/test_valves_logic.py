@@ -1,3 +1,5 @@
+import time
+
 class valveTestLogic:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -67,25 +69,32 @@ class valveTestLogic:
         print(side_two_volumes)
         self.update_and_send_opening_times(num_valves, side_one_durations, side_one_volumes, 1)
         self.update_and_send_opening_times(num_valves, side_two_durations, side_two_volumes, 2)
+
+        self.controller.arduino_mgr.send_command_to_motor("end")
+        print("done")
+
                       
     def update_and_send_opening_times(self, num_valves, durations, volumes, side):
         opening_time = 0
         
-        desired_volume = self.controller.valve_testing_window.desired_volume
+        desired_volume = self.controller.valve_testing_window.desired_volume.get()
         
-        command = "V"
-        self.controller.arduino_mgr.send_command_to_motor(command)
+        if(side == 1):
+            command = "V"
+            self.controller.arduino_mgr.send_command_to_motor(command)
+        
+        time.sleep(1)
         
         command = str(side)
+        print(command)
         self.controller.arduino_mgr.send_command_to_motor(command)
         
-        for i in range(num_valves.get()/2):
-            v_per_open_previous = (volumes[i] / 500)
+        for i in range(num_valves.get()//2):
+            v_per_open_previous = (volumes[i] / 1000)
             
-            opening_time = durations[i] * (desired_volume / v_per_open_previous)
+            opening_time = round(durations[i] * (desired_volume / v_per_open_previous))
             print(opening_time)
-            self.controller.arduino_mgr.send_command_to_motor(opening_time)
+            self.controller.arduino_mgr.send_command_to_motor(str(opening_time))
+            time.sleep(1)
+        self.controller.arduino_mgr.send_command_to_motor(str(-1))
 
-            
-            
-            

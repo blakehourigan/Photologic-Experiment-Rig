@@ -18,7 +18,7 @@ class ValveTestWindow:
 
     def input_popup(self, valve ) -> float:
         while True:  # Loop until valid input is received
-            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume (ml) for valve " + str(valve))
+            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume cm^3for valve " + str(valve))
             
             if user_input is None:
                 print("Input canceled, please enter a value.")
@@ -96,6 +96,28 @@ class ValveTestWindow:
         start_test_button_frame.grid(row=3, column=0, pady=10, padx=10, sticky="ew")
         start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command= lambda: self.controller.valve_test_logic.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
         start_test_button.pack(fill='both', expand=True)
+        
+        directly_update_frame = tk.Frame(self.top, highlightbackground='black', highlightthickness=1)
+        directly_update_frame.grid(row=4, column=0, pady=10, padx=10, sticky="ew")
+        directly_update_button = tk.Button(directly_update_frame, text="Directly Update", command=self.collect_user_inputs, bg="green", font=("Helvetica", 16))
+        directly_update_button.pack(fill='both', expand=True)
+
+
+
+    def collect_user_inputs(self):
+        user_inputs = []  # Initialize an empty list to store the inputs
+        for valve_number in range(1, 9):  # Loop to collect 8 numbers
+            user_input = self.input_popup(valve_number)  # Call the existing input_popup method
+            if user_input is not None:
+                user_inputs.append(user_input)  # Add the valid input to the list
+            else:
+                messagebox.showwarning("Input Cancelled", "Operation cancelled by user.")
+                return  # Exit if the user cancels the input dialog
+            
+        self.controller.valve_test_logic.update_and_send_opening_times(8, user_inputs[:4], 1)
+        self.controller.valve_test_logic.update_and_send_opening_times(8, user_inputs[4:-1], 2)
+        print(user_inputs)  # For debugging: Print the collected inputs
+        # You can now use the 'user_inputs' list as needed in your application
 
 
     def auto_resize_and_center(self):
