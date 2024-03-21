@@ -26,10 +26,12 @@ int combined_value;
 
 int valve_side, valve_number;
 bool lick_available = false;
+bool prime_flag;
 
 const int FLAG_ADDRESS = 0;
 const byte INITIALIZED_FLAG = 1;
 const int DATA_START_ADDRESS = 1; // Start after the flag
+const int SIDE_TWO_DURATIONS_ADDRESS = DATA_START_ADDRESS + 4 * sizeof(long int); // Adjust as necessary
 
 long int side_one_lick_durations[4]; 
 long int side_two_lick_durations[4];
@@ -57,6 +59,11 @@ bool checkEEPROMInitialized()
 void markEEPROMInitialized() 
 {
     EEPROM.update(FLAG_ADDRESS, INITIALIZED_FLAG);
+}
+
+void markEEPROMUninitialized() 
+{
+    EEPROM.update(FLAG_ADDRESS, 0);
 }
 
 // Function to write default or new values to EEPROM
@@ -128,12 +135,13 @@ void lick_handler(int valve_side, int valve_number = -1)
     // Use the provided valve number
     if (valve_side == 0) 
     {
-      duration = side_one_lick_durations[valve_number];
+      readValuesFromEEPROM(&duration, DATA_START_ADDRESS + valve_number * sizeof(long int), 1);
       solenoids = SIDE_ONE_SOLENOIDS;
     } else if (valve_side == 1) 
     {
-      duration = side_two_lick_durations[valve_number];
+      readValuesFromEEPROM(&duration, SIDE_TWO_DURATIONS_ADDRESS + valve_number * sizeof(long int), 1);
       solenoids = SIDE_TWO_SOLENOIDS;
+
     } else 
     {
       Serial.println("Invalid solenoid value");
@@ -237,19 +245,43 @@ void setup()
 
 void prime_valves()
 {
-  for(int i = 0; i < 1000; i++)
-  {
-    lick_handler(0, 0);
-    lick_handler(0, 1);
-    lick_handler(0, 2);
-    lick_handler(0, 3);
-    lick_handler(1, 0);
-    lick_handler(1, 1);
-    lick_handler(1, 2);
-    lick_handler(1, 3);
-    delay(100);
-  } 
+    for(int i = 0; i < 1000; i++)
+    {
+        if(prime_flag)
+        {
+            // Check if there's something on the serial line
+            if (Serial.available() > 0) 
+            {
+                // Read the incoming byte:
+                char incomingChar = Serial.read();
+
+                // Check if the incoming byte is 'E'
+                if (incomingChar == 'E') 
+                {
+                    prime_flag = 0; // Set prime_flag to zero to stop the priming
+                    break; // Exit the for loop immediately
+                }
+            }
+
+            // Prime valves as before
+            lick_handler(0, 0);
+            lick_handler(0, 1);
+            lick_handler(0, 2);
+            lick_handler(0, 3);
+            lick_handler(1, 0);
+            lick_handler(1, 1);
+            lick_handler(1, 2);
+            lick_handler(1, 3);
+            delay(100);
+        }
+        else
+        {
+            // If prime_flag is not set, break out of the loop early
+            break;
+        }
+    }
 }
+
 
 void test_volume()
 {
@@ -259,7 +291,6 @@ void test_volume()
     String recieved_transmission = Serial.readStringUntil('\n');
 
     int num_valves = recieved_transmission.toInt();
-    Serial.println("");
     Serial.println("start");
     for(int i=0; i < num_valves / 2; i++)
     {
@@ -387,14 +418,11 @@ void update_opening_times()
 
     while(true)
     {
-    Serial.println("here");
     // Wait until data is available
     while (Serial.available() == 0) {}
 
     // Now read the data
     String identifier = Serial.readStringUntil('\n');
-    // Echo back the received data
-    Serial.print(identifier);
 
     if(identifier == "end") 
     {
@@ -504,6 +532,7 @@ void loop()
       test_volume();
       break;
     case 'F':
+      prime_flag = 1;
       prime_valves();
       break;
     case 'O':
@@ -551,7 +580,10 @@ void loop()
     {
       update_opening_times();
     }
-    
+    case 'E':
+    {
+      markEEPROMUninitialized();
+    }
     default:
       break;
   }

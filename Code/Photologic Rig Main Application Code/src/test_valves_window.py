@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
+import re
 
 class ValveTestWindow:
     def __init__(self, controller):
@@ -7,28 +8,30 @@ class ValveTestWindow:
         self.master = controller.main_gui.root
         self.top = None
 
-        self.num_valves_to_test = tk.IntVar(value=4)
-        self.desired_volume = tk.DoubleVar(value=0.05)  # desired volume to dispense in ml
-        self.number_test_runs = tk.IntVar(value=10)
+        self.num_valves_to_test = tk.IntVar(value=8)
+        self.desired_volume = tk.DoubleVar(value=0.005)  # desired volume to dispense in ml
 
         self.setup_trace_variables()
 
-        self.min_valve = 1
-        self.max_valve = 8
-
-    def input_popup(self, valve ) -> float:
+    def input_popup(self, valve) -> float:
+        pattern = re.compile(r'\b\d{2}\.\d{2}\b')  # Compile the regex pattern for "d.dd"
         while True:  # Loop until valid input is received
-            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume cm^3for valve " + str(valve))
+            user_input = simpledialog.askstring("Measured Volume", "Enter the measured volume cm^3 for valve " + str(valve))
             
             if user_input is None:
                 print("Input canceled, please enter a value.")
                 continue  # If the user cancels, prompt again
-            
-            try:
-                return float(user_input)  # Attempt to return the user input as a float
-            except ValueError:
-                print("Invalid input. Please enter a valid number.")
-                # The loop will continue, prompting the user again
+
+            # Check if the input matches the "d.dd" pattern
+            if pattern.match(user_input):
+                try:
+                    return float(user_input)  # Attempt to return the user input as a float
+                except ValueError:
+                    # This block might not be necessary anymore due to regex check,
+                    # but it's kept for safety in case of unexpected input handling.
+                    print("Invalid input. Please enter a value in the format d.dd.")
+            else:
+                print("Invalid input. Please enter a value in the format d.dd.")
 
     def setup_trace_variables(self):
         self.num_valves_to_test.trace_add("write", self.validate_and_update)
