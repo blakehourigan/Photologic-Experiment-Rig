@@ -214,7 +214,7 @@ void setup()
       }
 
       write_values_to_EEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      write_values_to_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 4 * sizeof(long int), 8);
+      write_values_to_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
       mark_EEPROM_initialized();
       Serial.println("EEPROM initialized with default values.");
   }
@@ -222,7 +222,7 @@ void setup()
   {
       // Read the existing values from EEPROM
       read_values_from_EEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      read_values_from_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 4 * sizeof(long int), 8);
+      read_values_from_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
       //Serial.println("Values read from EEPROM.");
   }
 
@@ -304,7 +304,7 @@ void test_volume(char number_of_valves)
 
   for(int i=0; i < num_valves / 2; i++)
   {
-    for(int j=0; j < 1000; j++)
+    for(int j=0; j < 50; j++)
     {
       lick_handler(0, i);
       lick_handler(1, i);
@@ -326,7 +326,6 @@ void test_volume(char number_of_valves)
       }
     }
   }
-  Serial.println("<Finished Testing>");
 
   send_valve_durations();
 } 

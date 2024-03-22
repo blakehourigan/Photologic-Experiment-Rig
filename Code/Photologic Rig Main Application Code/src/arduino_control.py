@@ -3,7 +3,7 @@ import time
 import re
 import traceback
 import threading
-from typing import Optional, Tuple, List, Any
+from typing import Optional, Tuple, List
 import queue
 import serial.tools.list_ports #type: ignore
 
@@ -45,9 +45,11 @@ class AduinoManager:
             print("Connected to Arduino boards successfully.")
         
 
-            self.listener_thread = threading.Thread(target=self.listen_for_serial, daemon=True)
-            self.listener_thread.start()
-            print("Started listening thread for Arduino serial input.")
+        self.listener_thread = threading.Thread(target=self.listen_for_serial, daemon=True)
+        self.listener_thread.start()
+        print("Started listening thread for Arduino serial input.")
+        self.controller.process_queue()
+
             
 
     def listen_for_serial(self):

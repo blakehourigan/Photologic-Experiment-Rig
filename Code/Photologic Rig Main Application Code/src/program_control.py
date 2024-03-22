@@ -45,7 +45,6 @@ class ProgramController:
         self.main_gui.setup_gui()
         self.arduino_mgr.connect_to_arduino()
         self.main_gui.root.mainloop()
-        self.process_queue()
         
     def initial_time_interval(self, iteration: int) -> None:
         """defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
@@ -173,10 +172,9 @@ class ProgramController:
 
     def process_queue(self):
         while not self.arduino_mgr.data_queue.empty():
-            print('hello')
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
-            self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms        
+        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms        
     def process_data(self, source, data):
         duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
         # Process the data from the queue
@@ -187,8 +185,6 @@ class ProgramController:
             match = re.search(duration_pattern, data)
             if data == "<Finished Pair>":
                 self.valve_test_logic.append_to_volumes()
-            elif data == "<Finished Testing>":
-                self.valve_test_logic.begin_updating_opening_times()
             elif match:
                 self.valve_test_logic.begin_updating_opening_times(data)
 
