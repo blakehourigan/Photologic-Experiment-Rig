@@ -2,6 +2,7 @@ import serial # type: ignore
 import time
 import re
 import traceback
+import threading
 from typing import Optional, Tuple, List
 
 import serial.tools.list_ports #type: ignore
@@ -41,6 +42,32 @@ class AduinoManager:
             command = 'S'
             self.send_command_to_laser(command)
             print("Connected to Arduino boards successfully.")
+        
+        if self.laser_arduino or self.motor_arduino:
+            self.listener_thread = threading.Thread(target=self.listen_for_serial, daemon=True)
+            self.listener_thread.start()
+            print("Started listening thread for Arduino serial input.")
+            
+
+    def listen_for_serial(self):
+        while True:
+            try:
+                if self.laser_arduino and self.laser_arduino.in_waiting > 0:
+                    laser_data = self.laser_arduino.readline().decode('utf-8').strip()
+                    print(laser_data)
+                    self.data_queue.put(('laser', laser_data))
+
+                if self.motor_arduino and self.motor_arduino.in_waiting > 0:
+                    motor_data = self.motor_arduino.readline().decode('utf-8').strip()
+                    print(motor_data)
+                    self.data_queue.put(('motor', motor_data))
+
+            except Exception as e:
+                print(f"Error reading from Arduino: {e}")
+                break
+
+            time.sleep(0.1)
+
 
     def identify_arduino(self, port) -> str:
         """Identify the Arduino on the given port."""
@@ -133,7 +160,8 @@ class AduinoManager:
                     side_one_indexes.append(index)
                     # Convert index to string for transmission
                     index_str = str(index) + '\n'
-                    self.send_command_to_motor('1')  # Signal to Arduino about the upcoming command
+                    command = "<1>"
+                    self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
                     
                     # Send the index string, encoded as bytes
                     self.send_command_to_motor(index_str)
@@ -150,7 +178,8 @@ class AduinoManager:
                     side_two_indexes.append(index)
                     # Convert index to string for transmission
                     index_str = str(index) + '\n'
-                    self.send_command_to_motor('2')  # Signal to Arduino about the upcoming command
+                    command = "<2>"
+                    self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
                     
                     # Send the index string, encoded as bytes
                     self.send_command_to_motor(index_str)
@@ -163,7 +192,8 @@ class AduinoManager:
                     print(f"Received: {data}")
 
                 # After sending all data to Arduino
-                self.send_command_to_motor('S')
+                command = "<S>"
+                self.send_command_to_motor(command)
 
                 # Reset the counter for reading echoed data
                 i = 0  

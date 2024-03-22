@@ -1,4 +1,4 @@
-import time
+import time, re 
 
 # Helper classes
 from arduino_control import AduinoManager
@@ -38,12 +38,14 @@ class ProgramController:
 
         self.after_ids: list[str] = []
 
+
     def start_main_gui(self) -> None:
         """start the main GUI and connect to the arduino"""
         self.main_gui.setup_gui()
         self.arduino_mgr.connect_to_arduino()
         self.main_gui.root.mainloop()
-
+        self.process_queue()
+        
     def initial_time_interval(self, iteration: int) -> None:
         """defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
         the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on.
@@ -102,7 +104,7 @@ class ProgramController:
 
             self.data_mgr.state_start_time = time.time()  # state start time begins
 
-            command = "D"  # tell motor arduino to move the door down
+            command = "<D>"  # tell motor arduino to move the door down
             self.arduino_mgr.send_command_to_motor(command)
 
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
@@ -167,6 +169,27 @@ class ProgramController:
         # Call this method again every 5 ms
         self.update_licks_id = self.main_gui.root.after(10, lambda: self.read_licks(i))
         self.after_ids.append(self.update_licks_id)
+
+    def process_queue(self):
+        while not self.arduino_manager.data_queue.empty():
+            source, data = self.arduino_manager.data_queue.get()
+            self.process_data(source, data)
+        self.after(100, self.process_queue)  # Check the queue again after 100 ms
+        
+    def process_data(self, source, data):
+        duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
+        # Process the data from the queue
+        if source == 'laser':
+            # Handle laser data
+            pass
+        elif source == 'motor':
+            match = re.search(duration_pattern, data)
+            if data == "<Finished Pair>":
+                self.valve_test_logic.append_to_volumes()
+            elif data == "<Finished Testing>":
+                self.valve_test_logic.begin_updating_opening_times()
+            elif match:
+                self.valve_test_logic.begin_updating_opening_times(data)
 
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.data_mgr
