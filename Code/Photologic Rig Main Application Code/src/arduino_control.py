@@ -3,8 +3,8 @@ import time
 import re
 import traceback
 import threading
-from typing import Optional, Tuple, List
-
+from typing import Optional, Tuple, List, Any
+import queue
 import serial.tools.list_ports #type: ignore
 
 
@@ -15,6 +15,7 @@ class AduinoManager:
         self.BAUD_RATE = 115200
         self.laser_arduino = None
         self.motor_arduino = None
+        self.data_queue = queue.Queue()  #type: ignore
 
     def connect_to_arduino(self) -> None:
         """Connect to the Arduino boards and return status."""
@@ -43,7 +44,7 @@ class AduinoManager:
             self.send_command_to_laser(command)
             print("Connected to Arduino boards successfully.")
         
-        if self.laser_arduino or self.motor_arduino:
+
             self.listener_thread = threading.Thread(target=self.listen_for_serial, daemon=True)
             self.listener_thread.start()
             print("Started listening thread for Arduino serial input.")
@@ -73,8 +74,9 @@ class AduinoManager:
         """Identify the Arduino on the given port."""
         try:
             arduino = serial.Serial(port, self.BAUD_RATE, timeout=1)
-            time.sleep(2)  # Wait for Arduino to initialize
-            arduino.write(b'W')
+            command = "<W>"
+            time.sleep(2)
+            arduino.write((command.encode("utf-8")))
             identifier = arduino.readline().decode("utf-8").strip()
             print(identifier)
             arduino.close()

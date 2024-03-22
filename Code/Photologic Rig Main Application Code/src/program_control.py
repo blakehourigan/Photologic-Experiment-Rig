@@ -1,4 +1,5 @@
-import time, re 
+import time 
+import re 
 
 # Helper classes
 from arduino_control import AduinoManager
@@ -171,8 +172,9 @@ class ProgramController:
         self.after_ids.append(self.update_licks_id)
 
     def process_queue(self):
-        while not self.arduino_manager.data_queue.empty():
-            source, data = self.arduino_manager.data_queue.get()
+        while not self.arduino_mgr.data_queue.empty():
+            print('hello')
+            source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
         self.after(100, self.process_queue)  # Check the queue again after 100 ms
         
