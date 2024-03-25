@@ -56,7 +56,7 @@ class valveTestLogic:
         
         side_one_str = ",".join(map(str, side_one_opening_times))
         side_two_str = ",".join(map(str, side_two_opening_times))
-        print(side_one_str,side_two_str)
+
         command = f"<{side_one_str}{side_two_str}>"
         self.controller.arduino_mgr.send_command_to_motor(command)
                     

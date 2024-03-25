@@ -164,7 +164,7 @@ class AduinoManager:
                 side_one_index_str = ",".join(map(str, self.side_one_indexes))
                 side_two_index_str = ",".join(map(str, self.side_two_indexes))
                 
-                command = f"<S,Side One,{side_one_index_str}-1,Side Two,{side_two_index_str},-1,end>"
+                command = f"<S,Side One,{side_one_index_str},-1,Side Two,{side_two_index_str},-1,end>"
                 print(command)
                 self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
 
@@ -179,8 +179,11 @@ class AduinoManager:
         middle_index = len(verification) // 2
 
         # Split the list into two halves
-        side_one_verification = verification[:middle_index]
-        side_two_verification = verification[middle_index:]
+        side_one_verification_str = verification[:middle_index]
+        side_two_verification_str = verification[middle_index:]
+        
+        side_one_verification = [int(x) for x in side_one_verification_str.split(',') if x.strip().isdigit()]
+        side_two_verification = [int(x) for x in side_two_verification_str.split(',') if x.strip().isdigit()]
         
         are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
         are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))

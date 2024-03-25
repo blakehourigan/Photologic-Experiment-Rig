@@ -16,9 +16,9 @@ int current_trial = 0;
 const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
 const int SIDE_TWO_SOLENOIDS[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
 
-const int MAX_SCHEDULE_SIZE = 50; // Maximum size of the array
-int SIDE_ONE_SCHEDULE[50];
-int SIDE_TWO_SCHEDULE[50];
+const int MAX_SCHEDULE_SIZE = 200; // Maximum size of the array
+int SIDE_ONE_SCHEDULE[200];
+int SIDE_TWO_SCHEDULE[200];
 
 unsigned long start_time;
 unsigned long end_time;
@@ -329,7 +329,7 @@ void test_volume(char number_of_valves)
 
   send_valve_durations();
 } 
-const int MAX_INDEXES = 20;
+const int MAX_INDEXES = 200;
 int sideOneIndexes[MAX_INDEXES];
 int sideTwoIndexes[MAX_INDEXES];
 int sideOneCount = 0;
@@ -368,14 +368,12 @@ void recieve_schedule(String full_command)
     // Start by splitting the command at every comma
     unsigned int from = 0;
     int to = full_command.indexOf(',', from);
-    while (to != -1 || from < full_command.length()) {
+    while (to != -1 || from < full_command.length()) 
+    {
         String part = full_command.substring(from, to);
-
-        Serial.println(part);
 
         if (part.equals("Side One") && prev.equals("S")) 
         {
-            Serial.println("side change");
             side = 1;  // Next numbers belong to side one
         } 
         else if (part.equals("Side Two") && prev.equals("-1"))
@@ -409,11 +407,9 @@ void recieve_schedule(String full_command)
             }
             if (side == 1 && value >= 0) 
             {
-                Serial.print("did it");
                 add_to_array(SIDE_ONE_SCHEDULE, side_one_size, value);
             } else if (side == 2 && value >= 0) 
             {
-                Serial.print("did it pt 2");
                 add_to_array(SIDE_TWO_SCHEDULE, side_two_size, value);
             }
         }
@@ -430,26 +426,24 @@ void recieve_schedule(String full_command)
     send_schedule_back();
 }
 
-void send_schedule_back() 
-{
-  Serial.print("SCHEDULE VERIFICATION");
-  for (int i = 0; i < (side_one_size); i++) 
-  {
-    Serial.print(SIDE_ONE_SCHEDULE[i]);
-    Serial.print(',');
+void send_schedule_back() {
+  String message = "SCHEDULE VERIFICATION";
+
+  for (int i = 0; i < side_one_size; i++) {
+    message += SIDE_ONE_SCHEDULE[i];
+    message += ',';
   }
-  for(int i = 0; i < (side_two_size); i++) 
-  {
-    Serial.print(SIDE_TWO_SCHEDULE[i]);
-    if(i == (side_one_size- 1))
-    {
-    }
-    else
-    {
-    Serial.print(',');
+
+  for (int i = 0; i < side_two_size; i++) {
+    message += SIDE_TWO_SCHEDULE[i];
+    if (i < side_two_size - 1) {
+      message += ','; // Add comma separator between items
     }
   }
-} 
+
+  Serial.println(message); // Send the entire schedule in one line
+}
+
 
 String receive_transmission()
 {

@@ -189,7 +189,7 @@ class ProgramController:
                 self.valve_test_logic.begin_updating_opening_times(data)
             elif "SCHEDULE VERIFICATION" in data:
                 cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
-                self.arduino_mgr.begin_verify_schedule(self.arduino_mgr.side_one_indexes, self.arduino_mgr.side_two_indexes, cleaned_data)
+                self.arduino_mgr.verify_schedule(self.arduino_mgr.side_one_indexes, self.arduino_mgr.side_two_indexes, cleaned_data)
 
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.data_mgr
