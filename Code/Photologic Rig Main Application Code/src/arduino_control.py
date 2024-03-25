@@ -80,7 +80,6 @@ class AduinoManager:
             time.sleep(2)
             arduino.write((command.encode("utf-8")))
             identifier = arduino.readline().decode("utf-8").strip()
-            print(identifier)
             arduino.close()
             return identifier
         except Exception as e:

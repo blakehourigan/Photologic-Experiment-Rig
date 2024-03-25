@@ -58,6 +58,8 @@ class valveTestLogic:
         side_two_str = ",".join(map(str, side_two_opening_times))
 
         command = f"<{side_one_str}{side_two_str}>"
+        
+        print(command)
         self.controller.arduino_mgr.send_command_to_motor(command)
                     
     def update_opening_times(self, num_valves, durations, volumes) -> List[int]:

@@ -329,11 +329,6 @@ void test_volume(char number_of_valves)
 
   send_valve_durations();
 } 
-const int MAX_INDEXES = 200;
-int sideOneIndexes[MAX_INDEXES];
-int sideTwoIndexes[MAX_INDEXES];
-int sideOneCount = 0;
-int sideTwoCount = 0;
 
 
 bool isInteger(const String& str) {
@@ -385,7 +380,7 @@ void recieve_schedule(String full_command)
             break;  // End of the entire command
         } 
         
-        if (side != 0 && currentIndex < MAX_INDEXES) 
+        if (side != 0 && currentIndex < MAX_SCHEDULE_SIZE) 
         {
             // Convert part to integer and add to the correct array
             if(isInteger(part))
