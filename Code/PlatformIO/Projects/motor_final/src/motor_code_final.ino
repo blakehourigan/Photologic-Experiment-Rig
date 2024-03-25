@@ -432,12 +432,16 @@ void recieve_schedule(String full_command)
 
 void send_schedule_back() 
 {
+  Serial.print("SCHEDULE VERIFICATION");
   for (int i = 0; i < (side_one_size); i++) 
   {
     Serial.print(SIDE_ONE_SCHEDULE[i]);
     Serial.print(',');
+  }
+  for(int i = 0; i < (side_two_size); i++) 
+  {
     Serial.print(SIDE_TWO_SCHEDULE[i]);
-    if(i == (side_one_size - 1))
+    if(i == (side_one_size- 1))
     {
     }
     else

@@ -141,8 +141,8 @@ class AduinoManager:
             side_one_vars = []
             side_two_vars = []
             
-            side_one_indexes: List[int] = [] 
-            side_two_indexes: List[int] = []
+            self.side_one_indexes: List[int] = [] 
+            self.side_two_indexes: List[int] = []
             
             for i in range(len(filtered_stim_var_list)):
                 if i < len(filtered_stim_var_list) // 2:  
@@ -155,75 +155,41 @@ class AduinoManager:
 
                 side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
                 
-                # for each entry in the schedule for side 1 , we find its place in the side_one_vars list which gives the physical valve and vial 
-                side_one_verification = []
-                side_two_verification = []
-                
                 for i in range(len(side_one_schedule)):     
                     index = side_one_vars.index(side_one_schedule[i])
-                    side_one_indexes.append(index)
+                    self.side_one_indexes.append(index)
                     index = side_two_vars.index(side_two_schedule[i])
-                    side_two_indexes.append(index)
+                    self.side_two_indexes.append(index)
                 
-                side_one_index_str = ",".join(map(str, side_one_indexes))
-                side_two_index_str = ",".join(map(str, side_two_indexes))
+                side_one_index_str = ",".join(map(str, self.side_one_indexes))
+                side_two_index_str = ",".join(map(str, self.side_two_indexes))
                 
-                command = f"<S,1,{side_one_index_str}-1,2,{side_two_index_str},-1,end>"
+                command = f"<S,Side One,{side_one_index_str}-1,Side Two,{side_two_index_str},-1,end>"
                 print(command)
                 self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
 
-                # # Reset the counter for reading echoed data
-                # i = 0  
 
-                # # First loop to collect echoed data for side one
-                # while True:
-                #     if self.motor_arduino.in_waiting:
-                #         line = self.motor_arduino.readline().decode('utf-8').rstrip()
-                #         if line == "end side one":
-                #             break
-                #         try:
-                #             line_int = int(line)
-                #             side_one_verification.append(line_int)
-                #         except ValueError:
-                #             print(f"Error: Received non-integer value: {line}")
-
-                # # Reset the counter for the next part
-                # i = 0
-
-                # # Second loop to collect echoed data for side two
-                # while True:
-                #     if self.motor_arduino.in_waiting:
-                #         line = self.motor_arduino.readline().decode('utf-8').rstrip()
-                #         if line == "end":
-                #             break
-                #         try:
-                #             line_int = int(line)
-                #             side_two_verification.append(line_int)
-                #         except ValueError:
-                #             print(f"Error: Received non-integer value: {line}")
-
-                #     for i in range(len(side_one_verification)):
-                #         print((side_one_schedule[i], side_one_verification[i]))
-
-                #     for i in range(len(side_two_verification)):
-                #         print((side_two_schedule[i], side_two_verification[i]))
-
-
-
-                # are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
-                # are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
-                
-                # if are_equal_side_one and are_equal_side_two:
-                #     print("Both lists are identical.")
-                #     print('Schedule Send Complete.')
-                # else:
-                #     print("Lists are not identical.")
                     
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
             print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
             self.controller.main_gui.display_error("Error sending schedule to motor Arduino:", str(e))
 
+    def verify_schedule(self, side_one_indexes, side_two_indexes, verification):
+        middle_index = len(verification) // 2
+
+        # Split the list into two halves
+        side_one_verification = verification[:middle_index]
+        side_two_verification = verification[middle_index:]
+        
+        are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
+        are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
+        
+        if are_equal_side_one and are_equal_side_two:
+            print("Both lists are identical.")
+            print('Schedule Send Complete.')
+        else:
+            print("Lists are not identical.")
 
     def read_from_laser(self) -> Tuple[bool, Optional[str]]:
         """Read data from the laser Arduino."""
