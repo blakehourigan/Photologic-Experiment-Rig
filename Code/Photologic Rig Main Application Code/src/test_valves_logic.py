@@ -67,7 +67,7 @@ class valveTestLogic:
                 
         desired_volume = self.controller.valve_testing_window.desired_volume.get()
         
-        for i in range(num_valves//2):
+        for i in range(num_valves // 2):
 
             v_per_open_previous = (volumes[i] / 1000)
             print("volume",volumes)
@@ -76,7 +76,10 @@ class valveTestLogic:
             print(v_per_open_previous)
             print(durations[i])
             print(desired_volume)
-
+        if((num_valves // 2) < 8):
+            for i in range(8 - (num_valves // 2)):
+                opening_times.append(volumes[i])
+        
         
         return opening_times
     
