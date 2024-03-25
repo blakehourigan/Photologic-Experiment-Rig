@@ -57,7 +57,7 @@ class valveTestLogic:
         side_one_str = ",".join(map(str, side_one_opening_times))
         side_two_str = ",".join(map(str, side_two_opening_times))
 
-        command = f"<{side_one_str}{side_two_str}>"
+        command = f"<{side_one_str},{side_two_str}>"
         
         print(command)
         self.controller.arduino_mgr.send_command_to_motor(command)
@@ -70,8 +70,13 @@ class valveTestLogic:
         for i in range(num_valves//2):
 
             v_per_open_previous = (volumes[i] / 1000)
-        
+            print("volume",volumes)
+            
             opening_times.append(round(int(durations[i]) * (desired_volume / v_per_open_previous)))
+            print(v_per_open_previous)
+            print(durations[i])
+            print(desired_volume)
+
         
         return opening_times
     
