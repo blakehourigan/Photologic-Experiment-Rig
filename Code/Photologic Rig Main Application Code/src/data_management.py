@@ -265,10 +265,10 @@ class DataManager:
         # increment the trial number
         self.current_trial_number += 1
 
-        command = "I"
+        command = "<I>"
         self.controller.arduino_mgr.send_command_to_motor(command)
 
-        command = "U"
+        command = "<U>"
         # tell the motor arduino to move the door up
         self.controller.arduino_mgr.send_command_to_motor(command)
 

@@ -329,44 +329,62 @@ void test_volume(char number_of_valves)
 
   send_valve_durations();
 } 
+const int MAX_INDEXES = 20;
+int sideOneIndexes[MAX_INDEXES];
+int sideTwoIndexes[MAX_INDEXES];
+int sideOneCount = 0;
+int sideTwoCount = 0;
 
-void recieve_schedule(int side)
-{
+void recieve_schedule(String full_command) {
+    int currentIndex = 0;  // Tracks the current index for adding to arrays
+    int side = 0;  // 0: not set, 1: side one, 2: side two
 
-  if(side == 1)
-  {
-    // Wait until data is available
-    while (Serial.available() == 0) {}
+    // Start by splitting the command at every comma
+    unsigned int from = 0;
+    int to = full_command.indexOf(',', from);
 
-    // Now read the data
-    String valvePairStr = Serial.readStringUntil('\n');
-    // Echo back the received data
-    Serial.print(valvePairStr);
+    while (to != -1 || from < full_command.length()) {
+        String part = full_command.substring(from, to);
+        String prev = "";
 
-    int position = valvePairStr.toInt();
+        if (part.equals("1") && prev.equals("S")) 
+        {
+            side = 1;  // Next numbers belong to side one
+            currentIndex = 0;  // Reset index for a new side
+        } 
+        else if (part.equals("2") && prev.equals("-1"))
+        {
+            side = 2;  // Next numbers belong to side two
+            currentIndex = 0;  // Reset index for a new side
+        } 
+        else if (part.equals("end")) 
+        {
+            break;  // End of the entire command
+        } 
+        
+        if (side != 0 && currentIndex < MAX_INDEXES) 
+        {
+            // Convert part to integer and add to the correct array
+            int value = part.toInt();
+            
+            if (side == 1) 
+            {
+                add_to_array(SIDE_ONE_SCHEDULE, side_one_size, value);
+            } else if (side == 2) 
+            {
+                add_to_array(SIDE_TWO_SCHEDULE, side_two_size, value);
+            }
+        }
+        prev = part;
+        // Move to the next part
+        from = to + 1;
+        to = full_command.indexOf(',', from);
 
-    // Example call
-    add_to_array(SIDE_ONE_SCHEDULE, side_one_size, position);
-
-    // Wait a little bit for the Python side to be ready to receive
-    delay(100); // Delay for 100 milliseconds
-
-  }
-  if(side == 2)
-  {
-    while (Serial.available() == 0) {}
-
-    // Now read the data
-    String valvePairStr = Serial.readStringUntil('\n');
-   // Echo back the received data
-    Serial.print(valvePairStr);
-    int position = valvePairStr.toInt();
-
-    add_to_array(SIDE_TWO_SCHEDULE, side_two_size, position);
-
-    // Wait a little bit for the Python side to be ready to receive
-    delay(100); // Delay for 100 milliseconds
-  }
+        if (to == -1 && from < full_command.length()) 
+        {  // Handle the last part
+            to = full_command.length();
+        }
+    }
 }
 
 void send_schedule_back(int side) {
@@ -459,7 +477,6 @@ void loop()
 
   if (Serial.available() > 0) 
   {
-
     String fullCommand = receive_transmission(); // Use the function to read the full command
     char command = fullCommand[0]; // Assuming the format is <X>, where X is the command character
 
@@ -502,22 +519,9 @@ void loop()
       case 'I':
         current_trial++;
         break;
-      case '1':
-      {
-        recieve_schedule(1);
-
-        break;
-      }
-      case '2':
-      {
-        recieve_schedule(2);
-        break;
-      }
       case 'S':
       {
-        send_schedule_back(1); // Send Side One schedule
-        delay(100); 
-        send_schedule_back(2); // Send Side Two schedule
+        recieve_schedule(fullCommand);
         break;
       }
       case 'P':
@@ -532,8 +536,6 @@ void loop()
       default:
         break;
     }
-
-
       stepper.run();
   }
 }

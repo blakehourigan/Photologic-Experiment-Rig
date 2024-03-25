@@ -159,41 +159,20 @@ class AduinoManager:
                 side_one_verification = []
                 side_two_verification = []
                 
-                for entry in side_one_schedule:     
-                    index = side_one_vars.index(entry)
+                for i in range(len(side_one_schedule)):     
+                    index = side_one_vars.index(side_one_schedule[i])
                     side_one_indexes.append(index)
-                    # Convert index to string for transmission
-                    index_str = str(index) + '\n'
-                    command = "<1>"
-                    self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
-                    
-                    # Send the index string, encoded as bytes
-                    self.send_command_to_motor(index_str)
-                    self.motor_arduino.reset_input_buffer()  # Clear buffer before reading
-
-                    time.sleep(2)
-
-                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
-                    print(f"Received: {data}")
-
-                for entry in side_two_schedule:
-                    
-                    index = side_two_vars.index(entry)
+                    index = side_two_vars.index(side_two_schedule[i])
                     side_two_indexes.append(index)
-                    # Convert index to string for transmission
-                    index_str = str(index) + '\n'
-                    command = "<2>"
-                    self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
-                    
-                    # Send the index string, encoded as bytes
-                    self.send_command_to_motor(index_str)
-                    self.motor_arduino.reset_input_buffer()  # Clear buffer before reading
+                
+                side_one_index_str = ",".join(map(str, side_one_indexes))
+                side_two_index_str = ",".join(map(str, side_two_indexes))
+                
+                print(side_one_index_str, side_two_index_str)
+                command = f"<1,{side_one_index_str}-1,2,{side_two_index_str},-1,end>"
+                print(command)
+                self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
 
-                    time.sleep(2)
-
-                    data = self.motor_arduino.read(self.motor_arduino.in_waiting).decode("utf-8")
-                    
-                    print(f"Received: {data}")
 
                 # After sending all data to Arduino
                 command = "<S>"
@@ -239,6 +218,7 @@ class AduinoManager:
 
                 are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
                 are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
+                
                 if are_equal_side_one and are_equal_side_two:
                     print("Both lists are identical.")
                     print('Schedule Send Complete.')
