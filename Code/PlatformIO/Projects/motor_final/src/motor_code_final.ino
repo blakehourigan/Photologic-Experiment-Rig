@@ -335,27 +335,52 @@ int sideTwoIndexes[MAX_INDEXES];
 int sideOneCount = 0;
 int sideTwoCount = 0;
 
-void recieve_schedule(String full_command) {
+
+bool isInteger(const String& str) {
+    if (str.length() == 0) {
+        return false; // Empty string is not an integer
+    }
+    
+    int start = 0;
+    if (str[0] == '-') {
+        // Handle negative numbers
+        if (str.length() == 1) {
+            return false; // String is just "-", not an integer
+        }
+        start = 1; // Start checking from the next character
+    }
+    
+    for (unsigned int i = start; i < str.length(); i++) {
+        if (!isDigit(str[i])) {
+            return false; // Found a non-digit character
+        }
+    }
+    
+    return true; // Passed all checks, it's an integer
+}
+
+void recieve_schedule(String full_command) 
+{
     int currentIndex = 0;  // Tracks the current index for adding to arrays
     int side = 0;  // 0: not set, 1: side one, 2: side two
-
+    String prev = "";
+    int value = 0;
     // Start by splitting the command at every comma
     unsigned int from = 0;
     int to = full_command.indexOf(',', from);
-
     while (to != -1 || from < full_command.length()) {
         String part = full_command.substring(from, to);
-        String prev = "";
 
-        if (part.equals("1") && prev.equals("S")) 
+        Serial.println(part);
+
+        if (part.equals("Side One") && prev.equals("S")) 
         {
+            Serial.println("side change");
             side = 1;  // Next numbers belong to side one
-            currentIndex = 0;  // Reset index for a new side
         } 
-        else if (part.equals("2") && prev.equals("-1"))
+        else if (part.equals("Side Two") && prev.equals("-1"))
         {
             side = 2;  // Next numbers belong to side two
-            currentIndex = 0;  // Reset index for a new side
         } 
         else if (part.equals("end")) 
         {
@@ -365,13 +390,30 @@ void recieve_schedule(String full_command) {
         if (side != 0 && currentIndex < MAX_INDEXES) 
         {
             // Convert part to integer and add to the correct array
-            int value = part.toInt();
-            
-            if (side == 1) 
+            if(isInteger(part))
             {
+            value = part.toInt();
+            }
+            else
+            {
+              prev = part;
+              // Move to the next part
+              from = to + 1;
+              to = full_command.indexOf(',', from);
+         
+              if (to == -1 && from < full_command.length()) 
+              {  // Handle the last part
+              to = full_command.length();
+              }
+              continue;
+            }
+            if (side == 1 && value >= 0) 
+            {
+                Serial.print("did it");
                 add_to_array(SIDE_ONE_SCHEDULE, side_one_size, value);
-            } else if (side == 2) 
+            } else if (side == 2 && value >= 0) 
             {
+                Serial.print("did it pt 2");
                 add_to_array(SIDE_TWO_SCHEDULE, side_two_size, value);
             }
         }
@@ -385,32 +427,25 @@ void recieve_schedule(String full_command) {
             to = full_command.length();
         }
     }
+    send_schedule_back();
 }
 
-void send_schedule_back(int side) {
-  if (side == 1) 
+void send_schedule_back() 
+{
+  for (int i = 0; i < (side_one_size); i++) 
   {
-    for (int i = 0; i < side_one_size; i++) 
+    Serial.print(SIDE_ONE_SCHEDULE[i]);
+    Serial.print(',');
+    Serial.print(SIDE_TWO_SCHEDULE[i]);
+    if(i == (side_one_size - 1))
     {
-      Serial.println(SIDE_ONE_SCHEDULE[i]);
-      delay(50); // Short delay to ensure Python can keep up
     }
-    Serial.println("end side one");
-  } 
-  else if (side == 2) 
-  {
-    for (int i = 0; i < side_two_size; i++) 
+    else
     {
-      Serial.println(SIDE_TWO_SCHEDULE[i]);
-      delay(50); // Short delay to ensure Python can keep up
+    Serial.print(',');
     }
-    Serial.println("end");
-  } 
-  else 
-  {
-    Serial.println("Invalid Side for Schedule Transmission");
   }
-}
+} 
 
 String receive_transmission()
 {

@@ -168,62 +168,56 @@ class AduinoManager:
                 side_one_index_str = ",".join(map(str, side_one_indexes))
                 side_two_index_str = ",".join(map(str, side_two_indexes))
                 
-                print(side_one_index_str, side_two_index_str)
-                command = f"<1,{side_one_index_str}-1,2,{side_two_index_str},-1,end>"
+                command = f"<S,1,{side_one_index_str}-1,2,{side_two_index_str},-1,end>"
                 print(command)
                 self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
 
+                # # Reset the counter for reading echoed data
+                # i = 0  
 
-                # After sending all data to Arduino
-                command = "<S>"
-                self.send_command_to_motor(command)
+                # # First loop to collect echoed data for side one
+                # while True:
+                #     if self.motor_arduino.in_waiting:
+                #         line = self.motor_arduino.readline().decode('utf-8').rstrip()
+                #         if line == "end side one":
+                #             break
+                #         try:
+                #             line_int = int(line)
+                #             side_one_verification.append(line_int)
+                #         except ValueError:
+                #             print(f"Error: Received non-integer value: {line}")
 
-                # Reset the counter for reading echoed data
-                i = 0  
+                # # Reset the counter for the next part
+                # i = 0
 
-                # First loop to collect echoed data for side one
-                while True:
-                    if self.motor_arduino.in_waiting:
-                        line = self.motor_arduino.readline().decode('utf-8').rstrip()
-                        if line == "end side one":
-                            break
-                        try:
-                            line_int = int(line)
-                            side_one_verification.append(line_int)
-                        except ValueError:
-                            print(f"Error: Received non-integer value: {line}")
+                # # Second loop to collect echoed data for side two
+                # while True:
+                #     if self.motor_arduino.in_waiting:
+                #         line = self.motor_arduino.readline().decode('utf-8').rstrip()
+                #         if line == "end":
+                #             break
+                #         try:
+                #             line_int = int(line)
+                #             side_two_verification.append(line_int)
+                #         except ValueError:
+                #             print(f"Error: Received non-integer value: {line}")
 
-                # Reset the counter for the next part
-                i = 0
+                #     for i in range(len(side_one_verification)):
+                #         print((side_one_schedule[i], side_one_verification[i]))
 
-                # Second loop to collect echoed data for side two
-                while True:
-                    if self.motor_arduino.in_waiting:
-                        line = self.motor_arduino.readline().decode('utf-8').rstrip()
-                        if line == "end":
-                            break
-                        try:
-                            line_int = int(line)
-                            side_two_verification.append(line_int)
-                        except ValueError:
-                            print(f"Error: Received non-integer value: {line}")
-
-                    for i in range(len(side_one_verification)):
-                        print((side_one_schedule[i], side_one_verification[i]))
-
-                    for i in range(len(side_two_verification)):
-                        print((side_two_schedule[i], side_two_verification[i]))
+                #     for i in range(len(side_two_verification)):
+                #         print((side_two_schedule[i], side_two_verification[i]))
 
 
 
-                are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
-                are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
+                # are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
+                # are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
                 
-                if are_equal_side_one and are_equal_side_two:
-                    print("Both lists are identical.")
-                    print('Schedule Send Complete.')
-                else:
-                    print("Lists are not identical.")
+                # if are_equal_side_one and are_equal_side_two:
+                #     print("Both lists are identical.")
+                #     print('Schedule Send Complete.')
+                # else:
+                #     print("Lists are not identical.")
                     
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
