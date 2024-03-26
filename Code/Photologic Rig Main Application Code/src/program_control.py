@@ -153,7 +153,6 @@ class ProgramController:
         available_data, stimulus = self.arduino_mgr.read_from_laser()
 
         if available_data:
-            print(stimulus)
 
             if stimulus == "Stimulus One":
                 self.data_mgr.side_one_licks += 1
@@ -213,7 +212,6 @@ class ProgramController:
         # state and continue the trial
         self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
 
-        print(self.state, self.data_mgr.side_one_licks, self.data_mgr.side_two_licks)
         if (
             self.data_mgr.side_one_licks >= self.data_mgr.TTC_lick_threshold.get()
             or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()

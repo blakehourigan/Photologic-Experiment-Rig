@@ -27,8 +27,8 @@ unsigned long valve_open_time_d, valve_open_time_c, open_start, close_time;
 
 int combined_value;
 
-int valve_side, valve_number;
-bool lick_available = false;
+volatile int valve_side, valve_number;
+volatile bool lick_available = false;
 bool prime_flag;
 
 const int FLAG_ADDRESS_EEPROM = 0;
@@ -304,7 +304,7 @@ void test_volume(char number_of_valves)
 
   for(int i=0; i < num_valves / 2; i++)
   {
-    for(int j=0; j < 50; j++)
+    for(int j=0; j < 1000; j++)
     {
       lick_handler(0, i);
       lick_handler(1, i);
@@ -329,7 +329,6 @@ void test_volume(char number_of_valves)
 
   send_valve_durations();
 } 
-
 
 bool isInteger(const String& str) {
     if (str.length() == 0) {
@@ -564,6 +563,6 @@ void loop()
       default:
         break;
     }
-      stepper.run();
   }
+  stepper.run();
 }

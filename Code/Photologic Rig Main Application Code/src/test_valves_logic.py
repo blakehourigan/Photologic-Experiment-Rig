@@ -29,12 +29,12 @@ class valveTestLogic:
 
         self.completed_test_pairs = 0 
         self.num_valves = num_valves
-            
-        command = f'<T,{num_valves.get()}>'
-        self.controller.arduino_mgr.send_command_to_motor(command)
     
         self.side_one_container_measurement = self.controller.valve_testing_window.input_popup(0)
         self.side_two_container_measurement = self.controller.valve_testing_window.input_popup(0)
+        
+        command = f'<T,{num_valves.get()}>'
+        self.controller.arduino_mgr.send_command_to_motor(command)
 
     def append_to_volumes(self) -> None:
         self.side_one_volumes.append(self.controller.valve_testing_window.input_popup(self.completed_test_pairs + 1) - self.side_one_container_measurement)
@@ -67,18 +67,17 @@ class valveTestLogic:
                 
         desired_volume = self.controller.valve_testing_window.desired_volume.get()
         
+        print("volume",volumes)
+
         for i in range(num_valves // 2):
 
             v_per_open_previous = (volumes[i] / 1000)
-            print("volume",volumes)
             
             opening_times.append(round(int(durations[i]) * (desired_volume / v_per_open_previous)))
-            print(v_per_open_previous)
-            print(durations[i])
-            print(desired_volume)
+            
         if((num_valves // 2) < 8):
             for i in range(8 - (num_valves // 2)):
-                opening_times.append(volumes[i])
+                opening_times.append(durations[i + (num_valves // 2)])
         
         
         return opening_times

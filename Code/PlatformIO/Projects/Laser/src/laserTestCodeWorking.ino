@@ -196,12 +196,4 @@ void send_lick_details(unsigned int licks, unsigned long start_time, unsigned lo
  {
     Serial.print("Stimulus ");
     Serial.println(side);
-    //Serial.print(" Lick:");
-    // Serial.println(licks);
-    // Serial.print("Lick time:");
-    // Serial.println(end_time - start_time);
-    // current_time = end_time - program_start;
-    // Serial.print("Stamp:");
-    // Serial.println(current_time / 1000.0);
-    // Serial.println();
 }
