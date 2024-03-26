@@ -54,8 +54,6 @@ class ProgramController:
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
 
-        self.arduino_mgr.send_command_to_laser("S")
-        
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
             self.stop_program()  # if we have gone through every trial then end the program.
 
