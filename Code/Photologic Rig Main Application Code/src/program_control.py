@@ -167,8 +167,10 @@ class ProgramController:
                     self.data_mgr.side_two_licks += 1
                     self.data_mgr.total_licks += 1
             
-                modified_data = data[1:-1]  # Remove the first and last characters
-                self.send_lick_data_to_dataframe(modified_data)
+            self.check_licks_above_TTC_threshold()
+                        
+            modified_data = data[1:-1]  # Remove the first and last characters
+            self.send_lick_data_to_dataframe(modified_data)
         elif source == 'motor':
             match = re.search(duration_pattern, data)
             if data == "<Finished Pair>":
@@ -197,8 +199,6 @@ class ProgramController:
 
     def check_licks_above_TTC_threshold(self, iteration):
         """define method for checking licks during the TTC state"""
-        # if we are in the TTC state and detect 3 or more licks from either side, then immediately jump to the sample time
-        # state and continue the trial
         self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
 
         if (
@@ -213,11 +213,7 @@ class ProgramController:
             self.data_mgr.side_one_licks = 0
             self.data_mgr.side_two_licks = 0
             self.sample_time(iteration)
-            self.main_gui.root.after_cancel(self.check_lick_threshold_id)
-        else:    
-            self.check_lick_threshold_id = self.main_gui.root.after(
-                    10, lambda: self.check_licks_above_TTC_threshold(iteration))
-            self.after_ids.append(self.check_lick_threshold_id)
+
 
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button"""
