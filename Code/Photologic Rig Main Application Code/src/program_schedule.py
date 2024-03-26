@@ -52,6 +52,10 @@ class ProgramScheduleWindow:
                 self.cell_labels[row_index-1][5].configure(text=df.loc[row_index-1, "Side 2 Licks"])
                 # ttc actual update
                 self.cell_labels[row_index-1][9].configure(text=df.loc[row_index-1, "TTC Actual"])
+                
+                self.top.update_idletasks()
+                self.top.update()
+
             
     def update_row_color(self, current_trial):
         """Function to update row color """
@@ -66,6 +70,9 @@ class ProgramScheduleWindow:
                     self.cell_labels[row_index - 1][i].configure(bg='white')
                 for i in range(10):
                     self.cell_labels[row_index][i].configure(bg='yellow')
+            self.top.update_idletasks()
+            self.top.update()
+
                 
     def configure_tk_obj_grid(self, obj):
         # sets the object passed to expand when the window is expanded  
