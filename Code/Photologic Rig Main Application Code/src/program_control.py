@@ -154,27 +154,22 @@ class ProgramController:
         while not self.arduino_mgr.data_queue.empty():
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
-<<<<<<< Updated upstream
-        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms   
-             
-=======
         self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms  
               
->>>>>>> Stashed changes
     def process_data(self, source, data):
         duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
         # Process the data from the queue
         if source == 'laser':
             # Handle laser data
-            if data == "<Stimulus One>":
+            if (data == "<Stimulus One>") and ((self.state == "TTC") or (self.state == "Sample")):
                 self.data_mgr.side_one_licks += 1
-            elif data == "<Stimulus Two>":
+                self.data_mgr.total_licks += 1
+            elif data == "<Stimulus Two>" and ((self.state == "TTC") or (self.state == "Sample")):
                 self.data_mgr.side_two_licks += 1
-            self.data_mgr.total_licks += 1
-
- 
-            # send the lick data to the data frame
-            self.send_lick_data_to_dataframe(data)
+                self.data_mgr.total_licks += 1
+            
+            modified_data = data[1:-1]  # Remove the first and last characters
+            self.send_lick_data_to_dataframe(modified_data)
         elif source == 'motor':
             match = re.search(duration_pattern, data)
             if data == "<Finished Pair>":

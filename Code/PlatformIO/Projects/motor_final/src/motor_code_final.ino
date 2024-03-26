@@ -375,7 +375,6 @@ void myISR()
   valve_side = (PINH & (1 << PH5)) >> PH5;
 
   lick_available = true;
-
 }
 
 void setup() 
@@ -442,13 +441,12 @@ void loop()
     switch (command) 
     {
       case 'U':
-        Serial.println("door up");
         noInterrupts();
         stepper.moveTo(0);
+        interrupts();
         break;
       case 'D':
         stepper.moveTo(6400);
-        interrupts();
         break;
       case 'R':
         wdt_enable(WDTO_1S);
@@ -479,8 +477,6 @@ void loop()
         }
         break;
       case 'I':
-        Serial.println("trial up");
-
         current_trial++;
         break;
       case 'S':

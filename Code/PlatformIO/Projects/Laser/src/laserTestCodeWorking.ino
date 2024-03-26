@@ -150,7 +150,7 @@ if(strcmp(side, "One") == 0)
 {
 LICK_SIGNAL_WRITE |= (0 << LICK_SIDE_BIT); // Keep the first pin low
 }
-else if(strcmp(side, "Two"))
+else if(strcmp(side, "Two") == 0)
 {
 LICK_SIGNAL_WRITE |= (1 << LICK_SIDE_BIT); // Set the first pin high
 }
@@ -198,13 +198,8 @@ void detect_licks(char *side, volatile bool& current_state, volatile bool& previ
 
 void send_lick_details(unsigned int licks, unsigned long start_time, unsigned long end_time, char *side)
  {
-<<<<<<< Updated upstream
-    Serial.print("Stimulus ");
-    Serial.println(side);
-=======
     char side_indicator[50]; 
     sprintf(side_indicator, "<Stimulus %s>", side);
 
     Serial.println(side_indicator);
->>>>>>> Stashed changes
 }
