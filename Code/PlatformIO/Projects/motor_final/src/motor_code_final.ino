@@ -31,14 +31,6 @@ volatile int valve_side, valve_number;
 volatile bool lick_available = false;
 bool prime_flag;
 
-const int FLAG_ADDRESS_EEPROM = 0;
-const byte EEPROM_INITIALIZED_FLAG = 1;
-
-const int MAX_NUM_VALVES_PER_SIDE = 8;
-
-const int DATA_START_ADDRESS = 1; // Start after the flag
-const int SIDE_TWO_DURATIONS_ADDRESS = DATA_START_ADDRESS + MAX_NUM_VALVES_PER_SIDE * sizeof(long int); // Adjust as necessary
-
 int side_one_size = 0; // Keep track of the current number of elements
 int side_two_size = 0;
 
@@ -46,74 +38,14 @@ AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 const int MAX_SPEED = 5500; 
 const int ACCELERATION = 5500;
 
+#include "EEPROM_INTERFACE.h"
+
+EEPROM_INTERFACE eeprom_Interface;
+
 void clear_serial_buffer() 
 {
   while (Serial.available() > 0) {
     Serial.read(); // Read and discard the incoming byte
-  }
-}
-
-bool check_EEPROM_initialized() 
-{
-    byte flag;
-    EEPROM.get(FLAG_ADDRESS_EEPROM, flag);
-    return (flag == 1);
-}
-
-void mark_EEPROM_initialized() 
-{
-    EEPROM.update(FLAG_ADDRESS_EEPROM, EEPROM_INITIALIZED_FLAG);
-}
-
-void markEEPROMUninitialized() 
-{
-    EEPROM.update(FLAG_ADDRESS_EEPROM, 0);
-}
-
-// Function to write default or new values to EEPROM
-void write_values_to_EEPROM(unsigned long int values[], int start_address, int num_values) 
-{
-    for (int i = 0; i < num_values; i++) {
-        EEPROM.put(start_address + i * sizeof(long int), values[i]);
-    }
-}
-
-// Function to read values from EEPROM
-void read_values_from_EEPROM(unsigned long int values[], int start_address, int num_values, bool print = false) 
-{
-    for (int i = 0; i < num_values; i++) 
-    {
-        EEPROM.get(start_address + i * sizeof(long int), values[i]);
-        if(print)
-        {
-          Serial.println(values[i]);
-        }
-    }
-}
-
-void read_single_value_from_EEPROM(unsigned long int &value, int start_address, int index, bool print = false) 
-{
-    int address = start_address + index * sizeof(unsigned long int);
-    EEPROM.get(address, value);
-    if(print) {
-        Serial.println(value);
-    }
-}
-
-void print_EEPROM_values()
-{
-  unsigned long int value;
-  for(int side = 0; side < 2; side++) 
-  {
-    Serial.print("Side ");
-    Serial.print(side + 1);
-    Serial.println(" Values:");
-    for (int j = 0; j < 8; j++) 
-    {
-      int addressOffset = (side * 8 + j) * sizeof(unsigned long int); // Calculate the correct address for each value
-      EEPROM.get(DATA_START_ADDRESS + addressOffset, value);
-      Serial.println(value);
-    }
   }
 }
 
@@ -125,7 +57,6 @@ void add_to_array(int *array, int &size, int element) {
     Serial.println("Error: Array is full.");
   }
 }
-
 
 void toggle_solenoid(int side, int solenoid_pin) 
 {
@@ -159,14 +90,14 @@ void lick_handler(int valve_side, int valve_number = -1)
   noInterrupts();
 
   // choose starting address for eeprom values based on side
-  int address = (valve_side == 0) ? DATA_START_ADDRESS : SIDE_TWO_DURATIONS_ADDRESS;
+  int address = (valve_side == 0) ? eeprom_Interface.DATA_START_ADDRESS : eeprom_Interface.SIDE_TWO_DURATIONS_ADDRESS;
 
   if (valve_number == -1)  // if we do not give the function a valve, then use the schedule provided to find which one to use
   {
     valve_number = (valve_side == 0) ? SIDE_ONE_SCHEDULE[current_trial] : SIDE_TWO_SCHEDULE[current_trial];
   }
   
-  read_single_value_from_EEPROM(valve_duration, address, valve_number);
+  eeprom_Interface.read_single_value_from_EEPROM(valve_duration, address, valve_number);
 
   int quotient = valve_duration / 10000; // delayMicroseconds only allows for values up to 16383, we use multiple instances of 
   // 10000 to avoid overflow
@@ -183,61 +114,6 @@ void lick_handler(int valve_side, int valve_number = -1)
   delayMicroseconds(remaining_delay); // we add the remaining delay to the end of the loop to ensure the total duration is correct
   untoggle_solenoid(valve_side, solenoids[valve_number]);
   interrupts();
-}
-
-void myISR() 
-{
-  valve_side = (PINH & (1 << PH5)) >> PH5;
-
-  lick_available = true;
-
-}
-
-void setup() 
-{
-  stepper.setMaxSpeed(MAX_SPEED);
-  stepper.setAcceleration(ACCELERATION);
-  Serial.begin(BAUD_RATE);
-
-  unsigned long int side_one_lick_durations[8]; 
-  unsigned long int side_two_lick_durations[8];
-
-  if (!check_EEPROM_initialized())      // Check if EEPROM is initialized
-  {
-      for (int i = 0; i < 8; i++) 
-      {
-          side_one_lick_durations[i] = 24125; // Default value 24125
-      }
-      for (int i = 0; i < 8; i++) 
-      {
-          side_two_lick_durations[i] = 24125; // Default value 24125
-      }
-
-      write_values_to_EEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      write_values_to_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
-      mark_EEPROM_initialized();
-      Serial.println("EEPROM initialized with default values.");
-  }
-  else 
-  {
-      // Read the existing values from EEPROM
-      read_values_from_EEPROM(side_one_lick_durations, DATA_START_ADDRESS, 8);
-      read_values_from_EEPROM(side_two_lick_durations, DATA_START_ADDRESS + 8 * sizeof(long int), 8);
-      //Serial.println("Values read from EEPROM.");
-  }
-
-  DDRA |= (255); // Set pins 22-29 as outputs
-  DDRC |= (255); // Set pins 30-37 as outputs 
-  
-  int inputPins[] = {2, 8, 9, 10, 11, 12};
-
-  for(unsigned int i = 0; i < sizeof(inputPins)/sizeof(inputPins[0]); i++) 
-  {
-      pinMode(inputPins[i], INPUT_PULLUP);
-  }
-
-  attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
-
 }
 
 void prime_valves()
@@ -285,7 +161,7 @@ void send_valve_durations()
 
   char saved_duration_times[200];
 
-  read_values_from_EEPROM(values, DATA_START_ADDRESS, 16);
+  eeprom_Interface.read_values_from_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
   
   sprintf(saved_duration_times, "<S1, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, S2, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu>", 
           values[0], values[1], values[2], values[3], 
@@ -489,10 +365,69 @@ void update_opening_times()
       values[valueIndex] = strtoul(transmission.substring(startIndex).c_str(), NULL, 10);
     }
     
-    print_EEPROM_values();
+    eeprom_Interface.print_EEPROM_values();
 
-    write_values_to_EEPROM(values, DATA_START_ADDRESS, 16);
+    eeprom_Interface.write_values_to_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
 }
+
+
+
+
+void myISR() 
+{
+  valve_side = (PINH & (1 << PH5)) >> PH5;
+
+  lick_available = true;
+
+}
+
+void setup() 
+{
+  stepper.setMaxSpeed(MAX_SPEED);
+  stepper.setAcceleration(ACCELERATION);
+  Serial.begin(BAUD_RATE);
+
+  unsigned long int side_one_lick_durations[8]; 
+  unsigned long int side_two_lick_durations[8];
+
+  if (!eeprom_Interface.check_EEPROM_initialized())      // Check if EEPROM is initialized
+  {
+      for (int i = 0; i < 8; i++) 
+      {
+          side_one_lick_durations[i] = 24125; // Default value 24125
+      }
+      for (int i = 0; i < 8; i++) 
+      {
+          side_two_lick_durations[i] = 24125; // Default value 24125
+      }
+
+      eeprom_Interface.write_values_to_EEPROM(side_one_lick_durations, eeprom_Interface.DATA_START_ADDRESS, 8);
+      eeprom_Interface.write_values_to_EEPROM(side_two_lick_durations, eeprom_Interface.DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      eeprom_Interface.mark_EEPROM_initialized();
+      Serial.println("EEPROM initialized with default values.");
+  }
+  else 
+  {
+      // Read the existing values from EEPROM
+      eeprom_Interface.read_values_from_EEPROM(side_one_lick_durations, eeprom_Interface.DATA_START_ADDRESS, 8);
+      eeprom_Interface.read_values_from_EEPROM(side_two_lick_durations, eeprom_Interface.DATA_START_ADDRESS + 8 * sizeof(long int), 8);
+      //Serial.println("Values read from EEPROM.");
+  }
+
+  DDRA |= (255); // Set pins 22-29 as outputs
+  DDRC |= (255); // Set pins 30-37 as outputs 
+  
+  int inputPins[] = {2, 8, 9, 10, 11, 12};
+
+  for(unsigned int i = 0; i < sizeof(inputPins)/sizeof(inputPins[0]); i++) 
+  {
+      pinMode(inputPins[i], INPUT_PULLUP);
+  }
+
+  attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
+
+}
+
 
 void loop() 
 {
@@ -553,12 +488,13 @@ void loop()
       }
       case 'P':
       {
-        print_EEPROM_values();
+        eeprom_Interface.print_EEPROM_values();
         break;
       }
       case 'E':
       {
-        markEEPROMUninitialized();
+        eeprom_Interface.markEEPROMUninitialized();
+        break;
       }
       default:
         break;

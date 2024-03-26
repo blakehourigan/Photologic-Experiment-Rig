@@ -25,6 +25,7 @@
 unsigned long start_time, end_time; // Variables to store start and end time of licks
 unsigned long program_start;
 unsigned long current_time; 
+static unsigned long flipStartTime = 0;
 
 volatile bool side_1_pin_state, side_2_pin_state;
 
@@ -59,7 +60,8 @@ void setup()
   TCCR4A = 0; // Set entire TCCR4A register to 0
   TCCR4B = 0; // Set entire TCCR4B register to 0
   TCNT4 = 0; // Initialize counter value to 0
-  OCR4A = 800000; // Set compare match register for 50ms intervals
+  unsigned long int compare_match = 800000;
+  OCR4A = compare_match; // Set compare match register for 50ms intervals
   TCCR4B |= (1 << WGM42); // Turn on CTC mode
   TCCR4B |= (1 << CS40); // Set prescaler to 1 (no prescaling)
 
@@ -77,8 +79,11 @@ void loop()
 {
   check_serial_command();
   
-  detect_licks("One", side_1_pin_state, side_1_previous_state, side_1_licks, LED_BIT_SIDE1);
-  detect_licks("Two", side_2_pin_state, side_2_previous_state, side_2_licks, LED_BIT_SIDE2);
+  char side_one[5] = "One";
+  char side_two[5] = "Two";
+
+  detect_licks(side_one, side_1_pin_state, side_1_previous_state, side_1_licks, LED_BIT_SIDE1);
+  detect_licks(side_two, side_2_pin_state, side_2_previous_state, side_2_licks, LED_BIT_SIDE2);
 
   update_leds();
 
@@ -138,15 +143,14 @@ void check_serial_command()
   } 
 }
 
-static unsigned long flipStartTime = 0;
 
-void check_side_and_port(String side)
+void check_side_and_port(char *side)
 {
-if(side == "One")
+if(strcmp(side, "One") == 0)
 {
 LICK_SIGNAL_WRITE |= (0 << LICK_SIDE_BIT); // Keep the first pin low
 }
-else if(side == "Two")
+else if(strcmp(side, "Two"))
 {
 LICK_SIGNAL_WRITE |= (1 << LICK_SIDE_BIT); // Set the first pin high
 }
@@ -162,7 +166,7 @@ void reset_side_and_port()
   LICK_SIGNAL_WRITE &= ~(1 << LICK_SIGNAL_BIT); // Set the bit low
 }
 
-void detect_licks(String side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) 
+void detect_licks(char *side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) 
 {
     
     if (current_state == 0 && previous_state == 1) 
@@ -192,8 +196,15 @@ void detect_licks(String side, volatile bool& current_state, volatile bool& prev
 
 }
 
-void send_lick_details(unsigned int licks, unsigned long start_time, unsigned long end_time, String side)
+void send_lick_details(unsigned int licks, unsigned long start_time, unsigned long end_time, char *side)
  {
+<<<<<<< Updated upstream
     Serial.print("Stimulus ");
     Serial.println(side);
+=======
+    char side_indicator[50]; 
+    sprintf(side_indicator, "<Stimulus %s>", side);
+
+    Serial.println(side_indicator);
+>>>>>>> Stashed changes
 }
