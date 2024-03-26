@@ -370,9 +370,6 @@ void update_opening_times()
     eeprom_Interface.write_values_to_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
 }
 
-
-
-
 void myISR() 
 {
   valve_side = (PINH & (1 << PH5)) >> PH5;
@@ -445,10 +442,12 @@ void loop()
     switch (command) 
     {
       case 'U':
+        noInterrupts();
         stepper.moveTo(0);
         break;
       case 'D':
         stepper.moveTo(6400);
+        interrupts();
         break;
       case 'R':
         wdt_enable(WDTO_1S);

@@ -252,6 +252,7 @@ class DataManager:
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
         command = "E"  # stop opening the valves on lick detection.
         self.controller.arduino_mgr.send_command_to_laser(command)
+        
         if self.controller.state == "TTC":
             self.stimuli_dataframe.loc[
                 self.current_trial_number - 1, "TTC Actual"
@@ -265,11 +266,8 @@ class DataManager:
         # increment the trial number
         self.current_trial_number += 1
 
-        command = "<I>"
-        self.controller.arduino_mgr.send_command_to_motor(command)
-
-        command = "<U>"
-        # tell the motor arduino to move the door up
+        # tell the motor to both increment the trial number and lift the door
+        command = "<I><U>"                             
         self.controller.arduino_mgr.send_command_to_motor(command)
 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial

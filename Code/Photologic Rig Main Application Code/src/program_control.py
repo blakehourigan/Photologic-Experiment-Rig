@@ -173,7 +173,8 @@ class ProgramController:
         while not self.arduino_mgr.data_queue.empty():
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
-        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms        
+        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms   
+             
     def process_data(self, source, data):
         duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
         # Process the data from the queue
