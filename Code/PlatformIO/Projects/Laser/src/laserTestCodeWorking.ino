@@ -34,6 +34,7 @@ volatile bool side_2_previous_state = 1;
 
 unsigned int side_1_licks = 0; // Variable to store number of licks detected
 unsigned int side_2_licks = 0;
+unsigned int total_licks = 0; 
 
 bool open_valves = false; // Variable to store whether to open valves or not
 
@@ -52,7 +53,6 @@ void setup()
 
   SIDE_ONE_WRITE |= (1 << LED_BIT_SIDE1);
   SIDE_TWO_WRITE |= (1 << LED_BIT_SIDE2);
-
 
   cli(); // Disable global interrupts
   
@@ -182,6 +182,7 @@ void detect_licks(char *side, volatile bool& current_state, volatile bool& previ
     {
         end_time = millis();
         licks++;
+        total_licks++;
         send_lick_details(licks, start_time, end_time, side);
         previous_state = 1;
     }
