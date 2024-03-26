@@ -3,7 +3,7 @@ import time
 import re
 import traceback
 import threading
-from typing import Optional, Tuple, List
+from typing import List
 import queue
 import serial.tools.list_ports #type: ignore
 
@@ -164,11 +164,8 @@ class AduinoManager:
                 side_two_index_str = ",".join(map(str, self.side_two_indexes))
                 
                 command = f"<S,Side One,{side_one_index_str},-1,Side Two,{side_two_index_str},-1,end>"
-                print(command)
                 self.send_command_to_motor(command)  # Signal to Arduino about the upcoming command
 
-
-                    
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
             print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
@@ -188,31 +185,9 @@ class AduinoManager:
         are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
         
         if are_equal_side_one and are_equal_side_two:
-            print("Both lists are identical.")
-            print('Schedule Send Complete.')
+            print("Both lists are identical, Schedule Send Complete.")
         else:
             print("Lists are not identical.")
-
-    def read_from_laser(self) -> Tuple[bool, Optional[str]]:
-        """Read data from the laser Arduino."""
-        data = ""
-        available = False
-        stimulus: Optional[str] = None
-        if (
-            self.laser_arduino is not None
-        ):  # if arduino laser is connected, read serial data
-            if self.laser_arduino.in_waiting > 0:
-                data = self.laser_arduino.read(self.laser_arduino.in_waiting).decode(
-                    "utf-8"
-                )
-                available = True
-            if available:
-                if "Stimulus One" in data:
-                    stimulus = "Stimulus One"
-                if "Stimulus Two" in data:
-                    stimulus = "Stimulus Two"
-        return (available, stimulus)
-    
     
     """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
     SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.

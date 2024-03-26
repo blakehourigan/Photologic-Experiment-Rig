@@ -442,6 +442,7 @@ void loop()
     switch (command) 
     {
       case 'U':
+        Serial.println("door up");
         noInterrupts();
         stepper.moveTo(0);
         break;
@@ -478,6 +479,8 @@ void loop()
         }
         break;
       case 'I':
+        Serial.println("trial up");
+
         current_trial++;
         break;
       case 'S':
