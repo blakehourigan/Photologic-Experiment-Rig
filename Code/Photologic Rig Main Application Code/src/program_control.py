@@ -96,8 +96,11 @@ class ProgramController:
             keep track of where we are storing the licks in the data table"""
             self.state = "TTC"
 
-            self.read_licks(iteration)
-
+            
+            self.check_licks_above_TTC_threshold(
+                iteration
+            )  # check if we have 3 licks from either side
+            
             self.main_gui.state_timer_text.configure(
                 text=(self.state + " Time:")
             )  # update state timer header
@@ -147,40 +150,31 @@ class ProgramController:
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
 
-    def read_licks(self, i):
-        """Define the method for reading data from the optical fiber Arduino"""
-        # try to read licks if there is a arduino connected
-        available_data, stimulus = self.arduino_mgr.read_from_laser()
-
-        if available_data:
-
-            if stimulus == "Stimulus One":
-                self.data_mgr.side_one_licks += 1
-            elif stimulus == "Stimulus Two":
-                self.data_mgr.side_two_licks += 1
-            self.data_mgr.total_licks += 1
-
-            self.check_licks_above_TTC_threshold(
-                i
-            )  # check if we have 3 licks from either side
-            # send the lick data to the data frame
-            self.send_lick_data_to_dataframe(stimulus)
-        # Call this method again every 5 ms
-        self.update_licks_id = self.main_gui.root.after(10, lambda: self.read_licks(i))
-        self.after_ids.append(self.update_licks_id)
-
     def process_queue(self):
         while not self.arduino_mgr.data_queue.empty():
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
+<<<<<<< Updated upstream
         self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms   
              
+=======
+        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms  
+              
+>>>>>>> Stashed changes
     def process_data(self, source, data):
         duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
         # Process the data from the queue
         if source == 'laser':
             # Handle laser data
-            pass
+            if data == "<Stimulus One>":
+                self.data_mgr.side_one_licks += 1
+            elif data == "<Stimulus Two>":
+                self.data_mgr.side_two_licks += 1
+            self.data_mgr.total_licks += 1
+
+ 
+            # send the lick data to the data frame
+            self.send_lick_data_to_dataframe(data)
         elif source == 'motor':
             match = re.search(duration_pattern, data)
             if data == "<Finished Pair>":
@@ -225,6 +219,11 @@ class ProgramController:
             self.data_mgr.side_one_licks = 0
             self.data_mgr.side_two_licks = 0
             self.sample_time(iteration)
+            self.main_gui.root.after_cancel(self.check_lick_threshold_id)
+        else:    
+            self.check_lick_threshold_id = self.main_gui.root.after(
+                    10, lambda: self.check_licks_above_TTC_threshold(iteration))
+            self.after_ids.append(self.check_lick_threshold_id)
 
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button"""

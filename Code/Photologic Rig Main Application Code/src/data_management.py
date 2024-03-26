@@ -276,7 +276,6 @@ class DataManager:
 
         # this is how processes that are set to execute after a certain amount of time are cancelled.
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
-        self.controller.main_gui.root.after_cancel(self.controller.update_licks_id)
 
         # Jump to ITI state to begin ITI for next trial by incrementing the i variable
         self.controller.initial_time_interval(iteration + 1)
