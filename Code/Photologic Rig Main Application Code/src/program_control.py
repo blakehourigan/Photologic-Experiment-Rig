@@ -55,7 +55,7 @@ class ProgramController:
             then continue running through more trials"""
 
         self.arduino_mgr.send_command_to_laser("S")
-
+        
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -161,15 +161,16 @@ class ProgramController:
         # Process the data from the queue
         if source == 'laser':
             # Handle laser data
-            if (data == "<Stimulus One>") and ((self.state == "TTC") or (self.state == "Sample")):
-                self.data_mgr.side_one_licks += 1
-                self.data_mgr.total_licks += 1
-            elif data == "<Stimulus Two>" and ((self.state == "TTC") or (self.state == "Sample")):
-                self.data_mgr.side_two_licks += 1
-                self.data_mgr.total_licks += 1
+            if (data == "<Stimulus One>" or data == "<Stimulus Two>") and ((self.state == "TTC") or (self.state == "Sample")):
+                if (data == "<Stimulus One>"):
+                    self.data_mgr.side_one_licks += 1
+                    self.data_mgr.total_licks += 1
+                elif data == "<Stimulus Two>":
+                    self.data_mgr.side_two_licks += 1
+                    self.data_mgr.total_licks += 1
             
-            modified_data = data[1:-1]  # Remove the first and last characters
-            self.send_lick_data_to_dataframe(modified_data)
+                modified_data = data[1:-1]  # Remove the first and last characters
+                self.send_lick_data_to_dataframe(modified_data)
         elif source == 'motor':
             match = re.search(duration_pattern, data)
             if data == "<Finished Pair>":

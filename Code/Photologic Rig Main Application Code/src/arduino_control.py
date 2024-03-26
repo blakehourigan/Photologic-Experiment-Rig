@@ -68,8 +68,7 @@ class AduinoManager:
             except Exception as e:
                 print(f"Error reading from Arduino: {e}")
                 break
-
-            time.sleep(0.1)
+            time.sleep(.0005)
 
 
     def identify_arduino(self, port) -> str:

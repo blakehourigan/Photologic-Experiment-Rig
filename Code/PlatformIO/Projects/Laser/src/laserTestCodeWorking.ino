@@ -38,6 +38,9 @@ unsigned int total_licks = 0;
 
 bool open_valves = false; // Variable to store whether to open valves or not
 
+char side_one[5] = "One";
+char side_two[5] = "Two";
+
 String side; 
 
 void setup() 
@@ -54,39 +57,21 @@ void setup()
   SIDE_ONE_WRITE |= (1 << LED_BIT_SIDE1);
   SIDE_TWO_WRITE |= (1 << LED_BIT_SIDE2);
 
-  cli(); // Disable global interrupts
-  
-  // Set up Timer 4 for 50ms interval
-  TCCR4A = 0; // Set entire TCCR4A register to 0
-  TCCR4B = 0; // Set entire TCCR4B register to 0
-  TCNT4 = 0; // Initialize counter value to 0
-  unsigned long int compare_match = 800000;
-  OCR4A = compare_match; // Set compare match register for 50ms intervals
-  TCCR4B |= (1 << WGM42); // Turn on CTC mode
-  TCCR4B |= (1 << CS40); // Set prescaler to 1 (no prescaling)
-
   sei(); // Enable global interrupts
   program_start = millis();
-}
-
-ISR(TIMER4_COMPA_vect) 
-{
-  side_1_pin_state = (SIDE_ONE_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
-  side_2_pin_state = (SIDE_TWO_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
 }
 
 void loop() 
 {
   check_serial_command();
-  
-  char side_one[5] = "One";
-  char side_two[5] = "Two";
+
+  side_1_pin_state = (SIDE_ONE_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+  side_2_pin_state = (SIDE_TWO_READ & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
 
   detect_licks(side_one, side_1_pin_state, side_1_previous_state, side_1_licks, LED_BIT_SIDE1);
   detect_licks(side_two, side_2_pin_state, side_2_previous_state, side_2_licks, LED_BIT_SIDE2);
 
   update_leds();
-
 }
 
 void update_leds() 
@@ -109,7 +94,6 @@ void update_leds()
     SIDE_TWO_WRITE &= ~(1 << LED_BIT_SIDE2); // Turn off LED for side 2
   }
 }
-
 
 void check_serial_command() 
 {
@@ -138,11 +122,12 @@ void check_serial_command()
       TIMSK4 |= (1 << OCIE4A); // Enable timer compare interrupt
       sei();
       break;
+    case 'P':
+      Serial.println(total_licks);
     default:
       break;
   } 
 }
-
 
 void check_side_and_port(char *side)
 {
@@ -166,27 +151,35 @@ void reset_side_and_port()
   LICK_SIGNAL_WRITE &= ~(1 << LICK_SIGNAL_BIT); // Set the bit low
 }
 
+
+#define DEBOUNCE_TIME 50 // Debounce time in milliseconds
+
 void detect_licks(char *side, volatile bool& current_state, volatile bool& previous_state, unsigned int& licks, byte output_bit) 
 {
+    static unsigned long lastDebounceTime = 0; // Last time the output pin was toggled
+    unsigned long currentTime = millis();
     
-    if (current_state == 0 && previous_state == 1) 
-    {
-        start_time = millis();
-        if (open_valves) 
+    if ((currentTime - lastDebounceTime) > DEBOUNCE_TIME) {
+        if (current_state == 0 && previous_state == 1) 
         {
-          check_side_and_port(side);
+            start_time = millis();
+            if (open_valves) 
+            {
+              check_side_and_port(side);
+            }
+            previous_state = 0;
+            lastDebounceTime = currentTime;
+        } else if (current_state == 1 && previous_state == 0) 
+        {
+            end_time = millis();
+            licks++;
+            total_licks++;
+            send_lick_details(licks, start_time, end_time, side);
+            previous_state = 1;
+            lastDebounceTime = currentTime;
         }
-        previous_state = 0;
-    } 
-    else if (current_state == 1 && previous_state == 0) 
-    {
-        end_time = millis();
-        licks++;
-        total_licks++;
-        send_lick_details(licks, start_time, end_time, side);
-        previous_state = 1;
     }
-    
+
     if (open_valves)
     {
       if( micros() - flipStartTime >= 10) // after 10 microseconds, reset signals
