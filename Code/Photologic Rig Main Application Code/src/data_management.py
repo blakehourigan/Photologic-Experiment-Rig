@@ -14,7 +14,7 @@ class DataManager:
 
         self.stimuli_dataframe = pd.DataFrame()
         self.licks_dataframe = pd.DataFrame()
-
+        
         self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
@@ -35,6 +35,8 @@ class DataManager:
 
         self.current_trial_number = 1
 
+        self.current_iteration = 0
+            
         self.interval_vars = {
             "ITI_var": tk.IntVar(value=30000),
             "TTC_var": tk.IntVar(value=15000),
@@ -252,6 +254,8 @@ class DataManager:
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
         command = "E"  # stop opening the valves on lick detection.
         self.controller.arduino_mgr.send_command_to_laser(command)
+        
+        self.current_iteration = iteration
         
         if self.controller.state == "TTC":
             self.stimuli_dataframe.loc[

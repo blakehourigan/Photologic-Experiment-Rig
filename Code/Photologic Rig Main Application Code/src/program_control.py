@@ -93,11 +93,6 @@ class ProgramController:
             """start reading licks, we pass the same i into this function that we used in the previous function to
             keep track of where we are storing the licks in the data table"""
             self.state = "TTC"
-
-            
-            self.check_licks_above_TTC_threshold(
-                iteration
-            )  # check if we have 3 licks from either side
             
             self.main_gui.state_timer_text.configure(
                 text=(self.state + " Time:")
@@ -155,7 +150,6 @@ class ProgramController:
         self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms  
               
     def process_data(self, source, data):
-        duration_pattern = r"<S1, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), S2, (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)>"
         # Process the data from the queue
         if source == 'laser':
             # Handle laser data
@@ -167,15 +161,16 @@ class ProgramController:
                     self.data_mgr.side_two_licks += 1
                     self.data_mgr.total_licks += 1
             
-            self.check_licks_above_TTC_threshold()
+            if (self.data_mgr.side_one_licks > 2 or self.data_mgr.side_two_licks > 2) and self.state == "TTC":
+                self.check_licks_above_TTC_threshold(self.data_mgr.current_iteration)
                         
             modified_data = data[1:-1]  # Remove the first and last characters
             self.send_lick_data_to_dataframe(modified_data)
         elif source == 'motor':
-            match = re.search(duration_pattern, data)
+            print(data[0:5])
             if data == "<Finished Pair>":
                 self.valve_test_logic.append_to_volumes()
-            elif match:
+            elif "Durations" in data:
                 self.valve_test_logic.begin_updating_opening_times(data)
             elif "SCHEDULE VERIFICATION" in data:
                 cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
@@ -201,18 +196,12 @@ class ProgramController:
         """define method for checking licks during the TTC state"""
         self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
 
-        if (
-            self.data_mgr.side_one_licks >= self.data_mgr.TTC_lick_threshold.get()
-            or self.data_mgr.side_two_licks >= self.data_mgr.TTC_lick_threshold.get()
-        ) and self.state == "TTC":
-            self.data_mgr.stimuli_dataframe.loc[
-                self.data_mgr.current_trial_number - 1, "TTC Actual"
-            ] = (time.time() - self.data_mgr.state_start_time) * 1000
+        self.data_mgr.stimuli_dataframe.loc[self.data_mgr.current_trial_number - 1, "TTC Actual"] = (time.time() - self.data_mgr.state_start_time) * 1000
 
-            self.main_gui.root.after_cancel(self.after_sample_id)
-            self.data_mgr.side_one_licks = 0
-            self.data_mgr.side_two_licks = 0
-            self.sample_time(iteration)
+        self.main_gui.root.after_cancel(self.after_sample_id)
+        self.data_mgr.side_one_licks = 0
+        self.data_mgr.side_two_licks = 0
+        self.sample_time(iteration)
 
 
     def start_button_handler(self) -> None:
@@ -275,7 +264,7 @@ class ProgramController:
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
 
-            self.update_clock_label()
+            self.main_gui.start_clock_update_thread()
 
             # turn the main button to the red stop button
             self.main_gui.start_button.configure(text="Stop", bg="red")

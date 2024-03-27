@@ -87,7 +87,7 @@ class valveTestLogic:
         side_two_values = []
         
         # Remove the starting '<' and ending '>' characters
-        trimmed_str = duration_string[1:-1]
+        trimmed_str = duration_string[2:-1]
         
         # Split the string by commas and spaces to isolate values
         parts = [part.strip() for part in trimmed_str.split(',')]

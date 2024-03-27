@@ -2,6 +2,7 @@ import platform
 import tkinter as tk
 from tkinter import PhotoImage, messagebox, ttk
 import time
+import threading 
 
 
 class MainGUI:
@@ -422,29 +423,34 @@ class MainGUI:
 
         return minutes, seconds
 
-    def update_clock_label(self) -> None:
-        # total elapsed time is current minus program start time
-        elapsed_time = time.time() - self.controller.data_mgr.start_time
+    def start_clock_update_thread(self):
+        # Create and start a new thread to handle the time update
+        update_thread = threading.Thread(target=self.update_clock_label)
+        update_thread.daemon = True  # Daemon thread exits when the main thread does
+        update_thread.start()
 
+    def update_clock_label(self) -> None:
+        # Calculate elapsed times
+        elapsed_time = time.time() - self.controller.data_mgr.start_time
+        state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
+
+        # Schedule GUI update in the main thread
+        self.root.after(0, self.update_clock_label_in_main_thread, elapsed_time, state_elapsed_time)
+
+        # Schedule the next call of this method
+        self.root.after(500, self.update_clock_label)
+
+    def update_clock_label_in_main_thread(self, elapsed_time, state_elapsed_time):
         min, sec = self.convert_seconds_to_minutes_seconds(elapsed_time)
 
-        # update the main screen label and set the number of decimal points to 3
+        # Update the main screen label and set the number of decimal points to 1
         self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
-
         self.main_timer_min_sec_text.configure(
             text="| {:.0f} Minutes, {:.1f} S".format(min, sec)
         )
 
-        # state elapsed time is current time minus the time we entered the state
-        state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
-
-        # update the main screen label and set the number of decimal points to 3
+        # Update the state screen label and set the number of decimal points to 1
         self.state_timer_text.configure(text="{:.1f}s".format(state_elapsed_time))
-
-        # Call this method again after 100 ms
-        self.update_clock_id = self.root.after(100, lambda: self.update_clock_label())
-        self.controller.after_ids.append(self.update_clock_id)
-
     def update_max_time(self, minutes, seconds) -> None:
         self.maximum_total_time.configure(
             text="{:.0f} Minutes, {:.1f} S".format(minutes, seconds)

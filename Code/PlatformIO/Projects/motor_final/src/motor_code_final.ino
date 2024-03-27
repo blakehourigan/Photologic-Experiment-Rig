@@ -163,7 +163,7 @@ void send_valve_durations()
 
   eeprom_Interface.read_values_from_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
   
-  sprintf(saved_duration_times, "<S1, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, S2, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu>", 
+  sprintf(saved_duration_times, "<Durations, S1, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, S2, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu>", 
           values[0], values[1], values[2], values[3], 
           values[4], values[5], values[6], values[7], 
           values[8], values[9], values[10], values[11], 
