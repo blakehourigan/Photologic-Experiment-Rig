@@ -261,7 +261,7 @@ class ProgramController:
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
 
-            self.main_gui.start_clock_update_thread()
+            self.main_gui.update_clock_label()
 
             # turn the main button to the red stop button
             self.main_gui.start_button.configure(text="Stop", bg="red")

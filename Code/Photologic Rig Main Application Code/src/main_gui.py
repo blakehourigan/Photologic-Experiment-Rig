@@ -2,8 +2,6 @@ import platform
 import tkinter as tk
 from tkinter import PhotoImage, messagebox, ttk
 import time
-import threading 
-
 
 class MainGUI:
     def __init__(self, controller) -> None:
@@ -423,24 +421,11 @@ class MainGUI:
 
         return minutes, seconds
 
-    def start_clock_update_thread(self):
-        # Create and start a new thread to handle the time update
-        update_thread = threading.Thread(target=self.update_clock_label)
-        update_thread.daemon = True  # Daemon thread exits when the main thread does
-        update_thread.start()
-
     def update_clock_label(self) -> None:
         # Calculate elapsed times
         elapsed_time = time.time() - self.controller.data_mgr.start_time
         state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
 
-        # Schedule GUI update in the main thread
-        self.root.after(0, self.update_clock_label_in_main_thread, elapsed_time, state_elapsed_time)
-
-        # Schedule the next call of this method
-        self.root.after(50, self.update_clock_label)
-
-    def update_clock_label_in_main_thread(self, elapsed_time, state_elapsed_time):
         min, sec = self.convert_seconds_to_minutes_seconds(elapsed_time)
 
         # Update the main screen label and set the number of decimal points to 1
@@ -451,6 +436,10 @@ class MainGUI:
 
         # Update the state screen label and set the number of decimal points to 1
         self.state_timer_text.configure(text="{:.1f}s".format(state_elapsed_time))
+
+        # Schedule the next call of this method
+        self.root.after(100, self.update_clock_label)
+
     def update_max_time(self, minutes, seconds) -> None:
         self.maximum_total_time.configure(
             text="{:.0f} Minutes, {:.1f} S".format(minutes, seconds)
