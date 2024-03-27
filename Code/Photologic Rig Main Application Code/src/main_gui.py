@@ -438,7 +438,8 @@ class MainGUI:
         self.state_timer_text.configure(text="{:.1f}s".format(state_elapsed_time))
 
         # Schedule the next call of this method
-        self.root.after(100, self.update_clock_label)
+        clock_id = self.root.after(100, self.update_clock_label)
+        self.controller.after_ids.append(clock_id)
 
     def update_max_time(self, minutes, seconds) -> None:
         self.maximum_total_time.configure(

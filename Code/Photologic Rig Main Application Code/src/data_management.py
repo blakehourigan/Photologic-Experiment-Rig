@@ -261,10 +261,6 @@ class DataManager:
                 self.current_trial_number - 1, "TTC Actual"
             ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
 
-            (
-                stimulus_1_position,
-                stimulus_2_position,
-            ) = self.find_stimuli_positions(iteration)
 
         # increment the trial number
         self.current_trial_number += 1
@@ -331,6 +327,7 @@ class DataManager:
     def find_stimuli_positions(self, i) -> tuple:
         # Create a list of the stimuli dictionary values, will give list of stimuli.
         stim_var_list = list(self.stimuli_vars.values())
+        print(stim_var_list)
         for index, string_var in enumerate(stim_var_list):
             if string_var.get() == self.stimuli_dataframe.loc[i, "Side 1"]:
                 self.stim1_position = str(index + 1)

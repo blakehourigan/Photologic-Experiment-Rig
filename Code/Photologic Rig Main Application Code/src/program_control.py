@@ -104,10 +104,6 @@ class ProgramController:
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
             valve number and save into stimulus position variables. """
 
-            (
-                stimulus_1_position,
-                stimulus_2_position,
-            ) = self.data_mgr.find_stimuli_positions(iteration)
 
             TTC_Value = self.data_mgr.check_dataframe_entry_isfloat(iteration, "TTC")
 
@@ -160,12 +156,12 @@ class ProgramController:
                 elif data == "<Stimulus Two>":
                     self.data_mgr.side_two_licks += 1
                     self.data_mgr.total_licks += 1
+                modified_data = data[1:-1]  # Remove the first and last characters
+                self.send_lick_data_to_dataframe(modified_data)
             
             if (self.data_mgr.side_one_licks > 2 or self.data_mgr.side_two_licks > 2) and self.state == "TTC":
-                self.start_new_sample(self.data_mgr.current_iteration)
-                        
-            modified_data = data[1:-1]  # Remove the first and last characters
-            self.send_lick_data_to_dataframe(modified_data)
+                self.start_new_sample(self.data_mgr.current_iteration)        
+
         elif source == 'motor':
             if data == "<Finished Pair>":
                 self.valve_test_logic.append_to_volumes()

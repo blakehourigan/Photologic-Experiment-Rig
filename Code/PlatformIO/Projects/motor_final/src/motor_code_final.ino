@@ -446,7 +446,7 @@ void loop()
         current_trial++;
         break;
       case 'D':
-        stepper.moveTo(6400);
+        stepper.moveTo(6300);
         break;
       case 'R':
         wdt_enable(WDTO_1S);
