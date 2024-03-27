@@ -438,7 +438,7 @@ class MainGUI:
         self.root.after(0, self.update_clock_label_in_main_thread, elapsed_time, state_elapsed_time)
 
         # Schedule the next call of this method
-        self.root.after(500, self.update_clock_label)
+        self.root.after(50, self.update_clock_label)
 
     def update_clock_label_in_main_thread(self, elapsed_time, state_elapsed_time):
         min, sec = self.convert_seconds_to_minutes_seconds(elapsed_time)

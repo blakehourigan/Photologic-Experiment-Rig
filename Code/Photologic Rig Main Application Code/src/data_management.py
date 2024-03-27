@@ -255,7 +255,6 @@ class DataManager:
         command = "E"  # stop opening the valves on lick detection.
         self.controller.arduino_mgr.send_command_to_laser(command)
         
-        self.current_iteration = iteration
         
         if self.controller.state == "TTC":
             self.stimuli_dataframe.loc[
@@ -271,9 +270,9 @@ class DataManager:
         self.current_trial_number += 1
 
         # tell the motor to both increment the trial number and lift the door
-        command = "<I><U>"                             
+        command = "<U>"                             
         self.controller.arduino_mgr.send_command_to_motor(command)
-
+                
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
         self.stimuli_dataframe.loc[iteration, "Side 1 Licks"] = self.side_one_licks
         self.stimuli_dataframe.loc[iteration, "Side 2 Licks"] = self.side_two_licks

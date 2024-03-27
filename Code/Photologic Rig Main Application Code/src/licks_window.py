@@ -49,8 +49,6 @@ class LicksWindow:
         
         self.stamped_licks.update_idletasks()
         
-        self.licks_frame.after(250, self.update_table)
-
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""
         if self.top is not None:

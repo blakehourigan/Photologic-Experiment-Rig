@@ -1,5 +1,6 @@
 #include <AccelStepper.h>
 #include <avr/wdt.h>
+#include "EEPROM_INTERFACE.h"
 #include <EEPROM.h>
 
 #define SET_BIT(PORT, BIT) ((PORT) |= (1 << (BIT)))
@@ -37,8 +38,6 @@ int side_two_size = 0;
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 const int MAX_SPEED = 5500; 
 const int ACCELERATION = 5500;
-
-#include "EEPROM_INTERFACE.h"
 
 EEPROM_INTERFACE eeprom_Interface;
 
@@ -444,6 +443,7 @@ void loop()
         noInterrupts();
         stepper.moveTo(0);
         interrupts();
+        current_trial++;
         break;
       case 'D':
         stepper.moveTo(6400);
@@ -477,7 +477,6 @@ void loop()
         }
         break;
       case 'I':
-        current_trial++;
         break;
       case 'S':
       {

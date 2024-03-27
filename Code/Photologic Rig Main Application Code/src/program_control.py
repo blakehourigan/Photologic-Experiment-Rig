@@ -1,5 +1,4 @@
 import time 
-import re 
 
 # Helper classes
 from arduino_control import AduinoManager
@@ -53,7 +52,9 @@ class ProgramController:
 
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
-
+            
+        self.data_mgr.current_iteration = iteration
+        
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -80,12 +81,9 @@ class ProgramController:
 
             self.main_gui.update_on_state_change(ITI_Value, self.state)
 
-            def callback():
-                self.time_to_contact(iteration)
-
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.main_gui.root.after(int(ITI_Value), callback)
+            self.main_gui.root.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
 
     def time_to_contact(self, iteration: int):
         """defining the TTC state method, argument are self and iteration. iteration is passed from ITI to keep track of what stimuli we are on."""
@@ -143,11 +141,13 @@ class ProgramController:
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
 
+
     def process_queue(self):
         while not self.arduino_mgr.data_queue.empty():
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
-        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100 ms  
+
+        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
               
     def process_data(self, source, data):
         # Process the data from the queue
@@ -162,12 +162,11 @@ class ProgramController:
                     self.data_mgr.total_licks += 1
             
             if (self.data_mgr.side_one_licks > 2 or self.data_mgr.side_two_licks > 2) and self.state == "TTC":
-                self.check_licks_above_TTC_threshold(self.data_mgr.current_iteration)
+                self.start_new_sample(self.data_mgr.current_iteration)
                         
             modified_data = data[1:-1]  # Remove the first and last characters
             self.send_lick_data_to_dataframe(modified_data)
         elif source == 'motor':
-            print(data[0:5])
             if data == "<Finished Pair>":
                 self.valve_test_logic.append_to_volumes()
             elif "Durations" in data:
@@ -192,10 +191,8 @@ class ProgramController:
 
         licks_dataframe.loc[total_licks, "State"] = self.state
 
-    def check_licks_above_TTC_threshold(self, iteration):
+    def start_new_sample(self, iteration):
         """define method for checking licks during the TTC state"""
-        self.TTC_lick_threshold = self.data_mgr.TTC_lick_threshold
-
         self.data_mgr.stimuli_dataframe.loc[self.data_mgr.current_trial_number - 1, "TTC Actual"] = (time.time() - self.data_mgr.state_start_time) * 1000
 
         self.main_gui.root.after_cancel(self.after_sample_id)
