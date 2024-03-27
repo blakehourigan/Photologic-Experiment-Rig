@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Optional
 from tkinter import messagebox
-from pandastable import Table
+from pandastable import Table #type: ignore
 
 class LicksWindow:
     def __init__(self, controller) -> None:
