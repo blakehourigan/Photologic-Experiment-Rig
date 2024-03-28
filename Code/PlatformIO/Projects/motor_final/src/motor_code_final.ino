@@ -1,52 +1,35 @@
 #include <AccelStepper.h>
 #include <avr/wdt.h>
 #include "EEPROM_INTERFACE.h"
+#include "Valve_control.h"
+#include "serial_communication.h"
 #include <EEPROM.h>
-
-#define SET_BIT(PORT, BIT) ((PORT) |= (1 << (BIT)))
-#define CLEAR_BIT(PORT, BIT) ((PORT) &= ~(1 << (BIT)))
-#define TOGGLE_BIT(PORT, BIT) ((PORT) ^= (1 << (BIT)))
 
 #define dir_pin 53
 #define step_pin 51
 
 #define BAUD_RATE 115200
 
-int current_trial = 0;
+const int MAX_SCHEDULE_SIZE = 200;
 
-const int SIDE_ONE_SOLENOIDS[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7}; 
-const int SIDE_TWO_SOLENOIDS[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
-
-const int MAX_SCHEDULE_SIZE = 200; // Maximum size of the array
-int SIDE_ONE_SCHEDULE[200];
-int SIDE_TWO_SCHEDULE[200];
-
-unsigned long start_time;
-unsigned long end_time;
-unsigned long duration;
-unsigned long valve_open_time_d, valve_open_time_c, open_start, close_time;
-
-int combined_value;
-
-volatile int valve_side, valve_number;
-volatile bool lick_available = false;
-bool prime_flag;
+int* SIDE_ONE_SCHEDULE;
+int* SIDE_TWO_SCHEDULE;
 
 int side_one_size = 0; // Keep track of the current number of elements
 int side_two_size = 0;
+int current_trial = 0;
+int valve_number;
+
+unsigned long program_start_time;
+unsigned long duration;
+
+volatile int valve_side;
+volatile bool lick_available = false;
 
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
-const int MAX_SPEED = 5500; 
-const int ACCELERATION = 5500;
-
 EEPROM_INTERFACE eeprom_Interface;
-
-void clear_serial_buffer() 
-{
-  while (Serial.available() > 0) {
-    Serial.read(); // Read and discard the incoming byte
-  }
-}
+valve_control valve_ctrl;
+SerialCommunication serial_communication;
 
 void add_to_array(int *array, int &size, int element) {
   if (size < MAX_SCHEDULE_SIZE) {
@@ -55,103 +38,6 @@ void add_to_array(int *array, int &size, int element) {
   } else {
     Serial.println("Error: Array is full.");
   }
-}
-
-void toggle_solenoid(int side, int solenoid_pin) 
-{
-  if (side == 0)
-  {
-    TOGGLE_BIT(PORTA, solenoid_pin);
-  }
-  else if (side == 1)
-  {
-    TOGGLE_BIT(PORTC, solenoid_pin);
-  }
-}
-
-void untoggle_solenoid(int side, int solenoid_pin) 
-{
-  if (side == 0)
-  {
-    CLEAR_BIT(PORTA, solenoid_pin);
-  }
-  else if (side == 1)
-  {
-    CLEAR_BIT(PORTC, solenoid_pin);
-  }
-}
-
-void lick_handler(int valve_side, int valve_number = -1)
-{
-  const int * solenoids = (valve_side == 0) ? SIDE_ONE_SOLENOIDS : SIDE_TWO_SOLENOIDS; // if valve side is 0 (side 1), then choose side one solenoids, otherwise pick side two
-  unsigned long int valve_duration = 0;
-  
-  noInterrupts();
-
-  // choose starting address for eeprom values based on side
-  int address = (valve_side == 0) ? eeprom_Interface.DATA_START_ADDRESS : eeprom_Interface.SIDE_TWO_DURATIONS_ADDRESS;
-
-  if (valve_number == -1)  // if we do not give the function a valve, then use the schedule provided to find which one to use
-  {
-    valve_number = (valve_side == 0) ? SIDE_ONE_SCHEDULE[current_trial] : SIDE_TWO_SCHEDULE[current_trial];
-  }
-  
-  eeprom_Interface.read_single_value_from_EEPROM(valve_duration, address, valve_number);
-
-  int quotient = valve_duration / 10000; // delayMicroseconds only allows for values up to 16383, we use multiple instances of 
-  // 10000 to avoid overflow
-
-  int remaining_delay = valve_duration - (quotient * 10000);  
-
-  toggle_solenoid(valve_side, solenoids[valve_number]);
-
-  for (int i = 0; i < quotient; i++)
-  {
-    delayMicroseconds(10000);
-  }
-
-  delayMicroseconds(remaining_delay); // we add the remaining delay to the end of the loop to ensure the total duration is correct
-  untoggle_solenoid(valve_side, solenoids[valve_number]);
-  interrupts();
-}
-
-void prime_valves()
-{
-    for(int i = 0; i < 1000; i++)
-    {
-        if(prime_flag)
-        {
-          // Check if there's something on the serial line
-          if (Serial.available() > 0) 
-          {
-              // Read the incoming byte:
-              char incomingChar = Serial.read();
-
-              // Check if the incoming byte is 'E'
-              if (incomingChar == 'E') 
-              {
-                  prime_flag = 0; // Set prime_flag to zero to stop the priming
-                  break; // Exit the for loop immediately
-              }
-          }
-
-          // Prime valves as before
-          // Prime all valves in both sides
-          for (int side = 0; side <= 1; ++side) 
-          {
-              for (int valve_number = 0; valve_number < 4; ++valve_number) 
-              {
-                  lick_handler(side, valve_number);
-              }
-          }
-          delay(100);
-        }
-        else
-        {
-            // If prime_flag is not set, break out of the loop early
-            break;
-        }
-    }
 }
 
 void send_valve_durations()
@@ -181,11 +67,11 @@ void test_volume(char number_of_valves)
   {
     for(int j=0; j < 1000; j++)
     {
-      lick_handler(0, i);
-      lick_handler(1, i);
+      valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, i);
+      valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, i);
       delay(100);
     }
-    clear_serial_buffer();
+    serial_communication.clear_serial_buffer();
     delay(100);
     Serial.println("<Finished Pair>");
 
@@ -193,7 +79,7 @@ void test_volume(char number_of_valves)
     {
       while (Serial.available() == 0) {}
 
-      String received_transmission = receive_transmission();
+      String received_transmission = serial_communication.receive_transmission();
 
       if(received_transmission == "continue")
       {
@@ -205,7 +91,7 @@ void test_volume(char number_of_valves)
   send_valve_durations();
 } 
 
-bool isInteger(const String& str) {
+bool is_integer(const String& str) {
     if (str.length() == 0) {
         return false; // Empty string is not an integer
     }
@@ -228,7 +114,7 @@ bool isInteger(const String& str) {
     return true; // Passed all checks, it's an integer
 }
 
-void recieve_schedule(String full_command) 
+void recieve_schedule(String full_command, int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) 
 {
     int currentIndex = 0;  // Tracks the current index for adding to arrays
     int side = 0;  // 0: not set, 1: side one, 2: side two
@@ -257,7 +143,7 @@ void recieve_schedule(String full_command)
         if (side != 0 && currentIndex < MAX_SCHEDULE_SIZE) 
         {
             // Convert part to integer and add to the correct array
-            if(isInteger(part))
+            if(is_integer(part))
             {
             value = part.toInt();
             }
@@ -292,10 +178,10 @@ void recieve_schedule(String full_command)
             to = full_command.length();
         }
     }
-    send_schedule_back();
+    send_schedule_back(SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);
 }
 
-void send_schedule_back() {
+void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
   String message = "SCHEDULE VERIFICATION";
 
   for (int i = 0; i < side_one_size; i++) {
@@ -313,33 +199,6 @@ void send_schedule_back() {
   Serial.println(message); // Send the entire schedule in one line
 }
 
-
-String receive_transmission()
-{
-    String message = "";
-    char inChar;
-    bool startDetected = false; // Flag to detect start of message
-    // Keep reading characters until '>' is encountered
-    while (true) {
-        if (Serial.available() > 0) {
-            inChar = Serial.read();
-            // Check for the end of the message
-            if (inChar == '>') {
-                break; // End of message, exit the loop
-            }
-            // Skip adding to message until start character '<' is found
-            if (inChar == '<') {
-                startDetected = true; // Mark start detected
-                continue; // Skip adding the '<' character
-            }
-            if (startDetected) {
-                message += inChar; // Add the character to the message string only after '<' is detected
-            }
-        }
-    }
-    return message; // Return the complete message read from Serial, excluding the starting character '<'
-}
-
 void update_opening_times()
 {
     const int num_values = 16;
@@ -350,7 +209,7 @@ void update_opening_times()
 
     while (Serial.available() == 0) {}      // Wait until data is available
 
-    String transmission = receive_transmission();
+    String transmission = serial_communication.receive_transmission();
 
     // Parse the transmission string
     while ((endIndex = transmission.indexOf(',', startIndex)) != -1 && valueIndex < num_values) 
@@ -378,9 +237,15 @@ void myISR()
 
 void setup() 
 {
+  const int MAX_SPEED = 5500; 
+  const int ACCELERATION = 5500;
+
   stepper.setMaxSpeed(MAX_SPEED);
   stepper.setAcceleration(ACCELERATION);
   Serial.begin(BAUD_RATE);
+
+  SIDE_ONE_SCHEDULE = new int[MAX_SCHEDULE_SIZE];
+  SIDE_TWO_SCHEDULE = new int[MAX_SCHEDULE_SIZE];
 
   unsigned long int side_one_lick_durations[8]; 
   unsigned long int side_two_lick_durations[8];
@@ -414,29 +279,28 @@ void setup()
   
   int inputPins[] = {2, 8, 9, 10, 11, 12};
 
-  for(unsigned int i = 0; i < sizeof(inputPins)/sizeof(inputPins[0]); i++) 
+  for(unsigned int i = 0; i < sizeof(inputPins) / sizeof(inputPins[0]); i++) 
   {
       pinMode(inputPins[i], INPUT_PULLUP);
   }
 
   attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
-
 }
-
 
 void loop() 
 {
   if(lick_available)
   {
-    lick_handler(valve_side);
+    valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
     lick_available = false;
   }
 
   if (Serial.available() > 0) 
   {
-    String fullCommand = receive_transmission(); // Use the function to read the full command
-    char command = fullCommand[0]; // Assuming the format is <X>, where X is the command character
-
+    String full_command = serial_communication.receive_transmission(); // Use the function to read the full command
+    char command = full_command[0]; // Assuming the format is <X>, where X is the command character
+        
+    bool prime_flag = 0;
     switch (command) 
     {
       case 'U':
@@ -446,21 +310,23 @@ void loop()
         current_trial++;
         break;
       case 'D':
-        stepper.moveTo(6300);
+        stepper.moveTo(6250);
         break;
       case 'R':
+        delete[] SIDE_ONE_SCHEDULE;
+        delete[] SIDE_TWO_SCHEDULE;
         wdt_enable(WDTO_1S);
         break;
       case 'W':
         Serial.println("MOTOR");
         break;
       case 'T':
-        command = fullCommand[2];
+        command = full_command[2];
         test_volume(command);
         break;
       case 'F':
-        prime_flag = 1;
-        prime_valves();
+        prime_flag = 1; 
+        valve_ctrl.prime_valves(prime_flag, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
         break;
       case 'O':
         for(int i = 0; i < 8; i++)
@@ -469,18 +335,18 @@ void loop()
           PORTC |= (255); // open all valves on side 2
         } 
         break;
-      case 'C':    
+      case 'C':
+      {
         for(int i = 0; i < 8; i++)
         {
           PORTA &= ~(255); // close all valves on side 1
           PORTC &= ~(255); // close all valves on side 2
         }
         break;
-      case 'I':
-        break;
+      }    
       case 'S':
       {
-        recieve_schedule(fullCommand);
+        recieve_schedule(full_command, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);
         break;
       }
       case 'P':
@@ -491,6 +357,10 @@ void loop()
       case 'E':
       {
         eeprom_Interface.markEEPROMUninitialized();
+        break;
+      }
+      case '0':
+      {
         break;
       }
       default:

@@ -255,6 +255,8 @@ class ProgramController:
             # program main start time begins now
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
+            
+            self.arduino_mgr.send_command_to_motor("<Start")
 
             self.main_gui.update_clock_label()
 
@@ -263,6 +265,7 @@ class ProgramController:
 
             # call the first ITI state with an iteration variable (i acts as a
             # variable to iterate throgh the program schedule data table) starting at 0
+            
             self.initial_time_interval(0)
 
     def update_clock_label(self) -> None:

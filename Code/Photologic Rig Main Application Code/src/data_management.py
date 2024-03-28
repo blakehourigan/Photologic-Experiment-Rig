@@ -1,12 +1,12 @@
 from tkinter import filedialog
-import pandas as pd
-import numpy as np
+import pandas as pd #type: ignore
+import numpy as np #type: ignore 
 import tkinter as tk
+from collections import defaultdict
+
 from typing import Tuple, List
 
 import random
-import itertools
-
 
 class DataManager:
     def __init__(self, controller) -> None:
@@ -100,17 +100,12 @@ class DataManager:
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
         # the total number of trials equals (number stimuli / 2) because each stimuli is paired up, times the number of trial blocks that we want
-        self.num_trials.set(
-            ((self.num_stimuli.get() / 2) * self.num_trial_blocks.get())
-        )
+        self.num_trials.set(((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
 
         max_time = self.create_random_intervals()
 
-        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(
-            max_time / 1000
-        )  # converting our max runtime in ms to max time in minues, seconds format
+        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(max_time / 1000)  # converting our max runtime in ms to max time in minues, seconds format
         self.controller.main_gui.update_max_time(minutes, seconds)
-
         """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
                             var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
         self.changed_vars = [
@@ -206,40 +201,63 @@ class DataManager:
         )
 
         return max_time
-
+    
     def generate_pairs(self) -> Tuple[list, list]:
-        """if the user has changed the defualt values of num_blocks and changed variables, then generate the experiment schedule"""
         pseudo_random_lineup: List[tuple] = []
         stimulus_1: List[str] = []
         stimulus_2: List[str] = []
-        for i in range(self.num_trial_blocks.get()):
+        first_pair_counts: dict[tuple, int] = defaultdict(int)  # Dictionary to count first pairs
+        consecutive_streaks: dict[int, int] = defaultdict(int)  # New dictionary to count streak lengths
+        last_first_pair = None
+        current_streak = 0
+
+        for _ in range(self.num_trial_blocks.get()):
             if self.num_trial_blocks.get() != 0 and self.changed_vars:
-                # Generate all possible permutations of these pairs
-                all_permutations = list(itertools.permutations(self.pairs))
+                pairs_copy = [tuple(pair) for pair in self.pairs]
+                random.shuffle(pairs_copy)  # Shuffle instead of picking one by one
+                pseudo_random_lineup.extend(pairs_copy)
+                first_pair_strings = tuple(var.get() for var in pairs_copy[0])
+                first_pair_counts[first_pair_strings] += 1
 
-                # Shuffle the permutations to randomize the order
-                random.shuffle(all_permutations)
+                # New logic for tracking consecutive streaks
+                if first_pair_strings == last_first_pair:
+                    current_streak += 1
+                else:
+                    if current_streak > 0:
+                        consecutive_streaks[current_streak] += 1
+                    current_streak = 1
+                    last_first_pair = first_pair_strings
 
-                # Select the first permutation as the random lineup, and add each entry of the permutation to the pseudo_random_lineup list
-                pseudo_random_lineup.extend(all_permutations[0])
+            # Error handling remains unchanged
+            elif len(self.changed_vars) == 0 and self.controller:
+                self.controller.main_gui.display_error("Stimuli Variables Not Yet Changed",
+                                                      "Stimuli variables have not yet been changed, to continue please change defaults and try again.")
+            elif self.num_trial_blocks.get() == 0 and self.controller:
+                self.controller.main_gui.display_error("Number of Trial Blocks 0",
+                                                      "Number of trial blocks is currently still set to zero, please change the default value and try again.")
 
-            elif len(self.changed_vars) == 0:
-                self.controller.main_gui.display_error(
-                    "Stimuli Variables Not Yet Changed",
-                    "Stimuli variables have not yet been changed, to continue please change defaults and try again.",
-                )
+        # Handling the last streak
+        if current_streak > 0:
+            consecutive_streaks[current_streak] += 1
 
-            elif self.num_trial_blocks.get() == 0:
-                self.controller.main_gui.display_error(
-                    "Number of Trial Blocks 0",
-                    "Number of trial blocks is currently still set to zero, please change the default value and try again.",
-                )
         # Unpack the pairs_shuffled list into two lists, one for each stimulus
         for entry in pseudo_random_lineup:
             stimulus_1.append(entry[0].get())
             stimulus_2.append(entry[1].get())
 
+        # Calculate the percentage of each pair being first
+        first_pair_percentages = {pair: count / self.num_trial_blocks.get() * 100 for pair, count in first_pair_counts.items()}
+        print("Percentages of each pair appearing first:")
+        for pair, percentage in first_pair_percentages.items():
+            print(f"{pair}: {percentage:.2f}%")
+
+        # Printing consecutive streaks
+        print("\nConsecutive streaks of first pairs:")
+        for streak_length, count in consecutive_streaks.items():
+            print(f"Streak of {streak_length}: {count} times")
+
         return stimulus_1, stimulus_2
+
 
     def initalize_licks_dataframe(self):
         """setup the licks data frame that will hold the timestamps for the licks and which port was licked
@@ -323,20 +341,6 @@ class DataManager:
         """Preparing to send the data to the motor arduino"""
         paired_stimuli = list(zip(stimulus_1, stimulus_2))
         return paired_stimuli
-
-    def find_stimuli_positions(self, i) -> tuple:
-        # Create a list of the stimuli dictionary values, will give list of stimuli.
-        stim_var_list = list(self.stimuli_vars.values())
-        print(stim_var_list)
-        for index, string_var in enumerate(stim_var_list):
-            if string_var.get() == self.stimuli_dataframe.loc[i, "Side 1"]:
-                self.stim1_position = str(index + 1)
-
-            # repeat process for the second stimulus
-            elif string_var.get() == self.stimuli_dataframe.loc[i, "Side 2"]:
-                self.stim2_position = str(index + 1)
-
-        return self.stim1_position, self.stim2_position
 
     def reset_all(self):
         # Reset or clear all internal state that could persist
