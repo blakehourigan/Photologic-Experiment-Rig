@@ -38,7 +38,6 @@ class ProgramController:
 
         self.after_ids: list[str] = []
 
-
     def start_main_gui(self) -> None:
         """start the main GUI and connect to the arduino"""
         self.main_gui.setup_gui()
