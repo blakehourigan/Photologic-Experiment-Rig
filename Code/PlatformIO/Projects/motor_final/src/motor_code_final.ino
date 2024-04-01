@@ -325,7 +325,7 @@ void loop()
     lick_available = false;
   }
 
-  if (command == 'd' && motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
+  if (command == 'D' && motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   {
     TimeStamp timestamp;
     timestamp.previous_command = command; // Assuming 'command' holds the previous command
@@ -349,12 +349,12 @@ void loop()
         noInterrupts();
         stepper.moveTo(0);
         interrupts();
-        current_trial++;
         timestamp.previous_command = command; // Assuming 'command' holds the previous command
         timestamp.trial_number = current_trial;
         timestamp.time_from_zero = millis() - program_start_time;
 
         timestamps.push_back(timestamp);
+        current_trial++;
       }
         break;
       case 'D':
