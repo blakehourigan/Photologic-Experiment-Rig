@@ -315,6 +315,7 @@ void setup()
 String full_command;
 char command;
 bool prime_flag;
+bool motor_running; 
 
 void loop() 
 {
@@ -324,7 +325,7 @@ void loop()
     lick_available = false;
   }
 
-  if (stepper.distanceToGo() == 0) 
+  if (stepper.distanceToGo() == 0 && motor_running) 
   {
     TimeStamp timestamp;
     timestamp.previous_command = command; // Assuming 'command' holds the previous command
@@ -332,6 +333,7 @@ void loop()
     timestamp.time_from_zero = millis() - program_start_time;
     
     timestamps.push_back(timestamp);
+    motor_running = false;
   }
 
   if (Serial.available() > 0) 
@@ -347,9 +349,11 @@ void loop()
         stepper.moveTo(0);
         interrupts();
         current_trial++;
+        motor_running = true;
         break;
       case 'D':
         stepper.moveTo(6250);
+        motor_running = true;
         break;
       case 'R':
         delete[] SIDE_ONE_SCHEDULE;
@@ -408,7 +412,7 @@ void loop()
         timestamps.push_back(timestamp);
         break;
       }
-      case '-1':
+      case '3':
       {
         send_timestamps();
         break;
