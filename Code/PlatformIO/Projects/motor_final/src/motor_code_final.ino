@@ -325,7 +325,7 @@ void loop()
     lick_available = false;
   }
 
-  if (motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
+  if (command == 'd' && motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   {
     TimeStamp timestamp;
     timestamp.previous_command = command; // Assuming 'command' holds the previous command
@@ -340,16 +340,22 @@ void loop()
   {
     full_command = serial_communication.receive_transmission(); // Use the function to read the full command
     command = full_command[0]; // Assuming the format is <X>, where X is the command character
-        
+    TimeStamp timestamp;
     prime_flag = 0;
     switch (command) 
     {
       case 'U':
+      {
         noInterrupts();
         stepper.moveTo(0);
         interrupts();
         current_trial++;
-        motor_running = true;
+        timestamp.previous_command = command; // Assuming 'command' holds the previous command
+        timestamp.trial_number = current_trial;
+        timestamp.time_from_zero = millis() - program_start_time;
+
+        timestamps.push_back(timestamp);
+      }
         break;
       case 'D':
         stepper.moveTo(6250);
@@ -405,10 +411,9 @@ void loop()
       case '0':   // mark t_0 time for the arduino side
       {
         program_start_time = millis();
-        TimeStamp timestamp;
         timestamp.previous_command = command; // Assuming 'command' holds the previous command
         timestamp.trial_number = current_trial;
-        timestamp.time_from_zero = millis() - program_start_time;
+        timestamp.time_from_zero = millis();
 
         timestamps.push_back(timestamp);
         break;
