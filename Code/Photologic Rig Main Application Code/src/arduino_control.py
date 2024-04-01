@@ -57,11 +57,12 @@ class AduinoManager:
             try:
                 if self.laser_arduino and self.laser_arduino.in_waiting > 0:
                     laser_data = self.laser_arduino.readline().decode('utf-8').strip()
+                    print(laser_data)
                     self.data_queue.put(('laser', laser_data))
 
                 if self.motor_arduino and self.motor_arduino.in_waiting > 0:
                     motor_data = self.motor_arduino.readline().decode('utf-8').strip()
-
+                    print(motor_data)
                     self.data_queue.put(('motor', motor_data))
 
             except Exception as e:

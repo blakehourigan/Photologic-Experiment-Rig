@@ -325,13 +325,13 @@ void loop()
     lick_available = false;
   }
 
-  if (stepper.distanceToGo() == 0 && motor_running) 
+  if (motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   {
     TimeStamp timestamp;
     timestamp.previous_command = command; // Assuming 'command' holds the previous command
     timestamp.trial_number = current_trial;
     timestamp.time_from_zero = millis() - program_start_time;
-    
+
     timestamps.push_back(timestamp);
     motor_running = false;
   }
@@ -409,10 +409,11 @@ void loop()
         timestamp.previous_command = command; // Assuming 'command' holds the previous command
         timestamp.trial_number = current_trial;
         timestamp.time_from_zero = millis() - program_start_time;
+
         timestamps.push_back(timestamp);
         break;
       }
-      case '3':
+      case '9':
       {
         send_timestamps();
         break;

@@ -55,6 +55,9 @@ class ProgramController:
         self.data_mgr.current_iteration = iteration
         
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
+            command = '<9>'
+
+            self.arduino_mgr.send_command_to_motor(command)
             self.stop_program()  # if we have gone through every trial then end the program.
 
         elif self.running:
@@ -226,9 +229,6 @@ class ProgramController:
         self.running = False
 
         self.main_gui.update_on_stop()
-
-        command = '-1'
-        self.arduino_mgr.send_command_to_motor(command)
         
         for after_id in (
             self.after_ids
