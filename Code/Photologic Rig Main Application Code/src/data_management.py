@@ -278,7 +278,7 @@ class DataManager:
             self.stimuli_dataframe.loc[
                 self.current_trial_number - 1, "TTC Actual"
             ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
-
+        
 
         # increment the trial number
         self.current_trial_number += 1

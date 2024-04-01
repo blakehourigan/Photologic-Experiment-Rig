@@ -239,7 +239,7 @@ void update_opening_times()
 
 void send_timestamps() {
     String timestampsData = "";
-
+    timestampsData += "Time Stamp Data";
     for (const auto& timestamp : timestamps) {
         timestampsData += "<";
         timestampsData += timestamp.previous_command;

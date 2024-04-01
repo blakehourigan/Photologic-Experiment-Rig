@@ -58,6 +58,8 @@ class ProgramController:
             command = '<9>'
 
             self.arduino_mgr.send_command_to_motor(command)
+            
+            self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.
 
         elif self.running:
@@ -172,6 +174,8 @@ class ProgramController:
             elif "SCHEDULE VERIFICATION" in data:
                 cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
                 self.arduino_mgr.verify_schedule(self.arduino_mgr.side_one_indexes, self.arduino_mgr.side_two_indexes, cleaned_data)
+            elif "Time Stamp Data" in data: 
+                cleaned_data = data.replace("Time Stamp Data", "").strip()
 
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.data_mgr
