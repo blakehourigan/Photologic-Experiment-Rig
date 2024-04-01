@@ -1,13 +1,13 @@
 #include "serial_communication.h"
 
-void clear_serial_buffer() 
+void SerialCommunication::clear_serial_buffer() 
 {
   while (Serial.available() > 0) {
     Serial.read(); // Read and discard the incoming byte
   }
 }
 
-String receive_transmission()
+String SerialCommunication::receive_transmission()
 {
     String message = "";
     char inChar;

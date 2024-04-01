@@ -4,6 +4,7 @@
 #include "Valve_control.h"
 #include "serial_communication.h"
 #include <EEPROM.h>
+#include <vector>
 
 #define dir_pin 53
 #define step_pin 51
@@ -30,6 +31,14 @@ AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
 SerialCommunication serial_communication;
+
+struct TimeStamp {
+    String previous_command;
+    int trial_number;
+    unsigned long time_from_zero;
+};
+
+std::vector<TimeStamp> timestamps;
 
 void add_to_array(int *array, int &size, int element) {
   if (size < MAX_SCHEDULE_SIZE) {
@@ -228,6 +237,22 @@ void update_opening_times()
     eeprom_Interface.write_values_to_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
 }
 
+void send_timestamps() {
+    String timestampsData = "";
+
+    for (const auto& timestamp : timestamps) {
+        timestampsData += "<";
+        timestampsData += timestamp.previous_command;
+        timestampsData += ",";
+        timestampsData += String(timestamp.trial_number);
+        timestampsData += ",";
+        timestampsData += String(timestamp.time_from_zero);
+        timestampsData += ">";
+    }
+
+    Serial.println(timestampsData);
+}
+
 void myISR() 
 {
   valve_side = (PINH & (1 << PH5)) >> PH5;
@@ -287,6 +312,10 @@ void setup()
   attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
 }
 
+String full_command;
+char command;
+bool prime_flag;
+
 void loop() 
 {
   if(lick_available)
@@ -295,12 +324,22 @@ void loop()
     lick_available = false;
   }
 
+  if (stepper.distanceToGo() == 0) 
+  {
+    TimeStamp timestamp;
+    timestamp.previous_command = command; // Assuming 'command' holds the previous command
+    timestamp.trial_number = current_trial;
+    timestamp.time_from_zero = millis() - program_start_time;
+    
+    timestamps.push_back(timestamp);
+  }
+
   if (Serial.available() > 0) 
   {
-    String full_command = serial_communication.receive_transmission(); // Use the function to read the full command
-    char command = full_command[0]; // Assuming the format is <X>, where X is the command character
+    full_command = serial_communication.receive_transmission(); // Use the function to read the full command
+    command = full_command[0]; // Assuming the format is <X>, where X is the command character
         
-    bool prime_flag = 0;
+    prime_flag = 0;
     switch (command) 
     {
       case 'U':
@@ -359,8 +398,19 @@ void loop()
         eeprom_Interface.markEEPROMUninitialized();
         break;
       }
-      case '0':
+      case '0':   // mark t_0 time for the arduino side
       {
+        program_start_time = millis();
+        TimeStamp timestamp;
+        timestamp.previous_command = command; // Assuming 'command' holds the previous command
+        timestamp.trial_number = current_trial;
+        timestamp.time_from_zero = millis() - program_start_time;
+        timestamps.push_back(timestamp);
+        break;
+      }
+      case '-1':
+      {
+        send_timestamps();
         break;
       }
       default:

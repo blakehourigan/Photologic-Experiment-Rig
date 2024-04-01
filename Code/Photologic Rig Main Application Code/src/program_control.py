@@ -227,6 +227,9 @@ class ProgramController:
 
         self.main_gui.update_on_stop()
 
+        command = '-1'
+        self.arduino_mgr.send_command_to_motor(command)
+        
         for after_id in (
             self.after_ids
         ):  # cancel all after calls which cancels every recursive function call
@@ -256,7 +259,7 @@ class ProgramController:
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
             
-            self.arduino_mgr.send_command_to_motor("<Start")
+            self.arduino_mgr.send_command_to_motor("<0>")
 
             self.main_gui.update_clock_label()
 

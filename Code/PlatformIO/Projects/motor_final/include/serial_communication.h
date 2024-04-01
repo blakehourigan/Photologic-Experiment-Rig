@@ -7,7 +7,6 @@ class SerialCommunication {
 public:
     static void clear_serial_buffer();
     static String receive_transmission();
-
 private:
     // Add any private member functions or variables here
 };
