@@ -381,18 +381,14 @@ class DataManager:
             trial_end = pd.Series([trial + 1, "NONE", trial_end_time / 1000, "TRIAL END"], index=self.licks_dataframe.columns)
 
             # Insert trial start row
-            try:
-                insert_index = self.licks_dataframe[self.licks_dataframe["Time Stamp"].astype(float) > trial_start_time].index[0]
-                self.licks_dataframe = pd.concat([self.licks_dataframe[:insert_index], trial_start.to_frame().T, self.licks_dataframe[insert_index:]], ignore_index=True)
-            except IndexError:
-                self.licks_dataframe = pd.concat([self.licks_dataframe, trial_start.to_frame().T], ignore_index=True)
+            self.licks_dataframe = pd.concat([self.licks_dataframe, trial_start.to_frame().T], ignore_index=True)
 
             # Insert trial end row
-            try:
-                insert_index = self.licks_dataframe[self.licks_dataframe["Time Stamp"].astype(float) > trial_end_time].index[0]
-                self.licks_dataframe = pd.concat([self.licks_dataframe[:insert_index], trial_end.to_frame().T, self.licks_dataframe[insert_index:]], ignore_index=True)
-            except IndexError:
-                self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
+            self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
+
+        # Sort the DataFrame based on the "Time Stamp" column
+        self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
+        self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
     @property
     def blocks_generated(self):
         return self._blocks_generated

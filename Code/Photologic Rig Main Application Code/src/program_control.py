@@ -216,7 +216,7 @@ class ProgramController:
             stimulus  # Send which stimulus was licked on this lick
         )
         licks_dataframe.loc[total_licks, "Time Stamp"] = (
-            time.time() - data_mgr.start_time
+            round(time.time() - data_mgr.start_time, 3)
         )
 
         licks_dataframe.loc[total_licks, "State"] = self.state
