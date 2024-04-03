@@ -375,9 +375,9 @@ class DataManager:
             first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[0]
             last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[-1]
 
-            trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
+            trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
             trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
-            trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
+            trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
             trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
 
             trial_start = pd.Series([f"{trial + 1}", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
