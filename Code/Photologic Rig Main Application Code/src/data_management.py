@@ -367,12 +367,13 @@ class DataManager:
         self.blocks_generated = False
 
     def insert_trial_start_stop_into_licks_dataframe(self):
-        arduino_start = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == 0 and entry["command"] == '0'), None)
+        arduino_start = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
+        arduino_start = arduino_start['occurrence_time']
         time_offset = self.start_time - arduino_start
         
-        for trial in range(self.num_trials):
-            first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["trial_number"] == (trial + 1)].index[0]
-            last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["trial_number"] == (trial + 1)].index[-1]
+        for trial in range(self.num_trials.get()):
+            first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[0]
+            last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[-1]
 
             trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
             trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
