@@ -1,0 +1,1 @@
+[{'command': '0', 'trial_number': 1, 'occurrence_time': 234442}, {'command': 'D', 'trial_number': 1, 'occurrence_time': 33989}, {'command': 'U', 'trial_number': 1, 'occurrence_time': 51502}, {'command': 'D', 'trial_number': 2, 'occurrence_time': 83120}, {'command': 'U', 'trial_number': 2, 'occurrence_time': 91790}]
