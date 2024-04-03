@@ -329,7 +329,7 @@ void loop()
   {
     TimeStamp timestamp;
     timestamp.previous_command = command; // Assuming 'command' holds the previous command
-    timestamp.trial_number = current_trial;
+    timestamp.trial_number = current_trial + 1;
     timestamp.time_from_zero = millis() - program_start_time;
 
     timestamps.push_back(timestamp);
@@ -343,7 +343,7 @@ void loop()
     TimeStamp timestamp;
     prime_flag = 0;
     switch (command) 
-    {
+          {
       case 'U':
       {
         noInterrupts();

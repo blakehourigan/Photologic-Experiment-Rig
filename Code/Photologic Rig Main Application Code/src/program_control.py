@@ -141,7 +141,6 @@ class ProgramController:
                 int(sample_interval_value), lambda: self.data_mgr.save_licks(iteration)
             )
 
-
     def process_queue(self):
         while not self.arduino_mgr.data_queue.empty():
             source, data = self.arduino_mgr.data_queue.get()
@@ -172,7 +171,6 @@ class ProgramController:
 
         return parsed_entries
 
-              
     def process_data(self, source, data):
         # Process the data from the queue
         if source == 'laser':
