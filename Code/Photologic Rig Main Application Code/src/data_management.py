@@ -377,8 +377,8 @@ class DataManager:
             trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
             trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
 
-            trial_start = pd.Series([f"{trial + 1}", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
-            trial_end = pd.Series([f"{trial + 1}", "NONE", f"{trial_end_time}", "TRIAL END"], index=self.licks_dataframe.columns)
+            trial_start = pd.Series([trial + 1, "NONE", trial_start_time / 10000, "TRIAL START"], index=self.licks_dataframe.columns)
+            trial_end = pd.Series([trial + 1, "NONE", trial_end_time / 10000, "TRIAL END"], index=self.licks_dataframe.columns)
 
             # Insert trial start row
             try:
