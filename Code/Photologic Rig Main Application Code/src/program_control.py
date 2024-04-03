@@ -149,7 +149,7 @@ class ProgramController:
 
         self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
               
-    def parse_timestamps(timestamp_string):
+    def parse_timestamps(self, timestamp_string):
         entries = timestamp_string.split('><')
         entries[0] = entries[0][1:]  # Remove the leading '<' from the first entry
         entries[-1] = entries[-1][:-1]  # Remove the trailing '>' from the last entry
@@ -163,15 +163,12 @@ class ProgramController:
             trial_number = int(parts[1])
             occurrence_time = int(parts[2])
 
-            if command == '0':
-                program_start_time = occurrence_time
-            else:
-                timestamp = {
-                    'command': command,
-                    'trial_number': trial_number,
-                    'occurrence_time': occurrence_time - program_start_time
-                }
-                parsed_entries.append(timestamp)
+            timestamp = {
+                'command': command,
+                'trial_number': trial_number,
+                'occurrence_time': occurrence_time - program_start_time
+            }
+            parsed_entries.append(timestamp)
 
         return parsed_entries
 
@@ -204,6 +201,7 @@ class ProgramController:
             elif "Time Stamp Data" in data: 
                 cleaned_data = data.replace("Time Stamp Data", "").strip()
                 self.motor_timestamps = self.parse_timestamps(cleaned_data)
+                print(self.motor_timestamps)
 
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.data_mgr
