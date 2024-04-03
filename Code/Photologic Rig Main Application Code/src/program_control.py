@@ -205,6 +205,11 @@ class ProgramController:
         licks_dataframe = data_mgr.licks_dataframe
         total_licks = data_mgr.total_licks
 
+        if stimulus == "Stimulus One":
+            stimulus = '1'
+        else:
+            stimulus = '2'
+
         licks_dataframe.loc[total_licks, "Trial Number"] = data_mgr.current_trial_number
 
         licks_dataframe.loc[total_licks, "Port Licked"] = (
