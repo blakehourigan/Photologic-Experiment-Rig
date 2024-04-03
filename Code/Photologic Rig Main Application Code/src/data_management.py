@@ -370,41 +370,24 @@ class DataManager:
         arduino_start = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time']
         time_offset = self.start_time - arduino_start
-        
+
         for trial in range(self.num_trials.get()):
             first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[0]
             last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[-1]
 
             trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
             trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
-            
             trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
             trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
 
             trial_start = pd.Series([f"{trial + 1}", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
             trial_end = pd.Series([f"{trial + 1}", "NONE", f"{trial_end_time}", "TRIAL END"], index=self.licks_dataframe.columns)
-    
-            if first_trial_idx == 0:
-                # Insert the new row at the beginning
-                self.licks_dataframe = pd.concat([trial_start.to_frame().T, self.licks_dataframe], ignore_index=True)
-            else:
-                # Insert the new row before the first occurrence of trial 1
-                self.licks_dataframe = pd.concat([
-                    self.licks_dataframe.iloc[:first_trial_idx],
-                    trial_start.to_frame().T,
-                    self.licks_dataframe.iloc[first_trial_idx:]
-                ], ignore_index=True)
-                
-            if last_trial_idx == self.licks_dataframe.shape[0] - 1:
-                # Insert the new row at the end
-                self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
-            else:
-                # Insert the new row after the last occurrence of the trial
-                self.licks_dataframe = pd.concat([
-                    self.licks_dataframe.iloc[:last_trial_idx+1],
-                    trial_end.to_frame().T,
-                    self.licks_dataframe.iloc[last_trial_idx+1:]
-                ], ignore_index=True)
+
+            self.licks_dataframe.loc[first_trial_idx - 0.5] = trial_start
+            self.licks_dataframe = self.licks_dataframe.sort_index().reset_index(drop=True)
+
+            self.licks_dataframe.loc[last_trial_idx + 0.5] = trial_end
+            self.licks_dataframe = self.licks_dataframe.sort_index().reset_index(drop=True)
                 
     @property
     def blocks_generated(self):
