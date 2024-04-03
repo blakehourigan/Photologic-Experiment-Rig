@@ -367,18 +367,21 @@ class DataManager:
         self.blocks_generated = False
 
     def insert_trial_start_stop_into_licks_dataframe(self):
-        for trial in range(self.num_trials.get()):
+        arduino_start = next((entry for entry in self.controller.motor_timestamps if entry["Trial Number"] == 0 and entry["Command"] == '0'), None)
+        time_offset = self.start_time - arduino_start
+        
+        for trial in range(self.num_trials):
             first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[0]
             last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[-1]
 
             trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
-            trial_start_time = trial_start_entry['occurrence_time']
+            trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
             
             trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
-            trial_end_time = trial_end_entry['occurrence_time']
+            trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
 
-            trial_start = pd.Series(["", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
-            trial_end = pd.Series(["", "NONE", f"{trial_end_time}", "TRIAL END"], index=self.licks_dataframe.columns)
+            trial_start = pd.Series([f"{trial + 1}", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
+            trial_end = pd.Series([f"{trial + 1}", "NONE", f"{trial_end_time}", "TRIAL END"], index=self.licks_dataframe.columns)
     
             if first_trial_idx == 0:
                 # Insert the new row at the beginning

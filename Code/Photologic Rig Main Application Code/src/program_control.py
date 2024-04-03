@@ -152,8 +152,6 @@ class ProgramController:
         entries = timestamp_string.split('><')
         entries[0] = entries[0][1:]  # Remove the leading '<' from the first entry
         entries[-1] = entries[-1][:-1]  # Remove the trailing '>' from the last entry
-
-        program_start_time = 0
         parsed_entries = []
 
         for entry in entries:
@@ -165,7 +163,7 @@ class ProgramController:
             timestamp = {
                 'command': command,
                 'trial_number': trial_number,
-                'occurrence_time': occurrence_time - program_start_time
+                'occurrence_time': occurrence_time 
             }
             parsed_entries.append(timestamp)
 
