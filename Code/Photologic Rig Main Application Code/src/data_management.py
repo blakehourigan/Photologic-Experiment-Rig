@@ -78,10 +78,10 @@ class DataManager:
                 block_size,
             ),
             "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
-            "Side 1": stimuli_1,
-            "Side 2": stimuli_2,
-            "Side 1 Licks": np.full(self.num_trials.get(), np.nan),
-            "Side 2 Licks": np.full(self.num_trials.get(), np.nan),
+            "Port 1": stimuli_1,
+            "Port 2": stimuli_2,
+            "Port 1 Licks": np.full(self.num_trials.get(), np.nan),
+            "Port 2 Licks": np.full(self.num_trials.get(), np.nan),
             "ITI": self.ITI_intervals_final,
             "TTC": self.TTC_intervals_final,
             "Sample Time": self.sample_intervals_final,
@@ -288,8 +288,8 @@ class DataManager:
         self.controller.arduino_mgr.send_command_to_motor(command)
                 
         # store licks in the ith rows in their respective stimuli column in the data table for the trial
-        self.stimuli_dataframe.loc[iteration, "Side 1 Licks"] = self.side_one_licks
-        self.stimuli_dataframe.loc[iteration, "Side 2 Licks"] = self.side_two_licks
+        self.stimuli_dataframe.loc[iteration, "Port 1 Licks"] = self.side_one_licks
+        self.stimuli_dataframe.loc[iteration, "Port 2 Licks"] = self.side_two_licks
 
         # this is how processes that are set to execute after a certain amount of time are cancelled.
         # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
@@ -366,6 +366,42 @@ class DataManager:
 
         self.blocks_generated = False
 
+    def insert_trial_start_stop_into_licks_dataframe(self):
+        for trial in range(self.num_trials):
+            first_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[0]
+            last_trial_idx = self.licks_dataframe.loc[self.licks_dataframe["Trial Number"] == (trial + 1)].index[-1]
+
+            trial_start_entry = next((entry for entry in self.controller.motor_timestamps.values() if entry["Trial Number"] == (trial + 1) and entry["Command"] == 'U'), None)
+            trial_start_time = trial_start_entry['occurance_time']
+            
+            trial_end_entry = next((entry for entry in self.controller.motor_timestamps.values() if entry["Trial Number"] == (trial + 1) and entry["Command"] == 'D'), None)
+            trial_end_time = trial_end_entry['occurance_time']
+
+            trial_start = pd.Series(["", "NONE", f"{trial_start_time}", "TRIAL START"], index=self.licks_dataframe.columns)
+            trial_end = pd.Series(["", "NONE", f"{trial_end_time}", "TRIAL END"], index=self.licks_dataframe.columns)
+    
+            if first_trial_idx == 0:
+                # Insert the new row at the beginning
+                self.licks_dataframe = pd.concat([trial_start.to_frame().T, self.licks_dataframe], ignore_index=True)
+            else:
+                # Insert the new row before the first occurrence of trial 1
+                self.licks_dataframe = pd.concat([
+                    self.licks_dataframe.iloc[:first_trial_idx],
+                    trial_start.to_frame().T,
+                    self.licks_dataframe.iloc[first_trial_idx:]
+                ], ignore_index=True)
+                
+            if last_trial_idx == self.licks_dataframe.shape[0] - 1:
+                # Insert the new row at the end
+                self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
+            else:
+                # Insert the new row after the last occurrence of the trial
+                self.licks_dataframe = pd.concat([
+                    self.licks_dataframe.iloc[:last_trial_idx+1],
+                    trial_end.to_frame().T,
+                    self.licks_dataframe.iloc[last_trial_idx+1:]
+                ], ignore_index=True)
+                
     @property
     def blocks_generated(self):
         return self._blocks_generated

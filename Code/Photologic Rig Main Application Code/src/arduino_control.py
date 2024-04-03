@@ -147,9 +147,9 @@ class AduinoManager:
                     side_two_vars.append(filtered_stim_var_list[i].get())
 
             if self.motor_arduino:            
-                side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Side 1'] # separating the schedules based on side
+                side_one_schedule = self.controller.data_mgr.stimuli_dataframe['Port 1'] # separating the schedules based on side
 
-                side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Side 2']
+                side_two_schedule = self.controller.data_mgr.stimuli_dataframe['Port 2']
                 
                 for i in range(len(side_one_schedule)):     
                     index = side_one_vars.index(side_one_schedule[i])

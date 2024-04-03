@@ -76,8 +76,8 @@ class ProgramController:
             self.data_mgr.state_start_time = time.time()
 
             self.main_gui.update_on_new_trial(
-                self.data_mgr.stimuli_dataframe.loc[iteration, "Side 1"],
-                self.data_mgr.stimuli_dataframe.loc[iteration, "Side 2"],
+                self.data_mgr.stimuli_dataframe.loc[iteration, "Port 1"],
+                self.data_mgr.stimuli_dataframe.loc[iteration, "Port 2"],
             )
 
             # add the initial interval to the program information box

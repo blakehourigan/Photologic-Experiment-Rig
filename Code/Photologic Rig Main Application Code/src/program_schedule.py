@@ -47,9 +47,9 @@ class ProgramScheduleWindow:
             df = self.controller.data_mgr.stimuli_dataframe
             if row_index - 1 >= 0:
                 # side 1 licks update
-                self.cell_labels[row_index-1][4].configure(text=df.loc[row_index-1, "Side 1 Licks"])
+                self.cell_labels[row_index-1][4].configure(text=df.loc[row_index-1, "Port 1 Licks"])
                 # sode 2 licks update
-                self.cell_labels[row_index-1][5].configure(text=df.loc[row_index-1, "Side 2 Licks"])
+                self.cell_labels[row_index-1][5].configure(text=df.loc[row_index-1, "Port 2 Licks"])
                 # ttc actual update
                 self.cell_labels[row_index-1][9].configure(text=df.loc[row_index-1, "TTC Actual"])
                 
