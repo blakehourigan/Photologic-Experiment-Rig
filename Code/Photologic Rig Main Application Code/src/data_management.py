@@ -372,8 +372,6 @@ class DataManager:
         arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time'] / 1000
         
-        time_offset = self.start_time - arduino_start
-        
         for dictionary in motor_timestamps:
             if dictionary["command"] == 'U':
                 state_label = "MOTOR UP"
@@ -382,7 +380,7 @@ class DataManager:
             else:
                 state_label = "something else"
             
-            occurrence_time = (dictionary['occurrence_time'] / 1000) + time_offset
+            occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
             
             trial = dictionary["trial_number"]
             
