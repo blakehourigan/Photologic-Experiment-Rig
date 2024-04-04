@@ -369,7 +369,7 @@ class DataManager:
     def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):
         print(motor_timestamps)
         arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
-        arduino_start = arduino_start['occurrence_time']
+        arduino_start = arduino_start['occurrence_time'] / 1000
         time_offset = self.start_time - arduino_start
 
         for dictionary in motor_timestamps:
@@ -379,7 +379,7 @@ class DataManager:
                 state_label = "MOTOR DOWN"
             else:
                 state_label = "something else"
-            occurance_time = (dictionary['occurrence_time'] + time_offset) - self.start_time
+            occurance_time = ((dictionary['occurrence_time'] / 1000) + time_offset) - self.start_time
             trial = dictionary["trial_number"]
 
             trial_entry = pd.Series([trial, "NONE", occurance_time / 1000, state_label], index=self.licks_dataframe.columns)
