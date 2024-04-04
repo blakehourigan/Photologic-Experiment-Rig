@@ -197,8 +197,8 @@ class ProgramController:
             elif "Time Stamp Data" in data: 
                 cleaned_data = data.replace("Time Stamp Data", "").strip()
                 print(cleaned_data)
-                self.motor_timestamps = self.parse_timestamps(cleaned_data)
-                self.data_mgr.insert_trial_start_stop_into_licks_dataframe()
+                motor_timestamps = self.parse_timestamps(cleaned_data)
+                self.data_mgr.insert_trial_start_stop_into_licks_dataframe(motor_timestamps)
 
     def send_lick_data_to_dataframe(self, stimulus):
         data_mgr = self.data_mgr

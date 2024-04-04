@@ -366,15 +366,16 @@ class DataManager:
 
         self.blocks_generated = False
 
-    def insert_trial_start_stop_into_licks_dataframe(self):
-        arduino_start = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
+    def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):
+        print(motor_timestamps)
+        arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time']
         time_offset = self.start_time - arduino_start
 
         for trial in range(self.num_trials.get()):
-            trial_start_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
+            trial_start_entry = next((entry for entry in motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
             trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
-            trial_end_entry = next((entry for entry in self.controller.motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
+            trial_end_entry = next((entry for entry in motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
             trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
 
             trial_start = pd.Series([trial + 1, "NONE", trial_start_time / 1000, "TRIAL START"], index=self.licks_dataframe.columns)
@@ -386,9 +387,10 @@ class DataManager:
             # Insert trial end row
             self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
 
-        # Sort the DataFrame based on the "Time Stamp" column
+        # Sort the DataFrame bed on the "Time Stamp" column
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
         self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
+        
     @property
     def blocks_generated(self):
         return self._blocks_generated
