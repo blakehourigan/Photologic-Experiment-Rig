@@ -368,10 +368,12 @@ class DataManager:
 
     def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):
         print(motor_timestamps)
+        
         arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time'] / 1000
+        
         time_offset = self.start_time - arduino_start
-
+        
         for dictionary in motor_timestamps:
             if dictionary["command"] == 'U':
                 state_label = "MOTOR UP"
@@ -379,14 +381,16 @@ class DataManager:
                 state_label = "MOTOR DOWN"
             else:
                 state_label = "something else"
-            occurance_time = ((dictionary['occurrence_time'] / 1000) + time_offset) - self.start_time
+            
+            occurrence_time = (dictionary['occurrence_time'] / 1000) + time_offset
+            
             trial = dictionary["trial_number"]
-
-            trial_entry = pd.Series([trial, "NONE", occurance_time / 1000, state_label], index=self.licks_dataframe.columns)
-
+            
+            trial_entry = pd.Series([trial, "NONE", occurrence_time - self.start_time, state_label], index=self.licks_dataframe.columns)
+            
             self.licks_dataframe = pd.concat([self.licks_dataframe, trial_entry.to_frame().T], ignore_index=True)
-
-        # Sort the DataFrame bed on the "Time Stamp" column
+        
+        # Sort the DataFrame based on the "Time Stamp" column
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
         self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
         
