@@ -36,7 +36,6 @@ class ValveControl:
 
     def prime_valves(self) -> None:
         for i in range(1000):
-            print(i)
             command = "<F>"
             self.controller.arduino_mgr.send_command_to_motor(command)
             
