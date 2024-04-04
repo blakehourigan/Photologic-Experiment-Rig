@@ -322,7 +322,7 @@ class DataManager:
             file_name = filedialog.asksaveasfilename(
                 defaultextension=".xlsx",
                 filetypes=[("Excel Files", "*.xlsx")],
-                initialfile="lineup",
+                initialfile="experiment schedule",
                 title="Save Excel file",
             )
 
@@ -331,7 +331,7 @@ class DataManager:
             licks_file_name = filedialog.asksaveasfilename(
                 defaultextension=".xlsx",
                 filetypes=[("Excel Files", "*.xlsx")],
-                initialfile="lineup",
+                initialfile="licks data",
                 title="Save Excel file",
             )
 
