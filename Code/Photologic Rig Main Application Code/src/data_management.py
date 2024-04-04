@@ -377,6 +377,8 @@ class DataManager:
                 state_label = "MOTOR UP"
             elif dictionary["command"] == 'D':
                 state_label = "MOTOR DOWN"
+            else:
+                state_label = "something else"
             occurance_time = (dictionary['occurrence_time'] + time_offset) - self.start_time
             trial = dictionary["trial_number"]
 
