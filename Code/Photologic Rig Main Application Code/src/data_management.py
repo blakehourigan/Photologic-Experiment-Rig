@@ -372,20 +372,17 @@ class DataManager:
         arduino_start = arduino_start['occurrence_time']
         time_offset = self.start_time - arduino_start
 
-        for trial in range(self.num_trials.get()):
-            trial_start_entry = next((entry for entry in motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'U'), None)
-            trial_start_time = (trial_start_entry['occurrence_time'] + time_offset) - self.start_time
-            trial_end_entry = next((entry for entry in motor_timestamps if entry["trial_number"] == (trial + 1) and entry["command"] == 'D'), None)
-            trial_end_time = (trial_end_entry['occurrence_time'] + time_offset) - self.start_time
+        for dictionary in motor_timestamps:
+            if dictionary["command"] == 'U':
+                state_label = "MOTOR UP"
+            elif dictionary["command"] == 'D':
+                state_label = "MOTOR DOWN"
+            occurance_time = (dictionary['occurrence_time'] + time_offset) - self.start_time
+            trial = dictionary["trial_number"]
 
-            trial_start = pd.Series([trial + 1, "NONE", trial_start_time / 1000, "TRIAL START"], index=self.licks_dataframe.columns)
-            trial_end = pd.Series([trial + 1, "NONE", trial_end_time / 1000, "TRIAL END"], index=self.licks_dataframe.columns)
+            trial_entry = pd.Series([trial, "NONE", occurance_time / 1000, state_label], index=self.licks_dataframe.columns)
 
-            # Insert trial start row
-            self.licks_dataframe = pd.concat([self.licks_dataframe, trial_start.to_frame().T], ignore_index=True)
-
-            # Insert trial end row
-            self.licks_dataframe = pd.concat([self.licks_dataframe, trial_end.to_frame().T], ignore_index=True)
+            self.licks_dataframe = pd.concat([self.licks_dataframe, trial_entry.to_frame().T], ignore_index=True)
 
         # Sort the DataFrame bed on the "Time Stamp" column
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
