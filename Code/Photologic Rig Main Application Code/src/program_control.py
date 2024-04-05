@@ -212,7 +212,7 @@ class ProgramController:
 
         licks_dataframe.loc[total_licks, "Trial Number"] = data_mgr.current_trial_number
 
-        licks_dataframe.loc[total_licks, "Port Licked"] = (
+        licks_dataframe.loc[total_licks, "Licked Port"] = (
             stimulus  # Send which stimulus was licked on this lick
         )
         licks_dataframe.loc[total_licks, "Time Stamp"] = (

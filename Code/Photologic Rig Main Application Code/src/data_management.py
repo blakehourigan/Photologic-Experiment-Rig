@@ -264,7 +264,7 @@ class DataManager:
         and create an empty first row to avoid a blank table when the program is first run
         """
         self.licks_dataframe = pd.DataFrame(
-            [np.nan], columns=["Trial Number", "Port Licked", "Time Stamp"]
+            [np.nan], columns=["Trial Number", "Licked Port", "Time Stamp"]
         )
 
     def save_licks(self, iteration):
@@ -370,6 +370,7 @@ class DataManager:
         arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time'] / 1000
 
+        licks_columns = ["Trial", "Licked Port", "Time Stamp", "State"]
         trial_entries = []
 
         for dictionary in motor_timestamps:
@@ -384,18 +385,17 @@ class DataManager:
 
             occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
             trial = dictionary["trial_number"]
-            trial_entry = pd.Series([trial, "NONE", occurrence_time, state_label], index=self.licks_dataframe.columns)
+            trial_entry = pd.Series([trial, "NONE", occurrence_time, state_label], index=licks_columns)
             trial_entries.append(trial_entry)
 
         if self.licks_dataframe.empty:
-            self.licks_dataframe = pd.DataFrame(trial_entries, columns=self.licks_dataframe.columns)
+            self.licks_dataframe = pd.DataFrame(trial_entries, columns=licks_columns)
         else:
-            self.licks_dataframe = pd.concat([self.licks_dataframe, pd.DataFrame(trial_entries, columns=self.licks_dataframe.columns)], ignore_index=True)
+            self.licks_dataframe = pd.concat([self.licks_dataframe, pd.DataFrame(trial_entries, columns=licks_columns)], ignore_index=True)
 
         # Sort the DataFrame based on the "Time Stamp" column
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
         self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
-        
     @property
     def blocks_generated(self):
         return self._blocks_generated
