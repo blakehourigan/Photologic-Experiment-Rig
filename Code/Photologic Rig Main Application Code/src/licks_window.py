@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Optional
 from tkinter import messagebox
-from pandastable import Table #type: ignore
+from tkinter import ttk
 
 class LicksWindow:
     def __init__(self, controller) -> None:
@@ -25,29 +25,30 @@ class LicksWindow:
         top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
         
         return top
-      
+
     def show_table(self) -> None:
-        # create the frame that the table will be held in
         self.licks_frame = tk.Frame(self.top)
         self.licks_frame.grid(row=0, column=0, sticky='nsew')
-        
-        # create the table, using the data fro the licks_df
-        self.stamped_licks = Table(self.licks_frame, dataframe=self.controller.data_mgr.licks_dataframe, showtoolbar=False, showstatusbar=False, weight=1)
-        self.stamped_licks.autoResizeColumns()
-        self.stamped_licks.show()
-            
-        # the licks data table now exists so set the bool to true so that we can tell the lick function to update the window when new licks are added
-        self.stamped_exists = True
-        if self.stamped_exists:
-            self.stamped_licks.redraw()
-        else:
-            self.create_window()
+
+        # Create a Treeview widget
+        self.stamped_licks = ttk.Treeview(self.licks_frame)
+        self.stamped_licks['columns'] = list(self.controller.data_mgr.licks_dataframe.columns)
+
+        # Configure the columns
+        for col in self.stamped_licks['columns']:
+            self.stamped_licks.heading(col, text=col)
+
+        # Insert data from the DataFrame
+        for _, row in self.controller.data_mgr.licks_dataframe.iterrows():
+            self.stamped_licks.insert('', 'end', values=list(row))
+
+        self.stamped_licks.pack(fill='both', expand=True)
 
 
-    def update_table(self) -> None:
-        self.stamped_licks.redraw()
+    # def update_table(self) -> None:
+    #     self.stamped_licks.redraw()
         
-        self.stamped_licks.update_idletasks()
+    #     self.stamped_licks.update_idletasks()
         
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""
