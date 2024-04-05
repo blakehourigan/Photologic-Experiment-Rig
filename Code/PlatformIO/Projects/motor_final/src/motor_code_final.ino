@@ -327,7 +327,7 @@ void create_timestamp(String command)
 {
   TimeStamp timestamp;
 
-  timestamp.previous_command = "DOOR UP"; // Assuming 'command' holds the previous command
+  timestamp.previous_command = command; // Assuming 'command' holds the previous command
   timestamp.trial_number = current_trial + 1;
   timestamp.time_from_zero = millis() - program_start_time;
 
