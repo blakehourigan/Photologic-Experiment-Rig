@@ -280,7 +280,7 @@ class DataManager:
         # Filter the dataframe to get the relevant rows
         filtered_df = self.licks_dataframe[
             (self.licks_dataframe["Trial Number"] == trial_number)
-            & ((self.licks_dataframe["Licked Port"] == '1') or (self.licks_dataframe["Licked Port"] == '2'))
+            & (self.licks_dataframe["Licked Port"].isin(['1', '2']))
         ]
 
         # Extract the timestamps from the filtered dataframe
