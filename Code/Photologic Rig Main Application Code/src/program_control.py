@@ -47,8 +47,9 @@ class ProgramController:
         """defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
         the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on.
         """
-        lick_stamps = self.data_mgr.get_lick_timestamps(iteration - 1)
-        self.data_window.update_plot(lick_stamps, iteration - 1)
+        if(iteration > 0):
+            lick_stamps = self.data_mgr.get_lick_timestamps(iteration - 1)
+            self.data_window.update_plot(lick_stamps, iteration - 1)
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
             
