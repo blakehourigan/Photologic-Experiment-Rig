@@ -344,20 +344,20 @@ void handle_motor_command(String command)
       noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
       interrupts();
+      current_trial++;
   }
   else if (command == "D")
   {
       stepper.moveTo(STEPPER_DOWN_POSITION);
   }
-  create_timestamp(command);
-  current_trial++;
-  motor_running = true;
 
+  create_timestamp(command);
+  motor_running = true;
 }
 
 void loop() 
 {
-  if(lick_available)
+  if(lick_available) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   {
     valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
     lick_available = false;
