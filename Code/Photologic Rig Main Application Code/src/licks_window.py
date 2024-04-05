@@ -1,7 +1,7 @@
 import tkinter as tk
 from typing import Optional
 from tkinter import messagebox
-from pandastable import Table #type: ignore
+from tkinter import ttk
 
 class LicksWindow:
     def __init__(self, controller) -> None:
@@ -25,9 +25,6 @@ class LicksWindow:
         top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
         
         return top
-      
-    import tkinter as tk
-    from tkinter import ttk
 
     def show_table(self) -> None:
         self.licks_frame = tk.Frame(self.top)
@@ -48,16 +45,16 @@ class LicksWindow:
         self.stamped_licks.pack(fill='both', expand=True)
 
 
-        def update_table(self) -> None:
-            self.stamped_licks.redraw()
-            
-            self.stamped_licks.update_idletasks()
-            
-        def on_window_close(self) -> None:
-            """Handle the close event when the user clicks the X button on the window."""
-            if self.top is not None:
-                self.top.destroy()
-                self.top = None
+    # def update_table(self) -> None:
+    #     self.stamped_licks.redraw()
+        
+    #     self.stamped_licks.update_idletasks()
+        
+    def on_window_close(self) -> None:
+        """Handle the close event when the user clicks the X button on the window."""
+        if self.top is not None:
+            self.top.destroy()
+            self.top = None
     
         
 
