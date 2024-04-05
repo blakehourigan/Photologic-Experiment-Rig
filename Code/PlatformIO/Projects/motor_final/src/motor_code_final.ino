@@ -11,6 +11,13 @@
 
 #define BAUD_RATE 115200
 
+struct TimeStamp 
+{
+    String previous_command;
+    int trial_number;
+    unsigned long time_from_zero;
+};
+
 // Global variables - Schedule Transmission
 int side_one_size = 0; 
 int side_two_size = 0;
@@ -42,12 +49,6 @@ EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
 SerialCommunication serial_communication;
 
-struct TimeStamp 
-{
-    String previous_command;
-    int trial_number;
-    unsigned long time_from_zero;
-};
 
 
 void add_to_array(int *array, int &size, int element) 

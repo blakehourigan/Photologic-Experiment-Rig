@@ -378,8 +378,7 @@ class DataManager:
             elif dictionary["command"] == 'D':
                 state_label = "MOTOR DOWN"
             else:
-                state_label = "something else"
-                continue
+                state_label = dictionary["command"]
             
             occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
             
