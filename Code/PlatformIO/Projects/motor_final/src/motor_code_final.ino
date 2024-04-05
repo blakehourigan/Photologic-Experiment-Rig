@@ -368,7 +368,7 @@ void loop()
   {
     if(command.charAt(0) == 'U')
     {
-      command = "FINSIHED UP";
+      command = "FINISHED UP";
       create_timestamp(command);
       current_trial++; // Door is finished moving up, we are now on the next trial
     }
