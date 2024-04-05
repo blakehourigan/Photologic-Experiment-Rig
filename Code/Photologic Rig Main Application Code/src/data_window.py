@@ -84,7 +84,7 @@ class DataWindow:
                 for trial_index, trial_lick_times in enumerate(self.controller.data_mgr.trial_licks):
                     color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
                     trial_lick_times = [stamp - trial_lick_times[0] for stamp in trial_lick_times]  # Perform the calculation
-                    self.axes.scatter(trial_lick_times, [trial_index] * len(trial_lick_times), marker='|', c=color, s=100)
+                    self.axes.scatter(trial_lick_times, [trial_index + 1] * len(trial_lick_times), marker='|', c=color, s=100)
                     self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
 
             # Redraw the canvas
