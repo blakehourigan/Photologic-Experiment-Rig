@@ -397,7 +397,7 @@ class MainGUI:
         )
         self.data_window_button_frame = self.create_button(
             self.lower_control_buttons_frame,
-            "SD1 V SD2 Data",
+            "Rasterized Data",
             self.controller.data_window.show_window,
             "grey",
             1,

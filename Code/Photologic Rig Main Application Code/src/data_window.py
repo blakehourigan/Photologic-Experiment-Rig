@@ -47,7 +47,7 @@ class DataWindow:
         self.spike_times = [] #type: ignore
 
         # Set the x and y limits
-        self.axes.set_xlim(0, 15)  # 15-second window on the x-axis
+        self.axes.set_xlim(0, 21)  # 15-second window on the x-axis
         self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get())  # Range from 0 to num_trials on the y-axis
         self.axes.set_xlabel('Time (s)')
         self.axes.set_ylabel('Trial #')
@@ -65,7 +65,7 @@ class DataWindow:
     def update_plot(self, lick_times=None, trial_index=None):
 
             # Set the x and y limits
-            self.axes.set_xlim(0, 15)  # 0 to 15 seconds
+            self.axes.set_xlim(0, 21)  # 0 to 15 seconds
             self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get())  # 0 to num_trials trials
 
             # Plot the spike times
