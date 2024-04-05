@@ -91,8 +91,10 @@ class ProgramController:
 
     def ITI_TTC_Transition(self, iteration: int) -> None:
         door_close_time = 2238 # number of milliseconds until door close 
-    
-        self.main_gui.root.after(door_close_time, lambda: self.ITI_TTC_Transition(iteration))
+        command = "<D>"  # tell motor arduino to move the door down
+        self.arduino_mgr.send_command_to_motor(command)
+        self.main_gui.root.after(door_close_time, lambda: self.time_to_contact(iteration))
+        self.data_mgr.state_start_time = time.time()  # state start time begins
         self.main_gui.clear_state_time()
 
 
@@ -108,9 +110,6 @@ class ProgramController:
             )  # update state timer header
 
             self.data_mgr.state_start_time = time.time()  # state start time begins
-
-            command = "<D>"  # tell motor arduino to move the door down
-            self.arduino_mgr.send_command_to_motor(command)
 
             """ Look in the dataframe in the current trial for the stimulus to give, once found mark the index with corresponding solenoid
             valve number and save into stimulus position variables. """

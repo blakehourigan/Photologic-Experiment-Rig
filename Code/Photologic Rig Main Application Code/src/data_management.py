@@ -369,7 +369,7 @@ class DataManager:
         arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
         arduino_start = arduino_start['occurrence_time'] / 1000
 
-        licks_columns = ["Trial", "Licked Port", "Time Stamp", "State"]
+        licks_columns = ["Trial Number", "Licked Port", "Time Stamp", "State"]
         trial_entries = []
 
         for dictionary in motor_timestamps:
