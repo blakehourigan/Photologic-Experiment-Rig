@@ -379,12 +379,13 @@ class DataManager:
                 state_label = "MOTOR DOWN"
             else:
                 state_label = "something else"
+                continue
             
             occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
             
             trial = dictionary["trial_number"]
             
-            trial_entry = pd.Series([trial, "NONE", occurrence_time - self.start_time, state_label], index=self.licks_dataframe.columns)
+            trial_entry = pd.Series([trial, "NONE", occurrence_time, state_label], index=self.licks_dataframe.columns)
             
             self.licks_dataframe = pd.concat([self.licks_dataframe, trial_entry.to_frame().T], ignore_index=True)
         
