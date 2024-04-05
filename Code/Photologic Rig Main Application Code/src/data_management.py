@@ -396,6 +396,7 @@ class DataManager:
         # Sort the DataFrame based on the "Time Stamp" column
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
         self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
+        
     @property
     def blocks_generated(self):
         return self._blocks_generated
