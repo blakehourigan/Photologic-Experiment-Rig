@@ -63,8 +63,6 @@ class DataWindow:
         self.update_plot()
 
     def update_plot(self, lick_times=None, trial_index=None):
-            # Clear the previous plot
-            self.axes.clear()
 
             # Set the x and y limits
             self.axes.set_xlim(0, 15)  # 0 to 15 seconds
@@ -83,7 +81,7 @@ class DataWindow:
 
             # If lick_times and trial_index are None, plot the data from self.trial_licks
             elif lick_times is None and trial_index is None:
-                for trial_index, trial_lick_times in enumerate(self.trial_licks):
+                for trial_index, trial_lick_times in enumerate(self.controller.data_mgr.trial_licks):
                     color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
                     trial_lick_times = [stamp - trial_lick_times[0] for stamp in trial_lick_times]  # Perform the calculation
                     self.axes.scatter(trial_lick_times, [trial_index] * len(trial_lick_times), marker='|', c=color, s=100)
