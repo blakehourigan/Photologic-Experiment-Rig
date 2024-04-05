@@ -4,6 +4,8 @@ from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
 
 class DataWindow:
     def __init__(self, controller) -> None:
@@ -11,6 +13,9 @@ class DataWindow:
         self.master = controller.main_gui.root
         
         self.top: Optional[tk.Toplevel] = None
+        
+        self.color_cycle = cm.get_cmap('tab10', 10)  # Initialize the color cycle
+        self.color_index = 0  # Initialize the color index
     
     def show_window(self) -> None:
         if self.top is not None and self.top.winfo_exists():
@@ -65,9 +70,11 @@ class DataWindow:
 
         # If lick_times and trial_index are provided, plot the lick times on the specified trial
         if lick_times is not None and trial_index is not None:
-            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c='r', s=100)
+            color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
+            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
+            self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
 
-        # Redraw the canvas
+        # Redraw the canvas 
         self.canvas.draw()
 
     def on_window_close(self) -> None:
