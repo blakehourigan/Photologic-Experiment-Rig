@@ -49,8 +49,7 @@ class ProgramController:
         """
         if(iteration > 0):
             lick_stamps = self.data_mgr.get_lick_timestamps(iteration)
-            lick_stamps = [stamp - lick_stamps[0] for stamp in lick_stamps]
-            print(lick_stamps)
+            self.data_mgr.trial_licks.append(lick_stamps)
             self.data_window.update_plot(lick_stamps, iteration)
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""

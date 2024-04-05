@@ -59,23 +59,38 @@ class DataWindow:
         # Create a toolbar for the plot and pack it into the window
         toolbar = NavigationToolbar2Tk(self.canvas, container)
         toolbar.update()
+        
+        self.update_plot()
 
     def update_plot(self, lick_times=None, trial_index=None):
-        # Clear the previous plot
-        self.axes.clear()
+            # Clear the previous plot
+            self.axes.clear()
 
-        # Set the x and y limits
-        self.axes.set_xlim(0, 15) # 0 to 15 seconds
-        self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get()) # 0 to num_trials trials
+            # Set the x and y limits
+            self.axes.set_xlim(0, 15)  # 0 to 15 seconds
+            self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get())  # 0 to num_trials trials
 
-        # If lick_times and trial_index are provided, plot the lick times on the specified trial
-        if lick_times is not None and trial_index is not None:
-            color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
-            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
-            self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
+            # Plot the spike times
+            for i, trial_spikes in enumerate(self.spike_times):
+                self.axes.scatter(trial_spikes, [i] * len(trial_spikes), marker='|', s=100)
 
-        # Redraw the canvas 
-        self.canvas.draw()
+            # If lick_times and trial_index are provided, plot the lick times on the specified trial
+            if lick_times is not None and trial_index is not None:
+                color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
+                lick_times = [stamp - lick_times[0] for stamp in lick_times]  # Perform the calculation
+                self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
+                self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
+
+            # If lick_times and trial_index are None, plot the data from self.trial_licks
+            elif lick_times is None and trial_index is None:
+                for trial_index, trial_lick_times in enumerate(self.trial_licks):
+                    color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
+                    trial_lick_times = [stamp - trial_lick_times[0] for stamp in trial_lick_times]  # Perform the calculation
+                    self.axes.scatter(trial_lick_times, [trial_index] * len(trial_lick_times), marker='|', c=color, s=100)
+                    self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
+
+            # Redraw the canvas
+            self.canvas.draw()
 
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""

@@ -60,6 +60,9 @@ class DataManager:
         self.total_licks = 0
 
         self.blocks_generated = False
+        
+        self.trial_licks: list[list[float]] = []
+        
 
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""
