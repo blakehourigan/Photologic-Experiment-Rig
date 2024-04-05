@@ -266,6 +266,29 @@ class DataManager:
             [np.nan], columns=["Trial Number", "Licked Port", "Time Stamp"]
         )
 
+    def get_lick_timestamps(self, trial_number):
+        """
+        Returns a list of timestamps for the given trial number and licked port.
+
+        Args:
+            trial_number (int): The trial number to filter by.
+            licked_port (int): The licked port to filter by (1 or 2).
+
+        Returns:
+            list: A list of timestamps for the given trial number and licked port.
+        """
+        # Filter the dataframe to get the relevant rows
+        filtered_df = self.licks_dataframe[
+            (self.licks_dataframe["Trial Number"] == trial_number)
+            & ((self.licks_dataframe["Licked Port"] == '1') or (self.licks_dataframe["Licked Port"] == '2'))
+        ]
+
+        # Extract the timestamps from the filtered dataframe
+        timestamps = filtered_df["Time Stamp"].tolist()
+
+        return timestamps
+
+
     def save_licks(self, iteration):
         """define method that saves the licks to the data table and increments our iteration variable."""
         # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value

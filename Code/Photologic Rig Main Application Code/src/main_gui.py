@@ -27,6 +27,7 @@ class MainGUI:
         )  # Close the window when the user presses ctl + w
         icon_path = self.controller.config.get_window_icon_path()
         self.set_program_icon(icon_path)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
     def update_size(self) -> None:
         """update the size of the window to fit the contents dynamically based on display size."""
@@ -521,3 +522,14 @@ class MainGUI:
         self.update_progress_bar(True)
 
         self.update_on_state_change(0, "Idle")
+        
+    def on_close(self):
+        # Cancel all after tasks
+        for after_id in self.controller.after_ids:
+            self.root.after_cancel(after_id)
+
+        # Stop the listener thread in AduinoManager
+        self.controller.arduino_mgr.stop()
+
+        self.root.destroy()
+        self.root.quit()

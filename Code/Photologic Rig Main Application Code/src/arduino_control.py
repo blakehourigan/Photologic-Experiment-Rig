@@ -16,6 +16,7 @@ class AduinoManager:
         self.laser_arduino = None
         self.motor_arduino = None
         self.data_queue = queue.Queue()  #type: ignore
+        self.stop_event = threading.Event()
 
     def connect_to_arduino(self) -> None:
         """Connect to the Arduino boards and return status."""
@@ -53,7 +54,7 @@ class AduinoManager:
             
 
     def listen_for_serial(self):
-        while True:
+        while not self.stop_event.is_set():
             try:
                 if self.laser_arduino and self.laser_arduino.in_waiting > 0:
                     laser_data = self.laser_arduino.readline().decode('utf-8').strip()
@@ -67,6 +68,11 @@ class AduinoManager:
                 print(f"Error reading from Arduino: {e}")
                 break
             time.sleep(.001)
+
+    def stop(self) -> None:
+        self.stop_event.set()
+        if self.listener_thread.is_alive():
+            self.listener_thread.join()
 
 
     def identify_arduino(self, port) -> str:

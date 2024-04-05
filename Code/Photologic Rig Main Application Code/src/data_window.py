@@ -4,7 +4,6 @@ from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 import matplotlib.pyplot as plt
-import numpy as np
 
 class DataWindow:
     def __init__(self, controller) -> None:
@@ -39,26 +38,37 @@ class DataWindow:
         # Create a figure and axes for the plot
         self.fig, self.axes = plt.subplots()
 
-        # Generate random spike times for multiple neurons (replace with your actual data)
-        num_neurons = 10
-        spike_times = [np.random.rand(100) * 10 for _ in range(num_neurons)]
+        # Initialize an empty list to store spike times
+        self.spike_times = [] #type: ignore
 
-        # Create the raster plot
-        for i, spikes in enumerate(spike_times):
-            self.axes.scatter(spikes, [i] * len(spikes), marker='|', s=100)
+        # Set the x and y limits
+        self.axes.set_xlim(0, 15)  # 15-second window on the x-axis
+        self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get())  # Range from 0 to num_trials on the y-axis
+        self.axes.set_xlabel('Time (s)')
+        self.axes.set_ylabel('Trial #')
 
-        self.axes.set_xlabel('Time')
-        self.axes.set_ylabel('Neuron')
-
-        # Create a canvas that will hold the figure. The canvas is set to be held in the window instance
+        # Create a canvas that will hold the figure
         self.canvas = FigureCanvasTkAgg(self.fig, container)
-
-        # Set the canvas to start at the top of the window instance and fill the window, expanding the content as the user expands the window
         self.canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         # Create a toolbar for the plot and pack it into the window
         toolbar = NavigationToolbar2Tk(self.canvas, container)
         toolbar.update()
+
+    def update_plot(self, lick_times=None, trial_index=None):
+        # Clear the previous plot
+        self.axes.clear()
+
+        # Set the x and y limits
+        self.axes.set_xlim(0, 15) # 0 to 15 seconds
+        self.axes.set_ylim(0, self.controller.data_mgr.num_trials.get()) # 0 to num_trials trials
+
+        # If lick_times and trial_index are provided, plot the lick times on the specified trial
+        if lick_times is not None and trial_index is not None:
+            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='o', c='r', s=100)
+
+        # Redraw the canvas
+        self.canvas.draw()
 
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""

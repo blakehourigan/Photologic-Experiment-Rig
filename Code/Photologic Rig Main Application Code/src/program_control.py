@@ -15,7 +15,6 @@ from test_valves_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
 from valve_control import ValveControl
 
-
 class ProgramController:
     def __init__(self) -> None:
         self.config = Config()
@@ -48,7 +47,8 @@ class ProgramController:
         """defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
         the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on.
         """
-
+        lick_stamps = self.data_mgr.get_lick_timestamps(iteration - 1)
+        self.data_window.update_plot(lick_stamps, iteration - 1)
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
             
@@ -121,10 +121,10 @@ class ProgramController:
 
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.after_sample_id = self.main_gui.root.after(
+            after_sample_id = self.main_gui.root.after(
                 int(TTC_Value), lambda: self.data_mgr.save_licks(iteration)
             )
-            self.after_ids.append(self.after_sample_id)
+            self.after_ids.append(after_sample_id)
 
     def sample_time(self, iteration):
         """define sample time method, i is again passed to keep track of trial and stimuli"""
@@ -152,7 +152,8 @@ class ProgramController:
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
 
-        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
+        ps_queue_id = self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
+        self.after_ids.append(ps_queue_id)
               
     def parse_timestamps(self, timestamp_string):
         entries = timestamp_string.split('><')
