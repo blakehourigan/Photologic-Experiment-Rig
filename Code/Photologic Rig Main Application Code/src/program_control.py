@@ -50,6 +50,7 @@ class ProgramController:
         if(iteration > 0):
             lick_stamps = self.data_mgr.get_lick_timestamps(iteration)
             lick_stamps = [stamp - lick_stamps[0] for stamp in lick_stamps]
+            print(lick_stamps)
             self.data_window.update_plot(lick_stamps, iteration)
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
@@ -123,10 +124,10 @@ class ProgramController:
 
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            after_sample_id = self.main_gui.root.after(
+            self.after_sample_id = self.main_gui.root.after(
                 int(TTC_Value), lambda: self.data_mgr.save_licks(iteration)
             )
-            self.after_ids.append(after_sample_id)
+            self.after_ids.append(self.after_sample_id)
 
     def sample_time(self, iteration):
         """define sample time method, i is again passed to keep track of trial and stimuli"""
