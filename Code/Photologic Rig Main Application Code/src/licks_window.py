@@ -31,7 +31,7 @@ class LicksWindow:
         self.licks_frame.grid(row=0, column=0, sticky='nsew')
 
         # Create a Treeview widget
-        self.stamped_licks = ttk.Treeview(self.licks_frame)
+        self.stamped_licks = ttk.Treeview(self.licks_frame, show='headings')  # Set show='headings'
         self.stamped_licks['columns'] = list(self.controller.data_mgr.licks_dataframe.columns)
 
         # Configure the columns
