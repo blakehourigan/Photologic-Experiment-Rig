@@ -11,36 +11,47 @@
 
 #define BAUD_RATE 115200
 
+// Global variables - Schedule Transmission
+int side_one_size = 0; 
+int side_two_size = 0;
 const int MAX_SCHEDULE_SIZE = 200;
-
 int* SIDE_ONE_SCHEDULE;
 int* SIDE_TWO_SCHEDULE;
 
-int side_one_size = 0; // Keep track of the current number of elements
-int side_two_size = 0;
+// Global variables - Trials and licks
+volatile bool lick_available = false;
 int current_trial = 0;
 int valve_number;
+volatile int valve_side;
 
-unsigned long program_start_time;
+// Global variables - Program timing
+unsigned long program_start_time; 
 unsigned long duration;
 
-volatile int valve_side;
-volatile bool lick_available = false;
+// variables used in the loop function and related functions
+String full_command;
+String command;
+bool prime_flag;
+bool motor_running; 
+
+// Global Timestamp vector (array) - Timestamp Collection and Transmission
+std::vector<TimeStamp> timestamps;
 
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
 SerialCommunication serial_communication;
 
-struct TimeStamp {
+struct TimeStamp 
+{
     String previous_command;
     int trial_number;
     unsigned long time_from_zero;
 };
 
-std::vector<TimeStamp> timestamps;
 
-void add_to_array(int *array, int &size, int element) {
+void add_to_array(int *array, int &size, int element) 
+{
   if (size < MAX_SCHEDULE_SIZE) {
     array[size] = element;
     size++; // This now correctly increments the size.
@@ -312,10 +323,37 @@ void setup()
   attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
 }
 
-String full_command;
-char command;
-bool prime_flag;
-bool motor_running; 
+void create_timestamp(String command)
+{
+  TimeStamp timestamp;
+
+  timestamp.previous_command = "DOOR UP"; // Assuming 'command' holds the previous command
+  timestamp.trial_number = current_trial + 1;
+  timestamp.time_from_zero = millis() - program_start_time;
+
+  timestamps.push_back(timestamp);
+}
+
+void handle_motor_command(String command)
+{
+  const int STEPPER_UP_POSITION = 0;
+  const int STEPPER_DOWN_POSITION = 6250;
+
+  if (command == "U")
+  {
+      noInterrupts();
+      stepper.moveTo(STEPPER_UP_POSITION);
+      interrupts();
+  }
+  else if (command == "D")
+  {
+      stepper.moveTo(STEPPER_DOWN_POSITION);
+  }
+  create_timestamp(command);
+  current_trial++;
+  motor_running = true;
+
+}
 
 void loop() 
 {
@@ -325,14 +363,19 @@ void loop()
     lick_available = false;
   }
 
-  if (command == 'D' && motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
+  if (motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   {
-    TimeStamp timestamp;
-    timestamp.previous_command = command; // Assuming 'command' holds the previous command
-    timestamp.trial_number = current_trial + 1;
-    timestamp.time_from_zero = millis() - program_start_time;
+    if(command.charAt(0) == 'U')
+    {
+      command = "FINSIHED UP";
+    }
+    else if(command.charAt(0) == 'D')
+    {
+      command = "FINSIHED DOWN";
+    }
 
-    timestamps.push_back(timestamp);
+    create_timestamp(command);
+
     motor_running = false;
   }
 
@@ -340,89 +383,66 @@ void loop()
   {
     full_command = serial_communication.receive_transmission(); // Use the function to read the full command
     command = full_command[0]; // Assuming the format is <X>, where X is the command character
-    TimeStamp timestamp;
     prime_flag = 0;
-    switch (command) 
-          {
+    
+    switch (command.charAt(0)) 
+    {
       case 'U':
-      {
-        noInterrupts();
-        stepper.moveTo(0);
-        interrupts();
-        timestamp.previous_command = command; // Assuming 'command' holds the previous command
-        timestamp.trial_number = current_trial + 1;
-        timestamp.time_from_zero = millis() - program_start_time;
-
-        timestamps.push_back(timestamp);
-        current_trial++;
-      }
-        break;
       case 'D':
-        stepper.moveTo(6250);
-        motor_running = true;
+        handle_motor_command(command);
         break;
+
       case 'R':
         delete[] SIDE_ONE_SCHEDULE;
         delete[] SIDE_TWO_SCHEDULE;
         wdt_enable(WDTO_1S);
         break;
+      
       case 'W':
         Serial.println("MOTOR");
         break;
+      
       case 'T':
         command = full_command[2];
-        test_volume(command);
+        test_volume(command.charAt(0));
         break;
+      
       case 'F':
         prime_flag = 1; 
         valve_ctrl.prime_valves(prime_flag, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
         break;
+      
       case 'O':
-        for(int i = 0; i < 8; i++)
-        {
-          PORTA |= (255); // open all valves on side 1
-          PORTC |= (255); // open all valves on side 2
-        } 
+        PORTA = 0xFF; // Open all valves on side 1
+        PORTC = 0xFF; // Open all valves on side 2
         break;
+
       case 'C':
-      {
-        for(int i = 0; i < 8; i++)
-        {
-          PORTA &= ~(255); // close all valves on side 1
-          PORTC &= ~(255); // close all valves on side 2
-        }
+        PORTA = 0x00; // Close all valves on side 1
+        PORTC = 0x00; // Close all valves on side 2
         break;
-      }    
+
       case 'S':
-      {
         recieve_schedule(full_command, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);
         break;
-      }
+      
       case 'P':
-      {
         eeprom_Interface.print_EEPROM_values();
         break;
-      }
+      
       case 'E':
-      {
         eeprom_Interface.markEEPROMUninitialized();
         break;
-      }
+      
       case '0':   // mark t_0 time for the arduino side
-      {
         program_start_time = millis();
-        timestamp.previous_command = command; // Assuming 'command' holds the previous command
-        timestamp.trial_number = current_trial + 1;
-        timestamp.time_from_zero = millis();
-
-        timestamps.push_back(timestamp);
+        create_timestamp(command);
         break;
-      }
+
       case '9':
-      {
         send_timestamps();
         break;
-      }
+        
       default:
         break;
     }
