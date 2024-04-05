@@ -347,7 +347,6 @@ void handle_motor_command(String command)
       noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
       interrupts();
-      current_trial++;
   }
   else if (command == "D")
   {
@@ -370,13 +369,15 @@ void loop()
     if(command.charAt(0) == 'U')
     {
       command = "FINSIHED UP";
+      create_timestamp(command);
+      current_trial++; // Door is finished moving up, we are now on the next trial
     }
     else if(command.charAt(0) == 'D')
     {
       command = "FINSIHED DOWN";
+      create_timestamp(command);
     }
 
-    create_timestamp(command);
 
     motor_running = false;
   }

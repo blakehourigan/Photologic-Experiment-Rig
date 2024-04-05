@@ -374,11 +374,13 @@ class DataManager:
         
         for dictionary in motor_timestamps:
             if dictionary["command"] == 'U':
-                state_label = "MOTOR UP"
+                state_label = "SIGNAL MOTOR UP"
             elif dictionary["command"] == 'D':
-                state_label = "MOTOR DOWN"
+                state_label = "SIGNAL MOTOR DOWN"
+            elif dictionary["command"] == '0': # if we see the starting command entry, go to next iteration
+                continue
             else:
-                state_label = dictionary["command"]
+                state_label = dictionary["command"] 
             
             occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
             
