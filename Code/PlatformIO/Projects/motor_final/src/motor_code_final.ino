@@ -340,6 +340,8 @@ void handle_motor_command(String command)
   const int STEPPER_UP_POSITION = 0;
   const int STEPPER_DOWN_POSITION = 6250;
 
+  create_timestamp(command);
+
   if (command == "U")
   {
       noInterrupts();
@@ -352,7 +354,6 @@ void handle_motor_command(String command)
       stepper.moveTo(STEPPER_DOWN_POSITION);
   }
 
-  create_timestamp(command);
   motor_running = true;
 }
 
