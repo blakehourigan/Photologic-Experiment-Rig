@@ -65,7 +65,7 @@ class DataWindow:
 
         # If lick_times and trial_index are provided, plot the lick times on the specified trial
         if lick_times is not None and trial_index is not None:
-            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='o', c='r', s=100)
+            self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c='r', s=100)
 
         # Redraw the canvas
         self.canvas.draw()
