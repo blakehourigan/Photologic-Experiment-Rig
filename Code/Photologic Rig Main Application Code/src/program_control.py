@@ -87,7 +87,14 @@ class ProgramController:
 
             """main_gui.master.after tells the main tkinter program to wait the amount of time specified for the TTC in the ith row of the table. Save licks is called with previously used 'i' iterator.
             Lambda ensures the function is only called after the wait period and not immediately."""
-            self.main_gui.root.after(int(ITI_Value), lambda: self.time_to_contact(iteration))
+            self.main_gui.root.after(int(ITI_Value), lambda: self.ITI_TTC_Transition(iteration))
+
+    def ITI_TTC_Transition(self, iteration: int) -> None:
+        door_close_time = 2238 # number of milliseconds until door close 
+    
+        self.main_gui.root.after(door_close_time, lambda: self.ITI_TTC_Transition(iteration))
+        self.main_gui.clear_state_time()
+
 
     def time_to_contact(self, iteration: int):
         """defining the TTC state method, argument are self and iteration. iteration is passed from ITI to keep track of what stimuli we are on."""

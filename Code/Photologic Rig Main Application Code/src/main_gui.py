@@ -486,6 +486,11 @@ class MainGUI:
     def update_status(self, state) -> None:
         self.status_label.configure(text="Status: {}".format(state))
 
+    def clear_state_time(self) -> None:
+        self.full_state_time_text.configure(
+            text="/ {:.1f}s".format(0)
+        )
+
     def update_full_state_time(self, state_time_value) -> None:
         full_state_time = state_time_value
 

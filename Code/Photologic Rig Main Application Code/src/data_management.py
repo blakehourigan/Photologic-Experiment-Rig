@@ -6,8 +6,6 @@ from collections import defaultdict
 
 from typing import Tuple, List
 
-import random
-
 class DataManager:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -181,9 +179,9 @@ class DataManager:
                 final_intervals_key = f"{interval_type}_intervals_final"
 
                 # Generate a random interval
-                random_interval = random.randint(
+                random_interval = np.random.randint(
                     -self.interval_vars[random_entry_key].get(),
-                    self.interval_vars[random_entry_key].get(),
+                    self.interval_vars[random_entry_key].get() + 1  # Add 1 to make the upper bound inclusive
                 )
 
                 # Calculate the final interval by adding the random interval to the state constant
@@ -214,8 +212,9 @@ class DataManager:
         for _ in range(self.num_trial_blocks.get()):
             if self.num_trial_blocks.get() != 0 and self.changed_vars:
                 pairs_copy = [tuple(pair) for pair in self.pairs]
-                random.shuffle(pairs_copy)  # Shuffle instead of picking one by one
+                np.random.shuffle(pairs_copy)  # Shuffle in-place
                 pseudo_random_lineup.extend(pairs_copy)
+                
                 first_pair_strings = tuple(var.get() for var in pairs_copy[0])
                 first_pair_counts[first_pair_strings] += 1
 

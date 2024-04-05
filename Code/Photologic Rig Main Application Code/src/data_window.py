@@ -27,6 +27,8 @@ class DataWindow:
             top = tk.Toplevel(self.master)
             top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
             top.bind("<Control-w>", lambda e: top.destroy())  # Close the window when the user presses ctl + w
+            # Set the favicon of the child window to match the main window
+            top.iconbitmap(self.master.iconbitmap())
             
             return top
         
