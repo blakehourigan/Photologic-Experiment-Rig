@@ -266,7 +266,7 @@ class DataManager:
         and create an empty first row to avoid a blank table when the program is first run
         """
         self.licks_dataframe = pd.DataFrame(
-            [np.nan], columns=["Trial Number", "Licked Port", "Time Stamp"]
+            [[np.nan, np.nan, np.nan]], columns=["Trial Number", "Licked Port", "Time Stamp"]
         )
 
     def get_lick_timestamps(self, trial_number):
@@ -283,11 +283,12 @@ class DataManager:
         # Filter the dataframe to get the relevant rows
         filtered_df = self.licks_dataframe[
             (self.licks_dataframe["Trial Number"] == trial_number)
-            & (self.licks_dataframe["Licked Port"].isin(['1', '2']))
+            & (self.licks_dataframe["Licked Port"].isin([1.0, 2.0]))
         ]
 
         # Extract the timestamps from the filtered dataframe
         timestamps = filtered_df["Time Stamp"].tolist()
+        
 
         return timestamps
 

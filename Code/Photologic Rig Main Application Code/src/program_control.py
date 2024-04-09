@@ -47,7 +47,10 @@ class ProgramController:
         """defining the ITI state method, arguments given are self which gives us access to class attributes and other class methods,
         the second argument is iteration, which is the iteration variable that we use to keep track of what trial we are on.
         """
-        if(iteration > 0):
+        if(iteration == 0):
+            self.data_mgr.initalize_licks_dataframe()
+        
+        elif(iteration > 0):
             lick_stamps = self.data_mgr.get_lick_timestamps(iteration)
             self.data_mgr.trial_licks.append(lick_stamps)
             self.data_window.update_plot(lick_stamps, iteration)
@@ -154,8 +157,8 @@ class ProgramController:
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
 
-        ps_queue_id = self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
-        self.after_ids.append(ps_queue_id)
+        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
+        #self.after_ids.append(ps_queue_id)
               
     def parse_timestamps(self, timestamp_string):
         entries = timestamp_string.split('><')
@@ -205,7 +208,6 @@ class ProgramController:
                 self.arduino_mgr.verify_schedule(self.arduino_mgr.side_one_indexes, self.arduino_mgr.side_two_indexes, cleaned_data)
             elif "Time Stamp Data" in data: 
                 cleaned_data = data.replace("Time Stamp Data", "").strip()
-                print(cleaned_data)
                 motor_timestamps = self.parse_timestamps(cleaned_data)
                 self.data_mgr.insert_trial_start_stop_into_licks_dataframe(motor_timestamps)
 
@@ -222,7 +224,7 @@ class ProgramController:
         licks_dataframe.loc[total_licks, "Trial Number"] = data_mgr.current_trial_number
 
         licks_dataframe.loc[total_licks, "Licked Port"] = (
-            stimulus  # Send which stimulus was licked on this lick
+            int(stimulus)  # Send which stimulus was licked on this lick
         )
         licks_dataframe.loc[total_licks, "Time Stamp"] = (
             round(time.time() - data_mgr.start_time, 3)
