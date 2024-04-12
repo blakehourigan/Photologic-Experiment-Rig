@@ -356,6 +356,28 @@ void handle_motor_command(String command)
   motor_running = true;
 }
 
+
+uint8_t create_portc_mask(int numberOfValves) 
+{
+  uint8_t mask = 0x00;
+  for (int i = 0; i < numberOfValves; i++) 
+  {
+    mask |= (0x80 >> i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
+  }
+  return mask;
+}
+
+uint8_t create_porta_mask(int numberOfValves)
+{
+  uint8_t mask = 0x00;
+  for (int i = 0; i < numberOfValves; i++) 
+  {
+    mask |= (0x01 << i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
+  }
+  return mask;
+} 
+
+
 void loop() 
 {
   if(lick_available) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
@@ -416,13 +438,11 @@ void loop()
         break;
       
       case 'O':
-        PORTA = 0xFF; // Open all valves on side 1
-        PORTC = 0xFF; // Open all valves on side 2
-        break;
-
-      case 'C':
-        PORTA = 0x00; // Close all valves on side 1
-        PORTC = 0x00; // Close all valves on side 2
+        int num_valves = 4;
+        uint8_t porta_value = create_porta_mask(num_valves / 2);
+        uint8_t portc_value = create_portc_mask(num_valves / 2);
+        PORTA = porta_value; // Open all valves on side 1
+        PORTC = portc_value; // Open all valves on side 2
         break;
 
       case 'S':
