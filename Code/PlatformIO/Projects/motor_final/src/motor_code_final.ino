@@ -338,7 +338,7 @@ void create_timestamp(String command)
 void handle_motor_command(String command)
 {
   const int STEPPER_UP_POSITION = 0;
-  const int STEPPER_DOWN_POSITION = 6250;
+  const int STEPPER_DOWN_POSITION = 6100;
 
   create_timestamp(command);
 

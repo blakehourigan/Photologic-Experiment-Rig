@@ -42,9 +42,12 @@ class ValveControl:
             
 
     def open_all_valves(self) -> None:
-        print("Opening all valves...")
+        command = '<O>'
+        self.controller.arduino_mgr.send_command_to_motor(command)
+
 
     def close_all_valves(self) -> None:
-        print("Closing all valves...")
+        command = '<C>'
+        self.controller.arduino_mgr.send_command_to_motor(command)
 
 

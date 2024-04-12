@@ -71,21 +71,21 @@ class DataWindow:
             # Plot the spike times
             for i, trial_spikes in enumerate(self.spike_times):
                 self.axes.scatter(trial_spikes, [i] * len(trial_spikes), marker='|', s=100)
-
-            # If lick_times and trial_index are provided, plot the lick times on the specified trial
-            if lick_times is not None and trial_index is not None:
-                color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
-                lick_times = [stamp - lick_times[2] for stamp in lick_times]  # Perform the calculation
-                self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
-                self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
-
-            # If lick_times and trial_index are None, plot the data from self.trial_licks
-            elif lick_times is None and trial_index is None:
-                for trial_index, trial_lick_times in enumerate(self.controller.data_mgr.trial_licks):
+            if len(lick_times) > 0:
+                # If lick_times and trial_index are provided, plot the lick times on the specified trial
+                if lick_times is not None and trial_index is not None:
                     color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
-                    trial_lick_times = [stamp - trial_lick_times[2] for stamp in trial_lick_times]  # Perform the calculation
-                    self.axes.scatter(trial_lick_times, [trial_index + 1] * len(trial_lick_times), marker='|', c=color, s=100)
+                    lick_times = [stamp - lick_times[0] for stamp in lick_times]  # Perform the calculation
+                    self.axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
                     self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
+
+                # If lick_times and trial_index are None, plot the data from self.trial_licks
+                elif lick_times is None and trial_index is None:
+                    for trial_index, trial_lick_times in enumerate(self.controller.data_mgr.trial_licks):
+                        color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
+                        trial_lick_times = [stamp - trial_lick_times[0] for stamp in trial_lick_times]  # Perform the calculation
+                        self.axes.scatter(trial_lick_times, [trial_index + 1] * len(trial_lick_times), marker='|', c=color, s=100)
+                        self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
 
             # Redraw the canvas
             self.canvas.draw()
