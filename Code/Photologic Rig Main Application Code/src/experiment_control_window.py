@@ -107,7 +107,7 @@ class ExperimentCtlWindow:
                 # stimuli schedule button that calls the function to generate the program schedule when pressed
                 self.generate_stimulus = tk.Button(
                     self.button_frame,
-                    text="Generate Stimulus",
+                    text="Generate Schedule",
                     command=lambda: self.controller.data_mgr.initialize_stimuli_dataframe(),
                     bg="green",
                     font=("Helvetica", 24),

@@ -364,6 +364,7 @@ uint8_t create_portc_mask(int numberOfValves)
   {
     mask |= (0x80 >> i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
   }
+  Serial.println(mask);
   return mask;
 }
 
@@ -438,7 +439,7 @@ void loop()
         break;
       
       case 'O':
-        int num_valves = 4;
+        int num_valves = 2;
         uint8_t porta_value = create_porta_mask(num_valves / 2);
         uint8_t portc_value = create_portc_mask(num_valves / 2);
         PORTA = porta_value; // Open all valves on side 1

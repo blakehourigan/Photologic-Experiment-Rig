@@ -357,7 +357,7 @@ class MainGUI:
         # Create a new frame for each new button, and store the button inside of that frame
         self.test_valves_button_frame, _ = self.create_button(
             self.lower_control_buttons_frame,
-            "Test Valves",
+            "Calibrate Valves",
             lambda: self.controller.valve_testing_window.show_window(),
             "grey",
             0,
