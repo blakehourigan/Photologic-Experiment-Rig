@@ -58,8 +58,10 @@ class RasterizedDataWindow:
         toolbar.update()
         
         if side == 1:
+            self.side_one_axes = axes
             self.update_plot(axes)
         else:
+            self.side_two_axes = axes
             self.update_plot(axes)
 
         canvas.draw()
@@ -92,10 +94,9 @@ class RasterizedDataWindow:
                 window.canvas.draw()
     
     def on_window_close(self, side: int) -> None:
-        """Close both side windows when one is closed."""
-        if self.side1_window is not None:
+        if side == 1 and self.side1_window is not None:
             self.side1_window.destroy()
             self.side1_window = None
-        if self.side2_window is not None:
+        elif side == 2 and self.side2_window is not None:
             self.side2_window.destroy()
             self.side2_window = None
