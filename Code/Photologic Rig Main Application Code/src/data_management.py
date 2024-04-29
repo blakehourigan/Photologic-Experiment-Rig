@@ -280,17 +280,24 @@ class DataManager:
         Returns:
             list: A list of timestamps for the given trial number and licked port.
         """
-        # Filter the dataframe to get the relevant rows
-        filtered_df = self.licks_dataframe[
+        # Filter the dataframe to get the rows generated due to rat licks on side one
+        filtered_df_side_one = self.licks_dataframe[
             (self.licks_dataframe["Trial Number"] == trial_number)
-            & (self.licks_dataframe["Licked Port"].isin([1.0, 2.0]))
+            & (self.licks_dataframe["Licked Port"].isin([1.0]))
+        ]
+        # Repeat the process for side two 
+        filtered_df_side_two = self.licks_dataframe[
+            (self.licks_dataframe["Trial Number"] == trial_number)
+            & (self.licks_dataframe["Licked Port"].isin([2.0]))
         ]
 
-        # Extract the timestamps from the filtered dataframe
-        timestamps = filtered_df["Time Stamp"].tolist()
-        
+        # Convert the dataframe objects into lists that contain the timestamp values
+        timestamps_side_one = filtered_df_side_one["Time Stamp"].tolist()
+        timestamps_side_two = filtered_df_side_two["Time Stamp"].tolist()
 
-        return timestamps
+        
+        # return the lists to the program controller
+        return timestamps_side_one, timestamps_side_two
 
 
     def save_licks(self, iteration):

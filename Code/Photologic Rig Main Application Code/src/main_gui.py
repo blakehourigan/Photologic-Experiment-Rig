@@ -403,10 +403,10 @@ class MainGUI:
             1,
             1,
         )
-        self.data_window_button_frame = self.create_button(
+        self.raster_plot_button_frame = self.create_button(
             self.lower_control_buttons_frame,
             "Rasterized Data",
-            self.controller.data_window.show_window,
+            self.controller.open_rasterized_data_windows,
             "grey",
             1,
             2,

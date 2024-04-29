@@ -7,7 +7,7 @@ from data_management import DataManager
 
 # GUI classses
 from main_gui import MainGUI
-from data_window import DataWindow
+from rasterized_data_window import RasterizedDataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
 from valve_testing_window import ValveTestWindow
@@ -21,7 +21,7 @@ class ProgramController:
         self.config = Config()
 
         self.main_gui = MainGUI(self)
-        self.data_window = DataWindow(self)
+        self.data_window = RasterizedDataWindow(self)
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
         self.program_schedule_window = ProgramScheduleWindow(self)
@@ -52,9 +52,11 @@ class ProgramController:
             self.data_mgr.initalize_licks_dataframe()
         
         elif(iteration > 0):
-            lick_stamps = self.data_mgr.get_lick_timestamps(iteration)
-            self.data_mgr.trial_licks.append(lick_stamps)
-            self.data_window.update_plot(lick_stamps, iteration)
+            lick_stamps_side_one, lick_stamps_side_two = self.data_mgr.get_lick_timestamps(iteration)
+            self.data_mgr.trial_licks.append(lick_stamps_side_one)
+            self.data_mgr.trial_licks.append(lick_stamps_side_two)
+            self.data_window.update_plot(lick_stamps_side_one, iteration)
+            self.data_window.update_plot(lick_stamps_side_two, iteration)
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
             
@@ -334,3 +336,10 @@ class ProgramController:
     def open_valve_control_window(self):
         # Assuming ValveControl is imported at the top of this file
         self.valve_control_window = ValveControl(self)
+        
+    def open_rasterized_data_windows(self):
+        if self.data_mgr.blocks_generated:
+            self.data_window.show_window(1)
+            self.data_window.show_window(2)
+        else: 
+            print('blocks not yet generated')
