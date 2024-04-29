@@ -1,6 +1,6 @@
 #include "valve_control.h"
 
-const int valve_control::side_one_solenoids[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7};
+const int valve_control::side_one_solenoids[] = {PA7, PA6, PA5, PA4, PA3, PA2, PA1, PA0};
 const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
 
 void valve_control::toggle_bit(volatile uint8_t& port, uint8_t bit) {

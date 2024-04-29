@@ -10,10 +10,11 @@ from main_gui import MainGUI
 from data_window import DataWindow
 from experiment_control_window import ExperimentCtlWindow
 from licks_window import LicksWindow
-from test_valves_window import ValveTestWindow
-from test_valves_logic import valveTestLogic
+from valve_testing_window import ValveTestWindow
+from valve_testing_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
 from valve_control import ValveControl
+from prime_valves_window import PrimeValves
 
 class ProgramController:
     def __init__(self) -> None:
@@ -200,6 +201,7 @@ class ProgramController:
 
         elif source == 'motor':
             if data == "<Finished Pair>":
+                # if the motor arduino has finished testing a pair of valves, then append the data we get from the volumes to the volumes lists
                 self.valve_test_logic.append_to_volumes()
             elif "Durations" in data:
                 self.valve_test_logic.begin_updating_opening_times(data)
@@ -263,6 +265,16 @@ class ProgramController:
         self.arduino_mgr.close_connections()
 
         self.arduino_mgr = AduinoManager(self)
+
+
+    def open_prime_valves_window(self):
+        # Check if the window is already open and if so, bring it to focus
+        if hasattr(self, 'prime_valves_window') and self.prime_valves_window.top.winfo_exists():
+            self.prime_valves_window.top.lift()
+        else:
+            # Otherwise, create a new instance of the window
+            self.prime_valves_window = PrimeValves(self)
+
 
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state, changing the button back to start."""
