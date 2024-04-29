@@ -61,7 +61,9 @@ class DataManager:
 
         self.blocks_generated = False
         
-        self.trial_licks: list[list[float]] = []
+        self.side_one_trial_licks: list[list[float]] = []
+        self.side_two_trial_licks: list[list[float]] = []
+
         
 
     def initialize_stimuli_dataframe(self) -> None:

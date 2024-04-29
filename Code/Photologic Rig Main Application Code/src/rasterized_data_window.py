@@ -46,6 +46,7 @@ class RasterizedDataWindow:
         return top
 
         
+
     def create_plot(self, window: tk.Toplevel, side: int) -> None:
         container = tk.Frame(window)
         container.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
@@ -56,43 +57,57 @@ class RasterizedDataWindow:
         
         toolbar = NavigationToolbar2Tk(canvas, container)
         toolbar.update()
-        
-        if side == 1:
-            self.side_one_axes = axes
-            self.update_plot(axes)
+
+        window.canvas = canvas  # type: ignore
+        window.axes = axes      # type: ignore
+
+        if len(self.controller.data_mgr.side_one_trial_licks) > 0 or len(self.controller.data_mgr.side_one_trial_licks) > 0:
+            self.update_plot(window, reopen=True, side = side)  # Pass the whole window to update_plot
         else:
-            self.side_two_axes = axes
-            self.update_plot(axes)
+            self.update_plot(window)
+        
+    def update_plot(self, window: tk.Toplevel, lick_times=None, trial_index=None, reopen = False, side = 0):
+        axes = window.axes # type: ignore
+        canvas = window.canvas # type: ignore
+        
+        axes.set_xlim(0, 21)
+        axes.set_ylim(0, self.controller.data_mgr.num_trials.get() + 1)
+        
+        # Handle the re-open scenario by plotting all previous licks
+        if reopen:
+            # Clear existing data on the plot
+            axes.clear()
+            axes.set_xlim(0, 21)
+            axes.set_ylim(0, self.controller.data_mgr.num_trials.get() + 1)
+
+            if side == 1:
+                # Iterate through the side one and two licks if available and plot them
+                if self.controller.data_mgr.side_one_trial_licks:
+                    for i, licks in enumerate(self.controller.data_mgr.side_one_trial_licks):
+                        if licks:
+                            self.plot_licks(axes, licks, i + 1, self.color_cycle(self.color_index))
+                            self.color_index = (self.color_index + 1) % 10
+            elif side == 2:            
+                if self.controller.data_mgr.side_two_trial_licks:
+                        for i, licks in enumerate(self.controller.data_mgr.side_two_trial_licks):
+                            if licks:
+                                self.plot_licks(axes, licks, i + 1, self.color_cycle(self.color_index))
+                                self.color_index = (self.color_index + 1) % 10
+            
+        if lick_times and len(lick_times) > 0:
+            color = self.color_cycle(self.color_index)
+            lick_times = [stamp - lick_times[0] for stamp in lick_times]
+            axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
+            self.color_index = (self.color_index + 1) % 10
 
         canvas.draw()
 
-    def update_plot(self, axes, lick_times=None, trial_index=None):
-
-        # Set the x and y limits
-        axes.set_xlim(0, 21)  # 0 to 15 seconds
-        axes.set_ylim(0, self.controller.data_mgr.num_trials.get() + 1)  # 0 to num_trials trials
-        
-        # Plot the spike times
-        if (lick_times is not None) and len(lick_times) > 0:
-            # If lick_times and trial_index are provided, plot the lick times on the specified trial
-            if lick_times is not None and trial_index is not None:
-                color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
-                lick_times = [stamp - lick_times[0] for stamp in lick_times]  # Perform the calculation
-                axes.scatter(lick_times, [trial_index] * len(lick_times), marker='|', c=color, s=100)
-                self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
-
-            # If lick_times and trial_index are None, plot the data from self.trial_licks
-            elif lick_times is None and trial_index is None:
-                for trial_index, trial_lick_times in enumerate(self.controller.data_mgr.trial_licks):
-                    color = self.color_cycle(self.color_index)  # Get the current color from the color cycle
-                    trial_lick_times = [stamp - trial_lick_times[0] for stamp in trial_lick_times]  # Perform the calculation
-                    axes.scatter(trial_lick_times, [trial_index + 1] * len(trial_lick_times), marker='|', c=color, s=100)
-                    self.color_index = (self.color_index + 1) % 10  # Update the color index for the next call
-
-            for window in [self.side1_window, self.side2_window]:
-                # Redraw the canvas
-                window.canvas.draw()
     
+    def plot_licks(self, axes, lick_times, trial_index, color):
+        # Normalize lick times by the first lick time
+        normalized_licks = [stamp - lick_times[0] for stamp in lick_times]
+        axes.scatter(normalized_licks, [trial_index] * len(normalized_licks), marker='|', c=color, s=100)
+        
     def on_window_close(self, side: int) -> None:
         if side == 1 and self.side1_window is not None:
             self.side1_window.destroy()
