@@ -35,8 +35,7 @@ class valveTestLogic:
         execute = self.check_container_measurements(self.side_one_container_measurement, self.side_two_container_measurement) # if the user did not cancel either prompt, then continue
         
         if execute:
-            command = f'<T,{num_valves.get()}>'
-            self.controller.arduino_mgr.send_command_to_motor(command)
+            self.controller.send_command_to_motor(arduino='motor', command= f'<T,{num_valves.get()}>')
 
     def append_to_volumes(self) -> None:
         self.side_one_volumes.append(self.controller.valve_testing_window.input_popup(self.completed_test_pairs + 1) - self.side_one_container_measurement)
@@ -48,8 +47,7 @@ class valveTestLogic:
             if self.completed_test_pairs != self.controller.valve_testing_window.num_valves_to_test.get():
                 if self.controller.valve_testing_window.ask_continue():    
                     # after appending data, if it is not the final valve pair, then continue
-                    command = "<continue>"
-                    self.controller.arduino_mgr.send_command_to_motor(command)
+                    self.controller.send_command_to_motor(arduino='motor', command="<continue>")
                 else:
                     self.controller.valve_testing_window.tesing_aborted()
                 self.completed_test_pairs += 1 
@@ -61,10 +59,8 @@ class valveTestLogic:
         
         side_one_str = ",".join(map(str, side_one_opening_times))
         side_two_str = ",".join(map(str, side_two_opening_times))
-
-        command = f"<{side_one_str},{side_two_str}>"
         
-        self.controller.arduino_mgr.send_command_to_motor(command)
+        self.controller.send_command_to_arduino(arduino='motor', command=f"<{side_one_str},{side_two_str}>")
                     
     def update_opening_times(self, num_valves, durations, volumes) -> List[int]:
         # this function is called once per side to update the opening times for each side of valves

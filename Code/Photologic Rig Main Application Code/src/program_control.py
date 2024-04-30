@@ -64,9 +64,7 @@ class ProgramController:
         self.data_mgr.current_iteration = iteration
         
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
-            command = '<9>'
-
-            self.arduino_mgr.send_command_to_motor(command)
+            self.send_command_to_arduino(arduino='motor', command='<9>')
             
             self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.
@@ -100,12 +98,12 @@ class ProgramController:
 
     def ITI_TTC_Transition(self, iteration: int) -> None:
         door_close_time = 2238 # number of milliseconds until door close 
-        command = "<D>"  # tell motor arduino to move the door down
-        self.arduino_mgr.send_command_to_motor(command)
+        
+        self.send_command_to_arduino(arduino='motor', command="<D>") # tell motor arduino to move the door down
+        
         self.main_gui.root.after(door_close_time, lambda: self.time_to_contact(iteration))
         self.data_mgr.state_start_time = time.time()  # state start time begins
         self.main_gui.clear_state_time()
-
 
     def time_to_contact(self, iteration: int):
         """defining the TTC state method, argument are self and iteration. iteration is passed from ITI to keep track of what stimuli we are on."""
@@ -139,8 +137,7 @@ class ProgramController:
         """define sample time method, i is again passed to keep track of trial and stimuli"""
         if self.running:
             self.state = "Sample"
-            command = "B"
-            self.arduino_mgr.send_command_to_laser(command)
+            self.send_command_to_arduino(arduino='laser', command="B") # Tell the laser arduino to begin accepting licks and opening valves
 
             # Update the state start time to the current time
             self.data_mgr.state_start_time = time.time()
@@ -307,7 +304,8 @@ class ProgramController:
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
             
-            self.arduino_mgr.send_command_to_motor("<0>")
+            # Request the timestamp data from the motor arduino
+            self.send_command_to_arduino(arduino='motor', command="<0>")
 
             self.main_gui.update_clock_label()
 
@@ -340,8 +338,11 @@ class ProgramController:
             print('blocks not yet generated')
 
 
-    def send_command_to_motor(self, command) -> None:
-        self.arduino_mgr.send_command_to_motor(command)
+    def send_command_to_arduino(self, arduino, command) -> None:
+        if arduino == 'laser':
+            self.arduino_mgr.send_command_to_laser(command)
+        elif arduino == 'motor':
+            self.arduino_mgr.send_command_to_motor(command)
         
     def get_total_number_valves(self) -> int:
         return self.experiment_config.maximum_num_valves

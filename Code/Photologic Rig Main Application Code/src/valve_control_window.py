@@ -106,9 +106,7 @@ class ControlValves:
         side_two_valves = self.binary_to_decimal(side_two_valves)
         
         # Send the command to open the valves with the current selection from the buttons in the GUI
-        command = "<O," + f"{side_one_valves}," + f"{side_two_valves}"+ ">"
-        
-        self.controller.send_command_to_motor(command)
+        self.controller.send_command_to_motor(arduino='motor', command="<O," + f"{side_one_valves}," + f"{side_two_valves}"+ ">")
 
     def binary_to_decimal(self, binary_number):
         # Convert the binary string to decimal

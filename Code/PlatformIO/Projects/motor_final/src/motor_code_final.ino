@@ -452,13 +452,6 @@ void loop()
           // If parsing fails, log an error or handle the case appropriately
           Serial.println("Error parsing PORT values");
         }
-        // Create a buffer to hold the formatted string
-        char buffer[50]; // Ensure the buffer is large enough to hold the resulting string
-
-        // Use sprintf to format the string into the buffer
-        sprintf(buffer, "%d, %d", porta_value, portc_value);
-
-        Serial.println(buffer);
         break;
 
       case 'S':
