@@ -70,7 +70,7 @@ class PrimeValves:
         
         # Take the last 4 elements
         last_four = self.valve_states[-4:]
-        last_four.reverse()
+        # last_four.reverse()
         last_four = "".join(last_four)
         last_four += "0000"
         
