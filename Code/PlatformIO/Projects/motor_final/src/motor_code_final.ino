@@ -439,9 +439,10 @@ void loop()
         break;
       
       case 'O':
-        int porta_value;
-        int portc_value;
-        if (sscanf(full_command.c_str(), "<O,%d,%d>", &porta_value, &portc_value) == 2) 
+        int porta_value = 0;
+        int portc_value = 0;
+        Serial.println(full_command.c_str());
+        if (sscanf(full_command.c_str(), "O,%d,%d", &porta_value, &portc_value) == 2) 
         {
           // If both numbers are successfully parsed, assign them to the ports
           PORTA = porta_value; // Assign the first number to PORTA
@@ -451,8 +452,13 @@ void loop()
           // If parsing fails, log an error or handle the case appropriately
           Serial.println("Error parsing PORT values");
         }
-        PORTA = porta_value; // Open all valves on side 1
-        PORTC = portc_value; // Open all valves on side 2
+        // Create a buffer to hold the formatted string
+        char buffer[50]; // Ensure the buffer is large enough to hold the resulting string
+
+        // Use sprintf to format the string into the buffer
+        sprintf(buffer, "%d, %d", porta_value, portc_value);
+
+        Serial.println(buffer);
         break;
 
       case 'S':
