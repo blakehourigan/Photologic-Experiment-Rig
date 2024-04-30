@@ -14,6 +14,7 @@ from valve_testing_window import ValveTestWindow
 from valve_testing_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
 from valve_control_window import ControlValves
+from prime_valves import PrimeValves
 
 class ProgramController:
     def __init__(self, restart_callback = None) -> None:
@@ -26,7 +27,7 @@ class ProgramController:
         self.licks_window = LicksWindow(self)
         self.experiment_ctl_wind = ExperimentCtlWindow(self)
         self.program_schedule_window = ProgramScheduleWindow(self)
-
+        
         self.data_mgr = DataManager(self)
         self.arduino_mgr = AduinoManager(self)
 
@@ -279,7 +280,7 @@ class ProgramController:
         # ensure any secondary windows are closed
         windows = [self.data_window, self.licks_window, self.experiment_ctl_wind, 
                 self.program_schedule_window, self.valve_testing_window, 
-                getattr(self, 'prime_valves_window', None)]  # Use getattr for safe access
+                getattr(self, 'valve_control_window', None)]  # Use getattr for safe access
         for win in windows:
             if win and hasattr(win, 'top') and hasattr(win.top, 'winfo_exists') and win.top.winfo_exists():
                 win.top.destroy()
@@ -350,11 +351,11 @@ class ProgramController:
 
     def open_valve_control_window(self):
         # Check if the window is already open and if so, bring it to focus
-        if hasattr(self, 'prime_valves_window') and self.prime_valves_window.top.winfo_exists():
-            self.prime_valves_window.top.lift()
+        if hasattr(self, 'valve_control_window') and self.valve_control_window.top.winfo_exists():
+            self.valve_control_window.top.lift()
         else:
             # Otherwise, create a new instance of the window
-            self.prime_valves_window = ControlValves(self)
+            self.valve_control_window = ControlValves(self)
         
     def open_rasterized_data_windows(self) -> None:
         if self.data_mgr.blocks_generated:
@@ -376,3 +377,11 @@ class ProgramController:
     def get_window_icon_path(self)-> str:
         return self.experiment_config.get_window_icon_path()
         
+    def show_stimuli_table(self) -> None:
+        self.program_schedule_window.show_stimuli_table()
+    
+    def show_valve_stimuli_window(self) -> None:
+        self.experiment_ctl_wind.show_window(self.main_gui.root)
+        
+    def launch_prime_valves_window(self) -> None:
+        self.prime_valves_window = PrimeValves(self)

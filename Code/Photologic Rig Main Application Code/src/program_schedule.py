@@ -99,62 +99,56 @@ class ProgramScheduleWindow:
         self.stimuli_frame = None
         self.header_labels = []
         self.cell_labels = []
-
+        
     def show_stimuli_table(self):
-        if self.controller.data_mgr.blocks_generated:
-
-            if not self.top or not self.top.winfo_exists():
-                self.create_window(self.controller.main_gui.root)
-
-            if not self.canvas:
-                canvas_frame = tk.Frame(self.top)
-                canvas_frame.grid(row=0, column=0, sticky="nsew")
-
-                self.canvas = tk.Canvas(canvas_frame)
-                scrollbar = tk.Scrollbar(canvas_frame, orient="vertical", command=self.canvas.yview)
-                
-                self.canvas.configure(yscrollcommand=scrollbar.set)
-
-                self.canvas.grid(row=0, column=0, sticky="nsew")
-                scrollbar.grid(row=0, column=1, sticky="ns")
-
-                self.top.grid_rowconfigure(0, weight=1)
-                self.top.grid_columnconfigure(0, weight=1)
-
-                self.stimuli_frame = tk.Frame(self.canvas)
-                self.canvas.create_window((0, 0), window=self.stimuli_frame, anchor="nw")
-
-            # Populate the stimuli_frame with schedule
-            self.populate_stimuli_table()
-
-            self.stimuli_frame.update_idletasks()
-            self.canvas.config(scrollregion=self.canvas.bbox("all"))
-
-            # Calculate the width for the canvas and scrollbar
-            canvas_width = self.stimuli_frame.winfo_reqwidth()
-            scrollbar_width = scrollbar.winfo_width()
-            total_width = canvas_width + scrollbar_width
-
-            # Use height required for the frame unlesss its greater than 500 px, then just use 500px 
-            canvas_height = self.stimuli_frame.winfo_reqheight()
-            
-            if canvas_height <= 500:
-                height = canvas_height + 50 # add 50 for some padding
-            else: 
-                height = 500
-
-            # Adjust the canvas size 
-            self.canvas.config(width=canvas_width, height=height)
-
-            # Now, center the window 
-            self.center_window(total_width, height)
-        else:
+        if not self.controller.data_mgr.blocks_generated:
             self.controller.main_gui.display_error(
                 "Blocks not Generated",
-                "Please generate blocks before starting the program.",
+                "Please generate blocks before starting the program."
             )
+            return  # Exit early if blocks aren't generated
+
+        if not self.top or not self.top.winfo_exists():
+            self.create_window(self.controller.main_gui.root)
+        else: 
+            self.top.lift()
+
+        if not self.canvas:
+            # Setup the canvas and scrollbar only if not already setup
+            canvas_frame = tk.Frame(self.top)
+            canvas_frame.grid(row=0, column=0, sticky="nsew")
+
+            self.canvas = tk.Canvas(canvas_frame)
+            scrollbar = tk.Scrollbar(canvas_frame, orient="vertical", command=self.canvas.yview)
+
+            self.canvas.configure(yscrollcommand=scrollbar.set)
+            self.canvas.grid(row=0, column=0, sticky="nsew")
+            scrollbar.grid(row=0, column=1, sticky="ns")
+
+            self.top.grid_rowconfigure(0, weight=1)
+            self.top.grid_columnconfigure(0, weight=1)
+
+            self.stimuli_frame = tk.Frame(self.canvas)
+            self.canvas.create_window((0, 0), window=self.stimuli_frame, anchor="nw")
+
+        # Always populate or update the stimuli frame
+        self.populate_stimuli_table()
+        self.stimuli_frame.update_idletasks()
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+        # Calculate dimensions for canvas and scrollbar
+        canvas_width = self.stimuli_frame.winfo_reqwidth()
+        scrollbar_width = scrollbar.winfo_width() if 'scrollbar' in locals() else 20  # Use a default width if scrollbar isn't defined
+        total_width = canvas_width + scrollbar_width
+        canvas_height = min(500, self.stimuli_frame.winfo_reqheight() + 50)  # max height 500px
+
+        # Adjust the canvas size and center the window
+        self.canvas.config(width=canvas_width, height=canvas_height)
+        self.center_window(total_width, canvas_height)
+
         if self.controller.running:
-            self.update_row_color(self.controller.data_mgr.current_trial_number)    # if the program is running, then highlight the current trial row 
+            self.update_row_color(self.controller.data_mgr.current_trial_number)
+
 
     def populate_stimuli_table(self):
         df = self.controller.data_mgr.stimuli_dataframe
