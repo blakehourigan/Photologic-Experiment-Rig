@@ -16,7 +16,9 @@ from program_schedule import ProgramScheduleWindow
 from valve_control_window import ControlValves
 
 class ProgramController:
-    def __init__(self) -> None:
+    def __init__(self, restart_callback = None) -> None:
+        self.restart_callback = restart_callback
+
         self.experiment_config = Config()
 
         self.main_gui = MainGUI(self)
@@ -64,6 +66,7 @@ class ProgramController:
         self.data_mgr.current_iteration = iteration
         
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
+            
             self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -156,8 +159,7 @@ class ProgramController:
             source, data = self.arduino_mgr.data_queue.get()
             self.process_data(source, data)
 
-        self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
-        #self.after_ids.append(ps_queue_id)
+        self.queue_id = self.main_gui.root.after(100, self.process_queue)  # Reschedule after 100
               
     def parse_timestamps(self, timestamp_string):
         entries = timestamp_string.split('><')
@@ -241,7 +243,6 @@ class ProgramController:
         self.data_mgr.side_two_licks = 0
         self.sample_time(iteration)
 
-
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button"""
         if self.running:
@@ -250,19 +251,43 @@ class ProgramController:
             self.start_program()
 
     def reset_button_handler(self) -> None:
-        """Handle clearing the data window on click of the clear button"""
-        self.main_gui.update_on_reset()
-        self.experiment_ctl_wind.reset_traces()
-        if (
-            self.experiment_ctl_wind.top is not None
-            and self.experiment_ctl_wind.top.winfo_exists()
-        ):
-            self.experiment_ctl_wind.on_window_close()
-            self.experiment_ctl_wind.show_window(self.main_gui.root)
-        self.data_mgr.reset_all()
-        self.arduino_mgr.close_connections()
+       # 1. Cancel all pending after() calls in Tkinter
+        if self.main_gui and self.main_gui.root:
+            for after_id in self.after_ids:
+                self.main_gui.root.after_cancel(after_id)
+            self.main_gui.root.after_cancel(self.queue_id)
+            self.after_ids.clear()
 
-        self.arduino_mgr = AduinoManager(self)
+        # 2. Close all GUI windows
+        self.close_all_tkinter_windows()
+
+        # 3. Disconnect Arduino connections
+        if self.arduino_mgr:
+            self.arduino_mgr.close_connections()
+
+        # 4. Ensure all data is saved and finalized
+        # if self.data_mgr:
+        #     self.data_mgr.finalize_data()
+
+        # 5. Reset any other state as necessary
+        self.state = "OFF"
+        self.running = False
+        
+        self.restart_callback()  # Call the restart function
+
+    def close_all_tkinter_windows(self):
+        # Close the main window and any other open windows
+        if hasattr(self, 'main_gui') and hasattr(self.main_gui, 'root') and self.main_gui.root:
+            self.main_gui.root.destroy()  # This destroys the main window
+
+        # Also ensure any secondary windows are closed
+        windows = [self.data_window, self.licks_window, self.experiment_ctl_wind, 
+                self.program_schedule_window, self.valve_testing_window, 
+                getattr(self, 'prime_valves_window', None)]  # Use getattr for safe access
+        for win in windows:
+            if win and hasattr(win, 'top') and hasattr(win.top, 'winfo_exists') and win.top.winfo_exists():
+                win.top.destroy()
+
 
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state, changing the button back to start."""
