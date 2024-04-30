@@ -13,12 +13,11 @@ from licks_window import LicksWindow
 from valve_testing_window import ValveTestWindow
 from valve_testing_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
-from valve_control import ValveControl
-from prime_valves_window import PrimeValves
+from valve_control_window import ControlValves
 
 class ProgramController:
     def __init__(self) -> None:
-        self.config = Config()
+        self.experiment_config = Config()
 
         self.main_gui = MainGUI(self)
         self.data_window = RasterizedDataWindow(self)
@@ -325,19 +324,15 @@ class ProgramController:
         if self.running:
             self.main_gui.update_clock_label()
 
-    def open_drain_valves_window(self):
+    def open_valve_control_window(self):
         # Check if the window is already open and if so, bring it to focus
         if hasattr(self, 'prime_valves_window') and self.prime_valves_window.top.winfo_exists():
             self.prime_valves_window.top.lift()
         else:
             # Otherwise, create a new instance of the window
-            self.prime_valves_window = PrimeValves(self)
-
-    def open_valve_control_window(self):
-        # Assuming ValveControl is imported at the top of this file
-        self.valve_control_window = ValveControl(self)
+            self.prime_valves_window = ControlValves(self)
         
-    def open_rasterized_data_windows(self):
+    def open_rasterized_data_windows(self) -> None:
         if self.data_mgr.blocks_generated:
             self.data_window.show_window(1)
             self.data_window.show_window(2)
@@ -345,5 +340,12 @@ class ProgramController:
             print('blocks not yet generated')
 
 
-    def send_command_to_motor(self, command):
+    def send_command_to_motor(self, command) -> None:
         self.arduino_mgr.send_command_to_motor(command)
+        
+    def get_total_number_valves(self) -> int:
+        return self.experiment_config.maximum_num_valves
+    
+    def get_window_icon_path(self)-> str:
+        return self.experiment_config.get_window_icon_path()
+        

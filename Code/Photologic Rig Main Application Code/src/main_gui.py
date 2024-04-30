@@ -25,7 +25,7 @@ class MainGUI:
         self.root.bind(
             "<Control-w>", lambda e: self.root.destroy()
         )  # Close the window when the user presses ctl + w
-        icon_path = self.controller.config.get_window_icon_path()
+        icon_path = self.controller.experiment_config.get_window_icon_path()
         self.set_program_icon(icon_path)
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 

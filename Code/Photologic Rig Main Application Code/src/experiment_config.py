@@ -5,6 +5,7 @@ import platform
 class Config:
     def __init__(self) -> None:
         self.script_path = Path(__file__).resolve().parent
+        self.maximum_num_valves = 8
 
     def get_window_icon_path(self) -> str:
         # get directory path of project folder
