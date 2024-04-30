@@ -439,6 +439,7 @@ void loop()
         break;
       
       case 'O':
+      {
         int porta_value = 0;
         int portc_value = 0;
         Serial.println(full_command.c_str());
@@ -453,6 +454,7 @@ void loop()
           Serial.println("Error parsing PORT values");
         }
         break;
+      }
 
       case 'S':
         recieve_schedule(full_command, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);

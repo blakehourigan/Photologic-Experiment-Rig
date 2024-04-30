@@ -63,7 +63,7 @@ class AduinoManager:
                 if self.motor_arduino and self.motor_arduino.in_waiting > 0:
                     motor_data = self.motor_arduino.readline().decode('utf-8').strip()
                     self.data_queue.put(('motor', motor_data))
-
+                    print(motor_data)
             except Exception as e:
                 print(f"Error reading from Arduino: {e}")
                 break
