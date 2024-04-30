@@ -535,7 +535,7 @@ class MainGUI:
         # Cancel all after tasks
         for after_id in self.controller.after_ids:
             self.root.after_cancel(after_id)
-
+        self.root.after_cancel(self.controller.queue_id)
         # Stop the listener thread in AduinoManager
         self.controller.arduino_mgr.stop()
 
