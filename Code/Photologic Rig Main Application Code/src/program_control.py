@@ -276,17 +276,16 @@ class ProgramController:
         self.restart_callback()  # Call the restart function
 
     def close_all_tkinter_windows(self):
-        # Close the main window and any other open windows
-        if hasattr(self, 'main_gui') and hasattr(self.main_gui, 'root') and self.main_gui.root:
-            self.main_gui.root.destroy()  # This destroys the main window
-
-        # Also ensure any secondary windows are closed
+        # ensure any secondary windows are closed
         windows = [self.data_window, self.licks_window, self.experiment_ctl_wind, 
                 self.program_schedule_window, self.valve_testing_window, 
                 getattr(self, 'prime_valves_window', None)]  # Use getattr for safe access
         for win in windows:
             if win and hasattr(win, 'top') and hasattr(win.top, 'winfo_exists') and win.top.winfo_exists():
                 win.top.destroy()
+        # Close the main window and any other open windows
+        if hasattr(self, 'main_gui') and hasattr(self.main_gui, 'root') and self.main_gui.root:
+            self.main_gui.root.destroy()  # This destroys the main window
 
 
     def stop_program(self) -> None:
