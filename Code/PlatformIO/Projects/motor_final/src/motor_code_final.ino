@@ -439,9 +439,18 @@ void loop()
         break;
       
       case 'O':
-        int num_valves = 2;
-        uint8_t porta_value = create_porta_mask(num_valves / 2);
-        uint8_t portc_value = create_portc_mask(num_valves / 2);
+        int porta_value;
+        int portc_value;
+        if (sscanf(full_command.c_str(), "<O,%d,%d>", &porta_value, &portc_value) == 2) 
+        {
+          // If both numbers are successfully parsed, assign them to the ports
+          PORTA = porta_value; // Assign the first number to PORTA
+          PORTC = portc_value; // Assign the second number to PORTC
+        } else 
+        {
+          // If parsing fails, log an error or handle the case appropriately
+          Serial.println("Error parsing PORT values");
+        }
         PORTA = porta_value; // Open all valves on side 1
         PORTC = portc_value; // Open all valves on side 2
         break;

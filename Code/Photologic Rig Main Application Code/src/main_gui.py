@@ -374,7 +374,7 @@ class MainGUI:
         self.prime_valves_button_frame, _ = self.create_button(
             self.lower_control_buttons_frame,
             "Prime Valves",
-            self.controller.open_prime_valves_window,
+            self.controller.open_valve_control_window,
             "grey",
             0,
             2,

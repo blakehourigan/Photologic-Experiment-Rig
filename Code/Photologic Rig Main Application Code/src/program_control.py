@@ -55,8 +55,9 @@ class ProgramController:
             lick_stamps_side_one, lick_stamps_side_two = self.data_mgr.get_lick_timestamps(iteration)
             self.data_mgr.side_one_trial_licks.append(lick_stamps_side_one)
             self.data_mgr.side_two_trial_licks.append(lick_stamps_side_two)
-            if self.data_window.side1_window is not None and self.data_window.side2_window is not None: 
+            if self.data_window.side1_window is not None: 
                 self.data_window.update_plot(self.data_window.side1_window, lick_stamps_side_one, iteration) 
+            if self.data_window.side2_window is not None:
                 self.data_window.update_plot(self.data_window.side2_window, lick_stamps_side_two, iteration) 
         """ If we have pressed start, and the current trial number is less than the number of trials determined by number of stim * number of trial blocks, 
             then continue running through more trials"""
@@ -269,16 +270,6 @@ class ProgramController:
 
         self.arduino_mgr = AduinoManager(self)
 
-
-    def open_prime_valves_window(self):
-        # Check if the window is already open and if so, bring it to focus
-        if hasattr(self, 'prime_valves_window') and self.prime_valves_window.top.winfo_exists():
-            self.prime_valves_window.top.lift()
-        else:
-            # Otherwise, create a new instance of the window
-            self.prime_valves_window = PrimeValves(self)
-
-
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state, changing the button back to start."""
         self.state = "OFF"
@@ -334,6 +325,14 @@ class ProgramController:
         if self.running:
             self.main_gui.update_clock_label()
 
+    def open_drain_valves_window(self):
+        # Check if the window is already open and if so, bring it to focus
+        if hasattr(self, 'prime_valves_window') and self.prime_valves_window.top.winfo_exists():
+            self.prime_valves_window.top.lift()
+        else:
+            # Otherwise, create a new instance of the window
+            self.prime_valves_window = PrimeValves(self)
+
     def open_valve_control_window(self):
         # Assuming ValveControl is imported at the top of this file
         self.valve_control_window = ValveControl(self)
@@ -344,3 +343,7 @@ class ProgramController:
             self.data_window.show_window(2)
         else: 
             print('blocks not yet generated')
+
+
+    def send_command_to_motor(self, command):
+        self.arduino_mgr.send_command_to_motor(command)

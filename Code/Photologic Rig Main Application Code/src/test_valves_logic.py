@@ -9,10 +9,7 @@ class valveTestLogic:
         self.side_two_durations: List[int] = []
         
         self.completed_test_pairs = 0
-        
-
-
-        
+    
     def run_valve_test(self, num_valves):
         """_controller function to run the testing sequence on given valves_
         """
