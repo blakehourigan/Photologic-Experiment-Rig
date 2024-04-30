@@ -64,8 +64,6 @@ class ProgramController:
         self.data_mgr.current_iteration = iteration
         
         if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
-            self.send_command_to_arduino(arduino='motor', command='<9>')
-            
             self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -281,12 +279,17 @@ class ProgramController:
             self.main_gui.root.after_cancel(after_id)
 
         self.main_gui.root.after(
-            5000, self.arduino_mgr.reset_arduinos
+            5000, self.complete_program
         )  # send the reset command to reboot both Arduino boards
 
         self.after_ids.clear()
 
         self.data_mgr.current_trial_number = 1
+
+    def complete_program(self)-> None:
+        # Request the timestamp data from the motor arduino
+        self.send_command_to_arduino(arduino='motor', command="<9>")
+        self.arduino_mgr.reset_arduinos()
 
     def start_program(self) -> None:
         # Start the program if it is not already runnning and generate random numbers
@@ -303,8 +306,7 @@ class ProgramController:
             # program main start time begins now
             self.data_mgr.start_time = time.time()
             self.data_mgr.state_start_time = time.time()
-            
-            # Request the timestamp data from the motor arduino
+
             self.send_command_to_arduino(arduino='motor', command="<0>")
 
             self.main_gui.update_clock_label()
