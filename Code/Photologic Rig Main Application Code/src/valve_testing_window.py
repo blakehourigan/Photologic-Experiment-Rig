@@ -23,7 +23,7 @@ class ValveTestWindow:
                 string = "Enter the volume in cm^3 for the starting weight of the beaker for side " + str(side) 
             else: 
                 string = "Enter the measured volume cm^3 for valve " + str(valve)
-            user_input = simpledialog.askstring("Measured Volume", string)
+            user_input = simpledialog.askstring("Measured Volume", string, parent=self.top)
             
             if user_input is None:
                 response = messagebox.askyesno("Input Cancelled", "No input provided. Would you like to try again?")
@@ -116,6 +116,7 @@ class ValveTestWindow:
         # if the tests have been ran and we now have opening times, then update the table to show the opening times and the ul we recieved from the arduinos calculations
         
         if len(self.valve_opening_times) > 0:
+            print(self.ul_dispensed)
             for i in range(self.num_valves_to_test.get() // 2 ):
                 self.valve_table.insert("", "end", values=(f"{i+1}", f"{self.ul_dispensed[i] * 1000} ul", f"{self.valve_opening_times[i]} ms"))
             for i in range(self.num_valves_to_test.get() // 2 ):   
