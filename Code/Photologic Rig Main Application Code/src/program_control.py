@@ -385,3 +385,8 @@ class ProgramController:
         
     def launch_prime_valves_window(self) -> None:
         self.prime_valves_window = PrimeValves(self)
+
+    def run_valve_test(self, num_valves_to_test) -> None:
+        print('hello')
+        self.valves_to_test = num_valves_to_test
+        self.valve_test_logic.start_valve_test_sequence(num_valves_to_test)

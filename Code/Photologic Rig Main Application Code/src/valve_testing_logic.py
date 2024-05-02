@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 class valveTestLogic:
     def __init__(self, controller) -> None:
@@ -10,13 +10,6 @@ class valveTestLogic:
         
         self.completed_test_pairs = 0
 
-        
-    def run_valve_test(self, num_valves):
-        """_controller function to run the testing sequence on given valves_
-        """
-        self.valves_to_test = num_valves
-        self.start_valve_test_sequence(num_valves)
-        
     def start_valve_test_sequence(self, num_valves):
         """the test sequence that each valve will undergo
         """
@@ -31,11 +24,11 @@ class valveTestLogic:
         # get the beaker measurements for the respective sides, set init to true to tell the popup to display the beaker measurement text.
         self.side_one_container_measurement = self.controller.valve_testing_window.input_popup(0, init = True, side = 1)
         self.side_two_container_measurement = self.controller.valve_testing_window.input_popup(0, init = True, side = 2)
-        
+                
         execute = self.check_container_measurements(self.side_one_container_measurement, self.side_two_container_measurement) # if the user did not cancel either prompt, then continue
-        
+
         if execute:
-            self.controller.send_command_to_motor(arduino='motor', command= f'<T,{num_valves.get()}>')
+            self.controller.send_command_to_arduino(arduino='motor', command= f'<T,{num_valves.get()}>')
 
     def append_to_volumes(self) -> None:
         self.side_one_volumes.append(self.controller.valve_testing_window.input_popup(self.completed_test_pairs + 1) - self.side_one_container_measurement)
@@ -47,22 +40,32 @@ class valveTestLogic:
             if self.completed_test_pairs != self.controller.valve_testing_window.num_valves_to_test.get():
                 if self.controller.valve_testing_window.ask_continue():    
                     # after appending data, if it is not the final valve pair, then continue
-                    self.controller.send_command_to_motor(arduino='motor', command="<continue>")
+                    self.controller.send_command_to_arduino(arduino='motor', command="<continue>")
                 else:
-                    self.controller.valve_testing_window.tesing_aborted()
+                    self.controller.valve_testing_window.testing_aborted()
                 self.completed_test_pairs += 1 
         
     def begin_updating_opening_times(self, duration_string) -> None:
         side_one_durations, side_two_durations = self.unpack_and_assign_durations(duration_string)
-        side_one_opening_times = self.update_opening_times(self.num_valves.get(), side_one_durations, self.side_one_volumes)
-        side_two_opening_times = self.update_opening_times(self.num_valves.get(), side_two_durations, self.side_two_volumes)
+        side_one_opening_times, side_one_ul_per_lick = self.update_opening_times(self.num_valves.get(), side_one_durations, self.side_one_volumes)
+        side_two_opening_times, side_two_ul_per_lick = self.update_opening_times(self.num_valves.get(), side_two_durations, self.side_two_volumes)
+        
+        opening_times = side_one_opening_times
+        opening_times.extend(side_two_opening_times)
+        
+        ul_dispensed = side_one_ul_per_lick
+        ul_dispensed.extend(side_two_ul_per_lick)
+        
+        self.controller.valve_testing_window.set_valve_opening_times(opening_times)
+        self.controller.valve_testing_window.set_ul_dispensed(ul_dispensed)
+        self.controller.valve_testing_window.validate_and_update()
         
         side_one_str = ",".join(map(str, side_one_opening_times))
         side_two_str = ",".join(map(str, side_two_opening_times))
         
         self.controller.send_command_to_arduino(arduino='motor', command=f"<{side_one_str},{side_two_str}>")
                     
-    def update_opening_times(self, num_valves, durations, volumes) -> List[int]:
+    def update_opening_times(self, num_valves, durations, volumes) -> Tuple[List[int], List[float]]:
         # this function is called once per side to update the opening times for each side of valves
         # use valve_opening_times varable from the gui window1
         opening_times = [] 
@@ -80,12 +83,9 @@ class valveTestLogic:
         if((num_valves // 2) < 8):
             for i in range(8 - (num_valves // 2)):
                 opening_times.append(durations[i + (num_valves // 2)])
-        
-        self.controller.valve_testing_window.set_valve_opening_times(opening_times)
-        self.controller.valve_testing_window.set_ul_dispensed(ul_dispensed)
-        self.controller.valve_testing_window.validate_and_update()
+    
 
-        return opening_times
+        return opening_times, ul_dispensed
     
     def unpack_and_assign_durations(self, duration_string):
         # Initialize empty lists for Side 1 and Side 2
@@ -125,6 +125,6 @@ class valveTestLogic:
     
     def check_container_measurements(self, side_one, side_two) -> bool:
         execute = True
-        if side_one or side_two == 0.0: 
+        if side_one == 0.0 or side_two == 0.0: 
             execute = False
         return execute

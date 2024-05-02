@@ -48,9 +48,10 @@ class ValveTestWindow:
         self.num_valves_to_test.trace_add("write", self.validate_and_update)
         self.desired_volume.trace_add("write", self.validate_and_update)
 
-    def tesing_aborted(self):
-        messagebox("Testing Aborted", "Testing has been aborted, run testing again or continue with experiement.")
+    def testing_aborted(self):
+        messagebox.showinfo("Testing Aborted", "Testing has been aborted. Run testing again or continue with the experiment.")
 
+        
     def ask_continue(self):
         return messagebox.askyesno("Continue", "Are you ready to continue?")
 
@@ -108,14 +109,17 @@ class ValveTestWindow:
         self.valve_table_frame.grid(row=2, column=0, sticky="nsew", pady=10, padx=10)
         self.valve_table = ttk.Treeview(self.valve_table_frame, columns=("Valve","Amount Dispensed", "Valve Opening Times"), show="headings")
         self.valve_table.heading("Valve", text="Valve #")
-        self.valve_table.heading("Amount Dispensed", text="Amount Dispensed (ml)")
+        self.valve_table.heading("Amount Dispensed", text="Amount Dispensed Per Lick (ul)")
         self.valve_table.heading("Valve Opening Times", text="Valve Opening Time (ms)")
         self.valve_table.pack(expand=True, fill='both')
 
         # if the tests have been ran and we now have opening times, then update the table to show the opening times and the ul we recieved from the arduinos calculations
+        
         if len(self.valve_opening_times) > 0:
-            for i in range(self.num_valves_to_test.get()):
+            for i in range(self.num_valves_to_test.get() // 2 ):
                 self.valve_table.insert("", "end", values=(f"{i+1}", f"{self.ul_dispensed[i] * 1000} ul", f"{self.valve_opening_times[i]} ms"))
+            for i in range(self.num_valves_to_test.get() // 2 ):   
+                self.valve_table.insert("", "end", values=(f"{i+1}", f"{self.ul_dispensed[i+4] * 1000} ul", f"{self.valve_opening_times[i+4]} ms"))
         else:
                 
             for i in range(self.num_valves_to_test.get()):
@@ -125,7 +129,7 @@ class ValveTestWindow:
     def create_buttons(self):
         start_test_button_frame = tk.Frame(self.top, highlightbackground='black', highlightthickness=1)
         start_test_button_frame.grid(row=3, column=0, pady=10, padx=10, sticky="ew")
-        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command= lambda: self.controller.valve_test_logic.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
+        start_test_button = tk.Button(start_test_button_frame, text="Start Testing", command= lambda: self.controller.run_valve_test(self.num_valves_to_test), bg="green", font=("Helvetica", 16))
         start_test_button.pack(fill='both', expand=True)
 
     def collect_user_inputs(self):
