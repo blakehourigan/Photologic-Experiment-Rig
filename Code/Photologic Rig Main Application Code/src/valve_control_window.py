@@ -5,26 +5,25 @@ import platform
 class ControlValves:
     def __init__(self, controller) -> None:
         self.controller = controller
-        self.top = tk.Toplevel(self.controller.main_gui.root)  # Use main GUI's root for Toplevel
+        self.top = tk.Toplevel(self.controller.main_gui.root)
         self.top.title("Valve Control")
-        self.top.protocol("WM_DELETE_WINDOW", self.close_window)  # Proper close handling
-        icon_path = self.controller.get_window_icon_path()
-        self.set_program_icon(icon_path)
-        
+        self.top.protocol("WM_DELETE_WINDOW", self.close_window)
+        self.set_program_icon(self.controller.get_window_icon_path())
+
         self.maximum_num_valves = self.controller.get_total_number_valves()
+        self.valve_states = ['0'] * self.maximum_num_valves
 
-        # Initialize list of strings that will contain the states of each valve. 
-        self.valve_states = ['0'] * self.maximum_num_valves  # Set default state of valves to closed 
-
+        self.motor_button_text = tk.StringVar()
+        self.motor_button_text.set("Move motor down")
         self.setup_ui()
-        self.center_window(300, 300)  # Assuming you want a 300x300 window
+        self.center_window(300, 300)
 
     def setup_ui(self) -> None:
-        # Frame to hold valve buttons
         self.valves_frame = tk.Frame(self.top)
         self.valves_frame.pack(pady=10)
         self.create_valve_buttons()
-        
+        self.create_motor_control_button()
+
     def center_window(self, width, height):
         # Get the screen width and height
         screen_width = self.top.winfo_screenwidth()
@@ -37,6 +36,18 @@ class ControlValves:
         # Set the window's dimension
         self.top.geometry(f'{width}x{height}+{x}+{y}')
 
+
+    def toggle_motor(self):
+        if self.motor_button_text.get() == "Move motor down":
+            self.motor_button_text.set("Move motor up")
+            self.motor_button.configure(bg='blue')
+            motor_command = "<D>"  # Replace with your specific down command
+        else:
+            self.motor_button_text.set("Move motor down")
+            self.motor_button.configure(bg='green')
+            motor_command = "<U>"  # Replace with your specific up command
+        self.controller.send_command_to_arduino(arduino='motor', command=motor_command)
+
     def set_program_icon(self, icon_path) -> None:
         os_name = platform.system()
 
@@ -46,6 +57,10 @@ class ControlValves:
             # Use .png or .gif file directly
             photo = PhotoImage(file=icon_path)
             self.root.tk.call("wm", "iconphoto", self.root._w, photo)  # type: ignore
+
+    def create_motor_control_button(self):
+        self.motor_button = tk.Button(self.valves_frame, textvariable=self.motor_button_text, bg='green', command=self.toggle_motor)
+        self.motor_button.pack(pady=2)
 
     def create_valve_buttons(self):
         # Create list of buttons to be able to access each one easily later
