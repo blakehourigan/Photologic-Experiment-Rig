@@ -6,7 +6,7 @@ class ControlValves:
     def __init__(self, controller) -> None:
         self.controller = controller
         self.top = tk.Toplevel(self.controller.main_gui.root)  # Use main GUI's root for Toplevel
-        self.top.title("Open Valves")
+        self.top.title("Valve Control")
         self.top.protocol("WM_DELETE_WINDOW", self.close_window)  # Proper close handling
         icon_path = self.controller.get_window_icon_path()
         self.set_program_icon(icon_path)
