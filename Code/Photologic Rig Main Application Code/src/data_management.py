@@ -25,7 +25,7 @@ class DataManager:
         # and the total number of stimuli. These are of type IntVar because they are used in the GUI.
 
         self.num_trials = tk.IntVar(value=0)
-        self.num_trial_blocks = tk.IntVar(value=4)
+        self.num_trial_blocks = tk.IntVar(value=10)
         self.num_stimuli = tk.IntVar(value=4)
         self.TTC_lick_threshold = tk.IntVar(value=3)
 
@@ -40,8 +40,8 @@ class DataManager:
             "TTC_var": tk.IntVar(value=15000),
             "sample_var": tk.IntVar(value=15000),
             "ITI_random_entry": tk.IntVar(value=5000),
-            "TTC_random_entry": tk.IntVar(value=5000),
-            "sample_random_entry": tk.IntVar(value=5000),
+            "TTC_random_entry": tk.IntVar(value=0),
+            "sample_random_entry": tk.IntVar(value=0),
         }
 
         # initializing the lists that will hold the final calculated random interval values
