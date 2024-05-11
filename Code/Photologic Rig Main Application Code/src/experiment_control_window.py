@@ -1,16 +1,18 @@
 import tkinter as tk
 from tkinter import ttk
 import platform
-from typing import Dict, List
+from typing import Dict, List, TYPE_CHECKING, Optional
 
+if TYPE_CHECKING:
+    from program_control import ProgramController
 
 class ExperimentCtlWindow:
-    def __init__(self, controller):
+    def __init__(self, controller: 'ProgramController'):
         self.controller = controller
 
         self.system = platform.system()
 
-        self.top = None
+        self.top: Optional[tk.Toplevel] = None
         self.canvas = (
             None  # Initialize canvas here to ensure it's available for binding
         )
@@ -19,7 +21,11 @@ class ExperimentCtlWindow:
     def create_window(self, master) -> tk.Toplevel:
         self.top = tk.Toplevel(master)
         self.top.title("Stimuli / Valves")
-        self.top.bind("<Control-w>", lambda e: self.top.destroy())
+        
+        # Safely bind the event using a local variable in the lambda to avoid referencing a potentially None self.top
+        top_local = self.top
+        top_local.bind("<Control-w>", lambda e: top_local.destroy())
+        
         self.top.resizable(False, False)
 
         return self.top
@@ -81,7 +87,7 @@ class ExperimentCtlWindow:
 
     def show_window(self, master) -> None:
         # if the number of simuli is currently set to zero, tell the user that they need to add stmiuli before we can more forward
-        if self.controller.data_mgr.num_stimuli.get() > 0:
+        if self.controller.get_num_stimuli() > 0:
             if self.top is not None and self.top.winfo_exists():
                 self.top.lift()
             else:
@@ -155,7 +161,7 @@ class ExperimentCtlWindow:
         )
         side_two_label.grid(row=0, column=1, pady=5)
 
-        for i in range(self.controller.data_mgr.num_stimuli.get() // 2):
+        for i in range(self.controller.get_num_stimuli() // 2):
             # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
             column = 0
 
@@ -172,7 +178,7 @@ class ExperimentCtlWindow:
 
             self.controller.data_mgr.stimuli_vars[f"Valve {i+1} substance"].trace_add(
                 "write",
-                lambda name,
+                lambda name, #type: ignore
                 index,
                 mode,
                 source_var=source_var,
@@ -186,7 +192,7 @@ class ExperimentCtlWindow:
 
             row += 1
         row = 1
-        for i in range(self.controller.data_mgr.num_stimuli.get() // 2):
+        for i in range(self.controller.get_num_stimuli() // 2):
             # place the box in the first column if less that 4 stimuli, set to column 2 if 5 or above
             column = 1
             frame, label, entry = self.create_labeled_entry(
@@ -202,7 +208,7 @@ class ExperimentCtlWindow:
 
             self.controller.data_mgr.stimuli_vars[f"Valve {i+5} substance"].trace_add(
                 "write",
-                lambda name,
+                lambda name, #type: ignore
                 index,
                 mode,
                 source_var=source_var,

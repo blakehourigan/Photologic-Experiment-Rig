@@ -3,6 +3,8 @@ import pandas as pd #type: ignore
 import numpy as np #type: ignore 
 import tkinter as tk
 from collections import defaultdict
+import traceback
+import re
 
 from typing import TYPE_CHECKING, Tuple, List
 
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
     from program_control import ProgramController
 
 class DataManager:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
 
         self.stimuli_dataframe = pd.DataFrame()
@@ -100,13 +102,79 @@ class DataManager:
 
         self.blocks_generated = True
         self.controller.program_schedule_window.show_stimuli_table()
-        self.controller.arduino_mgr.send_schedule_to_motor()
+        self.send_schedule_to_motor()
+
+
+    def send_schedule_to_motor(self) -> None:
+        """Send a schedule to the motor Arduino and receive an echo for confirmation."""
+        try:
+            stim_var_list = list(self.stimuli_vars.values())
+            
+            filtered_stim_var_list = [item for item in stim_var_list if not re.match(r'Valve \d+ substance', item.get())]
+            
+            side_one_vars = []
+            side_two_vars = []
+            
+            self.side_one_indexes: List[int] = [] 
+            self.side_two_indexes: List[int] = []
+            
+            for i in range(len(filtered_stim_var_list)):
+                if i < len(filtered_stim_var_list) // 2:  
+                    side_one_vars.append(filtered_stim_var_list[i].get())
+                else:
+                    side_two_vars.append(filtered_stim_var_list[i].get())
+
+            if self.controller.arduino_mgr.motor_arduino:            
+                side_one_schedule = self.stimuli_dataframe['Port 1'] # separating the schedules based on side
+
+                side_two_schedule = self.stimuli_dataframe['Port 2']
+                
+                for i in range(len(side_one_schedule)):     
+                    index = side_one_vars.index(side_one_schedule[i])
+                    self.side_one_indexes.append(2 ** index)
+                    index = side_two_vars.index(side_two_schedule[i])
+                    self.side_two_indexes.append(2 ** index)
+                
+                side_one_index_str = ",".join(map(str, self.side_one_indexes))
+                side_two_index_str = ",".join(map(str, self.side_two_indexes))
+                
+                command = f"<S,Side One,{side_one_index_str},-1,Side Two,{side_two_index_str},-1,end>"
+                self.controller.send_command_to_arduino(arduino='motor', command=command)  # Signal to Arduino about the upcoming command
+
+        except Exception as e:
+            error_message = traceback.format_exc()  # Capture the full traceback
+            print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console 
+            self.controller.display_gui_error("Error sending schedule to motor Arduino:", str(e))
+
+
+    def verify_arduino_schedule(self, side_one_indexes, side_two_indexes, verification):
+        middle_index = len(verification) // 2
+
+        # Split the list into two halves
+        side_one_verification_str = verification[:middle_index]
+        side_two_verification_str = verification[middle_index:]
+        
+        side_one_verification = [int(x) for x in side_one_verification_str.split(',') if x.strip().isdigit()]
+        side_two_verification = [int(x) for x in side_two_verification_str.split(',') if x.strip().isdigit()]
+        
+        are_equal_side_one = all(side_one_indexes[i] == side_one_verification[i] for i in range(len(side_one_indexes)))
+        are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
+        
+        if are_equal_side_one and are_equal_side_two:
+            print("Both lists are identical, Schedule Send Complete.")
+        else:
+            print("Lists are not identical.")
+    
+    """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
+    SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
+    valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
+    
 
     def create_trial_blocks(self):
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
-        # the total number of trials equals (number stimuli / 2) because each stimuli is paired up, times the number of trial blocks that we want
-        self.num_trials = (((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
+        # the total number of trials equals (number stimuli // 2) because each stimuli is in a pair, times the number of trial blocks that we want. We use // to use integer division instead of recieving a float back.
+        self.num_trials = (((self.num_stimuli // 2) * self.num_trial_blocks))
 
         max_time = self.create_random_intervals()
 
@@ -124,9 +192,9 @@ class DataManager:
         ]
 
         # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number
-        if len(self.changed_vars) > self.num_stimuli.get():
+        if len(self.changed_vars) > self.num_stimuli:
             # Start at the number of stimuli you now have
-            start_index = self.num_stimuli.get()
+            start_index = self.num_stimuli
             # and then set the rest of stimuli past that value back to default to avoid error
             # create an index for each loop, loop through each key in stimuli_vars
             for index, key in enumerate(self.stimuli_vars):
@@ -217,8 +285,8 @@ class DataManager:
         last_first_pair = None
         current_streak = 0
 
-        for _ in range(self.num_trial_blocks.get()):
-            if self.num_trial_blocks.get() != 0 and self.changed_vars:
+        for _ in range(self.num_trial_blocks):
+            if self.num_trial_blocks != 0 and self.changed_vars:
                 pairs_copy = [tuple(pair) for pair in self.pairs]
                 np.random.shuffle(pairs_copy)  # Shuffle in-place
                 pseudo_random_lineup.extend(pairs_copy)
@@ -237,7 +305,7 @@ class DataManager:
 
             # Error handling remains unchanged
             elif len(self.changed_vars) == 0 and self.controller:
-                self.controller.display_error("Stimuli Variables Not Yet Changed",
+                self.controller.display_gui_error("Stimuli Variables Not Yet Changed",
                                                       "Stimuli variables have not yet been changed, to continue please change defaults and try again.")
 
         # Handling the last streak
@@ -250,7 +318,7 @@ class DataManager:
             stimulus_2.append(entry[1].get())
 
         # Calculate the percentage of each pair being first
-        first_pair_percentages = {pair: count / self.num_trial_blocks.get() * 100 for pair, count in first_pair_counts.items()}
+        first_pair_percentages = {pair: count / self.num_trial_blocks * 100 for pair, count in first_pair_counts.items()}
         print("Percentages of each pair appearing first:")
         for pair, percentage in first_pair_percentages.items():
             print(f"{pair}: {percentage:.2f}%")
@@ -349,7 +417,7 @@ class DataManager:
     def save_data_to_xlsx(self) -> None:
         # method that brings up the windows file save dialogue menu to save the two data tables to external files
         if not self.blocks_generated:
-            self.controller.display_error(
+            self.controller.display_gui_error(
                 "Blocks Not Generated",
                 "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
             )
@@ -452,6 +520,9 @@ class DataManager:
             raise ValueError("Number of trial blocks cannot be negative.")
         self._num_trial_blocks.set(value)
         
+    def get_num_trial_blocks_var(self) -> tk.IntVar:
+        return self._num_trial_blocks
+        
     # num_stimuli getter and setter methods 
     @property
     def num_stimuli(self):
@@ -462,6 +533,9 @@ class DataManager:
         if value < 0:
             raise ValueError("Number of stimuli cannot be negative.")
         self._num_stimuli.set(value)
+        
+    def get_num_stimuli_var_reference(self) -> tk.IntVar:
+        return self._num_stimuli
         
     # blocks_generated getter and setter method
     @property

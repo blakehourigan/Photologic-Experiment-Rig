@@ -7,8 +7,8 @@
 class valve_control 
 {
 public:
-  void toggle_solenoid(int side, int solenoid_pin);
-  void untoggle_solenoid(int side, int solenoid_pin);
+  void toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial);
+  void untoggle_solenoids();
   void lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, int valve_number = -1);
   void prime_valves(bool prime_flag, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom);
 

@@ -314,7 +314,7 @@ class MainGUI:
         self.num_trial_blocks_frame, _, _ = self.create_labeled_entry(
             parent=self.entry_widgets_frame,
             label_text= "# Trial Blocks",
-            text_var=self.controller.data_mgr.num_trial_blocks,
+            text_var=self.controller.get_num_trial_blocks_variable_reference(),
             row=0,
             column=3,
         )
@@ -344,7 +344,7 @@ class MainGUI:
         self.num_stimuli_frame, _, _ = self.create_labeled_entry(
             parent=self.entry_widgets_frame,
             label_text="# Stimuli",
-            text_var=self.controller.data_mgr.num_stimuli,
+            text_var=self.controller.get_num_stimuli_variable_reference(),
             row=1,
             column=3,
         )

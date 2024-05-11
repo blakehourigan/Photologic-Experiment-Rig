@@ -442,7 +442,6 @@ void loop()
       {
         int porta_value = 0;
         int portc_value = 0;
-        Serial.println(full_command.c_str());
         if (sscanf(full_command.c_str(), "O,%d,%d", &porta_value, &portc_value) == 2) 
         {
           // If both numbers are successfully parsed, assign them to the ports

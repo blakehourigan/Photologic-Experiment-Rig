@@ -1,4 +1,5 @@
 import time 
+import tkinter as tk
 
 # Helper classes
 from arduino_control import AduinoManager
@@ -208,7 +209,8 @@ class ProgramController:
                 self.valve_test_logic.begin_updating_opening_times(data)
             elif "SCHEDULE VERIFICATION" in data:
                 cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
-                self.arduino_mgr.verify_schedule(self.arduino_mgr.side_one_indexes, self.arduino_mgr.side_two_indexes, cleaned_data)
+                print(cleaned_data)
+                self.data_mgr.verify_arduino_schedule(self.data_mgr.side_one_indexes, self.data_mgr.side_two_indexes, cleaned_data)
             elif "Time Stamp Data" in data: 
                 cleaned_data = data.replace("Time Stamp Data", "").strip()
                 motor_timestamps = self.parse_timestamps(cleaned_data)
@@ -396,5 +398,15 @@ class ProgramController:
     def get_num_trials(self) -> int:
         return self.data_mgr.num_trials
     
+    def get_num_stimuli(self) -> int:
+        return self.data_mgr.num_stimuli
+    
     def get_current_trial(self) -> int:
         return self.data_mgr.current_trial_number
+    
+    def get_num_trial_blocks_variable_reference(self) -> tk.IntVar:
+        return self.data_mgr.get_num_trial_blocks_var()
+    
+    # this function passes the num_stimuli variable directly from the data manager class to the gui class without jumping through many classes in the gui class itself
+    def get_num_stimuli_variable_reference(self) -> tk.IntVar:
+        return self.data_mgr.get_num_stimuli_var_reference()
