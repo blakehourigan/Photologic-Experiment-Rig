@@ -102,7 +102,7 @@ class ProgramScheduleWindow:
         
     def show_stimuli_table(self):
         if not self.controller.data_mgr.blocks_generated:
-            self.controller.main_gui.display_error(
+            self.controller.display_error(
                 "Blocks not Generated",
                 "Please generate blocks before starting the program."
             )

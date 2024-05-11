@@ -3,13 +3,15 @@ import time
 import re
 import traceback
 import threading
-from typing import List
+from typing import TYPE_CHECKING, List
 import queue
 import serial.tools.list_ports #type: ignore
 
+if TYPE_CHECKING:
+    from program_control import ProgramController
 
 class AduinoManager:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
 
         self.BAUD_RATE = 115200
@@ -31,13 +33,13 @@ class AduinoManager:
         if self.laser_arduino is None:
             error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections() 
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Laser Arduino Error", error_message
             )
         if self.motor_arduino is None:
             error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Motor Arduino Error", error_message
             )
         else:
@@ -87,7 +89,7 @@ class AduinoManager:
             return identifier
         except Exception as e:
             error_message = f"An error occurred while identifying Arduino: {e}"
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Error Identifying Arduino", error_message
             )
             return "ERROR"
@@ -102,7 +104,7 @@ class AduinoManager:
             else:
                 print("Arduino boards not connected.")
         except Exception as e:
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Error resetting Arduino boards:", e
             )
 
@@ -115,7 +117,7 @@ class AduinoManager:
             else:
                 print("Motor Arduino not connected.")
         except Exception as e:
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Error sending command to motor Arduino:", e
             )
         
@@ -128,7 +130,7 @@ class AduinoManager:
             else:
                 print("Laser Arduino not connected.")
         except Exception as e:
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Error sending command to laser Arduino:", e
             )
 
@@ -172,7 +174,7 @@ class AduinoManager:
         except Exception as e:
             error_message = traceback.format_exc()  # Capture the full traceback
             print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console or log
-            self.controller.main_gui.display_error("Error sending schedule to motor Arduino:", str(e))
+            self.controller.display_gui_error("Error sending schedule to motor Arduino:", str(e))
 
     def verify_schedule(self, side_one_indexes, side_two_indexes, verification):
         middle_index = len(verification) // 2

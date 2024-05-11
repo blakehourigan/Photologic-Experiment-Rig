@@ -4,7 +4,10 @@ import numpy as np #type: ignore
 import tkinter as tk
 from collections import defaultdict
 
-from typing import Tuple, List
+from typing import TYPE_CHECKING, Tuple, List
+
+if TYPE_CHECKING:
+    from program_control import ProgramController
 
 class DataManager:
     def __init__(self, controller) -> None:
@@ -24,10 +27,10 @@ class DataManager:
         # Initialize variables that will keep track of the total number of trials we will have, the total number of trial blocks that the user wants to run
         # and the total number of stimuli. These are of type IntVar because they are used in the GUI.
 
-        self.num_trials = tk.IntVar(value=0)
-        self.num_trial_blocks = tk.IntVar(value=10)
-        self.num_stimuli = tk.IntVar(value=4)
-        self.TTC_lick_threshold = tk.IntVar(value=3)
+        self._num_trials = 0
+        self._num_trial_blocks = tk.IntVar(value=10)
+        self._num_stimuli = tk.IntVar(value=4)
+        self._TTC_lick_threshold = tk.IntVar(value=3)
 
         # initializing variable for iteration through the trials in the program
 
@@ -74,21 +77,21 @@ class DataManager:
         self.create_trial_blocks()
         stimuli_1, stimuli_2 = self.generate_pairs()
 
-        block_size = int(self.num_stimuli.get() / 2)
+        block_size = int(self.num_stimuli / 2)
         data = {
             "Trial Block": np.repeat(
-                range(1, self.controller.data_mgr.num_trial_blocks.get() + 1),
+                range(1, self.num_trial_blocks + 1),
                 block_size,
             ),
-            "Trial Number": np.repeat(range(1, self.num_trials.get() + 1), 1),
+            "Trial Number": np.repeat(range(1, self.num_trials + 1), 1),
             "Port 1": stimuli_1,
             "Port 2": stimuli_2,
-            "Port 1 Licks": np.full(self.num_trials.get(), np.nan),
-            "Port 2 Licks": np.full(self.num_trials.get(), np.nan),
+            "Port 1 Licks": np.full(self.num_trials, np.nan),
+            "Port 2 Licks": np.full(self.num_trials, np.nan),
             "ITI": self.ITI_intervals_final,
             "TTC": self.TTC_intervals_final,
             "Sample Time": self.sample_intervals_final,
-            "TTC Actual": np.full(self.num_trials.get(), np.nan),
+            "TTC Actual": np.full(self.num_trials, np.nan),
         }
 
         df = pd.DataFrame(data)
@@ -103,7 +106,7 @@ class DataManager:
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
 
         # the total number of trials equals (number stimuli / 2) because each stimuli is paired up, times the number of trial blocks that we want
-        self.num_trials.set(((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
+        self.num_trials = (((self.num_stimuli.get() / 2) * self.num_trial_blocks.get()))
 
         max_time = self.create_random_intervals()
 
@@ -165,7 +168,7 @@ class DataManager:
 
         else:
             # if a stimulus has not been changed, this error message will be thrown to tell the user to change it and try again.
-            self.controller.main_gui.display_error(
+            self.controller.display_error(
                 "Stimulus Not Changed",
                 "One or more of the default stimuli have not been changed, please change the default value and try again",
             )
@@ -177,7 +180,7 @@ class DataManager:
         self.sample_intervals_final.clear()
 
         # Assuming 'num_entries' is the number of entries (rows) you need to process
-        for entry in range(self.num_trials.get()):
+        for entry in range(self.num_trials):
             for interval_type in ["ITI", "TTC", "sample"]:
                 random_entry_key = f"{interval_type}_random_entry"
                 var_key = f"{interval_type}_var"
@@ -234,11 +237,8 @@ class DataManager:
 
             # Error handling remains unchanged
             elif len(self.changed_vars) == 0 and self.controller:
-                self.controller.main_gui.display_error("Stimuli Variables Not Yet Changed",
+                self.controller.display_error("Stimuli Variables Not Yet Changed",
                                                       "Stimuli variables have not yet been changed, to continue please change defaults and try again.")
-            elif self.num_trial_blocks.get() == 0 and self.controller:
-                self.controller.main_gui.display_error("Number of Trial Blocks 0",
-                                                      "Number of trial blocks is currently still set to zero, please change the default value and try again.")
 
         # Handling the last streak
         if current_streak > 0:
@@ -349,7 +349,7 @@ class DataManager:
     def save_data_to_xlsx(self) -> None:
         # method that brings up the windows file save dialogue menu to save the two data tables to external files
         if not self.blocks_generated:
-            self.controller.main_gui.display_error(
+            self.controller.display_error(
                 "Blocks Not Generated",
                 "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
             )
@@ -392,10 +392,10 @@ class DataManager:
         self.sample_intervals_final.clear()
 
         # Reset numeric and boolean attributes as necessary
-        self.num_trials.set(0)
-        self.num_trial_blocks.set(4)
-        self.num_stimuli.set(4)
-        self.TTC_lick_threshold.set(3)
+        self.num_trials = 0
+        self.num_trial_blocks = 4
+        self.num_stimuli = 4
+        self.TTC_lick_threshold = 3
 
         # Add similar resets for any other relevant attributes
 
@@ -432,6 +432,38 @@ class DataManager:
         self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
         self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
         
+    # num_trials getter and setter methods      
+    @property
+    def num_trials(self):
+        return self._num_trials
+        
+    @num_trials.setter
+    def num_trials(self, value):
+        self._num_trials = value
+        
+    # _num_trial_blocks getter and setter methods 
+    @property 
+    def num_trial_blocks(self):
+        return self._num_trial_blocks.get()
+        
+    @num_trial_blocks.setter
+    def num_trial_blocks(self, value):
+        if value < 0:
+            raise ValueError("Number of trial blocks cannot be negative.")
+        self._num_trial_blocks.set(value)
+        
+    # num_stimuli getter and setter methods 
+    @property
+    def num_stimuli(self):
+        return self._num_stimuli.get()
+
+    @num_stimuli.setter
+    def num_stimuli(self, value):
+        if value < 0:
+            raise ValueError("Number of stimuli cannot be negative.")
+        self._num_stimuli.set(value)
+        
+    # blocks_generated getter and setter method
     @property
     def blocks_generated(self):
         return self._blocks_generated

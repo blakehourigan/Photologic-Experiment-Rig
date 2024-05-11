@@ -1,10 +1,14 @@
-import platform
-import tkinter as tk
 from tkinter import PhotoImage, messagebox, ttk
+from typing import TYPE_CHECKING
+import tkinter as tk
+import platform
 import time
 
+if TYPE_CHECKING:
+    from program_control import ProgramController
+    
 class MainGUI:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
         self.setup_window()
 
@@ -92,7 +96,7 @@ class MainGUI:
         self,
         parent: tk.Frame,
         label_text: str,
-        text_var: tk.StringVar,
+        text_var: tk.IntVar,
         row: int,
         column: int,
     ) -> tuple[tk.Frame, tk.Label, tk.Entry]:
@@ -286,62 +290,63 @@ class MainGUI:
 
         # Simplify the creation of labeled entries
         self.ITI_Interval_Frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "ITI Time",
-            self.controller.data_mgr.interval_vars["ITI_var"],
-            0,
-            0,
+            parent=self.entry_widgets_frame,
+            label_text= "ITI Time",
+            text_var=self.controller.data_mgr.interval_vars["ITI_var"],
+            row=0,
+            column=0,
         )
+        
         self.TTC_Interval_Frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "TTC Time",
-            self.controller.data_mgr.interval_vars["TTC_var"],
-            0,
-            1,
+            parent=self.entry_widgets_frame,
+            label_text= "TTC Time",
+            text_var=self.controller.data_mgr.interval_vars["TTC_var"],
+            row=0,
+            column=1,
         )
         self.Sample_Interval_Frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "Sample Time",
-            self.controller.data_mgr.interval_vars["sample_var"],
-            0,
-            2,
+            parent=self.entry_widgets_frame,
+            label_text= "Sample Time",
+            text_var=self.controller.data_mgr.interval_vars["sample_var"],
+            row=0,
+            column=2,
         )
         self.num_trial_blocks_frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "# Trial Blocks",
-            self.controller.data_mgr.num_trial_blocks,
-            0,
-            3,
+            parent=self.entry_widgets_frame,
+            label_text= "# Trial Blocks",
+            text_var=self.controller.data_mgr.num_trial_blocks,
+            row=0,
+            column=3,
         )
 
         # Similarly for random plus/minus intervals and the number of stimuli
         self.ITI_Random_Interval_frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "+/- ITI",
-            self.controller.data_mgr.interval_vars["ITI_random_entry"],
-            1,
-            0,
+            parent=self.entry_widgets_frame,
+            label_text= "+/- ITI",
+            text_var=self.controller.data_mgr.interval_vars["ITI_random_entry"],
+            row=1,
+            column=0,
         )
         self.TTC_Random_Interval_frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "+/- TTC",
-            self.controller.data_mgr.interval_vars["TTC_random_entry"],
-            1,
-            1,
+            parent=self.entry_widgets_frame,
+            label_text= "+/- TTC",
+            text_var=self.controller.data_mgr.interval_vars["TTC_random_entry"],
+            row=1,
+            column=1,
         )
         self.Sample_Interval_Random_Frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "+/- Sample",
-            self.controller.data_mgr.interval_vars["sample_random_entry"],
-            1,
-            2,
+            parent=self.entry_widgets_frame,
+            label_text= "+/- Sample",
+            text_var=self.controller.data_mgr.interval_vars["sample_random_entry"],
+            row=1,
+            column=2,
         )
         self.num_stimuli_frame, _, _ = self.create_labeled_entry(
-            self.entry_widgets_frame,
-            "# Stimuli",
-            self.controller.data_mgr.num_stimuli,
-            1,
-            3,
+            parent=self.entry_widgets_frame,
+            label_text="# Stimuli",
+            text_var=self.controller.data_mgr.num_stimuli,
+            row=1,
+            column=3,
         )
 
     def lower_control_buttons(self):
@@ -356,68 +361,68 @@ class MainGUI:
 
         # Create a new frame for each new button, and store the button inside of that frame
         self.test_valves_button_frame, _ = self.create_button(
-            self.lower_control_buttons_frame,
-            "Calibrate Valves",
-            lambda: self.controller.valve_testing_window.show_window(),
-            "grey",
-            0,
-            0,
+            parent=self.lower_control_buttons_frame,
+            button_text="Calibrate Valves",
+            command=lambda: self.controller.valve_testing_window.show_window(),
+            bg="grey",
+            row=0,
+            column=0,
         )
         self.valve_control_button_frame, _ = self.create_button(
-            self.lower_control_buttons_frame,
-            "Valve Control",
-            lambda: self.controller.open_valve_control_window(),
-            "grey",
-            0,
-            1,
+            parent=self.lower_control_buttons_frame,
+            button_text= "Valve Control",
+            command=lambda: self.controller.open_valve_control_window(),
+            bg="grey",
+            row=0,
+            column=1,
         )
         self.prime_valves_button_frame, _ = self.create_button(
-            self.lower_control_buttons_frame,
-            "Prime Valves",
-            self.controller.launch_prime_valves_window,
-            "grey",
-            0,
-            2,
+            parent=self.lower_control_buttons_frame,
+            button_text= "Prime Valves",
+            command=self.controller.launch_prime_valves_window,
+            bg="grey",
+            row=0,
+            column=2,
         )
         self.program_schedule_button_frame, _ = self.create_button(
-            self.lower_control_buttons_frame,
-            "Program Schedule",
-            lambda: self.controller.program_schedule_window.show_stimuli_table(),
-            "grey",
-            0,
-            3,
+            parent=self.lower_control_buttons_frame,
+            button_text="Program Schedule",
+            command=lambda: self.controller.show_stimuli_table(),
+            bg="grey",
+            row=0,
+            column=3,
         )
         self.exp_ctrl_button_frame = self.create_button(
-            self.lower_control_buttons_frame,
-            "Valve Stimuli",
-            lambda: self.controller.experiment_ctl_wind.show_window(self.root),
-            "grey",
-            1,
-            0,
+            parent=self.lower_control_buttons_frame,
+            button_text= "Valve Stimuli",
+            command=lambda: self.controller.experiment_ctl_wind.show_window(self.root),
+            bg="grey",
+            row=1,
+            column=0,
         )
         self.lick_window_button_frame = self.create_button(
-            self.lower_control_buttons_frame,
-            "Lick Data",
-            self.controller.licks_window.show_window,
-            "grey",
-            1,
-            1,
+            parent=self.lower_control_buttons_frame,
+            button_text= "Lick Data",
+            command=self.controller.licks_window.show_window,
+            bg="grey",
+            row=1,
+            column=1,
         )
         self.raster_plot_button_frame = self.create_button(
-            self.lower_control_buttons_frame,
-            "Rasterized Data",
-            self.controller.open_rasterized_data_windows,
-            "grey",
-            1,
-            2,
+            parent=self.lower_control_buttons_frame,
+            button_text= "Rasterized Data",
+            command=self.controller.open_rasterized_data_windows,
+            bg="grey",
+            row=1,
+            column=2,
         )
         self.save_data_button_frame = self.create_button(
-            self.lower_control_buttons_frame,
-            "Save Data",
-            self.controller.data_mgr.save_data_to_xlsx,
-            "grey",
-            1,
-            3,
+            parent=self.lower_control_buttons_frame,
+            button_text="Save Data",
+            command=self.controller.data_mgr.save_data_to_xlsx,
+            bg="grey",
+            row=1,
+            column=3,
         )
 
     def display_error(self, error, message):
@@ -459,17 +464,13 @@ class MainGUI:
         trial_number = self.controller.data_mgr.current_trial_number
 
         self.trials_completed_label.configure(
-            text="{} / {} Trials Completed".format(
-                trial_number, self.controller.data_mgr.num_trials.get()
-            )
+            text=f"{trial_number} / {self.controller.get_num_trials()} Trials Completed"
         )
         self.stimuli_label.configure(
-            text="Side One: {} | VS | Side Two: {}".format(
-                side_1_stimulus, side_2_stimulus
-            )
+            text=f"Side One: {side_1_stimulus} | VS | Side Two: {side_2_stimulus}"
         )
 
-        self.trial_number_label.configure(text="Trial Number: {}".format(trial_number))
+        self.trial_number_label.configure(text=f"Trial Number: {trial_number}")
 
         self.update_progress_bar()
 
@@ -484,7 +485,7 @@ class MainGUI:
         else:
             self.progress["value"] = (
                 self.controller.data_mgr.current_trial_number
-                / self.controller.data_mgr.num_trials.get()
+                / self.controller.get_num_trials()
             ) * 100  # Set the new value for the progress
         self.progress.update_idletasks()  # Update the progress bar display
 
@@ -493,7 +494,7 @@ class MainGUI:
         self.update_status(state)
 
     def update_status(self, state) -> None:
-        self.status_label.configure(text="Status: {}".format(state))
+        self.status_label.configure(text=f"Status: {state}")
 
     def clear_state_time(self) -> None:
         self.full_state_time_text.configure(

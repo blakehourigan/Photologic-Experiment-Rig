@@ -387,6 +387,14 @@ class ProgramController:
         self.prime_valves_window = PrimeValves(self)
 
     def run_valve_test(self, num_valves_to_test) -> None:
-        print('hello')
         self.valves_to_test = num_valves_to_test
         self.valve_test_logic.start_valve_test_sequence(num_valves_to_test)
+        
+    def display_gui_error(self, error, message) -> None:
+        self.main_gui.display_error(error=error, message=message)
+        
+    def get_num_trials(self) -> int:
+        return self.data_mgr.num_trials
+    
+    def get_current_trial(self) -> int:
+        return self.data_mgr.current_trial_number

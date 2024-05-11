@@ -5,7 +5,6 @@ def start_program():
     program_control.start_main_gui()
 
 def restart_program():
-    print("Restarting the program...")
     start_program()
 
 def main():
