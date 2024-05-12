@@ -67,7 +67,7 @@ class ProgramController:
             
         self.data_mgr.current_iteration = iteration
         
-        if self.data_mgr.current_trial_number > (self.data_mgr.num_trials.get()):
+        if self.data_mgr.current_trial_number > (self.get_num_trials()):
             
             self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.

@@ -8,10 +8,12 @@ const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, P
    corresponding sides schedule list. 
 */
 void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial) {
+  int porta_value = side_one_schedule[current_trial];
+  int portc_value = side_two_schedule[current_trial];
   if (side == 0) {
-    PORTA = side_one_schedule[current_trial];
+    PORTA = porta_value;
   } else if (side == 1) {
-    PORTC = side_two_schedule[current_trial];
+    PORTC = portc_value;
   }
 }
 
@@ -22,7 +24,6 @@ void valve_control::untoggle_solenoids()
 }
 
 void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, int valve_number) {
-  const int *solenoids = (valve_side == 0) ? side_one_solenoids : side_two_solenoids;
   unsigned long int valve_duration = 0;
 
   noInterrupts();
