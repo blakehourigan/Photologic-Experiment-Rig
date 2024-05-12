@@ -384,6 +384,7 @@ void loop()
   if(lick_available) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   {
     valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
+    Serial.println(valve_side);
     lick_available = false;
   }
 
@@ -442,7 +443,6 @@ void loop()
       {
         int porta_value = 0;
         int portc_value = 0;
-        Serial.println(full_command.c_str());
         if (sscanf(full_command.c_str(), "O,%d,%d", &porta_value, &portc_value) == 2) 
         {
           // If both numbers are successfully parsed, assign them to the ports

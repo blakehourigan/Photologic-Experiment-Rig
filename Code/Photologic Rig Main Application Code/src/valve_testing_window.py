@@ -1,9 +1,14 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
+from typing import TYPE_CHECKING
 import re
 
+
+if TYPE_CHECKING:
+    from program_control import ProgramController
+
 class ValveTestWindow:
-    def __init__(self, controller):
+    def __init__(self, controller: 'ProgramController'):
         self.controller = controller
         self.master = controller.main_gui.root
         self.top = None
@@ -11,8 +16,8 @@ class ValveTestWindow:
         self.num_valves_to_test = tk.IntVar(value=8)
         self.desired_volume = tk.DoubleVar(value=5)  # desired volume to dispense in ul
 
-        self.valve_opening_times = []
-        self.ul_dispensed = []
+        self.valve_opening_times: list[int] = []
+        self.ul_dispensed: list[float] = []
 
         self.setup_trace_variables()
 
@@ -56,7 +61,7 @@ class ValveTestWindow:
         return messagebox.askyesno("Continue", "Are you ready to continue?")
 
     def show_window(self):
-        if self.controller.data_mgr.num_stimuli.get() > 0:
+        if self.controller.get_num_stimuli() > 0:
             if self.top and self.top.winfo_exists():
                 self.top.lift()
             else:

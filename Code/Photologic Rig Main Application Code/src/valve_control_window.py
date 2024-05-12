@@ -111,8 +111,9 @@ class ControlValves:
         """Repeat the steps for side one here, except there is no need to reverse the list, because here the lowest numbered valve is associated with PORTA's most 
         significant bit PA7"""
         side_two_valves = self.valve_states[-valves_per_side:]
+        side_two_valves.reverse()  # Reverses in place
         side_two_valves = "".join(side_two_valves)
-        side_two_valves += "0000" 
+        # side_two_valves += "0000" 
         """Adding these extra bits is necessary because valves 5-8 are tied to the most significant bits in the PORTC register. 
         so simply using four bits in the case of maximum 8 valves would result in the computer sending signals to the pins meant to control valves 12-16 which are yet to be added."""
         

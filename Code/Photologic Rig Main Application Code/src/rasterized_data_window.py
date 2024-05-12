@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 import tkinter as tk
 from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
@@ -6,6 +6,8 @@ from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+if TYPE_CHECKING:
+    from program_control import ProgramController
 
 class RasterizedDataWindow:
     def __init__(self, controller) -> None:
@@ -71,7 +73,7 @@ class RasterizedDataWindow:
         canvas = window.canvas # type: ignore
         
         axes.set_xlim(0, 21)
-        axes.set_ylim(0, self.controller.data_mgr.num_trials.get() + 1)
+        axes.set_ylim(0, self.controller.get_num_trials() + 1)
         
         # Handle the re-open scenario by plotting all previous licks
         if reopen:

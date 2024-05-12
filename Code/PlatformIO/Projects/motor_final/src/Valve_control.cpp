@@ -3,32 +3,27 @@
 const int valve_control::side_one_solenoids[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7};
 const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
 
-void valve_control::toggle_bit(volatile uint8_t& port, uint8_t bit) {
-  port ^= (1 << bit);
-}
-
-void valve_control::clear_bit(volatile uint8_t& port, uint8_t bit) {
-  port &= ~(1 << bit);
-}
-
-void valve_control::toggle_solenoid(int side, int solenoid_pin) {
+/* toggle the solenoid valve for the side that was licked by overwriting the register value of 0
+   on the corresponding side with the value held at the position of the current trial index in the 
+   corresponding sides schedule list. 
+*/
+void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial) {
+  int porta_value = side_one_schedule[current_trial];
+  int portc_value = side_two_schedule[current_trial];
   if (side == 0) {
-    toggle_bit(PORTA, solenoid_pin);
+    PORTA = porta_value;
   } else if (side == 1) {
-    toggle_bit(PORTC, solenoid_pin);
+    PORTC = portc_value;
   }
 }
 
-void valve_control::untoggle_solenoid(int side, int solenoid_pin) {
-  if (side == 0) {
-    clear_bit(PORTA, solenoid_pin);
-  } else if (side == 1) {
-    clear_bit(PORTC, solenoid_pin);
-  }
+void valve_control::untoggle_solenoids() 
+{
+    PORTA = 0 ;
+    PORTC = 0 ;
 }
 
 void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, int valve_number) {
-  const int *solenoids = (valve_side == 0) ? side_one_solenoids : side_two_solenoids;
   unsigned long int valve_duration = 0;
 
   noInterrupts();
@@ -44,14 +39,14 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   int quotient = valve_duration / 10000;
   int remaining_delay = valve_duration - (quotient * 10000);
 
-  toggle_solenoid(valve_side, solenoids[valve_number]);
+  toggle_solenoid(valve_side, side_one_schedule, side_two_schedule, current_trial);
 
   for (int i = 0; i < quotient; i++) {
     delayMicroseconds(10000);
   }
 
   delayMicroseconds(remaining_delay);
-  untoggle_solenoid(valve_side, solenoids[valve_number]);
+  untoggle_solenoids();
 
   interrupts();
 }

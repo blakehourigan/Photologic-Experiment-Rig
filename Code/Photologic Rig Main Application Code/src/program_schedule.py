@@ -1,14 +1,17 @@
 import tkinter as tk
-# from tkinter import ttk
 import platform 
+from typing import TYPE_CHECKING, Optional
 
+if TYPE_CHECKING:
+    from program_control import ProgramController
+    
 class ProgramScheduleWindow:
-    def __init__(self, controller):
+    def __init__(self, controller: 'ProgramController'):
         self.controller = controller
         
         self.system = platform.system()
         
-        self.top = None
+        self.top: Optional[tk.Toplevel] = None
         self.canvas = None  # Initialize canvas here to ensure it's available for binding scroll actions
         self.num_tabs = 0
         
@@ -16,7 +19,11 @@ class ProgramScheduleWindow:
         self.destroy_window()  # Ensure any existing window is destroyed before creating a new one to avoid error
         self.top = tk.Toplevel(master)
         self.top.title("Program Schedule")
-        self.top.bind("<Control-w>", lambda e: self.top.destroy())
+        
+        # Safely bind the event using a local variable in the lambda to avoid referencing a potentially None self.top
+        top_local = self.top
+        top_local.bind("<Control-w>", lambda e: top_local.destroy())
+        
         self.top.resizable(False, False)
 
         # Global scroll event binding called here to bind to whole window instead of only scroll widget
@@ -102,7 +109,7 @@ class ProgramScheduleWindow:
         
     def show_stimuli_table(self):
         if not self.controller.data_mgr.blocks_generated:
-            self.controller.main_gui.display_error(
+            self.controller.display_gui_error(
                 "Blocks not Generated",
                 "Please generate blocks before starting the program."
             )
@@ -175,7 +182,7 @@ class ProgramScheduleWindow:
             current_row += 1  # Move to the next row
             
             # Insert a horizontal line below every two rows
-            if i % (self.controller.data_mgr.num_stimuli.get() / 2) == 0:
+            if i % (self.controller.get_num_stimuli() / 2) == 0:
                 separator_frame = tk.Frame(self.stimuli_frame, height=2, bg='black')
                 separator_frame.grid(row=current_row, column=0, columnspan=total_columns, sticky='ew', padx=5)
                 self.stimuli_frame.grid_rowconfigure(current_row, minsize=2)
