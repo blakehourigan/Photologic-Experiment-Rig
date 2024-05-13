@@ -88,8 +88,8 @@ void test_volume(char number_of_valves)
   {
     for(int j=0; j < 1000; j++)
     {
-      valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, i);
-      valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, i);
+      valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, true, i);
+      valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, true, i);
       delay(100);
     }
     serial_communication.clear_serial_buffer();
@@ -383,7 +383,7 @@ void loop()
 {
   if(lick_available) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   {
-    valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
+    valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, false, -1);
     Serial.println(valve_side);
     lick_available = false;
   }
