@@ -1,7 +1,10 @@
-from typing import List, Tuple
+from typing import List, Tuple, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from program_control import ProgramController
 
 class valveTestLogic:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
         self.side_one_volumes: List[int] = []
         self.side_two_volumes: List[int] = []

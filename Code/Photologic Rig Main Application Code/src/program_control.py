@@ -37,6 +37,7 @@ class ProgramController:
 
         # Initialize running flag to false
         self.running = False
+        self.experiment_completed = False
         self.state = "OFF"
 
         self.after_ids: list[str] = []
@@ -68,7 +69,7 @@ class ProgramController:
         self.data_mgr.current_iteration = iteration
         
         if self.data_mgr.current_trial_number > (self.get_num_trials()):
-            
+            self.experiment_completed = True
             self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
             self.stop_program()  # if we have gone through every trial then end the program.
 
@@ -311,6 +312,9 @@ class ProgramController:
 
         self.after_ids.clear()
 
+        if(self.experiment_completed):
+            self.data_mgr.save_data_to_xlsx()
+
         self.data_mgr.current_trial_number = 1
 
     def complete_program(self)-> None:
@@ -410,3 +414,4 @@ class ProgramController:
     # this function passes the num_stimuli variable directly from the data manager class to the gui class without jumping through many classes in the gui class itself
     def get_num_stimuli_variable_reference(self) -> tk.IntVar:
         return self.data_mgr.get_num_stimuli_var_reference()
+    
