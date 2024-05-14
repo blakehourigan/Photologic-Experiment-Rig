@@ -1,45 +1,37 @@
+# data_manager.py
+import logging
 from tkinter import filedialog
-import pandas as pd #type: ignore
-import numpy as np #type: ignore 
+import pandas as pd
+import numpy as np
 import tkinter as tk
 from collections import defaultdict
 import traceback
 import re
-
 from typing import TYPE_CHECKING, Tuple, List
 
 if TYPE_CHECKING:
     from program_control import ProgramController
 
+logger = logging.getLogger(__name__)
+
 class DataManager:
     def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
-
         self.stimuli_dataframe = pd.DataFrame()
         self.licks_dataframe = pd.DataFrame()
         
         self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
         for key in self.stimuli_vars:
             self.stimuli_vars[key].set(key)
-
-        # initialize lists to hold original pairs and the list that will hold our dataframes.
-
+        
         self.pairs: list[Tuple] = []
-
-        # Initialize variables that will keep track of the total number of trials we will have, the total number of trial blocks that the user wants to run
-        # and the total number of stimuli. These are of type IntVar because they are used in the GUI.
-
         self._num_trials = 0
         self._num_trial_blocks = tk.IntVar(value=10)
         self._num_stimuli = tk.IntVar(value=4)
         self._TTC_lick_threshold = tk.IntVar(value=3)
-
-        # initializing variable for iteration through the trials in the program
-
         self.current_trial_number = 1
-
         self.current_iteration = 0
-            
+        
         self.interval_vars = {
             "ITI_var": tk.IntVar(value=30000),
             "TTC_var": tk.IntVar(value=15000),
@@ -49,30 +41,21 @@ class DataManager:
             "sample_random_entry": tk.IntVar(value=0),
         }
 
-        # initializing the lists that will hold the final calculated random interval values
-
         self.ITI_intervals_final: list[int] = []
         self.TTC_intervals_final: list[int] = []
         self.sample_intervals_final: list[int] = []
-
-        # Initialize the time, licks to 0
-
         self.start_time = 0.0
         self.state_start_time = 0.0
-
         self.side_one_licks = 0
         self.side_two_licks = 0
         self.total_licks = 0
-
         self.blocks_generated = False
-        
         self.side_one_trial_licks: list[list[float]] = []
         self.side_two_trial_licks: list[list[float]] = []
 
-        
-
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""
+        logger.debug("Initializing stimuli dataframe.")
         if hasattr(self, "stimuli_dataframe"):
             del self.stimuli_dataframe
 
@@ -97,24 +80,18 @@ class DataManager:
         }
 
         df = pd.DataFrame(data)
-
         self.stimuli_dataframe = df
-
         self.blocks_generated = True
         self.controller.program_schedule_window.show_stimuli_table()
         self.send_schedule_to_motor()
-
 
     def send_schedule_to_motor(self) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
             stim_var_list = list(self.stimuli_vars.values())
-            
             filtered_stim_var_list = [item for item in stim_var_list if not re.match(r'Valve \d+ substance', item.get())]
-            
             side_one_vars = []
             side_two_vars = []
-            
             self.side_one_indexes: List[int] = [] 
             self.side_two_indexes: List[int] = []
             
@@ -125,8 +102,7 @@ class DataManager:
                     side_two_vars.append(filtered_stim_var_list[i].get())
 
             if self.controller.arduino_mgr.motor_arduino:            
-                side_one_schedule = self.stimuli_dataframe['Port 1'] # separating the schedules based on side
-
+                side_one_schedule = self.stimuli_dataframe['Port 1']
                 side_two_schedule = self.stimuli_dataframe['Port 2']
                 
                 for i in range(len(side_one_schedule)):     
@@ -139,21 +115,19 @@ class DataManager:
                 side_two_index_str = ",".join(map(str, self.side_two_indexes))
                 
                 command = f"<S,Side One,{side_one_index_str},-1,Side Two,{side_two_index_str},-1,end>"
-                self.controller.send_command_to_arduino(arduino='motor', command=command)  # Signal to Arduino about the upcoming command
-
+                self.controller.send_command_to_arduino(arduino='motor', command=command)
+            logger.info("Schedule sent to motor Arduino.")
         except Exception as e:
-            error_message = traceback.format_exc()  # Capture the full traceback
-            print(f"Error sending schedule to motor Arduino: {error_message}")  # Print the error to the console 
+            logger.error(f"Error sending schedule to motor Arduino: {e}")
+            error_message = traceback.format_exc()
+            print(f"Error sending schedule to motor Arduino: {error_message}")
             self.controller.display_gui_error("Error sending schedule to motor Arduino:", str(e))
-
+            raise
 
     def verify_arduino_schedule(self, side_one_indexes, side_two_indexes, verification):
         middle_index = len(verification) // 2
-
-        # Split the list into two halves
         side_one_verification_str = verification[:middle_index]
         side_two_verification_str = verification[middle_index:]
-        
         side_one_verification = [int(x) for x in side_one_verification_str.split(',') if x.strip().isdigit()]
         side_two_verification = [int(x) for x in side_two_verification_str.split(',') if x.strip().isdigit()]
         
@@ -161,346 +135,332 @@ class DataManager:
         are_equal_side_two = all(side_two_indexes[i] == side_two_verification[i] for i in range(len(side_two_indexes)))
         
         if are_equal_side_one and are_equal_side_two:
-            print("Both lists are identical, Schedule Send Complete.")
+            logger.info("Both lists are identical, Schedule Send Complete.")
         else:
-            print("Lists are not identical.")
-    
-    """concatinate the positions with the commands that are used to tell the arduino which side we are opening the valve for. 
-    SIDE_ONE tells the arduino we need to open a valve for side one, it will then read the next line to find which valve to open.
-    valves are numbered 1-8 so "SIDE_ONE\n1\n" tells the arduino to open valve one for side one. """
-    
+            logger.warning("Lists are not identical.")
+            self.controller.display_gui_error("Verification Error", "Lists are not identical.")
 
     def create_trial_blocks(self):
         """this is the function that will generate the full roster of stimuli for the duration of the program"""
+        try:
+            self.num_trials = (((self.num_stimuli // 2) * self.num_trial_blocks))
+            max_time = self.create_random_intervals()
+            minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(max_time / 1000)
+            self.controller.main_gui.update_max_time(minutes, seconds)
+            self.changed_vars = [
+                stimulus
+                for i, (key, stimulus) in enumerate(
+                    self.stimuli_vars.items()
+                )
+                if stimulus.get() != f"Valve {i+1} substance"
+            ]
 
-        # the total number of trials equals (number stimuli // 2) because each stimuli is in a pair, times the number of trial blocks that we want. We use // to use integer division instead of recieving a float back.
-        self.num_trials = (((self.num_stimuli // 2) * self.num_trial_blocks))
+            if len(self.changed_vars) > self.num_stimuli:
+                start_index = self.num_stimuli
+                for index, key in enumerate(self.stimuli_vars):
+                    if index >= start_index:
+                        self.stimuli_vars[key].set(key)
 
-        max_time = self.create_random_intervals()
+            def get_paired_index(i, total_entries):
+                if total_entries == 2:
+                    return 1 - i
+                elif total_entries == 4:
+                    return total_entries - i - 1
+                elif total_entries == 8:
+                    if i % 2 == 0:
+                        return (i + 5) % total_entries
+                    else:
+                        return (i + 3) % total_entries
+                else:
+                    raise ValueError("Unexpected number of entries")
 
-        minutes, seconds = self.controller.main_gui.convert_seconds_to_minutes_seconds(max_time / 1000)  # converting our max runtime in ms to max time in minues, seconds format
-        self.controller.main_gui.update_max_time(minutes, seconds)
-        """this checks every variable in the simuli_vars dictionary against the default value, if it is changed, then it is added to the list 
-                            var for iterator, (key, value) in enumerate(self.stimuli_vars.items() if variable not default then add to list)"""
-        self.changed_vars = [
-            stimulus
-            for i, (key, stimulus) in enumerate(
-                self.stimuli_vars.items()
-            )  # for each key and value in stimuli_vars, check if the value is the default value, if not add it to changed list
-            if stimulus.get()
-            != f"Valve {i+1} substance"  # f string used to incorporate var in string
-        ]
-
-        # Handling the case that you generate the plan for a large num of stimuli and then change to a smaller number
-        if len(self.changed_vars) > self.num_stimuli:
-            # Start at the number of stimuli you now have
-            start_index = self.num_stimuli
-            # and then set the rest of stimuli past that value back to default to avoid error
-            # create an index for each loop, loop through each key in stimuli_vars
-            for index, key in enumerate(self.stimuli_vars):
-                if index >= start_index:
-                    # if the loop we are on is greater than the start index calculated, then set the value to the value held by the key.
-                    self.stimuli_vars[key].set(key)
-
-        # from our list of variables that were changed from their default values, pair them together in a new pairs list.
-        # 1 is paired with 2. 3 with 4, etc
-
-        def get_paired_index(i, total_entries):
-            if total_entries == 2:
-                # If there are only two entries, pair them directly
-                return 1 - i  # This will swap 0 with 1 and 1 with 0
-            elif total_entries == 4:
-                # For 4 entries, pair 1 with 4 (0 with 3) and 2 with 3 (1 with 2)
-                return total_entries - i - 1
-            elif total_entries == 8:
-                # For 8 entries, the pattern is a bit more complex
-                if i % 2 == 0:  # even index (0 or 2)
-                    return (
-                        i + 5
-                    ) % total_entries  # Pair 1 (0) with 6 (5) and 3 (2) with 8 (7)
-                else:  # odd index (1 or 3)
-                    return (
-                        i + 3
-                    ) % total_entries  # Pair 2 (1) with 5 (4) and 4 (3) with 7 (6)
+            if self.changed_vars:
+                self.pairs = []
+                total_entries = len(self.changed_vars)
+                for i in range(total_entries // 2):
+                    pair_index = get_paired_index(i, total_entries)
+                    self.pairs.append((self.changed_vars[i], self.changed_vars[pair_index]))
             else:
-                raise ValueError("Unexpected number of entries")
-
-        if self.changed_vars:
-            self.pairs = []
-            total_entries = len(self.changed_vars)  # Can be 2, 4, or 8
-
-            # Loop through the first half of the entries for pairing
-            for i in range(total_entries // 2):
-                pair_index = get_paired_index(i, total_entries)
-                self.pairs.append((self.changed_vars[i], self.changed_vars[pair_index]))
-
-        else:
-            # if a stimulus has not been changed, this error message will be thrown to tell the user to change it and try again.
-            self.controller.display_error(
-                "Stimulus Not Changed",
-                "One or more of the default stimuli have not been changed, please change the default value and try again",
-            )
+                self.controller.display_error(
+                    "Stimulus Not Changed",
+                    "One or more of the default stimuli have not been changed, please change the default value and try again",
+                )
+            logger.info("Trial blocks created.")
+        except Exception as e:
+            logger.error(f"Error creating trial blocks: {e}")
+            raise
 
     def create_random_intervals(self) -> int:
-        # clearing the lists here just in case we have already generated blocks, in this case we want to ensure we use new numbers, so we must clear out the existing ones
-        self.ITI_intervals_final.clear()
-        self.TTC_intervals_final.clear()
-        self.sample_intervals_final.clear()
+        try:
+            self.ITI_intervals_final.clear()
+            self.TTC_intervals_final.clear()
+            self.sample_intervals_final.clear()
 
-        # Assuming 'num_entries' is the number of entries (rows) you need to process
-        for entry in range(self.num_trials):
-            for interval_type in ["ITI", "TTC", "sample"]:
-                random_entry_key = f"{interval_type}_random_entry"
-                var_key = f"{interval_type}_var"
-                final_intervals_key = f"{interval_type}_intervals_final"
+            for entry in range(self.num_trials):
+                for interval_type in ["ITI", "TTC", "sample"]:
+                    random_entry_key = f"{interval_type}_random_entry"
+                    var_key = f"{interval_type}_var"
+                    final_intervals_key = f"{interval_type}_intervals_final"
 
-                # Generate a random interval
-                random_interval = np.random.randint(
-                    -self.interval_vars[random_entry_key].get(),
-                    self.interval_vars[random_entry_key].get() + 1  # Add 1 to make the upper bound inclusive
-                )
+                    random_interval = np.random.randint(
+                        -self.interval_vars[random_entry_key].get(),
+                        self.interval_vars[random_entry_key].get() + 1
+                    )
 
-                # Calculate the final interval by adding the random interval to the state constant
-                final_interval = self.interval_vars[var_key].get() + random_interval
+                    final_interval = self.interval_vars[var_key].get() + random_interval
 
-                # Append the final interval to the corresponding list
-                if not hasattr(self, final_intervals_key):
-                    setattr(self, final_intervals_key, [])
-                getattr(self, final_intervals_key).append(final_interval)
+                    if not hasattr(self, final_intervals_key):
+                        setattr(self, final_intervals_key, [])
+                    getattr(self, final_intervals_key).append(final_interval)
 
-        max_time = (
-            sum(self.ITI_intervals_final)
-            + sum(self.TTC_intervals_final)
-            + sum(self.sample_intervals_final)
-        )
+            max_time = (
+                sum(self.ITI_intervals_final)
+                + sum(self.TTC_intervals_final)
+                + sum(self.sample_intervals_final)
+            )
 
-        return max_time
+            logger.info("Random intervals created.")
+            return max_time
+        except Exception as e:
+            logger.error(f"Error creating random intervals: {e}")
+            raise
     
     def generate_pairs(self) -> Tuple[list, list]:
-        pseudo_random_lineup: List[tuple] = []
-        stimulus_1: List[str] = []
-        stimulus_2: List[str] = []
-        first_pair_counts: dict[tuple, int] = defaultdict(int)  # Dictionary to count first pairs
-        consecutive_streaks: dict[int, int] = defaultdict(int)  # New dictionary to count streak lengths
-        last_first_pair = None
-        current_streak = 0
+        try:
+            pseudo_random_lineup: List[tuple] = []
+            stimulus_1: List[str] = []
+            stimulus_2: List[str] = []
+            first_pair_counts: dict[tuple, int] = defaultdict(int)
+            consecutive_streaks: dict[int, int] = defaultdict(int)
+            last_first_pair = None
+            current_streak = 0
 
-        for _ in range(self.num_trial_blocks):
-            if self.num_trial_blocks != 0 and self.changed_vars:
-                pairs_copy = [tuple(pair) for pair in self.pairs]
-                np.random.shuffle(pairs_copy)  # Shuffle in-place
-                pseudo_random_lineup.extend(pairs_copy)
-                
-                first_pair_strings = tuple(var.get() for var in pairs_copy[0])
-                first_pair_counts[first_pair_strings] += 1
+            for _ in range(self.num_trial_blocks):
+                if self.num_trial_blocks != 0 and self.changed_vars:
+                    pairs_copy = [tuple(pair) for pair in self.pairs]
+                    np.random.shuffle(pairs_copy)
+                    pseudo_random_lineup.extend(pairs_copy)
+                    
+                    first_pair_strings = tuple(var.get() for var in pairs_copy[0])
+                    first_pair_counts[first_pair_strings] += 1
 
-                # New logic for tracking consecutive streaks
-                if first_pair_strings == last_first_pair:
-                    current_streak += 1
-                else:
-                    if current_streak > 0:
-                        consecutive_streaks[current_streak] += 1
-                    current_streak = 1
-                    last_first_pair = first_pair_strings
-
-            # Error handling remains unchanged
-            elif len(self.changed_vars) == 0 and self.controller:
-                self.controller.display_gui_error("Stimuli Variables Not Yet Changed",
+                    if first_pair_strings == last_first_pair:
+                        current_streak += 1
+                    else:
+                        if current_streak > 0:
+                            consecutive_streaks[current_streak] += 1
+                        current_streak = 1
+                        last_first_pair = first_pair_strings
+                elif len(self.changed_vars) == 0 and self.controller:
+                    self.controller.display_gui_error("Stimuli Variables Not Yet Changed",
                                                       "Stimuli variables have not yet been changed, to continue please change defaults and try again.")
+            if current_streak > 0:
+                consecutive_streaks[current_streak] += 1
 
-        # Handling the last streak
-        if current_streak > 0:
-            consecutive_streaks[current_streak] += 1
+            for entry in pseudo_random_lineup:
+                stimulus_1.append(entry[0].get())
+                stimulus_2.append(entry[1].get())
 
-        # Unpack the pairs_shuffled list into two lists, one for each stimulus
-        for entry in pseudo_random_lineup:
-            stimulus_1.append(entry[0].get())
-            stimulus_2.append(entry[1].get())
+            first_pair_percentages = {pair: count / self.num_trial_blocks * 100 for pair, count in first_pair_counts.items()}
+            logger.info("Percentages of each pair appearing first:")
+            for pair, percentage in first_pair_percentages.items():
+                logger.info(f"{pair}: {percentage:.2f}%")
 
-        # Calculate the percentage of each pair being first
-        first_pair_percentages = {pair: count / self.num_trial_blocks * 100 for pair, count in first_pair_counts.items()}
-        print("Percentages of each pair appearing first:")
-        for pair, percentage in first_pair_percentages.items():
-            print(f"{pair}: {percentage:.2f}%")
+            logger.info("\nConsecutive streaks of first pairs:")
+            for streak_length, count in consecutive_streaks.items():
+                logger.info(f"Streak of {streak_length}: {count} times")
 
-        # Printing consecutive streaks
-        print("\nConsecutive streaks of first pairs:")
-        for streak_length, count in consecutive_streaks.items():
-            print(f"Streak of {streak_length}: {count} times")
-
-        return stimulus_1, stimulus_2
-
+            logger.info("Pairs generated.")
+            return stimulus_1, stimulus_2
+        except Exception as e:
+            logger.error(f"Error generating pairs: {e}")
+            raise
 
     def initalize_licks_dataframe(self):
         """setup the licks data frame that will hold the timestamps for the licks and which port was licked
         and create an empty first row to avoid a blank table when the program is first run
         """
-        self.licks_dataframe = pd.DataFrame(
-            [[np.nan, np.nan, np.nan]], columns=["Trial Number", "Licked Port", "Time Stamp"]
-        )
+        try:
+            self.licks_dataframe = pd.DataFrame(
+                [[np.nan, np.nan, np.nan]], columns=["Trial Number", "Licked Port", "Time Stamp"]
+            )
+            logger.info("Licks dataframe initialized.")
+        except Exception as e:
+            logger.error(f"Error initializing licks dataframe: {e}")
+            raise
 
     def get_lick_timestamps(self, trial_number):
         """
         Returns a list of timestamps for the given trial number and licked port.
-
-        Args:
-            trial_number (int): The trial number to filter by.
-            licked_port (int): The licked port to filter by (1 or 2).
-
-        Returns:
-            list: A list of timestamps for the given trial number and licked port.
         """
-        # Filter the dataframe to get the rows generated due to rat licks on side one
-        filtered_df_side_one = self.licks_dataframe[
-            (self.licks_dataframe["Trial Number"] == trial_number)
-            & (self.licks_dataframe["Licked Port"].isin([1.0]))
-        ]
-        # Repeat the process for side two 
-        filtered_df_side_two = self.licks_dataframe[
-            (self.licks_dataframe["Trial Number"] == trial_number)
-            & (self.licks_dataframe["Licked Port"].isin([2.0]))
-        ]
+        try:
+            filtered_df_side_one = self.licks_dataframe[
+                (self.licks_dataframe["Trial Number"] == trial_number)
+                & (self.licks_dataframe["Licked Port"].isin([1.0]))
+            ]
+            filtered_df_side_two = self.licks_dataframe[
+                (self.licks_dataframe["Trial Number"] == trial_number)
+                & (self.licks_dataframe["Licked Port"].isin([2.0]))
+            ]
 
-        # Convert the dataframe objects into lists that contain the timestamp values
-        timestamps_side_one = filtered_df_side_one["Time Stamp"].tolist()
-        timestamps_side_two = filtered_df_side_two["Time Stamp"].tolist()
+            timestamps_side_one = filtered_df_side_one["Time Stamp"].tolist()
+            timestamps_side_two = filtered_df_side_two["Time Stamp"].tolist()
 
-        
-        # return the lists to the program controller
-        return timestamps_side_one, timestamps_side_two
-
+            logger.info(f"Lick timestamps retrieved for trial {trial_number}.")
+            return timestamps_side_one, timestamps_side_two
+        except Exception as e:
+            logger.error(f"Error getting lick timestamps for trial {trial_number}: {e}")
+            raise
 
     def save_licks(self, iteration):
         """define method that saves the licks to the data table and increments our iteration variable."""
-        # if we get to this function straight from the TTC function, then we used up the full TTC and set TTC actual for this trial to the predetermined value
-        command = "E"  # stop opening the valves on lick detection.
-        self.controller.send_command_to_arduino('laser', command)
-        
-        
-        if self.controller.state == "TTC":
-            self.stimuli_dataframe.loc[
-                self.current_trial_number - 1, "TTC Actual"
-            ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
-        
+        try:
+            command = "E"
+            self.controller.send_command_to_arduino('laser', command)
 
-        # increment the trial number
-        self.current_trial_number += 1
+            if self.controller.state == "TTC":
+                self.stimuli_dataframe.loc[
+                    self.current_trial_number - 1, "TTC Actual"
+                ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
 
-        # tell the motor to both increment the trial number and lift the door
-        command = "<U>"                             
-        self.controller.send_command_to_arduino('motor', command)
-                
-        # store licks in the ith rows in their respective stimuli column in the data table for the trial
-        self.stimuli_dataframe.loc[iteration, "Port 1 Licks"] = self.side_one_licks
-        self.stimuli_dataframe.loc[iteration, "Port 2 Licks"] = self.side_two_licks
+            self.current_trial_number += 1
+            command = "<U>"                             
+            self.controller.send_command_to_arduino('motor', command)
+            
+            self.stimuli_dataframe.loc[iteration, "Port 1 Licks"] = self.side_one_licks
+            self.stimuli_dataframe.loc[iteration, "Port 2 Licks"] = self.side_two_licks
 
-        # this is how processes that are set to execute after a certain amount of time are cancelled.
-        # call the self.master.after_cancel function and pass in the ID that was assigned to the function call
-
-        # Jump to ITI state to begin ITI for next trial by incrementing the i variable
-        self.controller.initial_time_interval(iteration + 1)
+            self.controller.initial_time_interval(iteration + 1)
+            logger.info(f"Licks saved for iteration {iteration}.")
+        except Exception as e:
+            logger.error(f"Error saving licks for iteration {iteration}: {e}")
+            raise
 
     def check_dataframe_entry_isfloat(self, iteration, state) -> int:
         """Method to check if the value in the dataframe is a numpy float. If it is, then we return the value. If not, we return -1."""
-        interval_value = self.stimuli_dataframe.loc[iteration, state]
+        try:
+            interval_value = self.stimuli_dataframe.loc[iteration, state]
 
-        # First, ensure that the retrieved value is not a DataFrame or Series
-        if isinstance(interval_value, (pd.DataFrame, pd.Series)):
-            return -1
+            if isinstance(interval_value, (pd.DataFrame, pd.Series)):
+                return -1
 
-        # Now that we're sure value is not a DataFrame or Series, check its type
-        if isinstance(interval_value, (int, np.integer)):
-            return int(interval_value)
-        else:
-            return -1
-
+            if isinstance(interval_value, (int, np.integer)):
+                return int(interval_value)
+            else:
+                return -1
+        except Exception as e:
+            logger.error(f"Error checking dataframe entry is float for iteration {iteration} and state {state}: {e}")
+            raise
     def save_data_to_xlsx(self) -> None:
-        # method that brings up the windows file save dialogue menu to save the two data tables to external files
-        if not self.blocks_generated:
-            self.controller.display_gui_error(
-                "Blocks Not Generated",
-                "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
-            )
-        else:
-            file_name = filedialog.asksaveasfilename(
-                defaultextension=".xlsx",
-                filetypes=[("Excel Files", "*.xlsx")],
-                initialfile="experiment schedule",
-                title="Save Excel file",
-            )
+        """Method to bring up the windows file save dialog menu to save the two data tables to external files"""
+        try:
+            if not self.blocks_generated:
+                self.controller.display_gui_error(
+                    "Blocks Not Generated",
+                    "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
+                )
+            else:
+                file_name = filedialog.asksaveasfilename(
+                    defaultextension=".xlsx",
+                    filetypes=[("Excel Files", "*.xlsx")],
+                    initialfile="experiment schedule",
+                    title="Save Excel file",
+                )
 
-            self.stimuli_dataframe.to_excel(file_name, index=False)
+                if file_name:
+                    self.stimuli_dataframe.to_excel(file_name, index=False)
+                else:
+                    logger.info("User cancelled saving the stimuli dataframe.")
 
-            licks_file_name = filedialog.asksaveasfilename(
-                defaultextension=".xlsx",
-                filetypes=[("Excel Files", "*.xlsx")],
-                initialfile="licks data",
-                title="Save Excel file",
-            )
+                licks_file_name = filedialog.asksaveasfilename(
+                    defaultextension=".xlsx",
+                    filetypes=[("Excel Files", "*.xlsx")],
+                    initialfile="licks data",
+                    title="Save Excel file",
+                )
 
-            self.licks_dataframe.to_excel(licks_file_name, index=False)
+                if licks_file_name:
+                    self.licks_dataframe.to_excel(licks_file_name, index=False)
+                else:
+                    logger.info("User cancelled saving the licks dataframe.")
+
+            logger.info("Data saved to xlsx files.")
+        except Exception as e:
+            logger.error(f"Error saving data to xlsx: {e}")
+            raise
+
 
     def pair_stimuli(self, stimulus_1, stimulus_2):
         """Preparing to send the data to the motor arduino"""
-        paired_stimuli = list(zip(stimulus_1, stimulus_2))
-        return paired_stimuli
+        try:
+            paired_stimuli = list(zip(stimulus_1, stimulus_2))
+            logger.info("Stimuli paired.")
+            return paired_stimuli
+        except Exception as e:
+            logger.error(f"Error pairing stimuli: {e}")
+            raise
 
     def reset_all(self):
-        # Reset or clear all internal state that could persist
-        self.stimuli_dataframe = pd.DataFrame()
-        self.licks_dataframe = pd.DataFrame()
-        self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
-        for key in self.stimuli_vars:
-            self.stimuli_vars[key].set(key)  # Reset to default
+        """Reset or clear all internal state that could persist"""
+        try:
+            self.stimuli_dataframe = pd.DataFrame()
+            self.licks_dataframe = pd.DataFrame()
+            self.stimuli_vars = {f"Valve {i+1} substance": tk.StringVar() for i in range(8)}
+            for key in self.stimuli_vars:
+                self.stimuli_vars[key].set(key)
 
-        self.pairs.clear()
-        self.current_trial_number = 1
-        self.ITI_intervals_final.clear()
-        self.TTC_intervals_final.clear()
-        self.sample_intervals_final.clear()
+            self.pairs.clear()
+            self.current_trial_number = 1
+            self.ITI_intervals_final.clear()
+            self.TTC_intervals_final.clear()
+            self.sample_intervals_final.clear()
 
-        # Reset numeric and boolean attributes as necessary
-        self.num_trials = 0
-        self.num_trial_blocks = 4
-        self.num_stimuli = 4
-        self.TTC_lick_threshold = 3
+            self.num_trials = 0
+            self.num_trial_blocks = 4
+            self.num_stimuli = 4
+            self.TTC_lick_threshold = 3
 
-        # Add similar resets for any other relevant attributes
-
-        self.blocks_generated = False
+            self.blocks_generated = False
+            logger.info("All data reset.")
+        except Exception as e:
+            logger.error(f"Error resetting all data: {e}")
+            raise
 
     def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):
-        arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
-        arduino_start = arduino_start['occurrence_time'] / 1000
+        try:
+            arduino_start = next((entry for entry in motor_timestamps if entry["trial_number"] == 1 and entry["command"] == '0'), None)
+            arduino_start = arduino_start['occurrence_time'] / 1000
 
-        licks_columns = ["Trial Number", "Licked Port", "Time Stamp", "State"]
-        trial_entries = []
+            licks_columns = ["Trial Number", "Licked Port", "Time Stamp", "State"]
+            trial_entries = []
 
-        for dictionary in motor_timestamps:
-            if dictionary["command"] == 'U':
-                state_label = "SIGNAL MOTOR UP"
-            elif dictionary["command"] == 'D':
-                state_label = "SIGNAL MOTOR DOWN"
-            elif dictionary["command"] == '0':
-                continue
+            for dictionary in motor_timestamps:
+                if dictionary["command"] == 'U':
+                    state_label = "SIGNAL MOTOR UP"
+                elif dictionary["command"] == 'D':
+                    state_label = "SIGNAL MOTOR DOWN"
+                elif dictionary["command"] == '0':
+                    continue
+                else:
+                    state_label = dictionary["command"]
+
+                occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
+                trial = dictionary["trial_number"]
+                trial_entry = pd.Series([trial, "NONE", occurrence_time, state_label], index=licks_columns)
+                trial_entries.append(trial_entry)
+
+            if self.licks_dataframe.empty:
+                self.licks_dataframe = pd.DataFrame(trial_entries, columns=licks_columns)
             else:
-                state_label = dictionary["command"]
+                self.licks_dataframe = pd.concat([self.licks_dataframe, pd.DataFrame(trial_entries, columns=licks_columns)], ignore_index=True)
 
-            occurrence_time = round((dictionary['occurrence_time'] / 1000), 3)
-            trial = dictionary["trial_number"]
-            trial_entry = pd.Series([trial, "NONE", occurrence_time, state_label], index=licks_columns)
-            trial_entries.append(trial_entry)
-
-        if self.licks_dataframe.empty:
-            self.licks_dataframe = pd.DataFrame(trial_entries, columns=licks_columns)
-        else:
-            self.licks_dataframe = pd.concat([self.licks_dataframe, pd.DataFrame(trial_entries, columns=licks_columns)], ignore_index=True)
-
-        # Sort the DataFrame based on the "Time Stamp" column
-        self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
-        self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
-        
-    # num_trials getter and setter methods      
+            self.licks_dataframe = self.licks_dataframe.sort_values(by="Time Stamp")
+            self.licks_dataframe = self.licks_dataframe.reset_index(drop=True)
+            logger.info("Trial start/stop timestamps inserted into licks dataframe.")
+        except Exception as e:
+            logger.error(f"Error inserting trial start/stop into licks dataframe: {e}")
+            raise
+    
     @property
     def num_trials(self):
         return self._num_trials
@@ -509,7 +469,6 @@ class DataManager:
     def num_trials(self, value):
         self._num_trials = value
         
-    # _num_trial_blocks getter and setter methods 
     @property 
     def num_trial_blocks(self):
         return self._num_trial_blocks.get()
@@ -523,7 +482,6 @@ class DataManager:
     def get_num_trial_blocks_var(self) -> tk.IntVar:
         return self._num_trial_blocks
         
-    # num_stimuli getter and setter methods 
     @property
     def num_stimuli(self):
         return self._num_stimuli.get()
@@ -537,12 +495,10 @@ class DataManager:
     def get_num_stimuli_var_reference(self) -> tk.IntVar:
         return self._num_stimuli
         
-    # blocks_generated getter and setter method
     @property
     def blocks_generated(self):
         return self._blocks_generated
 
     @blocks_generated.setter
     def blocks_generated(self, value):
-        # You can add validation or additional logic here
         self._blocks_generated = value

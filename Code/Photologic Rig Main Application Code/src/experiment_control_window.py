@@ -1,7 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
 import platform
+from tkinter import ttk
 from typing import Dict, List, TYPE_CHECKING, Optional
+
+from gui_utils import GUIUtils
 
 if TYPE_CHECKING:
     from program_control import ProgramController
@@ -17,7 +19,7 @@ class ExperimentCtlWindow:
             None  # Initialize canvas here to ensure it's available for binding
         )
         self.num_tabs = 0
-
+            
     def create_window(self, master) -> tk.Toplevel:
         self.top = tk.Toplevel(master)
         self.top.title("Stimuli / Valves")
@@ -27,6 +29,9 @@ class ExperimentCtlWindow:
         top_local.bind("<Control-w>", lambda e: top_local.destroy())
         
         self.top.resizable(False, False)
+
+        icon_path = self.controller.get_window_icon_path()
+        GUIUtils.set_program_icon(self.top, icon_path)
 
         return self.top
 
@@ -114,7 +119,7 @@ class ExperimentCtlWindow:
                 self.generate_stimulus = tk.Button(
                     self.button_frame,
                     text="Generate Schedule",
-                    command=lambda: self.controller.data_mgr.initialize_stimuli_dataframe(),
+                    command=lambda: self.controller.generate_experiment_schedule(),
                     bg="green",
                     font=("Helvetica", 24),
                 )
@@ -246,3 +251,7 @@ class ExperimentCtlWindow:
         if self.top is not None:
             self.top.destroy()
             self.top = None
+            
+    def close_window(self) -> None:
+        if self.top is not None: 
+            self.top.destroy()

@@ -376,25 +376,25 @@ class MainGUI:
             row=0,
             column=1,
         )
-        self.prime_valves_button_frame, _ = self.create_button(
-            parent=self.lower_control_buttons_frame,
-            button_text= "Prime Valves",
-            command=self.controller.launch_prime_valves_window,
-            bg="grey",
-            row=0,
-            column=2,
-        )
+        # self.prime_valves_button_frame, _ = self.create_button(
+        #     parent=self.lower_control_buttons_frame,
+        #     button_text= "Prime Valves",
+        #     command=self.controller.launch_prime_valves_window,
+        #     bg="grey",
+        #     row=0,
+        #     column=2,
+        # )
         self.program_schedule_button_frame, _ = self.create_button(
             parent=self.lower_control_buttons_frame,
             button_text="Program Schedule",
             command=lambda: self.controller.show_stimuli_table(),
             bg="grey",
             row=0,
-            column=3,
+            column=2,
         )
         self.exp_ctrl_button_frame = self.create_button(
             parent=self.lower_control_buttons_frame,
-            button_text= "Valve Stimuli",
+            button_text= "Valve / Stimuli",
             command=lambda: self.controller.experiment_ctl_wind.show_window(self.root),
             bg="grey",
             row=1,

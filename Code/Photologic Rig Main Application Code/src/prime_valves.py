@@ -1,30 +1,24 @@
 import tkinter as tk
-from tkinter import PhotoImage
-import platform
+from typing import TYPE_CHECKING
+from gui_utils import GUIUtils
+
+if TYPE_CHECKING:
+    from program_control import ProgramController
+    
 
 class PrimeValves:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller
         self.top = tk.Toplevel(self.controller.main_gui.root)
         self.top.title("Prime Valves")
         self.top.protocol("WM_DELETE_WINDOW", self.close_window)
         self.top.resizable(False, False)
         icon_path = self.controller.get_window_icon_path()
-        self.set_program_icon(icon_path)
+        GUIUtils.set_program_icon(self.top, icon_path)
         self.priming_active = False  # Track priming state
 
         self.setup_ui()
         self.center_window(300, 150)  # Smaller window for just a label and button
-
-    def set_program_icon(self, icon_path) -> None:
-        os_name = platform.system()
-
-        if os_name == "Windows":
-            self.top.iconbitmap(icon_path)
-        else:
-            # Use .png or .gif file directly
-            photo = PhotoImage(file=icon_path)
-            self.root.tk.call("wm", "iconphoto", self.root._w, photo)  # type: ignore
 
     def setup_ui(self):
         # Label for priming instruction
