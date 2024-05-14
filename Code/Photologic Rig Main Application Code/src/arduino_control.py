@@ -28,12 +28,12 @@ class AduinoManager:
             elif identifier == "MOTOR":
                 self.motor_arduino = serial.Serial(port, self.BAUD_RATE)
 
-        # if self.laser_arduino is None:
-        #     error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
-        #     self.close_connections() 
-        #     self.controller.display_gui_error(
-        #         "Laser Arduino Error", error_message
-        #     )
+        if self.laser_arduino is None:
+            error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
+            self.close_connections() 
+            self.controller.display_gui_error(
+                "Laser Arduino Error", error_message
+            )
         if self.motor_arduino is None:
             error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
