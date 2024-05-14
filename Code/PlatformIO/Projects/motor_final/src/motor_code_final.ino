@@ -40,6 +40,8 @@ String full_command;
 String command;
 bool prime_flag;
 bool motor_running; 
+bool connected = false;
+bool experiment_started = false;
 
 // Global Timestamp vector (array) - Timestamp Collection and Transmission
 std::vector<TimeStamp> timestamps;
@@ -49,13 +51,12 @@ EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
 SerialCommunication serial_communication;
 
-
-
 void add_to_array(int *array, int &size, int element) 
 {
   if (size < MAX_SCHEDULE_SIZE) {
     array[size] = element;
     size++; // This now correctly increments the size.
+    Serial.print("Added to array: "); Serial.println(element);
   } else {
     Serial.println("Error: Array is full.");
   }
@@ -76,6 +77,7 @@ void send_valve_durations()
           values[12], values[13], values[14], values[15]);
 
   Serial.println(saved_duration_times);
+  Serial.println("Sent valve durations.");
 
   update_opening_times();
 }
@@ -83,9 +85,11 @@ void send_valve_durations()
 void test_volume(char number_of_valves)
 {
   int num_valves = number_of_valves - '0';  // convert char to int
+  Serial.print("Testing volume with "); Serial.print(num_valves); Serial.println(" valves.");
 
   for(int i=0; i < num_valves / 2; i++)
   {
+    Serial.print("Testing valve pair: "); Serial.println(i+1);
     for(int j=0; j < 1000; j++)
     {
       valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, true, i);
@@ -151,13 +155,16 @@ void recieve_schedule(String full_command, int *SIDE_ONE_SCHEDULE, int *SIDE_TWO
         if (part.equals("Side One") && prev.equals("S")) 
         {
             side = 1;  // Next numbers belong to side one
+            Serial.println("Side One detected.");
         } 
         else if (part.equals("Side Two") && prev.equals("-1"))
         {
             side = 2;  // Next numbers belong to side two
+            Serial.println("Side Two detected.");
         } 
         else if (part.equals("end")) 
         {
+            Serial.println("End of schedule received.");
             break;  // End of the entire command
         } 
         
@@ -167,6 +174,7 @@ void recieve_schedule(String full_command, int *SIDE_ONE_SCHEDULE, int *SIDE_TWO
             if(is_integer(part))
             {
             value = part.toInt();
+            Serial.print("Received value: "); Serial.println(value);
             }
             else
             {
@@ -218,6 +226,7 @@ void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
   }
 
   Serial.println(message); // Send the entire schedule in one line
+  Serial.println("Schedule sent back for verification.");
 }
 
 void update_opening_times()
@@ -231,6 +240,7 @@ void update_opening_times()
     while (Serial.available() == 0) {}      // Wait until data is available
 
     String transmission = serial_communication.receive_transmission();
+    Serial.print("Received opening times: "); Serial.println(transmission);
 
     // Parse the transmission string
     while ((endIndex = transmission.indexOf(',', startIndex)) != -1 && valueIndex < num_values) 
@@ -247,6 +257,7 @@ void update_opening_times()
     eeprom_Interface.print_EEPROM_values();
 
     eeprom_Interface.write_values_to_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
+    Serial.println("Updated opening times in EEPROM.");
 }
 
 void send_timestamps() {
@@ -263,11 +274,13 @@ void send_timestamps() {
     }
 
     Serial.println(timestampsData);
+    Serial.println("Sent timestamps data.");
 }
 
 void myISR() 
 {
   valve_side = (PINH & (1 << PH5)) >> PH5;
+  Serial.print("Lick detected on side: "); Serial.println(valve_side);
 
   lick_available = true;
 }
@@ -322,6 +335,7 @@ void setup()
   }
 
   attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
+  //Serial.println("Setup complete.");
 }
 
 void create_timestamp(String command)
@@ -333,6 +347,7 @@ void create_timestamp(String command)
   timestamp.time_from_zero = millis() - program_start_time;
 
   timestamps.push_back(timestamp);
+  Serial.print("Timestamp created for command: "); Serial.println(command);
 }
 
 void handle_motor_command(String command)
@@ -347,10 +362,12 @@ void handle_motor_command(String command)
       noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
       interrupts();
+      Serial.println("Stepper moving up.");
   }
   else if (command == "D")
   {
       stepper.moveTo(STEPPER_DOWN_POSITION);
+      Serial.println("Stepper moving down.");
   }
 
   motor_running = true;
@@ -364,7 +381,7 @@ uint8_t create_portc_mask(int numberOfValves)
   {
     mask |= (0x80 >> i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
   }
-  Serial.println(mask);
+  Serial.print("Created PORTC mask: "); Serial.println(mask, BIN);
   return mask;
 }
 
@@ -375,17 +392,18 @@ uint8_t create_porta_mask(int numberOfValves)
   {
     mask |= (0x01 << i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
   }
+  Serial.print("Created PORTA mask: "); Serial.println(mask, BIN);
   return mask;
 } 
 
 
 void loop() 
 {
-  if(lick_available) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
+  if(lick_available && experiment_started) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   {
     valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, false, -1);
-    Serial.println(valve_side);
     lick_available = false;
+    Serial.println("Handled lick event.");
   }
 
   if (motor_running && stepper.distanceToGo() == 0) // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
@@ -395,13 +413,14 @@ void loop()
       command = "FINISHED UP";
       create_timestamp(command);
       current_trial++; // Door is finished moving up, we are now on the next trial
+      Serial.println("Motor finished moving up.");
     }
     else if(command.charAt(0) == 'D')
     {
-      command = "FINSIHED DOWN";
+      command = "FINISHED DOWN";
       create_timestamp(command);
+      Serial.println("Motor finished moving down.");
     }
-
 
     motor_running = false;
   }
@@ -411,6 +430,10 @@ void loop()
     full_command = serial_communication.receive_transmission(); // Use the function to read the full command
     command = full_command[0]; // Assuming the format is <X>, where X is the command character
     prime_flag = 0;
+    if(connected){
+    Serial.print("Received command: "); Serial.println(full_command);
+
+    }
     
     switch (command.charAt(0)) 
     {
@@ -448,6 +471,8 @@ void loop()
           // If both numbers are successfully parsed, assign them to the ports
           PORTA = porta_value; // Assign the first number to PORTA
           PORTC = portc_value; // Assign the second number to PORTC
+          Serial.print("Set PORTA to: "); Serial.println(porta_value);
+          Serial.print("Set PORTC to: "); Serial.println(portc_value);
         } else 
         {
           // If parsing fails, log an error or handle the case appropriately
@@ -470,7 +495,9 @@ void loop()
       
       case '0':   // mark t_0 time for the arduino side
         program_start_time = millis();
+        experiment_started = true;
         create_timestamp(command);
+        Serial.println("Program start time set.");
         break;
 
       case '9':
@@ -478,6 +505,7 @@ void loop()
         break;
         
       default:
+        Serial.println("Unknown command received.");
         break;
     }
   }

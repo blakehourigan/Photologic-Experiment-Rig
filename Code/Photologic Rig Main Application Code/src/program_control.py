@@ -4,7 +4,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Helper classes
-from arduino_control import AduinoManager
+from arduino_control import ArduinoManager
 from experiment_config import Config
 from data_management import DataManager
 
@@ -47,6 +47,12 @@ class ProgramController:
             self.init_windows()
             self.init_managers()
             self.init_logic()
+            
+            # side_one_valves = 0
+            # side_two_valves = 0
+            
+            # self.send_command_to_arduino(arduino='motor', command="<O," + f"{side_one_valves}," + f"{side_two_valves}"+ ">")
+
             logging.info("ProgramController initialized successfully.")
         except Exception as e:
             logging.error(f"Initialization error: {e}")
@@ -60,7 +66,7 @@ class ProgramController:
     def init_managers(self):
         """Initialize managers."""
         self.data_mgr = DataManager(self)
-        self.arduino_mgr = AduinoManager(self)
+        self.arduino_mgr = ArduinoManager(self)
         logging.debug("Managers initialized.")
 
     def init_windows(self):
@@ -426,13 +432,13 @@ class ProgramController:
 
     def send_command_to_arduino(self, arduino, command) -> None:
         """Send a command to the specified Arduino."""
-        logging.debug(f"Sending command to {arduino} Arduino: {command}")
+        logging.debug(f"Sending command to {arduino} Arduino(PC): {command}")
         try:
             if arduino == 'laser':
                 self.arduino_mgr.send_command_to_laser(command)
             elif arduino == 'motor':
                 self.arduino_mgr.send_command_to_motor(command)
-            logging.debug(f"Command sent to {arduino} Arduino: {command}")
+            logging.debug(f"Command sent to {arduino} Arduino (PC): {command}")
         except Exception as e:
             logging.error(f"Error sending command to {arduino} Arduino: {e}")
             raise

@@ -31,7 +31,9 @@ class valveTestLogic:
         execute = self.check_container_measurements(self.side_one_container_measurement, self.side_two_container_measurement) # if the user did not cancel either prompt, then continue
 
         if execute:
-            self.controller.send_command_to_arduino(arduino='motor', command= f'<T,{num_valves.get()}>')
+            motor_command = f'<T,{num_valves.get()}>'
+            print(motor_command)
+            self.controller.send_command_to_arduino(arduino='motor', command=motor_command)
 
     def append_to_volumes(self) -> None:
         self.side_one_volumes.append(self.controller.valve_testing_window.input_popup(self.completed_test_pairs + 1) - self.side_one_container_measurement)

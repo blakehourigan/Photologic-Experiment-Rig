@@ -7,7 +7,7 @@ const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, P
    on the corresponding side with the value held at the position of the current trial index in the 
    corresponding sides schedule list. 
 */
-void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing = false, int valve = -1) {
+void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing = false, int valve) {
   int porta_value = 0;
   int portc_value = 0; 
   
@@ -15,23 +15,24 @@ void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_
     porta_value = 1 << valve;
     
     PORTA = porta_value;
+    Serial.print("Testing valve on side one: "); Serial.println(valve);
   }
   else if(testing && side == 1){
     portc_value = 1 << valve;
     PORTC = portc_value;
-
-
+    Serial.print("Testing valve on side two: "); Serial.println(valve);
   }
   else{
     porta_value = side_one_schedule[current_trial];
     portc_value = side_two_schedule[current_trial];
 
-
-  if (side == 0) {
-    PORTA = porta_value;
-  } else if (side == 1) {
-    PORTC = portc_value;
-  }
+    if (side == 0) {
+      PORTA = porta_value;
+      Serial.print("Toggled solenoid on side one with value: "); Serial.println(porta_value, BIN);
+    } else if (side == 1) {
+      PORTC = portc_value;
+      Serial.print("Toggled solenoid on side two with value: "); Serial.println(portc_value, BIN);
+    }
   }
 }
 
@@ -39,9 +40,10 @@ void valve_control::untoggle_solenoids()
 {
     PORTA = 0 ;
     PORTC = 0 ;
+    Serial.println("Solenoids untoggled.");
 }
 
-void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing = false, int valve_number = -1) {
+void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing = false, int valve_number) {
   unsigned long int valve_duration = 0;
 
   noInterrupts();
@@ -49,14 +51,10 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   int address = (valve_side == 0) ? eeprom.DATA_START_ADDRESS : eeprom.SIDE_TWO_DURATIONS_ADDRESS;
   
   eeprom.read_single_value_from_EEPROM(valve_duration, address, valve_number);
+  Serial.print("Read valve duration: "); Serial.println(valve_duration);
 
   int quotient = valve_duration / 10000;
   int remaining_delay = valve_duration - (quotient * 10000);
-
-  Serial.print("valve side: ");
-  Serial.println(valve_side);
-  Serial.print("valve: ");
-  Serial.println(valve_number);
 
   if (testing){
     toggle_solenoid(valve_side, side_one_schedule, side_two_schedule, current_trial, true, valve_number);
@@ -64,7 +62,6 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   else{
     toggle_solenoid(valve_side, side_one_schedule, side_two_schedule, current_trial);
   }
-
 
   for (int i = 0; i < quotient; i++) {
     delayMicroseconds(10000);
@@ -78,6 +75,7 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
 
 void valve_control::prime_valves(bool prime_flag, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom)
 {
+    Serial.println("Priming valves...");
     for(int i = 0; i < 1000; i++)
     {
         if(prime_flag)
@@ -113,4 +111,5 @@ void valve_control::prime_valves(bool prime_flag, int *side_one_schedule, int *s
             break;
         }
     }
+    Serial.println("Finished priming valves.");
 }
