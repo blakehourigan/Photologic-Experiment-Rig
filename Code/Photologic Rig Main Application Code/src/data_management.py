@@ -82,7 +82,6 @@ class DataManager:
         df = pd.DataFrame(data)
         self.stimuli_dataframe = df
         self.blocks_generated = True
-        self.controller.program_schedule_window.show_stimuli_table()
         self.send_schedule_to_motor()
 
     def send_schedule_to_motor(self) -> None:
@@ -181,7 +180,7 @@ class DataManager:
                     pair_index = get_paired_index(i, total_entries)
                     self.pairs.append((self.changed_vars[i], self.changed_vars[pair_index]))
             else:
-                self.controller.display_error(
+                self.controller.display_gui_error(
                     "Stimulus Not Changed",
                     "One or more of the default stimuli have not been changed, please change the default value and try again",
                 )

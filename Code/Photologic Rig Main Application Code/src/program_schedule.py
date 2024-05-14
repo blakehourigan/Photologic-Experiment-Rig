@@ -2,6 +2,8 @@ import tkinter as tk
 import platform 
 from typing import TYPE_CHECKING, Optional
 
+from gui_utils import GUIUtils
+
 if TYPE_CHECKING:
     from program_control import ProgramController
     
@@ -25,6 +27,9 @@ class ProgramScheduleWindow:
         top_local.bind("<Control-w>", lambda e: top_local.destroy())
         
         self.top.resizable(False, False)
+
+        window_icon_path = self.controller.experiment_config.get_window_icon_path()
+        GUIUtils.set_program_icon(self.top, window_icon_path)
 
         # Global scroll event binding called here to bind to whole window instead of only scroll widget
         self.bind_scroll_event()

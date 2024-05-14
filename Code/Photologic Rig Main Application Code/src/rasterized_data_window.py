@@ -1,16 +1,18 @@
-from typing import TYPE_CHECKING, Optional
 import tkinter as tk
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+from typing import TYPE_CHECKING, Optional
 from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg 
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
+
+from gui_utils import GUIUtils
 
 if TYPE_CHECKING:
     from program_control import ProgramController
 
 class RasterizedDataWindow:
-    def __init__(self, controller) -> None:
+    def __init__(self, controller: 'ProgramController') -> None:
         self.controller = controller 
         self.master = controller.main_gui.root
         
@@ -38,16 +40,16 @@ class RasterizedDataWindow:
                 self.side2_window = self.create_window(side)
                 self.create_plot(self.side2_window, side)
 
-
     def create_window(self, side: int) -> tk.Toplevel:
         top = tk.Toplevel(self.master)
-        top.protocol("WM_DELETE_WINDOW", lambda: self.on_window_close(side))
-        top.bind("<Control-w>", lambda e, x=side: self.on_window_close(x)) # type: ignore 
+        top.protocol("WM_DELETE_WINDOW", self.on_any_window_close)
+        top.bind("<Control-w>", lambda e: self.on_any_window_close())
         top.iconbitmap(self.master.iconbitmap())  # Assuming master has a set icon
         top.title(f"Side {side} Raster Plot")
-        return top
-
+        window_icon_path = self.controller.experiment_config.get_window_icon_path()
+        GUIUtils.set_program_icon(top, icon_path=window_icon_path)
         
+        return top
 
     def create_plot(self, window: tk.Toplevel, side: int) -> None:
         container = tk.Frame(window)
@@ -64,11 +66,11 @@ class RasterizedDataWindow:
         window.axes = axes      # type: ignore
 
         if len(self.controller.data_mgr.side_one_trial_licks) > 0 or len(self.controller.data_mgr.side_one_trial_licks) > 0:
-            self.update_plot(window, reopen=True, side = side)  # Pass the whole window to update_plot
+            self.update_plot(window, reopen=True, side=side)  # Pass the whole window to update_plot
         else:
             self.update_plot(window)
         
-    def update_plot(self, window: tk.Toplevel, lick_times=None, trial_index=None, reopen = False, side = 0):
+    def update_plot(self, window: tk.Toplevel, lick_times=None, trial_index=None, reopen=False, side=0):
         axes = window.axes # type: ignore
         canvas = window.canvas # type: ignore
         
@@ -91,10 +93,10 @@ class RasterizedDataWindow:
                             self.color_index = (self.color_index + 1) % 10
             elif side == 2:            
                 if self.controller.data_mgr.side_two_trial_licks:
-                        for i, licks in enumerate(self.controller.data_mgr.side_two_trial_licks):
-                            if licks:
-                                self.plot_licks(axes, licks, i + 1, self.color_cycle(self.color_index))
-                                self.color_index = (self.color_index + 1) % 10
+                    for i, licks in enumerate(self.controller.data_mgr.side_two_trial_licks):
+                        if licks:
+                            self.plot_licks(axes, licks, i + 1, self.color_cycle(self.color_index))
+                            self.color_index = (self.color_index + 1) % 10
             
         if lick_times and len(lick_times) > 0:
             color = self.color_cycle(self.color_index)
@@ -104,16 +106,15 @@ class RasterizedDataWindow:
 
         canvas.draw()
 
-    
     def plot_licks(self, axes, lick_times, trial_index, color):
         # Normalize lick times by the first lick time
         normalized_licks = [stamp - lick_times[0] for stamp in lick_times]
         axes.scatter(normalized_licks, [trial_index] * len(normalized_licks), marker='|', c=color, s=100)
         
-    def on_window_close(self, side: int) -> None:
-        if side == 1 and self.side1_window is not None:
+    def on_any_window_close(self) -> None:
+        if self.side1_window is not None:
             self.side1_window.destroy()
             self.side1_window = None
-        elif side == 2 and self.side2_window is not None:
+        if self.side2_window is not None:
             self.side2_window.destroy()
             self.side2_window = None

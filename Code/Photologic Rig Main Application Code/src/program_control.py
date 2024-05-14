@@ -17,7 +17,6 @@ from valve_testing_window import ValveTestWindow
 from valve_testing_logic import valveTestLogic
 from program_schedule import ProgramScheduleWindow
 from valve_control_window import ControlValves
-from prime_valves import PrimeValves
 
 # Set up logging
 logger = logging.getLogger()
@@ -415,6 +414,10 @@ class ProgramController:
                 self.data_window.show_window(1)
                 self.data_window.show_window(2)
             else:
+                self.display_gui_error(
+                    "Blocks Not Generated",
+                    "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
+                )
                 logging.warning("Blocks not yet generated.")
             logging.debug("Rasterized data windows opened.")
         except Exception as e:
@@ -461,17 +464,7 @@ class ProgramController:
         except Exception as e:
             logging.error(f"Error showing valve stimuli window: {e}")
             raise
-        
-    def launch_prime_valves_window(self) -> None:
-        """Launch the prime valves window."""
-        logging.debug("Launching prime valves window.")
-        try:
-            self.prime_valves_window = PrimeValves(self)
-            logging.debug("Prime valves window launched.")
-        except Exception as e:
-            logging.error(f"Error launching prime valves window: {e}")
-            raise
-
+    
     def run_valve_test(self, num_valves_to_test) -> None:
         """Run the valve test for the specified number of valves."""
         logging.debug(f"Running valve test for {num_valves_to_test} valves.")
@@ -530,6 +523,7 @@ class ProgramController:
             self.data_mgr.initialize_stimuli_dataframe()
             self.data_mgr.initalize_licks_dataframe()
             self.close_valve_stimuli_window()
+            self.program_schedule_window.show_stimuli_table()
             logging.debug("Experiment schedule generated.")
         except Exception as e:
             logging.error(f"Error generating experiment schedule: {e}")

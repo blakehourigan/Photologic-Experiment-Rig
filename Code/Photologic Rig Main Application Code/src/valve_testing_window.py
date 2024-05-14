@@ -1,8 +1,9 @@
 import tkinter as tk
+import re
 from tkinter import ttk, messagebox, simpledialog
 from typing import TYPE_CHECKING
-import re
 
+from gui_utils import GUIUtils
 
 if TYPE_CHECKING:
     from program_control import ProgramController
@@ -69,6 +70,9 @@ class ValveTestWindow:
                 self.configure_window()
                 self.create_widgets()
                 self.auto_resize_and_center()
+                window_icon_path = self.controller.experiment_config.get_window_icon_path()
+                GUIUtils.set_program_icon(self.top, icon_path=window_icon_path)
+                
         else:
             messagebox.showinfo("Error", "Please add stimuli before proceeding.")
 
@@ -104,7 +108,6 @@ class ValveTestWindow:
         except tk.TclError:
             # If it fails to get a valid number (empty string or invalid data), do not update the table
             pass
-
 
     def create_valve_test_table(self):
         # this function creates and labels the testing window table that displays the information recieved from the arduino reguarding the results of the tes

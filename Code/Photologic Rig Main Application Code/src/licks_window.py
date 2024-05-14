@@ -3,6 +3,8 @@ from typing import Optional
 from tkinter import messagebox
 from tkinter import ttk
 
+from gui_utils import GUIUtils
+
 class LicksWindow:
     def __init__(self, controller) -> None:
         self.controller = controller
@@ -18,6 +20,8 @@ class LicksWindow:
         else: 
             self.top = self.create_window()
             self.show_table()
+            window_icon_path = self.controller.experiment_config.get_window_icon_path()
+            GUIUtils.set_program_icon(self.top, icon_path=window_icon_path)
     
     def create_window(self) -> tk.Toplevel:
         top = tk.Toplevel(self.controller.main_gui.root)
@@ -43,12 +47,6 @@ class LicksWindow:
             self.stamped_licks.insert('', 'end', values=list(row))
 
         self.stamped_licks.pack(fill='both', expand=True)
-
-
-    # def update_table(self) -> None:
-    #     self.stamped_licks.redraw()
-        
-    #     self.stamped_licks.update_idletasks()
         
     def on_window_close(self) -> None:
         """Handle the close event when the user clicks the X button on the window."""
