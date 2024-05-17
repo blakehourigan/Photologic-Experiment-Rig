@@ -27,12 +27,13 @@ int side_two_size = 0;
 const int MAX_SCHEDULE_SIZE = 200;
 int* SIDE_ONE_SCHEDULE;
 int* SIDE_TWO_SCHEDULE;
+unsigned long side_one_durations;
+unsigned long side_two_durations;
 volatile bool lick_available = false;
 int current_trial = 0;
 int valve_number;
 volatile int valve_side;
 unsigned long program_start_time; 
-unsigned long duration;
 String full_command;
 String command;
 bool prime_flag;
@@ -62,8 +63,6 @@ void send_valve_durations()
 
   char saved_duration_times[200];
 
-  eeprom_Interface.read_values_from_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
-  
   sprintf(saved_duration_times, "<Durations, S1, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, S2, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu>", 
           values[0], values[1], values[2], values[3], 
           values[4], values[5], values[6], values[7], 
@@ -89,7 +88,8 @@ void receive_data_dictionary(const char* jsonData) {
     JsonArray side_one_schedule = doc["side_one_schedule"];
     JsonArray side_two_schedule = doc["side_two_schedule"];
     int current_trial = doc["current_trial"];
-    JsonArray valve_durations = doc["valve_durations"];
+    JsonArray valve_durations_side_one = doc["valve_durations_side_one"];
+    JsonArray valve_durations_side_two = doc["valve_durations_side_two"];
 
     // Update the global variables
     side_one_size = side_one_schedule.size();
@@ -112,12 +112,6 @@ void receive_data_dictionary(const char* jsonData) {
     // Update the current trial
     current_trial = current_trial;
 
-    // Update the valve durations in EEPROM
-    unsigned long valve_duration_array[valve_durations.size()];
-    for (size_t i = 0; i < valve_durations.size(); i++) {
-        valve_duration_array[i] = valve_durations[i].as<unsigned long>();
-    }
-
     // Print side_one_schedule
     Serial.println("side_one_schedule:");
     for (JsonVariant value : side_one_schedule) {
@@ -135,8 +129,12 @@ void receive_data_dictionary(const char* jsonData) {
     Serial.println(current_trial);
 
     // Print valve_durations
-    Serial.println("valve_durations:");
-    for (JsonVariant value : valve_durations) {
+    Serial.println("valve_durations_side_one:");
+    for (JsonVariant value : valve_durations_side_one) {
+      Serial.println(value.as<int>());
+    }
+    Serial.println("valve_durations_side_two:");
+    for (JsonVariant value : valve_durations_side_one) {
       Serial.println(value.as<int>());
     }
 
@@ -178,99 +176,6 @@ void test_volume(char number_of_valves)
   send_valve_durations();
 } 
 
-bool is_integer(const String& str) {
-    if (str.length() == 0) {
-        return false; // Empty string is not an integer
-    }
-    
-    int start = 0;
-    if (str[0] == '-') {
-        // Handle negative numbers
-        if (str.length() == 1) {
-            return false; // String is just "-", not an integer
-        }
-        start = 1; // Start checking from the next character
-    }
-    
-    for (unsigned int i = start; i < str.length(); i++) {
-        if (!isDigit(str[i])) {
-            return false; // Found a non-digit character
-        }
-    }
-    
-    return true; // Passed all checks, it's an integer
-}
-
-void recieve_schedule(String full_command, int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) 
-{
-    int currentIndex = 0;  // Tracks the current index for adding to arrays
-    int side = 0;  // 0: not set, 1: side one, 2: side two
-    String prev = "";
-    int value = 0;
-    // Start by splitting the command at every comma
-    unsigned int from = 0;
-    int to = full_command.indexOf(',', from);
-    while (to != -1 || from < full_command.length()) 
-    {
-        String part = full_command.substring(from, to);
-
-        if (part.equals("Side One") && prev.equals("S")) 
-        {
-            side = 1;  // Next numbers belong to side one
-            Serial.println("Side One detected.");
-        } 
-        else if (part.equals("Side Two") && prev.equals("-1"))
-        {
-            side = 2;  // Next numbers belong to side two
-            Serial.println("Side Two detected.");
-        } 
-        else if (part.equals("end")) 
-        {
-            Serial.println("End of schedule received.");
-            break;  // End of the entire command
-        } 
-        
-        if (side != 0 && currentIndex < MAX_SCHEDULE_SIZE) 
-        {
-            // Convert part to integer and add to the correct array
-            if(is_integer(part))
-            {
-            value = part.toInt();
-            Serial.print("Received value: "); Serial.println(value);
-            }
-            else
-            {
-              prev = part;
-              // Move to the next part
-              from = to + 1;
-              to = full_command.indexOf(',', from);
-         
-              if (to == -1 && from < full_command.length()) 
-              {  // Handle the last part
-              to = full_command.length();
-              }
-              continue;
-            }
-            if (side == 1 && value >= 0) 
-            {
-                add_to_array(SIDE_ONE_SCHEDULE, side_one_size, value);
-            } else if (side == 2 && value >= 0) 
-            {
-                add_to_array(SIDE_TWO_SCHEDULE, side_two_size, value);
-            }
-        }
-        prev = part;
-        // Move to the next part
-        from = to + 1;
-        to = full_command.indexOf(',', from);
-
-        if (to == -1 && from < full_command.length()) 
-        {  // Handle the last part
-            to = full_command.length();
-        }
-    }
-    send_schedule_back(SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);
-}
 
 void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
   String message = "SCHEDULE VERIFICATION";

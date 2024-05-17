@@ -3,16 +3,18 @@
         "side_one_schedule": [],
         "side_two_schedule": [],
         "current_trial": 1,
-        "valve_durations": [
+        "valve_durations_side_one": [
+            25000,
             24125,
             24125,
             24125,
             24125,
             24125,
             24125,
-            24125,
-            24125,
-            24125,
+            24125
+        ],
+        "valve_durations_side_two": [
+            25000,
             24125,
             24125,
             24125,
@@ -23,18 +25,10 @@
         ]
     },
     "last_used": {
-        "side_one_schedule": [
-            1,
-            2,
-            3
-        ],
-        "side_two_schedule": [
-            4,
-            5,
-            6
-        ],
-        "current_trial": 2,
-        "valve_durations": [
+        "side_one_schedule": [],
+        "side_two_schedule": [],
+        "current_trial": 1,
+        "valve_durations_side_one": [
             25000,
             24125,
             24125,
@@ -42,8 +36,10 @@
             24125,
             24125,
             24125,
-            24125,
-            24125,
+            24125
+        ],
+        "valve_durations_side_two": [
+            25000,
             24125,
             24125,
             24125,

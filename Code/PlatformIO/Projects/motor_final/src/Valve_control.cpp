@@ -1,8 +1,5 @@
 #include "valve_control.h"
 
-const int valve_control::side_one_solenoids[] = {PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7};
-const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, PC1, PC0};
-
 /* toggle the solenoid valve for the side that was licked by overwriting the register value of 0
    on the corresponding side with the value held at the position of the current trial index in the 
    corresponding sides schedule list. 
@@ -44,13 +41,11 @@ void valve_control::untoggle_solenoids()
 }
 
 void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing, int valve_number) {
-  unsigned long int valve_duration = 0;
-
   noInterrupts();
 
   int address = (valve_side == 0) ? eeprom.DATA_START_ADDRESS : eeprom.SIDE_TWO_DURATIONS_ADDRESS;
   
-  eeprom.read_single_value_from_EEPROM(valve_duration, address, valve_number);
+  int valve_duration = durations[0].as<int>()
   Serial.print("Read valve duration: "); Serial.println(valve_duration);
 
   int quotient = valve_duration / 10000;

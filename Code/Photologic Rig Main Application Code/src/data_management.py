@@ -54,6 +54,7 @@ class DataManager:
         self.side_one_trial_licks: list[list[float]] = []
         self.side_two_trial_licks: list[list[float]] = []
 
+        self.initialize_arduino_json()
         
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""
@@ -476,14 +477,16 @@ class DataManager:
             "side_one_schedule": [],
             "side_two_schedule": [],
             "current_trial": 1,
-            "valve_durations": [24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
+            "valve_durations_side_one": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125],
+            "valve_durations_side_two": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
         }
 
         last_used_data = {
             "side_one_schedule": [],
             "side_two_schedule": [],
             "current_trial": 1,
-            "valve_durations": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
+            "valve_durations_side_one": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125],
+            "valve_durations_side_two": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
         }
 
         # Create a dictionary with named configurations
