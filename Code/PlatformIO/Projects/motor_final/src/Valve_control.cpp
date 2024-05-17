@@ -40,10 +40,33 @@ void valve_control::untoggle_solenoids()
     Serial.println("Solenoids untoggled.");
 }
 
+int getZeroBasedPositionFromInt(int value) {
+    // Initialize position counter
+    int position = 0;
+
+    // Check each bit to find the position of the first '1'
+    while (value > 1) {
+        value >>= 1;
+        position++;
+    }
+
+    return position;
+}
+
 void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, unsigned long *side_one_durations, unsigned long *side_two_durations,int current_trial, bool testing, int valve_number) {
   noInterrupts();
 
   long int valve_duration;
+
+  if(valve_number == -1){
+    int tmp_valve_number = getZeroBasedPositionFromInt(valve_number);
+    if(valve_side == 0){
+      valve_duration = side_one_durations[tmp_valve_number]; 
+    }
+    else if(valve_side == 1){
+      valve_duration = side_two_durations[tmp_valve_number];
+    }
+  }
 
   if(valve_side == 0){
     valve_duration = side_one_durations[valve_number]; 
