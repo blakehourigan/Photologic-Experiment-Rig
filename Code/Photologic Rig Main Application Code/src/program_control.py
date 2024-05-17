@@ -533,6 +533,12 @@ class ProgramController:
             logging.error(f"Error generating experiment schedule: {e}")
             raise
 
+    def get_current_json_config(self) -> dict:
+        return self.data_mgr.load_configuration(config_name="last_used")
+
+    def save_current_json_config(self, arduino_data) -> None:
+        self.data_mgr.save_configuration(config_data=arduino_data)
+
 # Main function
 def main():
     try:

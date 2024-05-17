@@ -506,7 +506,7 @@ class DataManager:
             return json.load(file)
     
         # Function to load a specific configuration
-    def load_configuration(self, filename, config_name):
+    def load_configuration(self, filename='arduino_data.json', config_name = "default"):
         data = self.read_json_file(filename)
         if config_name in data:
             return data[config_name]
@@ -514,11 +514,11 @@ class DataManager:
             raise ValueError(f"Configuration '{config_name}' not found in {filename}")
 
     # Function to save a specific configuration
-    def save_configuration(self, filename, config_name, config_data):
+    def save_configuration(self, filename='arduino_data.json', config_name ="last_used", config_data = None):
         data = self.read_json_file(filename)
         data[config_name] = config_data
         self.write_to_json_file(data, filename)
-        
+    
     
     @property
     def num_trials(self):

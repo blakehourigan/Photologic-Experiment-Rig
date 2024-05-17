@@ -7,7 +7,7 @@
 void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing, int valve) {
   int porta_value = 0;
   int portc_value = 0; 
-  
+  Serial.println("testing");
   if(testing && side == 0){
     porta_value = 1 << valve;
     
@@ -40,18 +40,25 @@ void valve_control::untoggle_solenoids()
     Serial.println("Solenoids untoggled.");
 }
 
-void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing, int valve_number) {
+void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, unsigned long *side_one_durations, unsigned long *side_two_durations,int current_trial, bool testing, int valve_number) {
   noInterrupts();
 
-  int address = (valve_side == 0) ? eeprom.DATA_START_ADDRESS : eeprom.SIDE_TWO_DURATIONS_ADDRESS;
-  
-  int valve_duration = durations[0].as<int>()
+  long int valve_duration;
+
+  if(valve_side == 0){
+    valve_duration = side_one_durations[valve_number]; 
+  }
+  else if(valve_side == 1){
+    valve_duration = side_two_durations[valve_number];
+  }
+
   Serial.print("Read valve duration: "); Serial.println(valve_duration);
 
   int quotient = valve_duration / 10000;
   int remaining_delay = valve_duration - (quotient * 10000);
 
   if (testing){
+    Serial.println("testing in da lick handler bru");
     toggle_solenoid(valve_side, side_one_schedule, side_two_schedule, current_trial, true, valve_number);
   }
   else{
@@ -68,43 +75,3 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   interrupts();
 }
 
-void valve_control::prime_valves(bool prime_flag, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom)
-{
-    Serial.println("Priming valves...");
-    for(int i = 0; i < 1000; i++)
-    {
-        if(prime_flag)
-        {
-          // Check if there's something on the serial line
-          if (Serial.available() > 0) 
-          {
-              // Read the incoming byte:
-              char incomingChar = Serial.read();
-
-              // Check if the incoming byte is 'E'
-              if (incomingChar == 'E') 
-              {
-                  prime_flag = 0; // Set prime_flag to zero to stop the priming
-                  break; // Exit the for loop immediately
-              }
-          }
-
-          // Prime valves as before
-          // Prime all valves in both sides
-          for (int side = 0; side <= 1; ++side) 
-          {
-              for (int valve_number = 0; valve_number < 4; ++valve_number) 
-              {
-                  lick_handler(side, side_one_schedule, side_two_schedule, current_trial, eeprom, false, valve_number);
-              }
-          }
-          delay(100);
-        }
-        else
-        {
-            // If prime_flag is not set, break out of the loop early
-            break;
-        }
-    }
-    Serial.println("Finished priming valves.");
-}

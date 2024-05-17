@@ -1,10 +1,8 @@
 #include <ArduinoJson.h>
 #include <AccelStepper.h>
 #include <avr/wdt.h>
-#include "EEPROM_INTERFACE.h"
 #include "Valve_control.h"
 #include "serial_communication.h"
-#include <EEPROM.h>
 #include <vector>
 
 #define dir_pin 53
@@ -24,11 +22,13 @@ char jsonBuffer[bufferSize];
 // Define other global variables as needed
 int side_one_size = 0; 
 int side_two_size = 0;
+const int VALVES_SIDE_ONE = 8;
+const int VALVES_SIDE_TWO = 8;
 const int MAX_SCHEDULE_SIZE = 200;
 int* SIDE_ONE_SCHEDULE;
 int* SIDE_TWO_SCHEDULE;
-unsigned long side_one_durations;
-unsigned long side_two_durations;
+unsigned long *side_one_durations;
+unsigned long *side_two_durations;
 volatile bool lick_available = false;
 int current_trial = 0;
 int valve_number;
@@ -42,7 +42,6 @@ bool connected = false;
 bool experiment_started = false;
 std::vector<TimeStamp> timestamps;
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
-EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
 SerialCommunication serial_communication;
 
@@ -55,24 +54,6 @@ void add_to_array(int *array, int &size, int element)
   } else {
     Serial.println("Error: Array is full.");
   }
-}
-
-void send_valve_durations()
-{
-  unsigned long int values[16]; 
-
-  char saved_duration_times[200];
-
-  sprintf(saved_duration_times, "<Durations, S1, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu, S2, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %lu>", 
-          values[0], values[1], values[2], values[3], 
-          values[4], values[5], values[6], values[7], 
-          values[8], values[9], values[10], values[11], 
-          values[12], values[13], values[14], values[15]);
-
-  Serial.println(saved_duration_times);
-  Serial.println("Sent valve durations.");
-
-  update_opening_times();
 }
 
 void receive_data_dictionary(const char* jsonData) {
@@ -108,6 +89,21 @@ void receive_data_dictionary(const char* jsonData) {
     for (int i = 0; i < side_two_size; i++) {
         SIDE_TWO_SCHEDULE[i] = side_two_schedule[i].as<int>();
     }
+
+    // Resize and populate the SIDE_ONE_SCHEDULE array
+    if (side_one_durations) delete[] side_one_durations;
+    side_one_durations = new unsigned long[VALVES_SIDE_ONE];
+    for (int i = 0; i < VALVES_SIDE_ONE; i++) {
+        side_one_durations[i] = valve_durations_side_one[i].as<int>();
+    }
+
+    // Resize and populate the SIDE_TWO_SCHEDULE array
+    if (side_two_durations) delete[] side_two_durations;
+    side_two_durations = new unsigned long[VALVES_SIDE_TWO];
+    for (int i = 0; i < VALVES_SIDE_TWO; i++) {
+        side_two_durations[i] = valve_durations_side_two[i].as<int>();
+    }
+
 
     // Update the current trial
     current_trial = current_trial;
@@ -152,8 +148,9 @@ void test_volume(char number_of_valves)
     Serial.print("Testing valve pair: "); Serial.println(i+1);
     for(int j=0; j < 1000; j++)
     {
-      valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, true, i);
-      valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, true, i);
+      Serial.print("testing...");
+      valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, side_one_durations, side_two_durations, current_trial, true, i);
+      valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, side_one_durations, side_two_durations ,current_trial, true, i);
       delay(100);
     }
     serial_communication.clear_serial_buffer();
@@ -172,10 +169,7 @@ void test_volume(char number_of_valves)
       }
     }
   }
-
-  send_valve_durations();
 } 
-
 
 void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
   String message = "SCHEDULE VERIFICATION";
@@ -194,37 +188,6 @@ void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
 
   Serial.println(message); // Send the entire schedule in one line
   Serial.println("Schedule sent back for verification.");
-}
-
-void update_opening_times()
-{
-    const int num_values = 16;
-    unsigned long int values[num_values];
-    int valueIndex = 0;
-    int startIndex = 0;
-    int endIndex = 0;
-
-    while (Serial.available() == 0) {}      // Wait until data is available
-
-    String transmission = serial_communication.receive_transmission();
-    Serial.print("Received opening times: "); Serial.println(transmission);
-
-    // Parse the transmission string
-    while ((endIndex = transmission.indexOf(',', startIndex)) != -1 && valueIndex < num_values) 
-    {
-      values[valueIndex++] = strtoul(transmission.substring(startIndex, endIndex).c_str(), NULL, 10);
-      startIndex = endIndex + 1; // Move past the comma
-    }
-
-    // Capture the last value (assuming there's no trailing comma)
-    if (valueIndex < num_values) {
-      values[valueIndex] = strtoul(transmission.substring(startIndex).c_str(), NULL, 10);
-    }
-    
-    eeprom_Interface.print_EEPROM_values();
-
-    eeprom_Interface.write_values_to_EEPROM(values, eeprom_Interface.DATA_START_ADDRESS, 16);
-    Serial.println("Updated opening times in EEPROM.");
 }
 
 void send_timestamps() {
@@ -264,33 +227,6 @@ void setup()
   SIDE_ONE_SCHEDULE = new int[MAX_SCHEDULE_SIZE];
   SIDE_TWO_SCHEDULE = new int[MAX_SCHEDULE_SIZE];
 
-  unsigned long int side_one_lick_durations[8]; 
-  unsigned long int side_two_lick_durations[8];
-
-  if (!eeprom_Interface.check_EEPROM_initialized())      // Check if EEPROM is initialized
-  {
-      for (int i = 0; i < 8; i++) 
-      {
-          side_one_lick_durations[i] = 24125; // Default value 24125
-      }
-      for (int i = 0; i < 8; i++) 
-      {
-          side_two_lick_durations[i] = 24125; // Default value 24125
-      }
-
-      eeprom_Interface.write_values_to_EEPROM(side_one_lick_durations, eeprom_Interface.DATA_START_ADDRESS, 8);
-      eeprom_Interface.write_values_to_EEPROM(side_two_lick_durations, eeprom_Interface.DATA_START_ADDRESS + 8 * sizeof(long int), 8);
-      eeprom_Interface.mark_EEPROM_initialized();
-      Serial.println("EEPROM initialized with default values.");
-  }
-  else 
-  {
-      // Read the existing values from EEPROM
-      eeprom_Interface.read_values_from_EEPROM(side_one_lick_durations, eeprom_Interface.DATA_START_ADDRESS, 8);
-      eeprom_Interface.read_values_from_EEPROM(side_two_lick_durations, eeprom_Interface.DATA_START_ADDRESS + 8 * sizeof(long int), 8);
-      //Serial.println("Values read from EEPROM.");
-  }
-
   DDRA |= (255); // Set pins 22-29 as outputs
   DDRC |= (255); // Set pins 30-37 as outputs 
   
@@ -302,7 +238,6 @@ void setup()
   }
 
   attachInterrupt(0, myISR, RISING); // attach interrupt on pin 2 to know when licks are detected
-  //Serial.println("Setup complete.");
 }
 
 void create_timestamp(String command)
@@ -344,7 +279,7 @@ void loop()
 {
   if(lick_available && experiment_started) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   {
-    valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface, false, -1);
+    valve_ctrl.lick_handler(valve_side, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, side_one_durations,side_two_durations ,current_trial, false, -1);
     lick_available = false;
     Serial.println("Handled lick event.");
   }
@@ -398,12 +333,6 @@ void loop()
         command = full_command[2];
         test_volume(command.charAt(0));
         break;
-      
-      case 'F':
-        prime_flag = 1; 
-        valve_ctrl.prime_valves(prime_flag, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, current_trial, eeprom_Interface);
-        break;
-      
       case 'O':
       {
         int porta_value = 0;
@@ -422,19 +351,6 @@ void loop()
         }
         break;
       }
-
-      case 'S':
-        recieve_schedule(full_command, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE);
-        break;
-      
-      case 'P':
-        eeprom_Interface.print_EEPROM_values();
-        break;
-      
-      case 'E':
-        eeprom_Interface.markEEPROMUninitialized();
-        break;
-      
       case '0':   // mark t_0 time for the arduino side
         program_start_time = millis();
         experiment_started = true;
