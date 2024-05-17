@@ -1,3 +1,4 @@
+#include <ArduinoJson.h>
 #include <AccelStepper.h>
 #include <avr/wdt.h>
 #include "EEPROM_INTERFACE.h"
@@ -8,44 +9,37 @@
 
 #define dir_pin 53
 #define step_pin 51
-
 #define BAUD_RATE 115200
 
-struct TimeStamp 
-{
+struct TimeStamp {
     String previous_command;
     int trial_number;
     unsigned long time_from_zero;
 };
 
-// Global variables - Schedule Transmission
+// Define buffer size
+const size_t bufferSize = 512; // Adjust buffer size as needed
+char jsonBuffer[bufferSize];
+
+// Define other global variables as needed
 int side_one_size = 0; 
 int side_two_size = 0;
 const int MAX_SCHEDULE_SIZE = 200;
 int* SIDE_ONE_SCHEDULE;
 int* SIDE_TWO_SCHEDULE;
-
-// Global variables - Trials and licks
 volatile bool lick_available = false;
 int current_trial = 0;
 int valve_number;
 volatile int valve_side;
-
-// Global variables - Program timing
 unsigned long program_start_time; 
 unsigned long duration;
-
-// variables used in the loop function and related functions
 String full_command;
 String command;
 bool prime_flag;
 bool motor_running; 
 bool connected = false;
 bool experiment_started = false;
-
-// Global Timestamp vector (array) - Timestamp Collection and Transmission
 std::vector<TimeStamp> timestamps;
-
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 EEPROM_INTERFACE eeprom_Interface;
 valve_control valve_ctrl;
@@ -80,6 +74,74 @@ void send_valve_durations()
   Serial.println("Sent valve durations.");
 
   update_opening_times();
+}
+
+void receive_data_dictionary(const char* jsonData) {
+    DynamicJsonDocument doc(bufferSize);
+    DeserializationError error = deserializeJson(doc, jsonData);
+    if (error) {
+        Serial.print("deserializeJson() failed: ");
+        Serial.println(error.c_str());
+        return;
+    }
+
+    // Extract the data from the JSON object
+    JsonArray side_one_schedule = doc["side_one_schedule"];
+    JsonArray side_two_schedule = doc["side_two_schedule"];
+    int current_trial = doc["current_trial"];
+    JsonArray valve_durations = doc["valve_durations"];
+
+    // Update the global variables
+    side_one_size = side_one_schedule.size();
+    side_two_size = side_two_schedule.size();
+
+    // Resize and populate the SIDE_ONE_SCHEDULE array
+    if (SIDE_ONE_SCHEDULE) delete[] SIDE_ONE_SCHEDULE;
+    SIDE_ONE_SCHEDULE = new int[side_one_size];
+    for (int i = 0; i < side_one_size; i++) {
+        SIDE_ONE_SCHEDULE[i] = side_one_schedule[i].as<int>();
+    }
+
+    // Resize and populate the SIDE_TWO_SCHEDULE array
+    if (SIDE_TWO_SCHEDULE) delete[] SIDE_TWO_SCHEDULE;
+    SIDE_TWO_SCHEDULE = new int[side_two_size];
+    for (int i = 0; i < side_two_size; i++) {
+        SIDE_TWO_SCHEDULE[i] = side_two_schedule[i].as<int>();
+    }
+
+    // Update the current trial
+    current_trial = current_trial;
+
+    // Update the valve durations in EEPROM
+    unsigned long valve_duration_array[valve_durations.size()];
+    for (size_t i = 0; i < valve_durations.size(); i++) {
+        valve_duration_array[i] = valve_durations[i].as<unsigned long>();
+    }
+
+    // Print side_one_schedule
+    Serial.println("side_one_schedule:");
+    for (JsonVariant value : side_one_schedule) {
+      Serial.println(value.as<int>());
+    }
+
+    // Print side_two_schedule
+    Serial.println("side_two_schedule:");
+    for (JsonVariant value : side_two_schedule) {
+      Serial.println(value.as<int>());
+    }
+
+    // Print current_trial
+    Serial.print("current_trial: ");
+    Serial.println(current_trial);
+
+    // Print valve_durations
+    Serial.println("valve_durations:");
+    for (JsonVariant value : valve_durations) {
+      Serial.println(value.as<int>());
+    }
+
+
+    Serial.println("Data dictionary received and processed.");
 }
 
 void test_volume(char number_of_valves)
@@ -373,30 +435,6 @@ void handle_motor_command(String command)
   motor_running = true;
 }
 
-
-uint8_t create_portc_mask(int numberOfValves) 
-{
-  uint8_t mask = 0x00;
-  for (int i = 0; i < numberOfValves; i++) 
-  {
-    mask |= (0x80 >> i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
-  }
-  Serial.print("Created PORTC mask: "); Serial.println(mask, BIN);
-  return mask;
-}
-
-uint8_t create_porta_mask(int numberOfValves)
-{
-  uint8_t mask = 0x00;
-  for (int i = 0; i < numberOfValves; i++) 
-  {
-    mask |= (0x01 << i); // Shift 0x80 (binary 1000 0000) right by 'i' positions
-  }
-  Serial.print("Created PORTA mask: "); Serial.println(mask, BIN);
-  return mask;
-} 
-
-
 void loop() 
 {
   if(lick_available && experiment_started) // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
@@ -503,7 +541,12 @@ void loop()
       case '9':
         send_timestamps();
         break;
-        
+      case 'A': // New command to receive the data dictionary
+        if (full_command.startsWith("A,")) {
+            String jsonData = full_command.substring(2);
+            receive_data_dictionary(jsonData.c_str());
+        }
+        break;
       default:
         Serial.println("Unknown command received.");
         break;

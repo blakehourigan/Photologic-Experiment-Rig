@@ -7,7 +7,7 @@ const int valve_control::side_two_solenoids[] = {PC7, PC6, PC5, PC4, PC3, PC2, P
    on the corresponding side with the value held at the position of the current trial index in the 
    corresponding sides schedule list. 
 */
-void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing = false, int valve) {
+void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing, int valve) {
   int porta_value = 0;
   int portc_value = 0; 
   
@@ -43,7 +43,7 @@ void valve_control::untoggle_solenoids()
     Serial.println("Solenoids untoggled.");
 }
 
-void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing = false, int valve_number) {
+void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, int current_trial, EEPROM_INTERFACE& eeprom, bool testing, int valve_number) {
   unsigned long int valve_duration = 0;
 
   noInterrupts();

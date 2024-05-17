@@ -1,5 +1,6 @@
 # data_manager.py
 import logging
+import json
 from tkinter import filedialog
 import pandas as pd
 import numpy as np
@@ -53,6 +54,11 @@ class DataManager:
         self.side_one_trial_licks: list[list[float]] = []
         self.side_two_trial_licks: list[list[float]] = []
 
+
+
+
+        self.write_to_json_file()
+        
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""
         logger.debug("Initializing stimuli dataframe.")
@@ -82,17 +88,17 @@ class DataManager:
         df = pd.DataFrame(data)
         self.stimuli_dataframe = df
         self.blocks_generated = True
-        self.send_schedule_to_motor()
+        self.send_data_to_motor()
 
-    def send_schedule_to_motor(self) -> None:
+    def send_data_to_motor(self) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
             stim_var_list = list(self.stimuli_vars.values())
             filtered_stim_var_list = [item for item in stim_var_list if not re.match(r'Valve \d+ substance', item.get())]
             side_one_vars = []
             side_two_vars = []
-            self.side_one_indexes: List[int] = [] 
-            self.side_two_indexes: List[int] = []
+            side_one_indexes: List[int] = [] 
+            side_two_indexes: List[int] = []
             
             for i in range(len(filtered_stim_var_list)):
                 if i < len(filtered_stim_var_list) // 2:  
@@ -106,15 +112,21 @@ class DataManager:
                 
                 for i in range(len(side_one_schedule)):     
                     index = side_one_vars.index(side_one_schedule[i])
-                    self.side_one_indexes.append(2 ** index)
+                    side_one_indexes.append(2 ** index)
                     index = side_two_vars.index(side_two_schedule[i])
-                    self.side_two_indexes.append(2 ** index)
+                    side_two_indexes.append(2 ** index)
+
+            self.arduino_data['last_used']['side_one_schedule'] = side_one_indexes
+            self.arduino_data['last_used']['side_two_schedule'] = side_two_indexes
+            
+            # Convert the dictionary to a JSON string
+            json_data = json.dumps(self.arduino_data['last_used'])
+
+            # Create the command string
+            arduino_command = 'A,' + json_data
+            
+            self.controller.send_command_to_arduino(arduino='motor', command=arduino_command)
                 
-                side_one_index_str = ",".join(map(str, self.side_one_indexes))
-                side_two_index_str = ",".join(map(str, self.side_two_indexes))
-                
-                command = f"<S,Side One,{side_one_index_str},-1,Side Two,{side_two_index_str},-1,end>"
-                self.controller.send_command_to_arduino(arduino='motor', command=command)
             logger.info("Schedule sent to motor Arduino.")
         except Exception as e:
             logger.error(f"Error sending schedule to motor Arduino: {e}")
@@ -459,6 +471,53 @@ class DataManager:
         except Exception as e:
             logger.error(f"Error inserting trial start/stop into licks dataframe: {e}")
             raise
+    
+    def initialize_arduino_json(self) -> None:
+        # Define initial configuration data
+        default_data = {
+            "side_one_schedule": [],
+            "side_two_schedule": [],
+            "current_trial": 1,
+            "valve_durations": [24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
+        }
+
+        last_used_data = {
+            "side_one_schedule": [],
+            "side_two_schedule": [],
+            "current_trial": 1,
+            "valve_durations": [25000, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125]
+        }
+
+        # Create a dictionary with named configurations
+        self.arduino_data = {
+            "default": default_data,
+            "last_used": last_used_data
+        }
+
+        self.write_to_json_file()
+    
+    def write_to_json_file(self, filename='arduino_data.json'):
+        with open(filename, 'w') as file:
+            json.dump(self.arduino_data, file, indent=4)
+    
+    def read_json_file(filename='arduino_data.json'):
+        with open(filename, 'r') as file:
+            return json.load(file)
+    
+        # Function to load a specific configuration
+    def load_configuration(self, filename, config_name):
+        data = self.read_json_file(filename)
+        if config_name in data:
+            return data[config_name]
+        else:
+            raise ValueError(f"Configuration '{config_name}' not found in {filename}")
+
+    # Function to save a specific configuration
+    def save_configuration(self, filename, config_name, config_data):
+        data = self.read_json_file(filename)
+        data[config_name] = config_data
+        self.write_to_json_file(data, filename)
+        
     
     @property
     def num_trials(self):
