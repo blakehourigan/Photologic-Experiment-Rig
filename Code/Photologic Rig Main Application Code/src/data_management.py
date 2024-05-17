@@ -54,10 +54,6 @@ class DataManager:
         self.side_one_trial_licks: list[list[float]] = []
         self.side_two_trial_licks: list[list[float]] = []
 
-
-
-
-        self.write_to_json_file()
         
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""
@@ -116,14 +112,16 @@ class DataManager:
                     index = side_two_vars.index(side_two_schedule[i])
                     side_two_indexes.append(2 ** index)
 
-            self.arduino_data['last_used']['side_one_schedule'] = side_one_indexes
-            self.arduino_data['last_used']['side_two_schedule'] = side_two_indexes
+            arduino_data = self.read_json_file()
+
+            arduino_data['last_used']['side_one_schedule'] = side_one_indexes
+            arduino_data['last_used']['side_two_schedule'] = side_two_indexes
             
             # Convert the dictionary to a JSON string
-            json_data = json.dumps(self.arduino_data['last_used'])
+            json_data = json.dumps(arduino_data['last_used'])
 
             # Create the command string
-            arduino_command = 'A,' + json_data
+            arduino_command = '<A,' + json_data + '>'
             
             self.controller.send_command_to_arduino(arduino='motor', command=arduino_command)
                 
@@ -489,18 +487,18 @@ class DataManager:
         }
 
         # Create a dictionary with named configurations
-        self.arduino_data = {
+        arduino_data_initial = {
             "default": default_data,
             "last_used": last_used_data
         }
 
-        self.write_to_json_file()
+        self.write_to_json_file(arduino_data=arduino_data_initial)
     
-    def write_to_json_file(self, filename='arduino_data.json'):
+    def write_to_json_file(self, arduino_data, filename='arduino_data.json'):
         with open(filename, 'w') as file:
-            json.dump(self.arduino_data, file, indent=4)
+            json.dump(arduino_data, file, indent=4)
     
-    def read_json_file(filename='arduino_data.json'):
+    def read_json_file(self, filename='arduino_data.json'):
         with open(filename, 'r') as file:
             return json.load(file)
     

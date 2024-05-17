@@ -470,7 +470,6 @@ void loop()
     prime_flag = 0;
     if(connected){
     Serial.print("Received command: "); Serial.println(full_command);
-
     }
     
     switch (command.charAt(0)) 

@@ -432,13 +432,11 @@ class ProgramController:
 
     def send_command_to_arduino(self, arduino, command) -> None:
         """Send a command to the specified Arduino."""
-        logging.debug(f"Sending command to {arduino} Arduino(PC): {command}")
         try:
             if arduino == 'laser':
                 self.arduino_mgr.send_command_to_laser(command)
             elif arduino == 'motor':
                 self.arduino_mgr.send_command_to_motor(command)
-            logging.debug(f"Command sent to {arduino} Arduino (PC): {command}")
         except Exception as e:
             logging.error(f"Error sending command to {arduino} Arduino: {e}")
             raise

@@ -68,6 +68,7 @@ class ArduinoManager:
                     motor_data = self.motor_arduino.readline().decode('utf-8').strip()
                     self.data_queue.put(('motor', motor_data))
                     logger.info(f"Received from motor: {motor_data}")
+                    print(motor_data)
             except Exception as e:
                 logger.error(f"Error reading from Arduino: {e}")
                 break
