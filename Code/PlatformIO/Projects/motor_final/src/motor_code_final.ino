@@ -143,12 +143,11 @@ void test_volume(char number_of_valves)
   int num_valves = number_of_valves - '0';  // convert char to int
   Serial.print("Testing volume with "); Serial.print(num_valves); Serial.println(" valves.");
 
-  for(int i=0; i < num_valves / 2; i++)
+  for(int i=0; i < num_valves / 2; i++) // i is the current valve number on either side
   {
     Serial.print("Testing valve pair: "); Serial.println(i+1);
-    for(int j=0; j < 1000; j++)
+    for(int j=0; j < 10; j++)
     {
-      Serial.print("testing...");
       valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, side_one_durations, side_two_durations, current_trial, true, i);
       valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE, side_one_durations, side_two_durations ,current_trial, true, i);
       delay(100);
@@ -169,7 +168,11 @@ void test_volume(char number_of_valves)
       }
     }
   }
-} 
+  Serial.println("Testing Complete");
+
+  
+}
+
 
 void send_schedule_back(int *SIDE_ONE_SCHEDULE, int *SIDE_TWO_SCHEDULE) {
   String message = "SCHEDULE VERIFICATION";
@@ -330,8 +333,7 @@ void loop()
         break;
       
       case 'T':
-        command = full_command[2];
-        test_volume(command.charAt(0));
+        test_volume(full_command[2]);
         break;
       case 'O':
       {
@@ -357,7 +359,6 @@ void loop()
         create_timestamp(command);
         Serial.println("Program start time set.");
         break;
-
       case '9':
         send_timestamps();
         break;

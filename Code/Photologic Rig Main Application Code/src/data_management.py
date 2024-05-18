@@ -85,7 +85,6 @@ class DataManager:
         df = pd.DataFrame(data)
         self.stimuli_dataframe = df
         self.blocks_generated = True
-        self.send_data_to_motor()
 
     def send_data_to_motor(self) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""

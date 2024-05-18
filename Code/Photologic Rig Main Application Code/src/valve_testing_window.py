@@ -168,10 +168,6 @@ class ValveTestWindow:
         y = (screen_height // 2) - (height // 2)
         self.top.geometry("{}x{}+{}+{}".format(width, height, x, y))
 
-    def run_valve_test(self):
-        # Placeholder for the method to start valve testing logic
-        pass
-
     def set_valve_opening_times(self, new_times):
         self.valve_opening_times = new_times
 

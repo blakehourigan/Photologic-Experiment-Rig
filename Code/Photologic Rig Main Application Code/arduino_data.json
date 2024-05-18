@@ -4,7 +4,7 @@
         "side_two_schedule": [],
         "current_trial": 1,
         "valve_durations_side_one": [
-            25000,
+            24125,
             24125,
             24125,
             24125,
@@ -14,7 +14,7 @@
             24125
         ],
         "valve_durations_side_two": [
-            25000,
+            24125,
             24125,
             24125,
             24125,
@@ -29,7 +29,7 @@
         "side_two_schedule": [],
         "current_trial": 1,
         "valve_durations_side_one": [
-            25000,
+            24125,
             24125,
             24125,
             24125,
@@ -39,7 +39,7 @@
             24125
         ],
         "valve_durations_side_two": [
-            25000,
+            24125,
             24125,
             24125,
             24125,

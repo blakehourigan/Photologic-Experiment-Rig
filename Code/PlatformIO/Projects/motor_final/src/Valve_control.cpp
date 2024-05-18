@@ -7,7 +7,6 @@
 void valve_control::toggle_solenoid(int side, int *side_one_schedule, int *side_two_schedule, int current_trial, bool testing, int valve) {
   int porta_value = 0;
   int portc_value = 0; 
-  Serial.println("testing");
   if(testing && side == 0){
     porta_value = 1 << valve;
     
@@ -54,7 +53,6 @@ int getZeroBasedPositionFromInt(int value) {
 }
 
 void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *side_two_schedule, unsigned long *side_one_durations, unsigned long *side_two_durations,int current_trial, bool testing, int valve_number) {
-  noInterrupts();
 
   long int valve_duration;
 
@@ -67,13 +65,16 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
       valve_duration = side_two_durations[tmp_valve_number];
     }
   }
-
+  
+  else{
   if(valve_side == 0){
-    valve_duration = side_one_durations[valve_number]; 
+      valve_duration = side_one_durations[valve_number]; 
+    }
+    else if(valve_side == 1){
+      valve_duration = side_two_durations[valve_number];
+    }
   }
-  else if(valve_side == 1){
-    valve_duration = side_two_durations[valve_number];
-  }
+  
 
   Serial.print("Read valve duration: "); Serial.println(valve_duration);
 
@@ -81,7 +82,6 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   int remaining_delay = valve_duration - (quotient * 10000);
 
   if (testing){
-    Serial.println("testing in da lick handler bru");
     toggle_solenoid(valve_side, side_one_schedule, side_two_schedule, current_trial, true, valve_number);
   }
   else{
@@ -95,6 +95,5 @@ void valve_control::lick_handler(int valve_side, int *side_one_schedule, int *si
   delayMicroseconds(remaining_delay);
   untoggle_solenoids();
 
-  interrupts();
 }
 

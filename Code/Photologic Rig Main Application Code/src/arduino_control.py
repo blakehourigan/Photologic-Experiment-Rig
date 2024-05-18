@@ -1,9 +1,9 @@
-import serial # type: ignore
+import serial
 import time
 import threading
 from typing import TYPE_CHECKING, Any
 import queue
-import serial.tools.list_ports #type: ignore
+import serial.tools.list_ports
 import logging
 
 if TYPE_CHECKING:
@@ -32,19 +32,10 @@ class ArduinoManager:
                 self.motor_arduino = serial.Serial(port, self.BAUD_RATE)
                 logger.info(f"Motor Arduino connected on port {port}")
 
-        if self.laser_arduino is None:
-            error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
-            self.close_connections()
-            self.controller.display_gui_error(
-                "Laser Arduino Error", error_message
-            )
-            logger.error(error_message)
         if self.motor_arduino is None:
             error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
             self.close_connections()
-            self.controller.display_gui_error(
-                "Motor Arduino Error", error_message
-            )
+            self.controller.display_gui_error("Motor Arduino Error", error_message)
             logger.error(error_message)
         else:
             command = 'S'
@@ -85,15 +76,14 @@ class ArduinoManager:
             command = "<W>"
             time.sleep(2)
             arduino.write(command.encode("utf-8"))
+            arduino.flush()  # Ensure buffer is flushed after sending command
             identifier = arduino.readline().decode("utf-8").strip()
             arduino.close()
             logger.info(f"Arduino on port {port} identified as {identifier}")
             return identifier
         except Exception as e:
             error_message = f"An error occurred while identifying Arduino: {e}"
-            self.controller.display_gui_error(
-                "Error Identifying Arduino", error_message
-            )
+            self.controller.display_gui_error("Error Identifying Arduino", error_message)
             logger.error(error_message)
             return "ERROR"
 
@@ -102,47 +92,45 @@ class ArduinoManager:
         try:
             if self.laser_arduino and self.motor_arduino:
                 self.laser_arduino.write(b'R')
+                self.laser_arduino.flush()  # Flush after sending command
                 self.motor_arduino.write(b'R')
+                self.motor_arduino.flush()  # Flush after sending command
                 logger.info("Arduino boards reset.")
             else:
                 logger.error("Arduino boards not connected.")
         except Exception as e:
             error_message = f"Error resetting Arduino boards: {e}"
-            self.controller.display_gui_error(
-                "Error resetting Arduino boards:", error_message
-            )
+            self.controller.display_gui_error("Error resetting Arduino boards:", error_message)
             logger.error(error_message)
 
     def send_command_to_motor(self, command) -> None:
         """Send a specific command to the motor Arduino."""
         try:
             if self.motor_arduino:
+                self.motor_arduino.flush()  # Flush before sending command
                 self.motor_arduino.write(command.encode("utf-8"))
-                self.motor_arduino.flush()
+                self.motor_arduino.flush()  # Flush after sending command
                 logger.info(f"Sent command to motor: {command}")
             else:
                 logger.error("Motor Arduino not connected.")
         except Exception as e:
             error_message = f"Error sending command to motor Arduino: {e}"
-            self.controller.display_gui_error(
-                "Error sending command to motor Arduino:", error_message
-            )
+            self.controller.display_gui_error("Error sending command to motor Arduino:", error_message)
             logger.error(error_message)
         
     def send_command_to_laser(self, command) -> None:            
         """Send a specific command to the laser Arduino."""
         try:
             if self.laser_arduino:
+                self.laser_arduino.flush()  # Flush before sending command
                 self.laser_arduino.write(command.encode("utf-8"))
-                self.laser_arduino.flush()
+                self.laser_arduino.flush()  # Flush after sending command
                 logger.info(f"Sent command to laser: {command}")
             else:
                 logger.error("Laser Arduino not connected.")
         except Exception as e:
             error_message = f"Error sending command to laser Arduino: {e}"
-            self.controller.display_gui_error(
-                "Error sending command to laser Arduino:", error_message
-            )
+            self.controller.display_gui_error("Error sending command to laser Arduino:", error_message)
             logger.error(error_message)
 
     def close_connections(self) -> None:

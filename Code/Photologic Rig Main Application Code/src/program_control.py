@@ -2,6 +2,7 @@ import time
 import tkinter as tk
 import logging
 from logging.handlers import RotatingFileHandler
+import json
 
 # Helper classes
 from arduino_control import ArduinoManager
@@ -46,12 +47,11 @@ class ProgramController:
             self.init_config()
             self.init_windows()
             self.init_managers()
+            self.arduino_mgr.connect_to_arduino()
             self.init_logic()
-            
-            # side_one_valves = 0
-            # side_two_valves = 0
-            
-            # self.send_command_to_arduino(arduino='motor', command="<O," + f"{side_one_valves}," + f"{side_two_valves}"+ ">")
+
+            time.sleep(2)
+            self.send_arduino_json_data()
 
             logging.info("ProgramController initialized successfully.")
         except Exception as e:
@@ -67,6 +67,7 @@ class ProgramController:
         """Initialize managers."""
         self.data_mgr = DataManager(self)
         self.arduino_mgr = ArduinoManager(self)
+
         logging.debug("Managers initialized.")
 
     def init_windows(self):
@@ -88,7 +89,7 @@ class ProgramController:
         """Start the main GUI and connect to the Arduino."""
         try:
             self.main_gui.setup_gui()
-            self.arduino_mgr.connect_to_arduino()
+
             logging.info("Arduino connected.")
             self.main_gui.root.mainloop()
             logging.info("Main GUI started.")
@@ -186,7 +187,7 @@ class ProgramController:
 
     def process_queue(self):
         """Process the data queue."""
-        logging.debug("Processing data queue.")
+        #logging.debug("Processing data queue.")
         try:
             while not self.arduino_mgr.data_queue.empty():
                 source, data = self.arduino_mgr.data_queue.get()
@@ -240,7 +241,7 @@ class ProgramController:
             elif source == 'motor':
                 if data == "<Finished Pair>":
                     self.valve_test_logic.append_to_volumes()
-                elif "Durations" in data:
+                elif "Testing Complete" in data:
                     self.valve_test_logic.begin_updating_opening_times(data)
                 elif "SCHEDULE VERIFICATION" in data:
                     cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
@@ -538,6 +539,18 @@ class ProgramController:
 
     def save_current_json_config(self, arduino_data) -> None:
         self.data_mgr.save_configuration(config_data=arduino_data)
+
+    def send_arduino_json_data(self):
+        arduino_data = self.get_current_json_config()
+        
+        # Convert the dictionary to a JSON string
+        json_data = json.dumps(arduino_data)
+        
+        arduino_command = '<A,' + json_data + '>'
+        
+        print(arduino_command)
+        
+        self.send_command_to_arduino(arduino='motor', command=arduino_command)
 
 # Main function
 def main():
