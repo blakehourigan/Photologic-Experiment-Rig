@@ -86,7 +86,7 @@ class DataManager:
         self.stimuli_dataframe = df
         self.blocks_generated = True
 
-    def send_data_to_motor(self) -> None:
+    def send_data_to_motor(self, arduino_data) -> None:
         """Send a schedule to the motor Arduino and receive an echo for confirmation."""
         try:
             stim_var_list = list(self.stimuli_vars.values())
@@ -111,21 +111,13 @@ class DataManager:
                     side_one_indexes.append(2 ** index)
                     index = side_two_vars.index(side_two_schedule[i])
                     side_two_indexes.append(2 ** index)
-
-            arduino_data = self.read_json_file()
-
-            arduino_data['last_used']['side_one_schedule'] = side_one_indexes
-            arduino_data['last_used']['side_two_schedule'] = side_two_indexes
+                    
+            arduino_data['side_one_schedule'] = side_one_indexes
+            arduino_data['side_two_schedule'] = side_two_indexes
             
-            # Convert the dictionary to a JSON string
-            json_data = json.dumps(arduino_data['last_used'])
-
-            # Create the command string
-            arduino_command = '<A,' + json_data + '>'
-            
-            self.controller.send_command_to_arduino(arduino='motor', command=arduino_command)
+            self.save_configuration(config_data=arduino_data)
                 
-            logger.info("Schedule sent to motor Arduino.")
+            logger.info("Updated json Schedule")
         except Exception as e:
             logger.error(f"Error sending schedule to motor Arduino: {e}")
             error_message = traceback.format_exc()

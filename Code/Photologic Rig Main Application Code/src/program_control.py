@@ -529,6 +529,9 @@ class ProgramController:
             self.data_mgr.initalize_licks_dataframe()
             self.close_valve_stimuli_window()
             self.program_schedule_window.show_stimuli_table()
+            
+            self.send_arduino_json_data(send_schedule=True)
+            
             logging.debug("Experiment schedule generated.")
         except Exception as e:
             logging.error(f"Error generating experiment schedule: {e}")
@@ -540,16 +543,20 @@ class ProgramController:
     def save_current_json_config(self, arduino_data) -> None:
         self.data_mgr.save_configuration(config_data=arduino_data)
 
-    def send_arduino_json_data(self):
+    def send_arduino_json_data(self, send_schedule = False):
         arduino_data = self.get_current_json_config()
-        
+
+        if send_schedule:
+            self.data_mgr.send_data_to_motor(arduino_data=arduino_data)
+            arduino_data = self.get_current_json_config()
+
         # Convert the dictionary to a JSON string
         json_data = json.dumps(arduino_data)
+                
+        time.sleep(2)
         
         arduino_command = '<A,' + json_data + '>'
-        
-        print(arduino_command)
-        
+                
         self.send_command_to_arduino(arduino='motor', command=arduino_command)
 
 # Main function
