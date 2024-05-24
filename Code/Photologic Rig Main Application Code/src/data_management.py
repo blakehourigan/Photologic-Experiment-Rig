@@ -54,7 +54,6 @@ class DataManager:
         self.side_one_trial_licks: list[list[float]] = []
         self.side_two_trial_licks: list[list[float]] = []
 
-        self.initialize_arduino_json()
         
     def initialize_stimuli_dataframe(self) -> None:
         """filling the dataframe with the values that we have at this time"""

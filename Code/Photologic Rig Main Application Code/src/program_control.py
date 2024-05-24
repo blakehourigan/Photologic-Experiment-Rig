@@ -559,6 +559,11 @@ class ProgramController:
                 
         self.send_command_to_arduino(arduino='motor', command=arduino_command)
 
+    def update_valve_test_table(self, side_one_durations = None, side_two_durations = None, side_one_ul = None, Side_two_ul = None) -> None:
+        self.valve_testing_window.create_valve_test_table(side_one_valve_durations=side_one_durations, side_two_valve_durations=side_two_durations,\
+            side_one_ul_dispensed=side_one_ul, side_two_ul_dispensed=Side_two_ul)
+
+
 # Main function
 def main():
     try:

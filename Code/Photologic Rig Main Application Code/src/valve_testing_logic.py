@@ -73,11 +73,8 @@ class valveTestLogic:
         json_config["valve_durations_side_one"] = side_one_opening_times
         json_config["valve_durations_side_two"] = side_two_opening_times
         
-        ul_dispensed = side_one_ul_per_lick
-        ul_dispensed.extend(side_two_ul_per_lick)
-        
-        self.controller.valve_testing_window.set_ul_dispensed(ul_dispensed)
-        self.controller.valve_testing_window.validate_and_update()
+        self.controller.update_valve_test_table(side_one_durations=side_one_opening_times, side_two_durations=side_two_opening_times,\
+            side_one_ul=side_one_ul_per_lick, Side_two_ul=side_two_ul_per_lick)
         
         self.controller.save_current_json_config(json_config)
         
@@ -85,7 +82,6 @@ class valveTestLogic:
         json_data = json.dumps(json_config)
         
         arduino_command = '<A,' + json_data + '>'
-        print(arduino_command)
         logging.info(f"Sending JSON data to Arduino: {arduino_command}")
         self.controller.send_command_to_arduino(arduino='motor', command=arduino_command)
 
