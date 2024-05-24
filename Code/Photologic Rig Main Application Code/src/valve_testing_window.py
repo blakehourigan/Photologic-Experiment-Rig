@@ -138,7 +138,7 @@ class ValveTestWindow:
             for i in range(self.num_valves_to_test.get() // 2):
                 self.valve_table.insert("", "end", values=(f"{i + 1}", f"{side_one_ul_dispensed[i] * 1000} ul", f"{side_one_valve_durations[i]} ms"))
             for i in range(self.num_valves_to_test.get() // 2):
-                self.valve_table.insert("", "end", values=(f"{i + 1}", f"{side_two_ul_dispensed[i + 4] * 1000} ul", f"{side_two_valve_durations[i]} ms"))
+                self.valve_table.insert("", "end", values=(f"{i + 1}", f"{side_two_ul_dispensed[i] * 1000} ul", f"{side_two_valve_durations[i]} ms"))
         else:
             for i in range(self.num_valves_to_test.get()):
                 self.valve_table.insert("", "end", values=(f"{i + 1}", f"{self.desired_volume.get()} ul", "0.00 s"))
