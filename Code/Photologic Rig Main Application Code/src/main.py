@@ -1,14 +1,14 @@
-from program_control import ProgramController
+from app import App
 
-def start_program():
-    program_control = ProgramController(restart_callback=restart_program)
-    program_control.start_main_gui()
-
-def restart_program():
-    start_program()
 
 def main():
-    start_program()
-    
+    App()
+
+    # if app_signal == 1:
+    #    restart()
+    # elif app_signal == 0:
+    #    pass
+
+
 if __name__ == "__main__":
-    main()  
+    main()
