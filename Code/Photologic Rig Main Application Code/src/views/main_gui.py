@@ -1,10 +1,21 @@
-from tkinter import messagebox, ttk
+from tkinter import ttk
 import tkinter as tk
 import time
 import logging
 
+from views.gui_common import GUIUtils
 
-# Get the logger from the controller
+# import other GUI classes that can spawn from main GUI
+from views.rasterized_data_window import RasterizedDataWindow
+from views.experiment_control_window import ExperimentCtlWindow
+from views.licks_window import LicksWindow
+from views.valve_testing_window import ValveTestWindow
+from valve_testing_logic import valveTestLogic
+from views.program_schedule_window import ProgramScheduleWindow
+from views.valve_control_window import ControlValves
+
+
+# Get the logger in use for the app
 logger = logging.getLogger()
 
 
@@ -14,19 +25,92 @@ class MainGUI(tk.Tk):
     def __init__(self, gui_requirements) -> None:
         # init the Tk instance to create a GUI
         super().__init__()
+
+        # defines the function to run when the window is closed by the window manager
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
+        # set cols and rows to expand to fill space in main gui
+        for i in range(5):
+            self.grid_rowconfigure(i, weight=1)
+
+        self.grid_columnconfigure(0, weight=1)
+
+        self.update_model_callback = gui_requirements["update model callback"]
+        self.get_default_value = gui_requirements["get default value"]
         self.gui_requirements = gui_requirements
+
+        self.setup_tkinter_variables()
         self.setup_window()
         self.setup_gui()
 
+        self.preload_secondary()
+
         logger.info("MainGUI initialized.")
+
+    def preload_secondary(self):
+        """
+        This function builds all secondary windows (windows that require a button push to view) and gets them ready
+        to be switched to when the user clicks the corresponding button
+        """
+        self.windows = {
+            "Experiment Control": ExperimentCtlWindow(),
+            "Program Schedule": ProgramScheduleWindow(),
+            # self.raster_window = RasterizedDataWindow()
+            # self.licks_window = LicksWindow()
+            # self.valve_test_window = ValveTestWindow()
+            # self.valve_control_window = ControlValves()
+        }
+
+    def show_secondary_window(self, window):
+        self.windows[window].deiconify()
+
+    def hide_secondary_window(self, window):
+        self.windows[window].withdraw()
+
+    def setup_tkinter_variables(self):
+        # tkinter variables for time related
+        # modifications in the experiment
+        self.tkinter_entries = {
+            "ITI_var": tk.IntVar(value=30000),
+            "TTC_var": tk.IntVar(value=15000),
+            "sample_var": tk.IntVar(value=15000),
+            "ITI_random_entry": tk.IntVar(value=5000),
+            "TTC_random_entry": tk.IntVar(value=0),
+            "sample_random_entry": tk.IntVar(value=0),
+        }
+        # tkinter variables for other variables
+        # in the experiment such as num stimuli
+        # or number of trial blocks
+        self.exp_var_entries = {
+            "num trial blocks": tk.IntVar(
+                value=self.get_default_value("num trial blocks")
+            ),
+            "num stimuli": tk.IntVar(value=self.get_default_value("num stimuli")),
+        }
+
+        # we add traces to all of our tkinter variables so that on value update
+        # we sent those updates to the corresponding model (data storage location)
+        for key, value in self.tkinter_entries.items():
+            value.trace_add(
+                "write",
+                lambda *args, key=key, value=value: self.update_model_callback(
+                    key, GUIUtils.safe_tkinter_get(value)
+                ),
+            )
+
+        for key, value in self.exp_var_entries.items():
+            value.trace_add(
+                "write",
+                lambda *args, key=key, value=value: self.update_model_callback(
+                    key, GUIUtils.safe_tkinter_get(value)
+                ),
+            )
 
     def setup_gui(self) -> None:
         try:
-            self.setup_grid()
-            # self.display_timers()
-            # self.entry_widgets()
+            self.display_timers()
+            self.entry_widgets()
             self.display_main_control_buttons()
-            # self.lower_control_buttons()
+            self.lower_control_buttons()
             self.display_status_widget()
             self.update_size()
             logger.info("GUI setup completed.")
@@ -39,10 +123,11 @@ class MainGUI(tk.Tk):
             self.minsize(800, 600)  # Set minimum window size to 800x600 pixels
             self.title("Samuelsen Lab Photologic Rig")
             self.bind("<Control-w>", lambda e: self.destroy())
-            # icon_path = self.controller.experiment_config.get_window_icon_path()
+            icon_path = GUIUtils.get_window_icon_path()
+            GUIUtils.set_program_icon(self, icon_path=icon_path)
 
-            # GUIUtils.set_program_icon(self.root, icon_path=icon_path)
             self.protocol("WM_DELETE_WINDOW", self.on_close)
+
             logger.info("Main window setup completed.")
         except Exception as e:
             logger.error(f"Error setting up main window: {e}")
@@ -73,35 +158,6 @@ class MainGUI(tk.Tk):
             logger.error(f"Error updating window size: {e}")
             raise
 
-    def setup_grid(self) -> None:
-        try:
-            # Configure the GUI grid expand settings
-            for i in range(4):
-                self.grid_rowconfigure(i, weight=1)
-            # Configure all columns to have equal weight
-            self.grid_columnconfigure(0, weight=1)
-            logger.info("Grid setup completed.")
-        except Exception as e:
-            logger.error(f"Error setting up grid: {e}")
-            raise
-
-    def create_button(self, parent, button_text, command, bg, row, column):
-        try:
-            frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
-            frame.grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
-
-            button = tk.Button(
-                frame, text=button_text, command=command, bg=bg, font=("Helvetica", 24)
-            )
-            button.grid(row=0, sticky="nsew", ipadx=10, ipady=10)
-
-            frame.grid_columnconfigure(0, weight=1)
-            logger.debug(f"Button '{button_text}' created.")
-            return frame, button
-        except Exception as e:
-            logger.error(f"Error creating button '{button_text}': {e}")
-            raise
-
     def create_status_frame(self, parent, row, column, sticky):
         try:
             frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
@@ -111,45 +167,6 @@ class MainGUI(tk.Tk):
             return frame
         except Exception as e:
             logger.error(f"Error creating status frame: {e}")
-            raise
-
-    def create_labeled_entry(
-        self,
-        parent: tk.Frame,
-        label_text: str,
-        text_var: tk.IntVar,
-        row: int,
-        column: int,
-    ) -> tuple[tk.Frame, tk.Label, tk.Entry]:
-        try:
-            frame = tk.Frame(parent)
-            frame.grid(row=row, column=column, padx=5, sticky="nsew")
-
-            label = tk.Label(
-                frame,
-                text=label_text,
-                bg="light blue",
-                font=("Helvetica", 24),
-                highlightthickness=1,
-                highlightbackground="dark blue",
-            )
-            label.grid(row=0, pady=10)
-
-            entry = tk.Entry(
-                frame,
-                textvariable=text_var,
-                font=("Helvetica", 24),
-                highlightthickness=1,
-                highlightbackground="black",
-            )
-            entry.grid(row=1, sticky="nsew")
-
-            frame.grid_columnconfigure(0, weight=1)
-            frame.grid_rowconfigure(1, weight=1)
-            logger.debug(f"Labeled entry '{label_text}' created.")
-            return frame, label, entry
-        except Exception as e:
-            logger.error(f"Error creating labeled entry '{label_text}': {e}")
             raise
 
     def display_main_control_buttons(self) -> None:
@@ -165,7 +182,7 @@ class MainGUI(tk.Tk):
             self.main_control_button_frame.grid_columnconfigure(0, weight=1)
             self.main_control_button_frame.grid_columnconfigure(1, weight=1)
 
-            self.start_button_frame, self.start_button = self.create_button(
+            self.start_button_frame, self.start_button = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Start",
                 self.gui_requirements["start button"],
@@ -174,7 +191,7 @@ class MainGUI(tk.Tk):
                 0,
             )
 
-            self.reset_button_frame, _ = self.create_button(
+            self.reset_button_frame, _ = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Reset",
                 self.gui_requirements["reset button"],
@@ -187,29 +204,6 @@ class MainGUI(tk.Tk):
             logger.error(f"Error displaying main control buttons: {e}")
             raise
 
-    def create_timer(self, parent, timer_name, default_text, row, column):
-        try:
-            frame = tk.Frame(
-                parent, highlightthickness=1, highlightbackground="dark blue"
-            )
-            frame.grid(row=row, column=column, padx=10, pady=5, sticky="nsw")
-
-            label = tk.Label(
-                frame, text=timer_name, bg="light blue", font=("Helvetica", 24)
-            )
-            label.grid(row=0, column=0)
-
-            time_label = tk.Label(
-                frame, text=default_text, bg="light blue", font=("Helvetica", 24)
-            )
-            time_label.grid(row=0, column=1)
-
-            logger.debug(f"Timer '{timer_name}' created.")
-            return frame, label, time_label
-        except Exception as e:
-            logger.error(f"Error creating timer '{timer_name}': {e}")
-            raise
-
     def display_timers(self) -> None:
         try:
             self.timers_frame = tk.Frame(
@@ -219,7 +213,7 @@ class MainGUI(tk.Tk):
             for i in range(2):
                 self.timers_frame.grid_columnconfigure(i, weight=1)
 
-            self.main_timer_frame, _, self.main_timer_text = self.create_timer(
+            self.main_timer_frame, _, self.main_timer_text = GUIUtils.create_timer(
                 self.timers_frame, "Time Elapsed:", "0.0s", 0, 0
             )
             self.main_timer_min_sec_text = tk.Label(
@@ -228,13 +222,13 @@ class MainGUI(tk.Tk):
             self.main_timer_min_sec_text.grid(row=0, column=2)
 
             self.maximum_total_time_frame, _, self.maximum_total_time = (
-                self.create_timer(
+                GUIUtils.create_timer(
                     self.timers_frame, "Maximum Total Time:", "0 Minutes, 0 S", 0, 1
                 )
             )
             self.maximum_total_time_frame.grid(sticky="e")
 
-            self.state_timer_frame, _, self.state_timer_text = self.create_timer(
+            self.state_timer_frame, _, self.state_timer_text = GUIUtils.create_timer(
                 self.timers_frame, "State Time:", "0.0s", 1, 0
             )
             self.full_state_time_text = tk.Label(
@@ -333,62 +327,62 @@ class MainGUI(tk.Tk):
                 self.entry_widgets_frame.grid_columnconfigure(i, weight=1)
 
             # Simplify the creation of labeled entries
-            self.ITI_Interval_Frame, _, _ = self.create_labeled_entry(
+            self.ITI_Interval_Frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="ITI Time",
-                text_var=self.controller.data_mgr.interval_vars["ITI_var"],
+                text_var=self.tkinter_entries["ITI_var"],
                 row=0,
                 column=0,
             )
 
-            self.TTC_Interval_Frame, _, _ = self.create_labeled_entry(
+            self.TTC_Interval_Frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="TTC Time",
-                text_var=self.controller.data_mgr.interval_vars["TTC_var"],
+                text_var=self.tkinter_entries["TTC_var"],
                 row=0,
                 column=1,
             )
-            self.Sample_Interval_Frame, _, _ = self.create_labeled_entry(
+            self.Sample_Interval_Frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="Sample Time",
-                text_var=self.controller.data_mgr.interval_vars["sample_var"],
+                text_var=self.tkinter_entries["sample_var"],
                 row=0,
                 column=2,
             )
-            self.num_trial_blocks_frame, _, _ = self.create_labeled_entry(
+            self.num_trial_blocks_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="# Trial Blocks",
-                text_var=self.controller.get_num_trial_blocks_variable_reference(),
+                text_var=self.exp_var_entries["num trial blocks"],
                 row=0,
                 column=3,
             )
 
             # Similarly for random plus/minus intervals and the number of stimuli
-            self.ITI_Random_Interval_frame, _, _ = self.create_labeled_entry(
+            self.ITI_Random_Interval_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="+/- ITI",
-                text_var=self.controller.data_mgr.interval_vars["ITI_random_entry"],
+                text_var=self.tkinter_entries["ITI_random_entry"],
                 row=1,
                 column=0,
             )
-            self.TTC_Random_Interval_frame, _, _ = self.create_labeled_entry(
+            self.TTC_Random_Interval_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="+/- TTC",
-                text_var=self.controller.data_mgr.interval_vars["TTC_random_entry"],
+                text_var=self.tkinter_entries["TTC_random_entry"],
                 row=1,
                 column=1,
             )
-            self.Sample_Interval_Random_Frame, _, _ = self.create_labeled_entry(
+            self.Sample_Interval_Random_Frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="+/- Sample",
-                text_var=self.controller.data_mgr.interval_vars["sample_random_entry"],
+                text_var=self.tkinter_entries["sample_random_entry"],
                 row=1,
                 column=2,
             )
-            self.num_stimuli_frame, _, _ = self.create_labeled_entry(
+            self.num_stimuli_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="# Stimuli",
-                text_var=self.controller.get_num_stimuli_variable_reference(),
+                text_var=self.exp_var_entries["num stimuli"],
                 row=1,
                 column=3,
             )
@@ -407,58 +401,58 @@ class MainGUI(tk.Tk):
             for i in range(4):
                 self.lower_control_buttons_frame.grid_columnconfigure(i, weight=1)
 
-            self.test_valves_button_frame, _ = self.create_button(
+            self.test_valves_button_frame, _ = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Calibrate Valves",
-                command=lambda: self.controller.valve_testing_window.show_window(),
+                command=lambda: self.show_secondary_window("Valve Testing"),
                 bg="grey",
                 row=0,
                 column=0,
             )
-            self.valve_control_button_frame, _ = self.create_button(
+            self.valve_control_button_frame, _ = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Valve Control",
-                command=lambda: self.controller.open_valve_control_window(),
+                command=lambda: self.show_secondary_window("Valve Control"),
                 bg="grey",
                 row=0,
                 column=1,
             )
-            self.program_schedule_button_frame, _ = self.create_button(
+            self.program_schedule_button_frame, _ = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Program Schedule",
-                command=lambda: self.controller.show_stimuli_table(),
+                command=lambda: self.show_secondary_window("Program Schedule"),
                 bg="grey",
                 row=0,
                 column=2,
             )
-            self.exp_ctrl_button_frame = self.create_button(
+            self.exp_ctrl_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Valve / Stimuli",
-                command=lambda: self.controller.experiment_ctl_wind.show_window(self),
+                command=lambda: self.show_secondary_window("Experiment Control"),
                 bg="grey",
                 row=1,
                 column=0,
             )
-            self.lick_window_button_frame = self.create_button(
+            self.lick_window_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Lick Data",
-                command=self.controller.licks_window.show_window,
+                command=lambda: self.show_secondary_window("Lick Data"),
                 bg="grey",
                 row=1,
                 column=1,
             )
-            self.raster_plot_button_frame = self.create_button(
+            self.raster_plot_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Rasterized Data",
-                command=self.controller.open_rasterized_data_windows,
+                command=lambda: self.show_secondary_window("Raster Plot"),
                 bg="grey",
                 row=1,
                 column=2,
             )
-            self.save_data_button_frame = self.create_button(
+            self.save_data_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Save Data",
-                command=self.controller.data_mgr.save_data_to_xlsx,
+                command=lambda: self.show_secondary_window("Save Data"),
                 bg="grey",
                 row=1,
                 column=3,
@@ -466,14 +460,6 @@ class MainGUI(tk.Tk):
             logger.info("Lower control buttons displayed.")
         except Exception as e:
             logger.error(f"Error displaying lower control buttons: {e}")
-            raise
-
-    def display_error(self, error, message):
-        try:
-            messagebox.showinfo(error, message)
-            logger.error(f"Error displayed: {error} - {message}")
-        except Exception as e:
-            logger.error(f"Error displaying error message: {e}")
             raise
 
     def update_clock_label(self) -> None:
@@ -609,17 +595,13 @@ class MainGUI(tk.Tk):
             self.update_progress_bar(True)
 
             self.update_on_state_change(0, "Idle")
-            logger.debug("Updated GUI on reset.")
+            logger.info("Updated GUI on reset.")
         except Exception as e:
             logger.error(f"Error updating GUI on reset: {e}")
             raise
 
     def on_close(self):
         try:
-            for after_id in self.controller.after_ids:
-                self.after_cancel(after_id)
-            self.after_cancel(self.controller.queue_id)
-            self.controller.arduino_mgr.stop()
             self.destroy()
             self.quit()
             logger.info("Application closed.")

@@ -62,14 +62,16 @@ class ArduinoManager:
         self.controller.process_queue()
 
     def listen_for_serial(self):
-        while not self.stop_event.is_set():
+        while 1:
+            if self.stop_event.is_set():
+                break
             try:
-                if self.laser_arduino and self.laser_arduino.in_waiting > 0:
+                if self.laser_arduino.in_waiting > 0:
                     laser_data = self.laser_arduino.readline().decode("utf-8").strip()
                     self.data_queue.put(("laser", laser_data))
                     logger.info(f"Received from laser: {laser_data}")
 
-                if self.motor_arduino and self.motor_arduino.in_waiting > 0:
+                if self.motor_arduino.in_waiting > 0:
                     motor_data = self.motor_arduino.readline().decode("utf-8").strip()
                     self.data_queue.put(("motor", motor_data))
                     logger.info(f"Received from motor: {motor_data}")

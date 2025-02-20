@@ -1,49 +1,35 @@
 import tkinter as tk
 import platform
-from typing import TYPE_CHECKING, Optional
+
+from views.gui_common import GUIUtils
 
 
-if TYPE_CHECKING:
-    from program_control import ProgramController
-
-
-class ProgramScheduleWindow:
-    def __init__(self, controller: "ProgramController"):
-        self.controller = controller
-
+class ProgramScheduleWindow(tk.Toplevel):
+    def __init__(self):
+        super().__init__()
         self.system = platform.system()
 
-        self.top: Optional[tk.Toplevel] = None
-        self.canvas = None  # Initialize canvas here to ensure it's available for binding scroll actions
-        self.num_tabs = 0
+        self.title("Program Schedule")
+        self.resizable(False, False)
 
-    def create_window(self, master) -> tk.Toplevel:
-        self.destroy_window()  # Ensure any existing window is destroyed before creating a new one to avoid error
-        self.top = tk.Toplevel(master)
-        self.top.title("Program Schedule")
-
-        # Safely bind the event using a local variable in the lambda to avoid referencing a potentially None self.top
-        top_local = self.top
-        top_local.bind("<Control-w>", lambda e: top_local.destroy())
-
-        self.top.resizable(False, False)
-
-        window_icon_path = self.controller.experiment_config.get_window_icon_path()
-        # GUIUtils.set_program_icon(self.top, window_icon_path)
-
-        # Global scroll event binding called here to bind to whole window instead of only scroll widget
+        # bind control + w shortcut to hiding the window
+        self.bind("<Control-w>", lambda event: self.withdraw())
         self.bind_scroll_event()
 
-        return self.top
+        # Initialize canvas here to ensure it's available for binding scroll actions
+        self.canvas = None
+        self.num_tabs = 0
+
+        self.withdraw()
 
     def bind_scroll_event(self):
         # Bind scroll event to the whole window
         if self.system == "Windows":
-            self.top.bind("<MouseWheel>", self.on_mousewheel)
+            self.bind("<MouseWheel>", self.on_mousewheel)
         else:
             # Linux and MacOS
-            self.top.bind("<Button-4>", self.on_mousewheel)
-            self.top.bind("<Button-5>", self.on_mousewheel)
+            self.bind("<Button-4>", self.on_mousewheel)
+            self.bind("<Button-5>", self.on_mousewheel)
 
     def on_mousewheel(self, event):
         if self.canvas:
@@ -56,7 +42,7 @@ class ProgramScheduleWindow:
 
     def update_licks_and_TTC_actual(self, current_trial):
         # Adjust indices for zero-based indexing
-        if self.top.winfo_exists():
+        if self.winfo_exists():
             row_index = current_trial - 1
 
             df = self.controller.data_mgr.stimuli_dataframe
@@ -74,14 +60,14 @@ class ProgramScheduleWindow:
                     text=df.loc[row_index - 1, "TTC Actual"]
                 )
 
-                self.top.update_idletasks()
-                self.top.update()
+                self.update_idletasks()
+                self.update()
 
     def update_row_color(self, current_trial):
         """Function to update row color"""
         # Adjust indices for zero-based indexing
         row_index = current_trial - 1
-        if self.top.winfo_exists():
+        if self.winfo_exists():
             if current_trial == 1:
                 for i in range(10):
                     self.cell_labels[row_index][i].configure(bg="yellow")
@@ -90,51 +76,20 @@ class ProgramScheduleWindow:
                     self.cell_labels[row_index - 1][i].configure(bg="white")
                 for i in range(10):
                     self.cell_labels[row_index][i].configure(bg="yellow")
-            self.top.update_idletasks()
-            self.top.update()
-
-    def configure_tk_obj_grid(self, obj):
-        # sets the object passed to expand when the window is expanded
-        obj.grid_rowconfigure(0, weight=1)
-        obj.grid_columnconfigure(0, weight=1)
-
-    def center_window(self, width, height):
-        # Get the screen dimensions
-        screen_width = self.top.winfo_screenwidth()
-        screen_height = self.top.winfo_screenheight()
-
-        # Calculate the x and y coordinates to center the window
-        x = (screen_width // 2) - (width // 2)
-        y = (screen_height // 2) - (height // 2)
-
-        # Set the window's position
-        self.top.geometry(f"{width}x{height}+{x}+{y}")
-
-    def destroy_window(self):
-        if self.top:
-            self.top.destroy()
-        self.top = None
-        self.canvas = None
-        self.stimuli_frame = None
-        self.header_labels = []
-        self.cell_labels = []
+            self.update_idletasks()
+            self.update()
 
     def show_stimuli_table(self):
         if not self.controller.data_mgr.blocks_generated:
-            self.controller.display_gui_error(
+            GUIUtils.display_error(
                 "Blocks not Generated",
                 "Please generate blocks before starting the program.",
             )
             return  # Exit early if blocks aren't generated
 
-        if not self.top or not self.top.winfo_exists():
-            self.create_window(self.controller.main_gui.root)
-        else:
-            self.top.lift()
-
         if not self.canvas:
             # Setup the canvas and scrollbar only if not already setup
-            canvas_frame = tk.Frame(self.top)
+            canvas_frame = tk.Frame(self)
             canvas_frame.grid(row=0, column=0, sticky="nsew")
 
             self.canvas = tk.Canvas(canvas_frame)
@@ -146,8 +101,8 @@ class ProgramScheduleWindow:
             self.canvas.grid(row=0, column=0, sticky="nsew")
             scrollbar.grid(row=0, column=1, sticky="ns")
 
-            self.top.grid_rowconfigure(0, weight=1)
-            self.top.grid_columnconfigure(0, weight=1)
+            self.grid_rowconfigure(0, weight=1)
+            self.grid_columnconfigure(0, weight=1)
 
             self.stimuli_frame = tk.Frame(self.canvas)
             self.canvas.create_window((0, 0), window=self.stimuli_frame, anchor="nw")
@@ -169,7 +124,8 @@ class ProgramScheduleWindow:
 
         # Adjust the canvas size and center the window
         self.canvas.config(width=canvas_width, height=canvas_height)
-        self.center_window(total_width, canvas_height)
+
+        GUIUtils.center_window(self, total_width, canvas_height)
 
         if self.controller.running:
             self.update_row_color(self.controller.data_mgr.current_trial_number)

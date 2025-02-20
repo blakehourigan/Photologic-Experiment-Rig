@@ -3,7 +3,7 @@ import re
 import logging
 from tkinter import ttk, messagebox, simpledialog
 from typing import TYPE_CHECKING
-
+from valve_testing_logic import valveTestLogic
 
 if TYPE_CHECKING:
     from program_control import ProgramController

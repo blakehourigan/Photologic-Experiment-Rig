@@ -1,8 +1,8 @@
-from app import App
+from app import StateMachine
 
 
 def main():
-    App()
+    StateMachine()
 
     # if app_signal == 1:
     #    restart()

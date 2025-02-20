@@ -5,9 +5,7 @@ from tkinter import ttk
 
 
 class LicksWindow:
-    def __init__(self, controller) -> None:
-        self.controller = controller
-
+    def __init__(self) -> None:
         self.top: Optional[tk.Toplevel] = None
 
     def show_window(self) -> None:
@@ -61,4 +59,3 @@ class LicksWindow:
         if self.top is not None:
             self.top.destroy()
             self.top = None
-

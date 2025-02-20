@@ -30,8 +30,6 @@ class ExperimentProcessData:
         self.state_start_time = 0.0
 
         self.pairs: list[Tuple] = []
-        self.num_trial_blocks = 10
-        self.num_stimuli = 4
 
         self.current_trial_number = 1
         self.current_iteration = 0
@@ -45,12 +43,16 @@ class ExperimentProcessData:
         self.sample_intervals_final: list[int] = []
 
         self.interval_vars = {
-            "ITI_var": 30,
-            "TTC_var": 15,
-            "sample_var": 15,
+            "ITI_var": 30000,
+            "TTC_var": 15000,
+            "sample_var": 15000,
             "ITI_random_entry": 5000,
             "TTC_random_entry": 0,
             "sample_random_entry": 0,
+        }
+        self.exp_var_entries = {
+            "num trial blocks": 10,
+            "num stimuli": 4,
         }
 
         self.num_trials = 0

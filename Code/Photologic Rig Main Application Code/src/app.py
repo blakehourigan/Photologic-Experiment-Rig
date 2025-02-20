@@ -2,19 +2,18 @@ import time
 import logging
 from logging.handlers import RotatingFileHandler
 
-# Helper classes
-from controllers.arduino_control import ArduinoManager
+# Model (data) classes
 from models.experiment_process_data import ExperimentProcessData
+from models.licks_data import LicksData
+from models.stimuli_data import StimuliData
+from models.arduino_data import ArduinoData
 
 # GUI classes
 from views.main_gui import MainGUI
-from views.rasterized_data_window import RasterizedDataWindow
-from views.experiment_control_window import ExperimentCtlWindow
-from views.licks_window import LicksWindow
-from views.valve_testing_window import ValveTestWindow
-from valve_testing_logic import valveTestLogic
-from views.program_schedule_window import ProgramScheduleWindow
-from views.valve_control_window import ControlValves
+from views.gui_common import GUIUtils
+
+# controller classes
+from controllers.arduino_control import ArduinoManager
 
 DOOR_MOTOR_CLOSE_TIME = 2238  # number of milliseconds until door close
 
@@ -40,21 +39,26 @@ file_handler.setFormatter(
 logger.addHandler(file_handler)
 
 
-class App:
+class TkinterApp:
     def __init__(self) -> None:
         self.after_ids: list[str] = []
 
         try:
-            self.state_machine = StateMachine()
+            # init exp_data, licks_data, stimuli_data, arduino_data
             self.init_models()
             # self.init_controllers()
             # self.arduino_controller.send_arduino_json_data()
 
+            # this requirements dict provides dependencies for the gui. it is defined as follows:
+            # key: value where key = item the associated value will be used with, and value is
+            # the function or variable that a key needs
             self.gui_requirements = {
-                "start button": self.state_machine.start_button_handler,
-                "reset button": self.state_machine.reset_button_handler,
+                "start button": self.start_button_handler,
+                "reset button": self.reset_button_handler,
+                "update model callback": self.update_model_callback,
+                "get default value": self.get_default_value,
             }
-            self.init_views(self.gui_requirements)
+            self.init_view(self.gui_requirements)
 
             logging.info("App started successfully.")
         except Exception as e:
@@ -63,6 +67,9 @@ class App:
 
     def init_models(self):
         self.exp_data = ExperimentProcessData()
+        self.licks_data = LicksData()
+        self.stimuli_data = StimuliData()
+        self.arduino_data = ArduinoData()
 
         logging.info("Data Classes initialized.")
 
@@ -72,20 +79,22 @@ class App:
 
         logging.info("Controllers initialized.")
 
-    def init_views(self, gui_requirements):
+    def init_view(self, gui_requirements):
+        # instantiating MainGUI sets up our gui and the objects needed
         self.main_gui = MainGUI(gui_requirements)
-        # self.licks_window = LicksWindow(self)
-        # self.experiment_ctl_wind = ExperimentCtlWindow(self)
-        # self.program_schedule_window = ProgramScheduleWindow(self)
+        # main_gui.mainloop() loops the code so that the program will
+        # not immediately exit
+        self.main_gui.mainloop()
+
         logging.info("GUI initialized.")
-        pass
 
 
-class StateMachine:
+class StateMachine(TkinterApp):
     def __init__(self):
-        self.state = "OFF"
+        super().__init__()
+        self.state = "IDLE"
         self.transitions = {
-            ("IDLE", "START"): "ITI",
+            ("IDLE", "START"): "START PROGRAM",
             ("ITI", "TTC"): "TTC",
         }
 
@@ -96,15 +105,49 @@ class StateMachine:
             new_state = self.transitions[key]
 
         match new_state:
-            case "ITI":
+            case "START PROGRAM":
                 self.start_program()
+            case "ITI":
+                # self.initial_time_interval(iteration)
+                pass
+
+    def update_model_callback(self, variable_name, value) -> None:
+        """
+        This function will be called when a tkiner entry is updated in the gui
+        to update the standard variables held in the model classes there
+        """
+        # if the variable name for the tkinter entry item that we are updating is
+        # in the exp_data interval variables dictionary, update that entry
+        # with the value in the tkinter variable
+        if value is not None:
+            print(variable_name, value)
+            if variable_name in self.exp_data.interval_vars.keys():
+                self.exp_data.interval_vars[variable_name] = value
+                print(self.exp_data.interval_vars)
+            elif variable_name in self.exp_data.exp_var_entries.keys():
+                # update other var types here
+                self.exp_data.exp_var_entries[variable_name] = value
+                print(self.exp_data.exp_var_entries)
+
+    def get_default_value(self, variable_name) -> int:
+        # print(self.get_default_value("num trial blocks"))
+        """
+        this function is very similar to update_model_callback, but as name implies it only
+        retrieves from the model and does no updating. called only once for each tkinter variable
+        in main gui
+        """
+        if variable_name in self.exp_data.interval_vars.keys():
+            return self.exp_data.interval_vars[variable_name]
+        elif variable_name in self.exp_data.exp_var_entries.keys():
+            # update other var types here
+            return self.exp_data.exp_var_entries[variable_name]
 
     def start_program(self) -> None:
         """Start the program if it is not already running."""
         logging.debug("Starting program.")
         try:
             if not self.data_mgr.blocks_generated:
-                self.main_gui.display_error(
+                GUIUtils.display_error(
                     "Blocks not Generated",
                     "Please generate blocks before starting the program.",
                 )
@@ -171,7 +214,7 @@ class StateMachine:
             raise
 
     def ITI_TTC_Transition(self, iteration: int) -> None:
-        logging.debug(f"ITI to TTC transition started for iteration {iteration}.")
+        logging.info(f"ITI to TTC transition started for iteration {iteration}.")
         try:
             self.send_command_to_arduino(
                 arduino="motor", command="<D>"
@@ -384,37 +427,6 @@ class StateMachine:
             logging.error(f"Error in reset button handler: {e}")
             raise
 
-    def close_all_tkinter_windows(self):
-        """Close all secondary Tkinter windows."""
-        logging.debug("Closing all Tkinter windows.")
-        try:
-            windows = [
-                self.data_window,
-                self.licks_window,
-                self.experiment_ctl_wind,
-                self.program_schedule_window,
-                self.valve_testing_window,
-                getattr(self, "valve_control_window", None),
-            ]
-            for win in windows:
-                if (
-                    win
-                    and hasattr(win, "top")
-                    and hasattr(win.top, "winfo_exists")
-                    and win.top.winfo_exists()
-                ):
-                    win.top.destroy()
-            if (
-                hasattr(self, "main_gui")
-                and hasattr(self.main_gui, "root")
-                and self.main_gui.root
-            ):
-                self.main_gui.root.destroy()
-            logging.debug("All Tkinter windows closed.")
-        except Exception as e:
-            logging.error(f"Error closing Tkinter windows: {e}")
-            raise
-
     def stop_program(self) -> None:
         """Method to halt the program and set it to the off state."""
         logging.debug("Stopping program.")
@@ -454,50 +466,6 @@ class StateMachine:
             logging.debug("Clock label updated.")
         except Exception as e:
             logging.error(f"Error updating clock label: {e}")
-            raise
-
-    def open_valve_control_window(self):
-        """Open or focus the valve control window."""
-        logging.debug("Opening valve control window.")
-        try:
-            if (
-                hasattr(self, "valve_control_window")
-                and self.valve_control_window.top.winfo_exists()
-            ):
-                self.valve_control_window.top.lift()
-            else:
-                self.valve_control_window = ControlValves(self)
-            logging.debug("Valve control window opened.")
-        except Exception as e:
-            logging.error(f"Error opening valve control window: {e}")
-            raise
-
-    def open_rasterized_data_windows(self) -> None:
-        """Open the rasterized data windows if blocks are generated."""
-        logging.debug("Opening rasterized data windows.")
-        try:
-            if self.data_mgr.blocks_generated:
-                self.data_window.show_window(1)
-                self.data_window.show_window(2)
-            else:
-                self.display_gui_error(
-                    "Blocks Not Generated",
-                    "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
-                )
-                logging.warning("Blocks not yet generated.")
-            logging.debug("Rasterized data windows opened.")
-        except Exception as e:
-            logging.error(f"Error opening rasterized data windows: {e}")
-            raise
-
-    def display_gui_error(self, error, message) -> None:
-        """Display an error message in the GUI."""
-        logging.error(f"Displaying GUI error: {error} - {message}")
-        try:
-            self.main_gui.display_error(error=error, message=message)
-            logging.debug("GUI error displayed.")
-        except Exception as e:
-            logging.error(f"Error displaying GUI error: {e}")
             raise
 
     def generate_experiment_schedule(self) -> None:
