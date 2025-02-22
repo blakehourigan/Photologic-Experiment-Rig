@@ -13,8 +13,14 @@ class ExperimentCtlWindow(tk.Toplevel):
     # this class requires stimuli related data and a callback to generate the
     # schedule when the 'generate schedule button is pressed"
     # also going to need num stimuli data from exp_var_entries in exp process data
-    def __init__(self):
+    def __init__(self, exp_data, stimuli_data, lick_data, show_window_callback):
         super().__init__()
+        self.exp_process_data = exp_data
+        self.stimuli_data = stimuli_data
+        self.licks_data = lick_data
+        self.show_window_callback = show_window_callback
+
+        # init window attributes
         self.title("Stimuli / Valves")
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
         # lambda requires event here, because it captures the keypress event in case you wanna pass that to the fucntion,
@@ -26,9 +32,29 @@ class ExperimentCtlWindow(tk.Toplevel):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.canvas = (
-            None  # Initialize canvas here to ensure it's available for binding
-        )
+        # tkinter variables for stimuli variables
+        self.stimuli_entries = {
+            "Valve 1 Substance": tk.StringVar(),
+            "Valve 2 Substance": tk.StringVar(),
+            "Valve 3 Substance": tk.StringVar(),
+            "Valve 4 Substance": tk.StringVar(),
+            "Valve 5 Substance": tk.StringVar(),
+            "Valve 6 Substance": tk.StringVar(),
+            "Valve 7 Substance": tk.StringVar(),
+            "Valve 8 Substance": tk.StringVar(),
+        }
+
+        # fill the exp_var entry boxes with their default values as configured in self.exp_data
+        for key in self.stimuli_entries.keys():
+            self.stimuli_entries[key].set(self.stimuli_data.get_default_value(key))
+
+        for key, value in self.stimuli_entries.items():
+            value.trace_add(
+                "write",
+                lambda *args, key=key, value=value: self.stimuli_data.update_model(
+                    key, GUIUtils.safe_tkinter_get(value)
+                ),
+            )
 
         self.init_content()
 
@@ -38,21 +64,37 @@ class ExperimentCtlWindow(tk.Toplevel):
 
         logger.info("Experiment Control Window created, but hidden for now.")
 
+    def button_init_method(self):
+        # if we can generate the schedule successfully, continue. else, tell the user we can't continue
+        # yet
+        if not self.exp_process_data.generate_schedule():
+            GUIUtils.display_error(
+                "No Stimuli Input",
+                "You need to change the names of the stimuli before continuing to generate the schedule!",
+            )
+            return
+
+        self.withdraw()
+        # show the program sched window via the callback passed into the class at initialization
+        self.show_window_callback("Program Schedule")
+        # self.send_arduino_json_data(send_schedule=True)
+
     def init_content(self) -> None:
         try:
             # Create the notebook (method of creating tabs at the bottom of the window), and set items to expand in all directions if window is resized
             self.stimuli_frame = ttk.Frame(self)
-            self.stimuli_frame.grid(sticky="nsew")
+            self.stimuli_frame.grid(row=1, column=0, sticky="nsew")
 
             self.populate_stimuli_frame()
 
             GUIUtils.create_button(
-                self, "Generate Schedule", print("hi"), "green", 0, 0
+                self,
+                "Generate Schedule",
+                lambda: self.button_init_method(),
+                "green",
+                0,
+                0,
             )
-            self.update_idletasks()
-
-            # Center the window on the screen
-            GUIUtils.center_window(self)
 
             logger.info("Filled contents of experiment control window.")
         except Exception as e:
@@ -62,7 +104,8 @@ class ExperimentCtlWindow(tk.Toplevel):
     def fill_reverse_stimuli(self, source_var, mapped_var):
         try:
             new_value = source_var.get()
-            mapped_var.set(new_value)  # Update the mapped variable with the new value
+            # Update the mapped variable with the new value
+            mapped_var.set(new_value)
             logger.debug(f"Filled reverse stimuli: {new_value}")
         except Exception as e:
             logger.error(f"Error filling reverse stimuli: {e}")
@@ -104,28 +147,21 @@ class ExperimentCtlWindow(tk.Toplevel):
                 highlightbackground="dark blue",
             )
             side_two_label.grid(row=0, column=1, pady=5)
-
-            for i in range(self.controller.get_num_stimuli() // 2):
+            for i in range(self.exp_process_data.exp_var_entries["Num Stimuli"] // 2):
                 column = 0
 
                 frame, label, entry = GUIUtils.create_labeled_entry(
                     self.stimuli_entry_frame,
                     f"Valve {i + 1}",
-                    self.controller.data_mgr.stimuli_vars[f"Valve {i + 1} substance"],
+                    self.stimuli_entries[f"Valve {i + 1} Substance"],
                     row,
                     column,
                 )
 
-                source_var = self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 1} substance"
-                ]
-                mapped_var = self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 5} substance"
-                ]
+                source_var = self.stimuli_entries[f"Valve {i + 1} Substance"]
+                mapped_var = self.stimuli_entries[f"Valve {i + 5} Substance"]
 
-                self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 1} substance"
-                ].trace_add(
+                self.stimuli_entries[f"Valve {i + 1} Substance"].trace_add(
                     "write",
                     lambda name,
                     index,
@@ -142,26 +178,20 @@ class ExperimentCtlWindow(tk.Toplevel):
                 row += 1
 
             row = 1
-            for i in range(self.controller.get_num_stimuli() // 2):
+            for i in range(self.exp_process_data.exp_var_entries["Num Stimuli"] // 2):
                 column = 1
                 frame, label, entry = GUIUtils.create_labeled_entry(
                     self.stimuli_entry_frame,
                     f"Valve {i + 5}",
-                    self.controller.data_mgr.stimuli_vars[f"Valve {i + 5} substance"],
+                    self.stimuli_entries[f"Valve {i + 5} Substance"],
                     row,
                     column,
                 )
 
-                source_var = self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 5} substance"
-                ]
-                mapped_var = self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 1} substance"
-                ]
+                source_var = self.stimuli_entries[f"Valve {i + 5} Substance"]
+                mapped_var = self.stimuli_entries[f"Valve {i + 1} Substance"]
 
-                self.controller.data_mgr.stimuli_vars[
-                    f"Valve {i + 5} substance"
-                ].trace_add(
+                self.stimuli_entries[f"Valve {i + 5} Substance"].trace_add(
                     "write",
                     lambda name,
                     index,

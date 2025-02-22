@@ -10,9 +10,8 @@ from views.rasterized_data_window import RasterizedDataWindow
 from views.experiment_control_window import ExperimentCtlWindow
 from views.licks_window import LicksWindow
 from views.valve_testing_window import ValveTestWindow
-from valve_testing_logic import valveTestLogic
 from views.program_schedule_window import ProgramScheduleWindow
-from views.valve_control_window import ControlValves
+from views.valve_control_window import ValveControlWindow
 
 
 # Get the logger in use for the app
@@ -26,42 +25,79 @@ class MainGUI(tk.Tk):
         # init the Tk instance to create a GUI
         super().__init__()
 
+        self.exp_data = gui_requirements["Experiment Process Data"]
+        self.gui_requirements = gui_requirements
+
+        # set basic window attributes such as title and size
+        self.title("Samuelsen Lab Photologic Rig")
+        # Set minimum window size to 800x600 pixels
+        screen_width = self.winfo_screenwidth()  # Get screen width
+        screen_height = self.winfo_screenheight()  # Get screen height
+
+        # set main window size to 80% of width & height of display
+        desired_width = int(screen_width * 0.8)
+        desired_height = int(screen_height * 0.8)
+        self.geometry("{}x{}+{}+{}".format(desired_width, desired_height, 0, 0))
+
+        self.bind("<Control-w>", lambda event: self.destroy())
         # defines the function to run when the window is closed by the window manager
         self.protocol("WM_DELETE_WINDOW", self.on_close)
+
+        # get path of program icon image and set it
+        icon_path = GUIUtils.get_window_icon_path()
+        GUIUtils.set_program_icon(self, icon_path=icon_path)
+
         # set cols and rows to expand to fill space in main gui
         for i in range(5):
             self.grid_rowconfigure(i, weight=1)
 
         self.grid_columnconfigure(0, weight=1)
 
-        self.update_model_callback = gui_requirements["update model callback"]
-        self.get_default_value = gui_requirements["get default value"]
-        self.gui_requirements = gui_requirements
-
         self.setup_tkinter_variables()
-        self.setup_window()
-        self.setup_gui()
+        self.build_gui_widgets()
 
-        self.preload_secondary()
+        self.preload_secondary_windows()
 
         logger.info("MainGUI initialized.")
 
-    def preload_secondary(self):
+    def preload_secondary_windows(self):
         """
         This function builds all secondary windows (windows that require a button push to view) and gets them ready
         to be switched to when the user clicks the corresponding button
         """
+        # define the data that ExperimentCtlWindow() needs to function
         self.windows = {
-            "Experiment Control": ExperimentCtlWindow(),
-            "Program Schedule": ProgramScheduleWindow(),
-            # self.raster_window = RasterizedDataWindow()
-            # self.licks_window = LicksWindow()
-            # self.valve_test_window = ValveTestWindow()
-            # self.valve_control_window = ControlValves()
+            "Experiment Control": ExperimentCtlWindow(
+                self.gui_requirements["Experiment Process Data"],
+                self.gui_requirements["Stimuli Data"],
+                self.gui_requirements["Lick Data"],
+                self.show_secondary_window,
+            ),
+            "Program Schedule": ProgramScheduleWindow(
+                self.gui_requirements["Experiment Process Data"],
+                self.gui_requirements["Stimuli Data"],
+            ),
+            "Raster Plot": (
+                RasterizedDataWindow(1),
+                RasterizedDataWindow(2),
+            ),
+            "Lick Data": LicksWindow(),
+            "Valve Testing": ValveTestWindow(),
+            "Valve Control": ValveControlWindow(),
         }
 
     def show_secondary_window(self, window):
-        self.windows[window].deiconify()
+        if isinstance(self.windows[window], tuple):
+            for instance in self.windows[window]:
+                instance.deiconify()
+        else:
+            match window:
+                case "Program Schedule":
+                    self.windows[window].init_program_schedule()
+                    self.windows[window].deiconify()
+                case _:
+                    # for all non-explicitly stated cases, just show the window
+                    self.windows[window].deiconify()
 
     def hide_secondary_window(self, window):
         self.windows[window].withdraw()
@@ -70,92 +106,57 @@ class MainGUI(tk.Tk):
         # tkinter variables for time related
         # modifications in the experiment
         self.tkinter_entries = {
-            "ITI_var": tk.IntVar(value=30000),
-            "TTC_var": tk.IntVar(value=15000),
-            "sample_var": tk.IntVar(value=15000),
-            "ITI_random_entry": tk.IntVar(value=5000),
-            "TTC_random_entry": tk.IntVar(value=0),
-            "sample_random_entry": tk.IntVar(value=0),
+            "ITI_var": tk.IntVar(),
+            "TTC_var": tk.IntVar(),
+            "sample_var": tk.IntVar(),
+            "ITI_random_entry": tk.IntVar(),
+            "TTC_random_entry": tk.IntVar(),
+            "sample_random_entry": tk.IntVar(),
         }
-        # tkinter variables for other variables
-        # in the experiment such as num stimuli
-        # or number of trial blocks
-        self.exp_var_entries = {
-            "num trial blocks": tk.IntVar(
-                value=self.get_default_value("num trial blocks")
-            ),
-            "num stimuli": tk.IntVar(value=self.get_default_value("num stimuli")),
-        }
+
+        # fill the tkinter entry boxes with their default values as configured in self.exp_data
+        for key in self.tkinter_entries.keys():
+            self.tkinter_entries[key].set(self.exp_data.get_default_value(key))
 
         # we add traces to all of our tkinter variables so that on value update
         # we sent those updates to the corresponding model (data storage location)
         for key, value in self.tkinter_entries.items():
             value.trace_add(
                 "write",
-                lambda *args, key=key, value=value: self.update_model_callback(
+                lambda *args, key=key, value=value: self.exp_data.update_model(
                     key, GUIUtils.safe_tkinter_get(value)
                 ),
             )
+
+        # tkinter variables for other variables in the experiment such as num stimuli
+        # or number of trial blocks
+        self.exp_var_entries = {
+            "Num Trial Blocks": tk.IntVar(),
+            "Num Stimuli": tk.IntVar(),
+        }
+
+        # fill the exp_var entry boxes with their default values as configured in self.exp_data
+        for key in self.exp_var_entries.keys():
+            self.exp_var_entries[key].set(self.exp_data.get_default_value(key))
 
         for key, value in self.exp_var_entries.items():
             value.trace_add(
                 "write",
-                lambda *args, key=key, value=value: self.update_model_callback(
+                lambda *args, key=key, value=value: self.exp_data.update_model(
                     key, GUIUtils.safe_tkinter_get(value)
                 ),
             )
 
-    def setup_gui(self) -> None:
+    def build_gui_widgets(self) -> None:
         try:
             self.display_timers()
             self.entry_widgets()
             self.display_main_control_buttons()
             self.lower_control_buttons()
             self.display_status_widget()
-            self.update_size()
             logger.info("GUI setup completed.")
         except Exception as e:
             logger.error(f"Error setting up GUI: {e}")
-            raise
-
-    def setup_window(self) -> None:
-        try:
-            self.minsize(800, 600)  # Set minimum window size to 800x600 pixels
-            self.title("Samuelsen Lab Photologic Rig")
-            self.bind("<Control-w>", lambda e: self.destroy())
-            icon_path = GUIUtils.get_window_icon_path()
-            GUIUtils.set_program_icon(self, icon_path=icon_path)
-
-            self.protocol("WM_DELETE_WINDOW", self.on_close)
-
-            logger.info("Main window setup completed.")
-        except Exception as e:
-            logger.error(f"Error setting up main window: {e}")
-            raise
-
-    def update_size(self) -> None:
-        try:
-            self.update_idletasks()  # Ensure all widgets are updated
-            screen_width = self.winfo_screenwidth()  # Get screen width
-            screen_height = self.winfo_screenheight()  # Get screen height
-
-            # Calculate desired size as a fraction of screen size for demonstration
-            desired_width = int(screen_width * 0.8)  # 80% of the screen width
-            desired_height = int(screen_height * 0.8)  # 80% of the screen height
-
-            # Center the window on the screen
-            x_position = (screen_width - desired_width) // 2
-            y_position = (screen_height - desired_height) // 2
-
-            # Apply the new geometry
-            self.geometry(
-                "{}x{}+{}+{}".format(
-                    desired_width, desired_height, x_position, y_position
-                )
-            )
-            logger.info("Window size updated.")
-        except Exception as e:
-            logger.error(f"Error updating window size: {e}")
             raise
 
     def create_status_frame(self, parent, row, column, sticky):
@@ -185,7 +186,7 @@ class MainGUI(tk.Tk):
             self.start_button_frame, self.start_button = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Start",
-                self.gui_requirements["start button"],
+                self.gui_requirements["Start Button"],
                 "green",
                 0,
                 0,
@@ -194,7 +195,7 @@ class MainGUI(tk.Tk):
             self.reset_button_frame, _ = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Reset",
-                self.gui_requirements["reset button"],
+                self.gui_requirements["Reset Button"],
                 "grey",
                 0,
                 1,
@@ -352,7 +353,7 @@ class MainGUI(tk.Tk):
             self.num_trial_blocks_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="# Trial Blocks",
-                text_var=self.exp_var_entries["num trial blocks"],
+                text_var=self.exp_var_entries["Num Trial Blocks"],
                 row=0,
                 column=3,
             )
@@ -382,7 +383,7 @@ class MainGUI(tk.Tk):
             self.num_stimuli_frame, _, _ = GUIUtils.create_labeled_entry(
                 parent=self.entry_widgets_frame,
                 label_text="# Stimuli",
-                text_var=self.exp_var_entries["num stimuli"],
+                text_var=self.exp_var_entries["Num Stimuli"],
                 row=1,
                 column=3,
             )
@@ -528,7 +529,7 @@ class MainGUI(tk.Tk):
                     self.controller.data_mgr.current_trial_number
                     / self.controller.get_num_trials()
                 ) * 100  # Set the new value for the progress
-            self.progress.update_idletasks()  # Update the progress bar display
+            # self.progress.update_idletasks()  # Update the progress bar display
             logger.debug("Progress bar updated.")
         except Exception as e:
             logger.error(f"Error updating progress bar: {e}")
@@ -602,6 +603,7 @@ class MainGUI(tk.Tk):
 
     def on_close(self):
         try:
+            # get rid of all .after calls
             self.destroy()
             self.quit()
             logger.info("Application closed.")

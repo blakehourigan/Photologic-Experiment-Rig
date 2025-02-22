@@ -9,6 +9,11 @@ logger = logging.getLogger()
 
 
 class GUIUtils:
+    """
+    This class contains helper methods that do not require an instance of self to function. They assist in the creation of
+    GUI elements in various GUI (view) classes
+    """
+
     @staticmethod
     def create_labeled_entry(
         parent: tk.Frame,

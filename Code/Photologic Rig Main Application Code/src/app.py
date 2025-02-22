@@ -30,7 +30,8 @@ console_handler.setFormatter(
 )
 logger.addHandler(console_handler)
 
-# Rotating file handler for all logs
+# Rotating file handler for all logs, this means that once maxBytes is exceeded, the data rolls over into a new file.
+# for example, data will begin in app.log, then will roll over into app1.log
 file_handler = RotatingFileHandler("app.log", maxBytes=10 * 1024 * 1024, backupCount=3)
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(
@@ -53,10 +54,12 @@ class TkinterApp:
             # key: value where key = item the associated value will be used with, and value is
             # the function or variable that a key needs
             self.gui_requirements = {
-                "start button": self.start_button_handler,
-                "reset button": self.reset_button_handler,
-                "update model callback": self.update_model_callback,
-                "get default value": self.get_default_value,
+                "Start Button": self.start_button_handler,
+                "Reset Button": self.reset_button_handler,
+                "Experiment Process Data": self.exp_data,  # <== begin data passthrough
+                "Lick Data": self.licks_data,
+                "Stimuli Data": self.stimuli_data,
+                "Arduino Data": self.arduino_data,
             }
             self.init_view(self.gui_requirements)
 
@@ -67,9 +70,9 @@ class TkinterApp:
 
     def init_models(self):
         self.exp_data = ExperimentProcessData()
-        self.licks_data = LicksData()
-        self.stimuli_data = StimuliData()
-        self.arduino_data = ArduinoData()
+        self.licks_data = self.exp_data.lick_data
+        self.stimuli_data = self.exp_data.stimuli_data
+        self.arduino_data = self.exp_data.arduino_data
 
         logging.info("Data Classes initialized.")
 
@@ -110,37 +113,6 @@ class StateMachine(TkinterApp):
             case "ITI":
                 # self.initial_time_interval(iteration)
                 pass
-
-    def update_model_callback(self, variable_name, value) -> None:
-        """
-        This function will be called when a tkiner entry is updated in the gui
-        to update the standard variables held in the model classes there
-        """
-        # if the variable name for the tkinter entry item that we are updating is
-        # in the exp_data interval variables dictionary, update that entry
-        # with the value in the tkinter variable
-        if value is not None:
-            print(variable_name, value)
-            if variable_name in self.exp_data.interval_vars.keys():
-                self.exp_data.interval_vars[variable_name] = value
-                print(self.exp_data.interval_vars)
-            elif variable_name in self.exp_data.exp_var_entries.keys():
-                # update other var types here
-                self.exp_data.exp_var_entries[variable_name] = value
-                print(self.exp_data.exp_var_entries)
-
-    def get_default_value(self, variable_name) -> int:
-        # print(self.get_default_value("num trial blocks"))
-        """
-        this function is very similar to update_model_callback, but as name implies it only
-        retrieves from the model and does no updating. called only once for each tkinter variable
-        in main gui
-        """
-        if variable_name in self.exp_data.interval_vars.keys():
-            return self.exp_data.interval_vars[variable_name]
-        elif variable_name in self.exp_data.exp_var_entries.keys():
-            # update other var types here
-            return self.exp_data.exp_var_entries[variable_name]
 
     def start_program(self) -> None:
         """Start the program if it is not already running."""
@@ -189,7 +161,8 @@ class StateMachine(TkinterApp):
 
             if self.data_mgr.current_trial_number > self.get_num_trials():
                 self.experiment_completed = True
-                self.program_schedule_window.update_licks_and_TTC_actual(iteration + 1)
+                self.program_schedule_window.update_licks(iteration + 1)
+                self.program_schedule_window.update_ttc_actual(iteration + 1)
                 self.stop_program()
             elif self.running:
                 self.state = "ITI"
@@ -397,7 +370,6 @@ class StateMachine(TkinterApp):
 
     def start_button_handler(self) -> None:
         """Handle toggling the program to running/not running on click of the start/stop button."""
-        logging.debug("Start button clicked.")
         try:
             if self.running:
                 self.stop_program()
@@ -410,7 +382,6 @@ class StateMachine(TkinterApp):
 
     def reset_button_handler(self) -> None:
         """Handle resetting the program on click of the reset button."""
-        logging.debug("Reset button clicked.")
         try:
             if self.main_gui and self.main_gui.root:
                 for after_id in self.after_ids:
@@ -420,6 +391,7 @@ class StateMachine(TkinterApp):
             self.close_all_tkinter_windows()
             if self.arduino_mgr:
                 self.arduino_mgr.close_connections()
+
             self.state = "OFF"
             self.running = False
             logging.debug("Reset button handler completed.")
@@ -446,7 +418,6 @@ class StateMachine(TkinterApp):
 
     def complete_program(self) -> None:
         """Complete the program and reset Arduinos."""
-        logging.debug("Completing program.")
         try:
             self.send_command_to_arduino(arduino="motor", command="<9>")
             self.arduino_mgr.reset_arduinos()
@@ -455,31 +426,4 @@ class StateMachine(TkinterApp):
             logging.debug("Program completed and Arduinos reset.")
         except Exception as e:
             logging.error(f"Error completing program: {e}")
-            raise
-
-    def update_clock_label(self) -> None:
-        """Update the clock label if the program is running."""
-        logging.debug("Updating clock label.")
-        try:
-            if self.running:
-                self.main_gui.update_clock_label()
-            logging.debug("Clock label updated.")
-        except Exception as e:
-            logging.error(f"Error updating clock label: {e}")
-            raise
-
-    def generate_experiment_schedule(self) -> None:
-        """Generate the experiment schedule."""
-        logging.debug("Generating experiment schedule.")
-        try:
-            self.data_mgr.initialize_stimuli_dataframe()
-            self.data_mgr.initalize_licks_dataframe()
-            self.close_valve_stimuli_window()
-            self.program_schedule_window.show_stimuli_table()
-
-            self.send_arduino_json_data(send_schedule=True)
-
-            logging.debug("Experiment schedule generated.")
-        except Exception as e:
-            logging.error(f"Error generating experiment schedule: {e}")
             raise

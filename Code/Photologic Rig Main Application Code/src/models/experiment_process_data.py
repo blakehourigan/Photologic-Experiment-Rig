@@ -1,7 +1,11 @@
 import logging
+from tkinter import filedialog
 import numpy as np
+import pandas as pd
 from typing import Tuple, List
 from models.stimuli_data import StimuliData
+from models.licks_data import LicksData
+from models.arduino_data import ArduinoData
 
 logger = logging.getLogger(__name__)
 
@@ -10,7 +14,11 @@ class ExperimentProcessData:
     """
     Summary line.
 
-    Extended description of class.
+    This class is the central data hub of the program. It holds program runtime variabes
+    such as program state and time interval lists, as well as references to
+    other data classes containing stimuli, lick, and arduino related data.
+    The class was structured this way to provide clarity on what files and classes
+    contain the information being searched for.
 
     Attributes:
         attr1 (int): Description of `attr1`.
@@ -21,26 +29,24 @@ class ExperimentProcessData:
     """
 
     def __init__(self):
-        self.running = False
-        self.experiment_completed = False
         self.state = "OFF"
-        self.blocks_generated = False
+        self.program_schedule_available = False
 
         self.start_time = 0.0
         self.state_start_time = 0.0
 
-        self.pairs: list[Tuple] = []
-
         self.current_trial_number = 1
         self.current_iteration = 0
 
+        self.lick_data = LicksData()
         self.stimuli_data = StimuliData()
+        self.arduino_data = ArduinoData()
 
         self.ITI_intervals_final: list[int] = []
         self.TTC_intervals_final: list[int] = []
+        self.sample_intervals_final: list[int] = []
 
         self.TTC_lick_threshold = 3
-        self.sample_intervals_final: list[int] = []
 
         self.interval_vars = {
             "ITI_var": 30000,
@@ -51,90 +57,79 @@ class ExperimentProcessData:
             "sample_random_entry": 0,
         }
         self.exp_var_entries = {
-            "num trial blocks": 10,
-            "num stimuli": 4,
+            "Num Trial Blocks": 10,
+            "Num Stimuli": 4,
+            "Num Trials": 0,
         }
+        self.program_schedule_df = None
 
-        self.num_trials = 0
+    def update_model(self, variable_name, value) -> None:
+        """
+        This function will be called when a tkiner entry is updated in the gui
+        to update the standard variables held in the model classes there
+        """
+        # if the variable name for the tkinter entry item that we are updating is
+        # in the exp_data interval variables dictionary, update that entry
+        # with the value in the tkinter variable
+        if value is not None:
+            if variable_name in self.interval_vars.keys():
+                self.interval_vars[variable_name] = value
+            elif variable_name in self.exp_var_entries.keys():
+                # update other var types here
+                self.exp_var_entries[variable_name] = value
 
-    def convert_seconds_to_minutes_seconds(self, total_seconds):
+    def get_default_value(self, variable_name) -> int:
+        """
+        this function is very similar to update_model, but as name implies it only
+        retrieves from the model and does no updating. called only once for each tkinter variable
+        in main gui
+        """
+        if variable_name in self.interval_vars.keys():
+            return self.interval_vars[variable_name]
+        elif variable_name in self.exp_var_entries.keys():
+            # update other var types here
+            return self.exp_var_entries[variable_name]
+
+    def generate_schedule(self) -> bool:
+        """
+        This is a primary function of the program. This function generates the pseudo random schedule for what stimuli will be presented in which
+        trials. It generates the intervals for ITI, TTC, and sample time using base time plus generated random +/- variations as given by user
+        in interface.
+        """
         try:
-            minutes = total_seconds // 60  # Integer division to get whole minutes
-            seconds = total_seconds % 60  # Modulo to get remaining seconds
-            logger.debug(
-                f"Converted {total_seconds} to {minutes} minutes and {seconds} seconds."
-            )
-            return minutes, seconds
-        except Exception as e:
-            logger.error(f"Error converting seconds to minutes and seconds: {e}")
-            raise
+            # set number of trials based on number of stimuli, and number of trial blocks set by user
+            num_stimuli = self.exp_var_entries["Num Stimuli"]
+            num_trial_blocks = self.exp_var_entries["Num Trial Blocks"]
 
-    def calculate_max_runtime(self):
-        self.num_trials = (self.num_stimuli // 2) * self.num_trial_blocks
-        max_time = self.create_random_intervals()
-        minutes, seconds = self.convert_seconds_to_minutes_seconds(max_time / 1000)
+            self.exp_var_entries["Num Trials"] = (num_stimuli // 2) * num_trial_blocks
 
-    def get_paired_index(self, i, total_entries):
-        if total_entries == 2:
-            return 1 - i
-        elif total_entries == 4:
-            return total_entries - i - 1
-        elif total_entries == 8:
-            if i % 2 == 0:
-                return (i + 5) % total_entries
-            else:
-                return (i + 3) % total_entries
-        else:
-            raise ValueError("Unexpected number of entries")
-
-    def create_trial_blocks(self):
-        """this is the function that will generate the full roster of stimuli for the duration of the program"""
-        try:
-            # the above is a separate function, whose return value should be used in the main app to do the below
-
+            self.create_random_intervals()
+            minutes, seconds = self.calculate_max_runtime()
             # self.controller.main_gui.update_max_time(minutes, seconds)
 
-            #########################################################
-            self.changed_vars = [
-                stimulus
-                for i, (key, stimulus) in enumerate(
-                    self.stimuli_data.stimuli_vars.items()
-                )
-                if stimulus != f"Valve {i + 1} substance"
-            ]
+            pairs = self.create_trial_blocks()
 
-            if len(self.changed_vars) > self.num_stimuli:
-                start_index = self.num_stimuli
-                for index, key in enumerate(self.stimuli_data.stimuli_vars):
-                    if index >= start_index:
-                        self.stimuli_data.stimuli_vars[key] = key
+            # stimuli_1 & stimuli_2 are lists that hold the stimuli to be introduced for each trial on their respective side
+            stimuli_1, stimuli_2 = self.generate_pairs(pairs)
 
-            if self.changed_vars:
-                self.pairs = []
-                total_entries = len(self.changed_vars)
-                for i in range(total_entries // 2):
-                    pair_index = self.get_paired_index(i, total_entries)
-                    self.pairs.append(
-                        (self.changed_vars[i], self.changed_vars[pair_index])
-                    )
-            else:
-                print("badbadnotgood")
-                # self.controller.display_gui_error(
-                #    "Stimulus Not Changed",
-                #    "One or more of the default stimuli have not been changed, please change the default value and try again",
-                # )
-            logger.info("Trial blocks created.")
+            # args needed -> stimuli_1, stimuli_2, num_stimuli, num_trial_blocks, num_trials
+            self.build_frame(
+                stimuli_1,
+                stimuli_2,
+            )
+
+            return True
         except Exception as e:
-            logger.error(f"Error creating trial blocks: {e}")
-            raise
+            logger.error(f"Error generating program schedule {e}.")
 
-    def create_random_intervals(self) -> int:
+    def create_random_intervals(self) -> None:
         try:
             self.ITI_intervals_final.clear()
             self.TTC_intervals_final.clear()
             self.sample_intervals_final.clear()
 
-            for entry in range(self.num_trials):
+            num_trials = self.exp_var_entries["Num Trials"]
+            for entry in range(num_trials):
                 for interval_type in ["ITI", "TTC", "sample"]:
                     random_entry_key = f"{interval_type}_random_entry"
                     var_key = f"{interval_type}_var"
@@ -151,44 +146,181 @@ class ExperimentProcessData:
                         setattr(self, final_intervals_key, [])
                     getattr(self, final_intervals_key).append(final_interval)
 
-            max_time = (
-                sum(self.ITI_intervals_final)
-                + sum(self.TTC_intervals_final)
-                + sum(self.sample_intervals_final)
-            )
-
             logger.info("Random intervals created.")
-            return max_time
         except Exception as e:
             logger.error(f"Error creating random intervals: {e}")
             raise
 
-    def generate_pairs(self) -> Tuple[list, list]:
+    def calculate_max_runtime(self) -> (int, int):
+        max_time = (
+            sum(self.ITI_intervals_final)
+            + sum(self.TTC_intervals_final)
+            + sum(self.sample_intervals_final)
+        )
+        minutes, seconds = self.convert_seconds_to_minutes_seconds(max_time / 1000)
+        return (minutes, seconds)
+
+    def create_trial_blocks(self) -> List:
+        """
+        This function generates all possible pairings that can occur in ONE TRIAL BLOCK given the input
+        valve stimuli. For example, if we have valves 1 and 5 containing substance 1, and valves 2 and 6
+        containing substance 2, this method will generate a list of two pairings that can occur in one trial block.
+        We need each pairing to complete a block, so we generate [(substance 1, substance 2), (substance 2, substance 1)]
+        as our output. This covers each possible pairing.
+        """
+        try:
+            # creating pairs list which stores all possible pairs
+            pairs = []
+            num_stimuli = self.exp_var_entries["Num Stimuli"]
+            block_sz = num_stimuli // 2
+
+            stimuli_names = [
+                stimulus
+                for i, (key, stimulus) in enumerate(
+                    self.stimuli_data.stimuli_vars.items()
+                )
+            ]
+
+            for i in range(block_sz):
+                pair_index = self.get_paired_index(i, num_stimuli)
+                pairs.append((stimuli_names[i], stimuli_names[pair_index]))
+
+            return pairs
+        except Exception as e:
+            logger.error(f"Error creating trial blocks: {e}")
+            raise
+
+    def generate_pairs(self, pairs) -> Tuple[list, list]:
+        """
+        This method takes the possible pairings given by create trial blocks and generates
+        which substance will be on a given port for each trial of the experiment. To
+        ensure pseudo randomness, we utilize np.random.shuffle on each pairing.
+        """
         try:
             pseudo_random_lineup: List[tuple] = []
             stimulus_1: List[str] = []
             stimulus_2: List[str] = []
 
-            for _ in range(self.num_trial_blocks):
-                if self.num_trial_blocks != 0 and self.changed_vars:
-                    pairs_copy = [tuple(pair) for pair in self.pairs]
-                    np.random.shuffle(pairs_copy)
-                    pseudo_random_lineup.extend(pairs_copy)
+            for _ in range(self.exp_var_entries["Num Trial Blocks"]):
+                pairs_copy = [tuple(pair) for pair in pairs]
+                np.random.shuffle(pairs_copy)
+                pseudo_random_lineup.extend(pairs_copy)
 
-                elif len(self.changed_vars) == 0:
-                    print("badbadnotgood")
-                    # self.controller.display_gui_error(
-                    #    "Stimuli Variables Not Yet Changed",
-                    #    "Stimuli variables have not yet been changed, to continue please change defaults and try again.",
-                    # )
-
-            for entry in pseudo_random_lineup:
-                stimulus_1.append(entry[0])
-                stimulus_2.append(entry[1])
+            for pair in pseudo_random_lineup:
+                stimulus_1.append(pair[0])
+                stimulus_2.append(pair[1])
 
             return stimulus_1, stimulus_2
         except Exception as e:
             logger.error(f"Error generating pairs: {e}")
+            raise
+
+    def build_frame(
+        self,
+        stimuli_1,
+        stimuli_2,
+    ) -> None:
+        num_stimuli = self.exp_var_entries["Num Stimuli"]
+        num_trials = self.exp_var_entries["Num Trials"]
+        num_trial_blocks = self.exp_var_entries["Num Trial Blocks"]
+
+        # each block must contain each PAIR -> num pairs = num_stim / 2
+        block_size = int(num_stimuli / 2)
+        try:
+            data = {
+                "Trial Block": np.repeat(
+                    range(1, num_trial_blocks + 1),
+                    block_size,
+                ),
+                "Trial Number": np.repeat(range(1, num_trials + 1), 1),
+                "Port 1": stimuli_1,
+                "Port 2": stimuli_2,
+                "Port 1 Licks": np.full(num_trials, np.nan),
+                "Port 2 Licks": np.full(num_trials, np.nan),
+                "ITI": self.ITI_intervals_final,
+                "TTC": self.TTC_intervals_final,
+                "Sample Time": self.sample_intervals_final,
+                "TTC Actual": np.full(num_trials, np.nan),
+            }
+
+            self.program_schedule_df = pd.DataFrame(data)
+
+            logger.debug("Initialized stimuli dataframe.")
+        except Exception as e:
+            logger.debug(f"Error Building Stimuli Frame: {e}.")
+            raise
+
+    @staticmethod
+    def get_paired_index(i, num_stimuli):
+        match num_stimuli:
+            case 2:
+                # if num stim is 2, we are only running the same stimulus on both sides,
+                # we will only see i=0 here, and its paired with its sibling i=4
+                return i + 4
+            case 4:
+                # if num stim is 4, we are only running 2 stimuli per side,
+                # we will see i=0 and i =1 here, paired with siblings i=5 & i=4 respectively
+                match i:
+                    case 0:  # valve 1
+                        return i + 5  # (5) / valve 6
+                    case 1:  # valve 2
+                        return i + 3  # (4) / valve 5
+            case 8:
+                match i:
+                    case 0:
+                        return i + 5
+                    case 1:
+                        return i + 3
+                    case 2:
+                        return i + 3
+                    case 3:
+                        return i + 3
+            case _:
+                return None
+        # if total_entries == 2:
+        #    return 1 - i
+        # elif total_entries == 4:
+        #    return total_entries - i - 1
+        # elif total_entries == 8:
+        #    if i % 2 == 0:
+        #        return (i + 5) % total_entries
+        #    else:
+        #        return (i + 3) % total_entries
+        # else:
+        #    raise ValueError("Unexpected number of entries")
+
+    @staticmethod
+    def save_df_to_xlsx(dataframe) -> None:
+        """Method to bring up the windows file save dialog menu to save the two data tables to external files"""
+        try:
+            file_name = filedialog.asksaveasfilename(
+                defaultextension=".xlsx",
+                filetypes=[("Excel Files", "*.xlsx")],
+                initialfile="experiment schedule",
+                title="Save Excel file",
+            )
+
+            if file_name:
+                dataframe.to_excel(file_name, index=False)
+            else:
+                logger.info("User cancelled saving the stimuli dataframe.")
+
+            logger.info("Data saved to xlsx files.")
+        except Exception as e:
+            logger.error(f"Error saving data to xlsx: {e}")
+            raise
+
+    @staticmethod
+    def convert_seconds_to_minutes_seconds(total_seconds):
+        try:
+            minutes = total_seconds // 60  # Integer division to get whole minutes
+            seconds = total_seconds % 60  # Modulo to get remaining seconds
+            logger.debug(
+                f"Converted {total_seconds} to {minutes} minutes and {seconds} seconds."
+            )
+            return minutes, seconds
+        except Exception as e:
+            logger.error(f"Error converting seconds to minutes and seconds: {e}")
             raise
 
             # def calculate_randomness():

@@ -2,18 +2,23 @@ import tkinter as tk
 import re
 import logging
 from tkinter import ttk, messagebox, simpledialog
-from typing import TYPE_CHECKING
+
 from valve_testing_logic import valveTestLogic
-
-if TYPE_CHECKING:
-    from program_control import ProgramController
+from views.gui_common import GUIUtils
 
 
-class ValveTestWindow:
-    def __init__(self, controller: "ProgramController"):
-        self.controller = controller
-        self.master = controller.main_gui.root
-        self.top = None
+class ValveTestWindow(tk.Toplevel):
+    def __init__(self):
+        super().__init__()
+        self.title("Valve Testing")
+        self.bind("<Control-w>", lambda event: self.withdraw())
+
+        window_icon_path = GUIUtils.get_window_icon_path()
+        GUIUtils.set_program_icon(self, icon_path=window_icon_path)
+
+        for i in range(4):
+            self.grid_rowconfigure(i, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
         self.num_valves_to_test = tk.IntVar(value=8)
         self.desired_volume = tk.DoubleVar(value=5)  # desired volume to dispense in ul
@@ -21,8 +26,15 @@ class ValveTestWindow:
         self.valve_opening_times: list[int] = []
         self.ul_dispensed: list[float] = []
 
+        self.create_widgets()
+        GUIUtils.center_window(self)
+        logging.debug("ValveTestWindow shown.")
         self.setup_trace_variables()
-        logging.debug("ValveTestWindow initialized.")
+
+        # we don't want to show this window until the user decides to click the corresponding button,
+        # withdraw (hide) it for now
+        self.withdraw()
+        logging.debug("Valve Test Window initialized.")
 
     def input_popup(self, valve, init=False, side=0) -> float:
         pattern = re.compile(
@@ -36,9 +48,7 @@ class ValveTestWindow:
                 )
             else:
                 string = "Enter the measured volume cm^3 for valve " + str(valve)
-            user_input = simpledialog.askstring(
-                "Measured Volume", string, parent=self.top
-            )
+            user_input = simpledialog.askstring("Measured Volume", string, parent=self)
 
             if user_input is None:
                 response = messagebox.askyesno(
@@ -80,36 +90,6 @@ class ValveTestWindow:
         logging.debug(f"User prompt to continue: {response}")
         return response
 
-    def show_window(self):
-        if self.controller.get_num_stimuli() > 0:
-            if self.top and self.top.winfo_exists():
-                self.top.lift()
-            else:
-                self.create_window()
-                self.configure_window()
-                self.create_widgets()
-                self.auto_resize_and_center()
-                window_icon_path = (
-                    self.controller.experiment_config.get_window_icon_path()
-                )
-                # GUIUtils.set_program_icon(self.top, icon_path=window_icon_path)
-                logging.debug("ValveTestWindow shown.")
-        else:
-            messagebox.showinfo("Error", "Please add stimuli before proceeding.")
-            logging.warning("Attempted to show ValveTestWindow without stimuli.")
-
-    def create_window(self):
-        self.top = tk.Toplevel(self.master)
-        self.top.title("Valve Testing")
-        self.top.bind("<Control-w>", lambda e: self.top.destroy())
-        logging.debug("ValveTestWindow created.")
-
-    def configure_window(self):
-        for i in range(4):
-            self.top.grid_rowconfigure(i, weight=1)
-        self.top.grid_columnconfigure(0, weight=1)
-        logging.debug("ValveTestWindow configured.")
-
     def create_widgets(self):
         self.create_label_and_entry(
             "Number of Valves to Test", self.num_valves_to_test, 0
@@ -122,7 +102,7 @@ class ValveTestWindow:
         logging.debug("Widgets created for ValveTestWindow.")
 
     def create_label_and_entry(self, label_text, variable, row):
-        frame = tk.Frame(self.top, highlightbackground="black", highlightthickness=1)
+        frame = tk.Frame(self, highlightbackground="black", highlightthickness=1)
         frame.grid(row=row, padx=10, pady=5, sticky="ew")
         tk.Label(frame, text=label_text, font=("Helvetica", 16)).pack(side="left")
         tk.Entry(frame, textvariable=variable, font=("Helvetica", 16)).pack(
@@ -153,7 +133,7 @@ class ValveTestWindow:
         if hasattr(self, "valve_table"):
             self.valve_table.destroy()
         self.valve_table_frame = tk.Frame(
-            self.top, highlightbackground="black", highlightthickness=1
+            self, highlightbackground="black", highlightthickness=1
         )
         self.valve_table_frame.grid(row=2, column=0, sticky="nsew", pady=10, padx=10)
         self.valve_table = ttk.Treeview(
@@ -206,7 +186,7 @@ class ValveTestWindow:
 
     def create_buttons(self):
         start_test_button_frame = tk.Frame(
-            self.top, highlightbackground="black", highlightthickness=1
+            self, highlightbackground="black", highlightthickness=1
         )
         start_test_button_frame.grid(row=3, column=0, pady=10, padx=10, sticky="ew")
         start_test_button = tk.Button(
@@ -242,18 +222,6 @@ class ValveTestWindow:
         )
         logging.debug(f"Collected user inputs: {user_inputs}")
         print(user_inputs)  # For debugging: Print the collected inputs
-
-    def auto_resize_and_center(self):
-        self.top.update_idletasks()
-        # get required width and height required to neatly fit all frames and widgets
-        width = self.top.winfo_reqwidth()
-        height = self.top.winfo_reqheight()
-        screen_width = self.top.winfo_screenwidth()
-        screen_height = self.top.winfo_screenheight()
-        x = (screen_width // 2) - (width // 2)
-        y = (screen_height // 2) - (height // 2)
-        self.top.geometry("{}x{}+{}+{}".format(width, height, x, y))
-        logging.debug("Auto-resized and centered ValveTestWindow.")
 
     def set_valve_opening_times(self, new_times):
         self.valve_opening_times = new_times

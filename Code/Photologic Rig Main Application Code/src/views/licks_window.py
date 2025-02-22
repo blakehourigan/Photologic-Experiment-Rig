@@ -1,36 +1,22 @@
 import tkinter as tk
-from typing import Optional
-from tkinter import messagebox
 from tkinter import ttk
 
+from views.gui_common import GUIUtils
 
-class LicksWindow:
+
+class LicksWindow(tk.Toplevel):
     def __init__(self) -> None:
-        self.top: Optional[tk.Toplevel] = None
+        super().__init__()
 
-    def show_window(self) -> None:
-        if self.top is not None and self.top.winfo_exists():
-            self.top.lift()
-        elif not self.controller.data_mgr.blocks_generated:
-            # if blocks haven't been created yet, then there isn't a lick dataframe generated yet so tell user to generate blocks first
-            messagebox.showinfo(
-                "Blocks Not Generated",
-                "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
-            )
-        else:
-            self.top = self.create_window()
-            self.show_table()
-            window_icon_path = self.controller.experiment_config.get_window_icon_path()
-            # GUIUtils.set_program_icon(self.top, icon_path=window_icon_path)
+        self.title("Licks Data")
+        self.bind("<Control-w>", lambda event: self.withdraw())
+        # Bind closing the window to self.withdraw()
+        self.protocol("WM_DELETE_WINDOW", self.withdraw())
 
-    def create_window(self) -> tk.Toplevel:
-        top = tk.Toplevel(self.controller.main_gui.root)
-        top.bind(
-            "<Control-w>", lambda e: top.destroy()
-        )  # Close the window when the user presses ctl + w
-        top.protocol("WM_DELETE_WINDOW", self.on_window_close)  # Bind the close event
+        window_icon_path = GUIUtils.get_window_icon_path()
+        GUIUtils.set_program_icon(self, icon_path=window_icon_path)
 
-        return top
+        self.withdraw()
 
     def show_table(self) -> None:
         self.licks_frame = tk.Frame(self.top)
@@ -53,9 +39,3 @@ class LicksWindow:
             self.stamped_licks.insert("", "end", values=list(row))
 
         self.stamped_licks.pack(fill="both", expand=True)
-
-    def on_window_close(self) -> None:
-        """Handle the close event when the user clicks the X button on the window."""
-        if self.top is not None:
-            self.top.destroy()
-            self.top = None

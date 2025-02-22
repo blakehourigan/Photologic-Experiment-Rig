@@ -1,58 +1,25 @@
 import tkinter as tk
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-from typing import TYPE_CHECKING, Optional
-from tkinter import messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
 
 
-if TYPE_CHECKING:
-    from program_control import ProgramController
+class RasterizedDataWindow(tk.Toplevel):
+    def __init__(self, side) -> None:
+        super().__init__()
 
+        self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
+        self.bind("<Control-w>", lambda e: self.withdraw())
+        self.iconbitmap(self.master.iconbitmap())  # Assuming master has a set icon
+        self.title(f"Side {side} Raster Plot")
 
-class RasterizedDataWindow:
-    def __init__(self, controller: "ProgramController") -> None:
-        self.controller = controller
-        self.master = controller.main_gui.root
+        # Initialize the color cycle
+        self.color_cycle = cm.get_cmap("tab10", 10)
+        # Initialize the color index
+        self.color_index = 0
 
-        self.side1_window: Optional[tk.Toplevel] = None
-        self.side2_window: Optional[tk.Toplevel] = None
-
-        self.color_cycle = cm.get_cmap("tab10", 10)  # Initialize the color cycle
-        self.color_index = 0  # Initialize the color index
-
-    def show_window(self, side: int) -> None:
-        if side == 1:
-            target_window = self.side1_window
-        else:
-            target_window = self.side2_window
-
-        if target_window is not None and target_window.winfo_exists():
-            target_window.lift()
-        elif not self.controller.data_mgr.blocks_generated:
-            messagebox.showinfo(
-                "Blocks Not Generated",
-                "Experiment blocks haven't been generated yet, please generate trial blocks and try again",
-            )
-        else:
-            if side == 1:
-                self.side1_window = self.create_window(side)
-                self.create_plot(self.side1_window, side)
-            else:
-                self.side2_window = self.create_window(side)
-                self.create_plot(self.side2_window, side)
-
-    def create_window(self, side: int) -> tk.Toplevel:
-        top = tk.Toplevel(self.master)
-        top.protocol("WM_DELETE_WINDOW", self.on_any_window_close)
-        top.bind("<Control-w>", lambda e: self.on_any_window_close())
-        top.iconbitmap(self.master.iconbitmap())  # Assuming master has a set icon
-        top.title(f"Side {side} Raster Plot")
-        window_icon_path = self.controller.experiment_config.get_window_icon_path()
-        # GUIUtils.set_program_icon(top, icon_path=window_icon_path)
-
-        return top
+        self.withdraw()
 
     def create_plot(self, window: tk.Toplevel, side: int) -> None:
         container = tk.Frame(window)
@@ -141,11 +108,3 @@ class RasterizedDataWindow:
             c=color,
             s=100,
         )
-
-    def on_any_window_close(self) -> None:
-        if self.side1_window is not None:
-            self.side1_window.destroy()
-            self.side1_window = None
-        if self.side2_window is not None:
-            self.side2_window.destroy()
-            self.side2_window = None
