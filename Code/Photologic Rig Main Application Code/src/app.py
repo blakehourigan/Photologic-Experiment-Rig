@@ -56,7 +56,7 @@ class TkinterApp:
             self.gui_requirements = {
                 "Start Button": self.start_button_handler,
                 "Reset Button": self.reset_button_handler,
-                "Experiment Process Data": self.exp_data,  # <== begin data passthrough
+                "Experiment Process Data": self.exp_data,  # <== data passthrough
                 "Lick Data": self.licks_data,
                 "Stimuli Data": self.stimuli_data,
                 "Arduino Data": self.arduino_data,
@@ -139,8 +139,7 @@ class StateMachine(TkinterApp):
 
     def initial_time_interval(self, iteration: int) -> None:
         """Handle the initial time interval state of the experiment."""
-        if logger.isEnabledFor(logging.DEBUG):
-            logging.debug(f"Initial time interval started for iteration {iteration}.")
+        logging.info(f"Initial time interval started for iteration {iteration}.")
         try:
             if iteration > 0:
                 lick_stamps_side_one, lick_stamps_side_two = (

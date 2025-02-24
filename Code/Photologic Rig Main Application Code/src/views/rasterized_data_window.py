@@ -21,6 +21,9 @@ class RasterizedDataWindow(tk.Toplevel):
 
         self.withdraw()
 
+    def show(self):
+        self.deiconify()
+
     def create_plot(self, window: tk.Toplevel, side: int) -> None:
         container = tk.Frame(window)
         container.pack(side=tk.TOP, fill=tk.BOTH, expand=True)

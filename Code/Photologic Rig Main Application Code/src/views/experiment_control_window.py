@@ -79,6 +79,13 @@ class ExperimentCtlWindow(tk.Toplevel):
         self.show_window_callback("Program Schedule")
         # self.send_arduino_json_data(send_schedule=True)
 
+    def show(self):
+        prev_num_stim = len(self.ui_components["entries"])
+        curr_num_stimuli = self.exp_process_data.exp_var_entries["Num Stimuli"]
+        if prev_num_stim != curr_num_stimuli:
+            self.init_content()
+        self.deiconify()
+
     def init_content(self) -> None:
         try:
             # Create the notebook (method of creating tabs at the bottom of the window), and set items to expand in all directions if window is resized

@@ -36,6 +36,9 @@ class ValveTestWindow(tk.Toplevel):
         self.withdraw()
         logging.debug("Valve Test Window initialized.")
 
+    def show(self):
+        self.deiconify()
+
     def input_popup(self, valve, init=False, side=0) -> float:
         pattern = re.compile(
             r"\b\d{2}\.\d{2}\b"

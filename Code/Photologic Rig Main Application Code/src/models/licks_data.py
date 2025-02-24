@@ -14,18 +14,15 @@ class LicksData:
         self.side_two_licks = 0
         self.total_licks = 0
 
-        """setup the licks data frame that will hold the timestamps for the licks and which port was licked
+        """
+        setup the licks data frame that will hold the timestamps for the licks and which port was licked
         and create an empty first row to avoid a blank table when the program is first run
         """
-        try:
-            self.licks_dataframe = pd.DataFrame(
-                [[np.nan, np.nan, np.nan]],
-                columns=["Trial Number", "Licked Port", "Time Stamp"],
-            )
-            logger.info("Licks dataframe initialized.")
-        except Exception as e:
-            logger.error(f"Error initializing licks dataframe: {e}")
-            raise
+        self.licks_dataframe = pd.DataFrame(
+            [[np.nan, np.nan, np.nan]],
+            columns=["Trial Number", "Licked Port", "Time Stamp"],
+        )
+        logger.info("Licks dataframe initialized.")
 
     def get_lick_timestamps(self, trial_number):
         """

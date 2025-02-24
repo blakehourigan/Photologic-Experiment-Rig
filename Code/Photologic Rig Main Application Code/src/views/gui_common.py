@@ -170,3 +170,7 @@ class GUIUtils:
         except Exception as e:
             logger.error(f"Error centering experiment control window: {e}")
             raise
+
+    @staticmethod
+    def askyesno(window_title, message) -> bool:
+        tk.messagebox.askyesno(title=window_title, message=message)

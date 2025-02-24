@@ -30,6 +30,9 @@ class ValveControlWindow(tk.Toplevel):
         # withdraw (hide) it for now
         self.withdraw()
 
+    def show(self):
+        self.deiconify()
+
     def toggle_motor(self):
         if self.motor_button_text.get() == "Move motor down":
             self.motor_button_text.set("Move motor up")

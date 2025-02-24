@@ -3,6 +3,8 @@ from tkinter import filedialog
 import numpy as np
 import pandas as pd
 from typing import Tuple, List
+import datetime
+
 from models.stimuli_data import StimuliData
 from models.licks_data import LicksData
 from models.arduino_data import ArduinoData
@@ -29,9 +31,6 @@ class ExperimentProcessData:
     """
 
     def __init__(self):
-        self.state = "OFF"
-        self.program_schedule_available = False
-
         self.start_time = 0.0
         self.state_start_time = 0.0
 
@@ -42,9 +41,9 @@ class ExperimentProcessData:
         self.stimuli_data = StimuliData()
         self.arduino_data = ArduinoData()
 
-        self.ITI_intervals_final: list[int] = []
-        self.TTC_intervals_final: list[int] = []
-        self.sample_intervals_final: list[int] = []
+        self.ITI_intervals_final = None
+        self.TTC_intervals_final = None
+        self.sample_intervals_final = None
 
         self.TTC_lick_threshold = 3
 
@@ -61,7 +60,7 @@ class ExperimentProcessData:
             "Num Stimuli": 4,
             "Num Trials": 0,
         }
-        self.program_schedule_df = None
+        self.program_schedule_df = pd.DataFrame()
 
     def update_model(self, variable_name, value) -> None:
         """
@@ -124,27 +123,43 @@ class ExperimentProcessData:
 
     def create_random_intervals(self) -> None:
         try:
-            self.ITI_intervals_final.clear()
-            self.TTC_intervals_final.clear()
-            self.sample_intervals_final.clear()
-
             num_trials = self.exp_var_entries["Num Trials"]
-            for entry in range(num_trials):
-                for interval_type in ["ITI", "TTC", "sample"]:
-                    random_entry_key = f"{interval_type}_random_entry"
-                    var_key = f"{interval_type}_var"
-                    final_intervals_key = f"{interval_type}_intervals_final"
 
-                    random_interval = np.random.randint(
-                        -self.interval_vars[random_entry_key],
-                        self.interval_vars[random_entry_key] + 1,
+            final_intervals = [None, None, None]
+
+            interval_keys = ["ITI_var", "TTC_var", "sample_var"]
+
+            random_interval_keys = [
+                "ITI_random_entry",
+                "TTC_random_entry",
+                "sample_random_entry",
+            ]
+
+            # for each type of interval (iti, ttc, sample), generate final interval times
+            for i in range(len(interval_keys)):
+                base_val = self.interval_vars[interval_keys[i]]
+                # this makes an array that is n=num_trials length of base_val
+                base_intervals = np.repeat(base_val, num_trials)
+
+                # get plus minus value for this interval type
+                random_var = self.interval_vars[random_interval_keys[i]]
+
+                if random_var == 0:
+                    # if there is no value to add/subtract randomly, continue on
+                    final_intervals[i] = base_intervals
+
+                else:
+                    # otherwise make num_trials amount of random integers and add them to the final_intervals
+                    random_interval_arr = np.random.randint(
+                        -random_var, random_var, num_trials
                     )
 
-                    final_interval = self.interval_vars[var_key] + random_interval
+                    final_intervals[i] = np.add(base_intervals, random_interval_arr)
 
-                    if not hasattr(self, final_intervals_key):
-                        setattr(self, final_intervals_key, [])
-                    getattr(self, final_intervals_key).append(final_interval)
+            # assign results for respective types to the model for storage and later use
+            self.ITI_intervals_final = final_intervals[0]
+            self.TTC_intervals_final = final_intervals[1]
+            self.sample_intervals_final = final_intervals[2]
 
             logger.info("Random intervals created.")
         except Exception as e:
@@ -250,6 +265,15 @@ class ExperimentProcessData:
             logger.debug(f"Error Building Stimuli Frame: {e}.")
             raise
 
+    def save_all_data(self):
+        dataframes = {
+            "Experiment Schedule": self.program_schedule_df,
+            "Individual Lick Data": self.lick_data.licks_dataframe,
+        }
+
+        for name, df_reference in dataframes.items():
+            self.save_df_to_xlsx(name, df_reference)
+
     @staticmethod
     def get_paired_index(i, num_stimuli):
         match num_stimuli:
@@ -272,31 +296,20 @@ class ExperimentProcessData:
                     case 1:
                         return i + 3
                     case 2:
-                        return i + 3
+                        return i + 5
                     case 3:
                         return i + 3
             case _:
                 return None
-        # if total_entries == 2:
-        #    return 1 - i
-        # elif total_entries == 4:
-        #    return total_entries - i - 1
-        # elif total_entries == 8:
-        #    if i % 2 == 0:
-        #        return (i + 5) % total_entries
-        #    else:
-        #        return (i + 3) % total_entries
-        # else:
-        #    raise ValueError("Unexpected number of entries")
 
     @staticmethod
-    def save_df_to_xlsx(dataframe) -> None:
+    def save_df_to_xlsx(name, dataframe) -> None:
         """Method to bring up the windows file save dialog menu to save the two data tables to external files"""
         try:
             file_name = filedialog.asksaveasfilename(
                 defaultextension=".xlsx",
                 filetypes=[("Excel Files", "*.xlsx")],
-                initialfile="experiment schedule",
+                initialfile=f"{name}, {datetime.date.today()}",
                 title="Save Excel file",
             )
 

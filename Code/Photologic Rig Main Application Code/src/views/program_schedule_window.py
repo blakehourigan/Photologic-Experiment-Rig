@@ -45,6 +45,11 @@ class ProgramScheduleWindow(tk.Toplevel):
         self.stimuli_frame = tk.Frame(self.canvas)
         self.canvas.create_window((0, 0), window=self.stimuli_frame, anchor="nw")
 
+        # initialize stimuli table variables to None, this is used in show() method to
+        # understand if window has been initialized yet
+        self.header_labels = None
+        self.cell_labels = None
+
         self.withdraw()
 
     def update_window(self, current_trial):
@@ -92,12 +97,18 @@ class ProgramScheduleWindow(tk.Toplevel):
             for i in range(10):
                 self.cell_labels[row_index][i].configure(bg="yellow")
 
-    def init_program_schedule(self):
+    def show(self):
         # if this is our first time calling the function, then grab the data and fill the table
 
         # if we have already initialized we don't need to do anything. updating the window is handled
         # by the main app when a trial ends
-        if not self.data_initialized:
+        if self.header_labels is None:
+            if self.exp_data.program_schedule_df.empty:
+                GUIUtils.display_error(
+                    "Schedule Not Generated",
+                    "The schedule has not yet been generated, try doing that in the Valve / Stimuli window first and come back!",
+                )
+                return
             self.populate_stimuli_table()
             # Calculate dimensions for canvas and scrollbar
             canvas_width = self.stimuli_frame.winfo_reqwidth()
@@ -111,6 +122,7 @@ class ProgramScheduleWindow(tk.Toplevel):
             self.data_initialized = True
 
             # self.update_row_color(self.controller.data_mgr.current_trial_number)
+        self.deiconify()
 
     def populate_stimuli_table(self):
         df = self.exp_data.program_schedule_df
@@ -173,5 +185,4 @@ class ProgramScheduleWindow(tk.Toplevel):
         # Make sure the last separator is not placed outside the data rows
         if len(df) % 2 == 0:
             self.stimuli_frame.grid_rowconfigure(current_row - 1, minsize=0)
-
         self.stimuli_frame.update_idletasks()

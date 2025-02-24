@@ -56,6 +56,7 @@ class MainGUI(tk.Tk):
         self.setup_tkinter_variables()
         self.build_gui_widgets()
 
+        # create all secondary windows early so that loading when program is running is fast
         self.preload_secondary_windows()
 
         logger.info("MainGUI initialized.")
@@ -81,7 +82,9 @@ class MainGUI(tk.Tk):
                 RasterizedDataWindow(1),
                 RasterizedDataWindow(2),
             ),
-            "Lick Data": LicksWindow(),
+            "Lick Data": LicksWindow(
+                self.gui_requirements["Lick Data"],
+            ),
             "Valve Testing": ValveTestWindow(),
             "Valve Control": ValveControlWindow(),
         }
@@ -91,13 +94,7 @@ class MainGUI(tk.Tk):
             for instance in self.windows[window]:
                 instance.deiconify()
         else:
-            match window:
-                case "Program Schedule":
-                    self.windows[window].init_program_schedule()
-                    self.windows[window].deiconify()
-                case _:
-                    # for all non-explicitly stated cases, just show the window
-                    self.windows[window].deiconify()
+            self.windows[window].show()
 
     def hide_secondary_window(self, window):
         self.windows[window].withdraw()
@@ -453,7 +450,7 @@ class MainGUI(tk.Tk):
             self.save_data_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
                 button_text="Save Data",
-                command=lambda: self.show_secondary_window("Save Data"),
+                command=lambda: self.save_button_handler(),
                 bg="grey",
                 row=1,
                 column=3,
@@ -462,6 +459,19 @@ class MainGUI(tk.Tk):
         except Exception as e:
             logger.error(f"Error displaying lower control buttons: {e}")
             raise
+
+    def save_button_handler(self):
+        if (
+            self.exp_data.program_schedule_df.empty
+            or self.exp_data.lick_data.licks_dataframe.empty
+        ):
+            response = GUIUtils.askyesno(
+                "Hmm...",
+                "The program schedule window appears to be empty... save anyway?",
+            )
+
+            if response:
+                self.exp_data.save_all_data()
 
     def update_clock_label(self) -> None:
         try:
