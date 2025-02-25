@@ -21,12 +21,12 @@ logger = logging.getLogger()
 # using tk.Tk here says that this class is going to be a tkinter app. when we call super().__init__() this actuall creates the tkinter main window
 # then we can use it as if it were root - e.g self.title("title") sets the root window title
 class MainGUI(tk.Tk):
-    def __init__(self, gui_requirements) -> None:
+    def __init__(self, exp_data, trigger_state_change) -> None:
         # init the Tk instance to create a GUI
         super().__init__()
 
-        self.exp_data = gui_requirements["Experiment Process Data"]
-        self.gui_requirements = gui_requirements
+        self.exp_data = exp_data
+        self.trigger_state_change = trigger_state_change
 
         # set basic window attributes such as title and size
         self.title("Samuelsen Lab Photologic Rig")
@@ -67,23 +67,26 @@ class MainGUI(tk.Tk):
         to be switched to when the user clicks the corresponding button
         """
         # define the data that ExperimentCtlWindow() needs to function
+        stimuli_data = self.exp_data.stimuli_data
+        lick_data = self.exp_data.lick_data
+
         self.windows = {
             "Experiment Control": ExperimentCtlWindow(
-                self.gui_requirements["Experiment Process Data"],
-                self.gui_requirements["Stimuli Data"],
-                self.gui_requirements["Lick Data"],
+                self.exp_data,
+                stimuli_data,
+                lick_data,
                 self.show_secondary_window,
             ),
             "Program Schedule": ProgramScheduleWindow(
-                self.gui_requirements["Experiment Process Data"],
-                self.gui_requirements["Stimuli Data"],
+                self.exp_data,
+                stimuli_data,
             ),
             "Raster Plot": (
                 RasterizedDataWindow(1),
                 RasterizedDataWindow(2),
             ),
             "Lick Data": LicksWindow(
-                self.gui_requirements["Lick Data"],
+                lick_data,
             ),
             "Valve Testing": ValveTestWindow(),
             "Valve Control": ValveControlWindow(),
@@ -183,7 +186,7 @@ class MainGUI(tk.Tk):
             self.start_button_frame, self.start_button = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Start",
-                self.gui_requirements["Start Button"],
+                lambda: self.trigger_state_change("START"),
                 "green",
                 0,
                 0,
@@ -192,7 +195,7 @@ class MainGUI(tk.Tk):
             self.reset_button_frame, _ = GUIUtils.create_button(
                 self.main_control_button_frame,
                 "Reset",
-                self.gui_requirements["Reset Button"],
+                lambda: self.trigger_state_change("RESET"),
                 "grey",
                 0,
                 1,
@@ -614,8 +617,8 @@ class MainGUI(tk.Tk):
     def on_close(self):
         try:
             # get rid of all .after calls
-            self.destroy()
             self.quit()
+            self.destroy()
             logger.info("Application closed.")
         except Exception as e:
             logger.error(f"Error closing application: {e}")

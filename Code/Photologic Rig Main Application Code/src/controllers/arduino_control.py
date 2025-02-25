@@ -1,25 +1,25 @@
 import serial
+import serial.tools.list_ports
 import re
 import json
 import time
 import threading
-from typing import TYPE_CHECKING, Any
+from typing import Any
 import queue
-import serial.tools.list_ports
 import logging
 
-if TYPE_CHECKING:
-    from program_control import ProgramController
+from views.gui_common import GUIUtils
+
 
 logger = logging.getLogger(__name__)
 
 
 class ArduinoManager:
-    def __init__(self, controller: "ProgramController") -> None:
-        self.controller = controller
+    def __init__(self, arduino_data) -> None:
         self.BAUD_RATE = 115200
         self.laser_arduino = None
         self.motor_arduino = None
+
         self.data_queue: queue.Queue[Any] = queue.Queue()
         self.stop_event = threading.Event()
 
@@ -89,33 +89,38 @@ class ArduinoManager:
         """Identify the Arduino on the given port."""
         try:
             arduino = serial.Serial(port, self.BAUD_RATE, timeout=1)
+            # send command <W> for '<W>ho are you?'
             command = "<W>"
             time.sleep(2)
+
             arduino.write(command.encode("utf-8"))
-            arduino.flush()  # Ensure buffer is flushed after sending command
+            # ensure all data is sent by flushing it out
+            arduino.flush()
+            # identifier returned from arduino, either LASER or MOTOR"
+
             identifier = arduino.readline().decode("utf-8").strip()
             arduino.close()
+
             logger.info(f"Arduino on port {port} identified as {identifier}")
             return identifier
         except Exception as e:
             error_message = f"An error occurred while identifying Arduino: {e}"
-            self.controller.display_gui_error(
-                "Error Identifying Arduino", error_message
-            )
+            GUIUtils.display_error("Error Identifying Arduino", error_message)
             logger.error(error_message)
             return "ERROR"
 
     def reset_arduinos(self) -> None:
         """Send a reset command to both Arduino boards."""
+        arduinos = [self.laser_arduino, self.motor_arduino]
         try:
-            if self.laser_arduino and self.motor_arduino:
-                self.laser_arduino.write(b"R")
-                self.laser_arduino.flush()  # Flush after sending command
-                self.motor_arduino.write(b"R")
-                self.motor_arduino.flush()  # Flush after sending command
-                logger.info("Arduino boards reset.")
-            else:
-                logger.error("Arduino boards not connected.")
+            for board in arduinos:
+                if board:
+                    board.write(b"R")
+                    # Flush after sending command to ensure
+                    board.flush()
+                    logger.info(f"{board} Arduino reset.")
+                else:
+                    logger.error(f"Error resetting {board} arduino.")
         except Exception as e:
             error_message = f"Error resetting Arduino boards: {e}"
             self.controller.display_gui_error(
@@ -176,6 +181,7 @@ class ArduinoManager:
             ]
             side_one_vars = []
             side_two_vars = []
+
             side_one_indexes: List[int] = []
             side_two_indexes: List[int] = []
 
@@ -203,11 +209,7 @@ class ArduinoManager:
             logger.info("Updated json Schedule")
         except Exception as e:
             logger.error(f"Error sending schedule to motor Arduino: {e}")
-            error_message = traceback.format_exc()
-            print(f"Error sending schedule to motor Arduino: {error_message}")
-            self.controller.display_gui_error(
-                "Error sending schedule to motor Arduino:", str(e)
-            )
+            GUIUtils.display_error("Error sending schedule to motor Arduino:", str(e))
             raise
 
     def send_arduino_json_data(self, send_schedule=False):

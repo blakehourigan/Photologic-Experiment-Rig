@@ -1,7 +1,11 @@
-class ArduinoData:
-    def __init__(self):
-        pass
+import logging
+import json
 
+# Get the logger in use for the app
+logger = logging.getLogger()
+
+
+class ArduinoData:
     def initialize_arduino_json(self) -> None:
         # Define initial configuration data
         default_data = {
