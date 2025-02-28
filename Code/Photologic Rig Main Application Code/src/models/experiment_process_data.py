@@ -42,7 +42,7 @@ class ExperimentProcessData:
 
         self.lick_data = LicksData()
         self.stimuli_data = StimuliData()
-        self.arduino_data = ArduinoData()
+        self.arduino_data = ArduinoData(self)
 
         self.ITI_intervals_final = None
         self.TTC_intervals_final = None

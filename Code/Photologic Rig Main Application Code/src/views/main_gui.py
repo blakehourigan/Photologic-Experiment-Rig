@@ -471,10 +471,10 @@ class MainGUI(tk.Tk):
             raise
 
     def save_button_handler(self):
-        if (
-            self.exp_data.program_schedule_df.empty
-            or self.exp_data.lick_data.licks_dataframe.empty
-        ):
+        sched_df = self.exp_data.program_schedule_df
+        lick_df = self.exp_data.lick_data.licks_dataframe
+
+        if sched_df.empty or lick_df.empty:
             response = GUIUtils.askyesno(
                 "Hmm...",
                 "The program schedule window appears to be empty... save anyway?",
@@ -482,6 +482,8 @@ class MainGUI(tk.Tk):
 
             if response:
                 self.exp_data.save_all_data()
+        else:
+            self.exp_data.save_all_data()
 
     def update_clock_label(self) -> None:
         try:
@@ -577,7 +579,7 @@ class MainGUI(tk.Tk):
             self.full_state_time_text.configure(
                 text="/ {:.1f}s".format(full_state_time / 1000.0)
             )
-            logger.debug(f"Full state time updated to {full_state_time}.")
+            logger.info(f"Full state time updated to {full_state_time}.")
         except Exception as e:
             logger.error(f"Error updating full state time: {e}")
             raise
@@ -586,9 +588,7 @@ class MainGUI(tk.Tk):
         try:
             self.state_timer_text.configure(text="0.0s")
 
-            self.start_button.configure(text="Start", bg="green")
             self.update_on_state_change(0, "Idle")
-            logger.debug("Updated GUI on stop.")
         except Exception as e:
             logger.error(f"Error updating GUI on stop: {e}")
             raise
