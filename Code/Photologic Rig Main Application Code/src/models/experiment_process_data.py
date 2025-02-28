@@ -34,8 +34,11 @@ class ExperimentProcessData:
         self.start_time = 0.0
         self.state_start_time = 0.0
 
+        # this number is centralized here so that all state classes can access and update it easily without
+        # passing it through to each state every time a state change occurs
         self.current_trial_number = 1
-        self.current_iteration = 0
+
+        self.experiment_executed = False
 
         self.lick_data = LicksData()
         self.stimuli_data = StimuliData()
@@ -48,15 +51,15 @@ class ExperimentProcessData:
         self.TTC_lick_threshold = 3
 
         self.interval_vars = {
-            "ITI_var": 30000,
-            "TTC_var": 15000,
-            "sample_var": 15000,
-            "ITI_random_entry": 5000,
+            "ITI_var": 2000,
+            "TTC_var": 2000,
+            "sample_var": 2000,
+            "ITI_random_entry": 0,
             "TTC_random_entry": 0,
             "sample_random_entry": 0,
         }
         self.exp_var_entries = {
-            "Num Trial Blocks": 10,
+            "Num Trial Blocks": 1,
             "Num Stimuli": 4,
             "Num Trials": 0,
         }
@@ -326,11 +329,10 @@ class ExperimentProcessData:
     @staticmethod
     def convert_seconds_to_minutes_seconds(total_seconds):
         try:
-            minutes = total_seconds // 60  # Integer division to get whole minutes
-            seconds = total_seconds % 60  # Modulo to get remaining seconds
-            logger.debug(
-                f"Converted {total_seconds} to {minutes} minutes and {seconds} seconds."
-            )
+            # Integer division to get whole minutes
+            minutes = total_seconds // 60
+            # Modulo to get remaining seconds
+            seconds = total_seconds % 60
             return minutes, seconds
         except Exception as e:
             logger.error(f"Error converting seconds to minutes and seconds: {e}")

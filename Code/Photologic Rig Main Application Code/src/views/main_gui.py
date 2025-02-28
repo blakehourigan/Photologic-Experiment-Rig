@@ -24,22 +24,29 @@ class MainGUI(tk.Tk):
     def __init__(self, exp_data, trigger_state_change) -> None:
         # init the Tk instance to create a GUI
         super().__init__()
+        # self.scheduled_tasks is a dict where keys are short task descriptions (e.g ttc_to_iti) and the values are
+        # the ids for that tkinter .after call, so we know exactly how to cancel a scheduled task
+        self.scheduled_tasks = {}
 
         self.exp_data = exp_data
         self.trigger_state_change = trigger_state_change
 
         # set basic window attributes such as title and size
         self.title("Samuelsen Lab Photologic Rig")
-        # Set minimum window size to 800x600 pixels
-        screen_width = self.winfo_screenwidth()  # Get screen width
-        screen_height = self.winfo_screenheight()  # Get screen height
 
         # set main window size to 80% of width & height of display
-        desired_width = int(screen_width * 0.8)
-        desired_height = int(screen_height * 0.8)
-        self.geometry("{}x{}+{}+{}".format(desired_width, desired_height, 0, 0))
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
 
-        self.bind("<Control-w>", lambda event: self.destroy())
+        desired_wind_width = int(screen_width * 0.8)
+        desired_wind_height = int(screen_height * 0.8)
+        self.geometry(
+            "{}x{}+{}+{}".format(desired_wind_width, desired_wind_height, 0, 0)
+        )
+
+        # bind <Control-w> keyboard shortcut to close the window for convenience
+        self.bind("<Control-w>", lambda event: self.on_close())
+
         # defines the function to run when the window is closed by the window manager
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
@@ -82,8 +89,8 @@ class MainGUI(tk.Tk):
                 stimuli_data,
             ),
             "Raster Plot": (
-                RasterizedDataWindow(1),
-                RasterizedDataWindow(2),
+                RasterizedDataWindow(1, self.exp_data),
+                RasterizedDataWindow(2, self.exp_data),
             ),
             "Lick Data": LicksWindow(
                 lick_data,
@@ -478,10 +485,10 @@ class MainGUI(tk.Tk):
 
     def update_clock_label(self) -> None:
         try:
-            elapsed_time = time.time() - self.controller.data_mgr.start_time
-            state_elapsed_time = time.time() - self.controller.data_mgr.state_start_time
+            elapsed_time = time.time() - self.exp_data.start_time
+            state_elapsed_time = time.time() - self.exp_data.state_start_time
 
-            min, sec = self.convert_seconds_to_minutes_seconds(elapsed_time)
+            min, sec = self.exp_data.convert_seconds_to_minutes_seconds(elapsed_time)
 
             self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
             self.main_timer_min_sec_text.configure(
@@ -490,9 +497,8 @@ class MainGUI(tk.Tk):
 
             self.state_timer_text.configure(text="{:.1f}s".format(state_elapsed_time))
 
-            clock_id = self.after(100, self.update_clock_label)
-            self.controller.after_ids.append(clock_id)
-            logger.debug("Clock label updated.")
+            clock_update_task = self.after(100, self.update_clock_label)
+            self.scheduled_tasks["CLOCK UPDATE"] = clock_update_task
         except Exception as e:
             logger.error(f"Error updating clock label: {e}")
             raise
@@ -502,19 +508,17 @@ class MainGUI(tk.Tk):
             self.maximum_total_time.configure(
                 text="{:.0f} Minutes, {:.1f} S".format(minutes, seconds)
             )
-            logger.debug(
-                f"Max time updated to {minutes} minutes and {seconds} seconds."
-            )
         except Exception as e:
             logger.error(f"Error updating max time: {e}")
             raise
 
     def update_on_new_trial(self, side_1_stimulus, side_2_stimulus) -> None:
         try:
-            trial_number = self.controller.data_mgr.current_trial_number
+            trial_number = self.exp_data.current_trial_number
+            total_trials = self.exp_data.exp_var_entries["Num Trials"]
 
             self.trials_completed_label.configure(
-                text=f"{trial_number} / {self.controller.get_num_trials()} Trials Completed"
+                text=f"{trial_number} / {total_trials} Trials Completed"
             )
             self.stimuli_label.configure(
                 text=f"Side One: {side_1_stimulus} | VS | Side Two: {side_2_stimulus}"
@@ -522,27 +526,21 @@ class MainGUI(tk.Tk):
 
             self.trial_number_label.configure(text=f"Trial Number: {trial_number}")
 
-            self.update_progress_bar()
+            self.update_progress_bar(trial_number, total_trials)
 
-            self.controller.program_schedule_window.update_row_color(trial_number)
-            self.controller.program_schedule_window.update_licks_and_TTC_actual(
-                trial_number
-            )
-            logger.debug(f"Updated GUI for new trial {trial_number}.")
+            self.windows["Program Schedule"].update_window(trial_number)
+            logger.info(f"Updated GUI for new trial {trial_number}.")
         except Exception as e:
             logger.error(f"Error updating GUI for new trial: {e}")
             raise
 
-    def update_progress_bar(self, reset=False):
+    def update_progress_bar(self, trial_number, total_trials, reset=False):
         try:
             if reset:
                 self.progress["value"] = 0
             else:
-                self.progress["value"] = (
-                    self.controller.data_mgr.current_trial_number
-                    / self.controller.get_num_trials()
-                ) * 100  # Set the new value for the progress
-            # self.progress.update_idletasks()  # Update the progress bar display
+                # Set the new value for the progress
+                self.progress["value"] = (trial_number / total_trials) * 100
             logger.debug("Progress bar updated.")
         except Exception as e:
             logger.error(f"Error updating progress bar: {e}")
@@ -587,6 +585,7 @@ class MainGUI(tk.Tk):
     def update_on_stop(self) -> None:
         try:
             self.state_timer_text.configure(text="0.0s")
+
             self.start_button.configure(text="Start", bg="green")
             self.update_on_state_change(0, "Idle")
             logger.debug("Updated GUI on stop.")

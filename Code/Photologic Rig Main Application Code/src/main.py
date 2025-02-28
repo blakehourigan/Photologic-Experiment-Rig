@@ -1,11 +1,13 @@
-from app import StateMachine
+from app_logic import StateMachine
 
 
 def main():
     while 1:
+        # we pass in a list with one element, because lists in python are mutable items. so we can pass this
+        # into the StateMachine, modify the object and view the result when we are done with this instance
+
         result_container = [0]
         StateMachine(result_container)
-
         """ 
         match the result that comes back from the 
         StateMachine instance. if the value was flipped to a 1

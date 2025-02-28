@@ -12,6 +12,7 @@ class LicksData:
 
         self.side_one_licks = 0
         self.side_two_licks = 0
+
         self.total_licks = 0
 
         """
@@ -24,7 +25,7 @@ class LicksData:
         )
         logger.info("Licks dataframe initialized.")
 
-    def get_lick_timestamps(self, trial_number):
+    def get_lick_timestamps(self, trial_number) -> (list, list):
         """
         Returns a list of timestamps for the given trial number and licked port.
         """
@@ -45,36 +46,6 @@ class LicksData:
             return timestamps_side_one, timestamps_side_two
         except Exception as e:
             logger.error(f"Error getting lick timestamps for trial {trial_number}: {e}")
-            raise
-
-    def save_licks(self, iteration):
-        """define method that saves the licks to the data table and increments our iteration variable."""
-        try:
-            # this shouldn't be here
-            command = "E"
-            self.controller.send_command_to_arduino("laser", command)
-
-            # this shouldn't be here
-            if self.controller.state == "TTC":
-                self.stimuli_dataframe.loc[
-                    self.current_trial_number - 1, "TTC Actual"
-                ] = self.stimuli_dataframe.loc[self.current_trial_number - 1, "TTC"]
-
-            self.current_trial_number += 1
-
-            # this shouldn't be here
-            command = "<U>"
-            self.controller.send_command_to_arduino("motor", command)
-
-            self.stimuli_dataframe.loc[iteration, "Port 1 Licks"] = self.side_one_licks
-            self.stimuli_dataframe.loc[iteration, "Port 2 Licks"] = self.side_two_licks
-
-            # this shouldn't be here
-            self.controller.initial_time_interval(iteration + 1)
-
-            logger.info(f"Licks saved for iteration {iteration}.")
-        except Exception as e:
-            logger.error(f"Error saving licks for iteration {iteration}: {e}")
             raise
 
     def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):

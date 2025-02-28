@@ -173,4 +173,7 @@ class GUIUtils:
 
     @staticmethod
     def askyesno(window_title, message) -> bool:
-        tk.messagebox.askyesno(title=window_title, message=message)
+        """
+        asks the user a question in a popup window. returns true if yes, false if no
+        """
+        return tk.messagebox.askyesno(title=window_title, message=message)
