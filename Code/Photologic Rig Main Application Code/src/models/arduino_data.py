@@ -1,6 +1,9 @@
 import logging
 import json
 import time
+import toml
+import numpy as np
+from pathlib import Path
 
 from views.gui_common import GUIUtils
 
@@ -11,75 +14,80 @@ logger = logging.getLogger()
 class ArduinoData:
     def __init__(self, exp_data):
         self.exp_data = exp_data
+        self.valve_indexes_side_one = []
+        self.valve_indexes_side_two = []
 
-    def initialize_arduino_json(self) -> None:
-        # Define initial configuration data
-        default_data = {
-            "side_one_schedule": [],
-            "side_two_schedule": [],
-            "current_trial": 1,
-            "valve_durations_side_one": [
-                25000,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-            ],
-            "valve_durations_side_two": [
-                25000,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-            ],
-        }
+    def save_durations(self):
+        pass
 
-        last_used_data = {
-            "side_one_schedule": [],
-            "side_two_schedule": [],
-            "current_trial": 1,
-            "valve_durations_side_one": [
-                25000,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-            ],
-            "valve_durations_side_two": [
-                25000,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-                24125,
-            ],
-        }
+    def load_durations(self, reset_durations=False):
+        """
+        This method loads data in from the valve_durations.toml file located in assets. By default,
+        it will load the last used durations becuase this is what is most often utilized. Optionally,
+        the user can reset all these values to default values of 24125ms if the reset_durations
+        parameter flag is set to true.
+        """
+        toml_dir = Path(__file__).parent.parent.parent.resolve()
+        toml_path = toml_dir / "assets" / "valve_durations.toml"
 
-        # Create a dictionary with named configurations
-        arduino_data_initial = {"default": default_data, "last_used": last_used_data}
+        with open(toml_path, "r") as f:
+            toml_file = toml.load(f)
 
-        self.write_to_json_file(arduino_data=arduino_data_initial)
+        default_durations = toml_file["default_durations"]
+        print(default_durations)
+
+        # create 2 np arrays 8 n long with np.int32s
+        dur_side_one = np.full(8, np.int32(0))
+        dur_side_two = np.full(8, np.int32(0))
+
+        for key, value in default_durations.items():
+            if key == "side_one_durations":
+                for i, duration in enumerate(value):
+                    dur_side_one[i] = duration
+            elif key == "side_two_durations":
+                for i, duration in enumerate(value):
+                    dur_side_two[i] = duration
+
+        return dur_side_one, dur_side_two
+
+    def load_schedule_indices(self):
+        stimuli_data = self.exp_data.stimuli_data
+        schedule_df = self.exp_data.program_schedule_df
+
+        num_stimuli = self.exp_data.exp_var_entries["Num Stimuli"]
+        num_trials = self.exp_data.exp_var_entries["Num Trials"]
+
+        sched_side_one = np.full(num_trials, np.int8(0))
+        sched_side_two = np.full(num_trials, np.int8(0))
+
+        # get unique stim names. this will give us all names on side one.
+        # finding the index of a given stimuli appearing in a trial on side
+        # one will easily allow us to find the paired index. We've already done
+        # this before in exp_process_data
+        names = list(stimuli_data.stimuli_vars.values())
+        unique_names = names[: num_stimuli // 2]
+
+        side_one_trial_stimuli = schedule_df["Port 1"].to_numpy()
+
+        for i, trial_stim in enumerate(side_one_trial_stimuli):
+            index = unique_names.index(trial_stim)
+            sd_two_index = self.exp_data.get_paired_index(index, num_stimuli)
+            sched_side_one[i] = index
+            sched_side_two[i] = sd_two_index
+
+        return sched_side_one, sched_side_two
 
     def write_to_json_file(self, arduino_data, filename="arduino_data.json"):
         with open(filename, "w") as file:
             json.dump(arduino_data, file, indent=4)
 
-    def read_json_file(self, filename="arduino_data.json"):
+    def read_json_file(self, filename="../arduino_data.json"):
         with open(filename, "r") as file:
             return json.load(file)
 
-    def load_configuration(self, filename="arduino_data.json", config_name="default"):
+    def load_configuration(
+        self, filename="../arduino_data.json", config_name="default"
+    ):
         # Function to load a specific configuration
         data = self.read_json_file(filename)
         if config_name in data:
@@ -98,33 +106,32 @@ class ArduinoData:
         data[config_name] = config_data
         self.write_to_json_file(data, filename)
 
-    def verify_arduino_schedule(self, side_one_indexes, side_two_indexes, verification):
-        middle_index = len(verification) // 2
-        side_one_verification_str = verification[:middle_index]
-        side_two_verification_str = verification[middle_index:]
+    def verify_schedule(self, motor_arduino, side_one_schec, side_two_sched):
+        num_trials = self.exp_data.exp_var_entries["Num Trials"]
+        ver1 = np.zeros((num_trials,), dtype=np.int8)
+        ver2 = np.zeros((num_trials,), dtype=np.int8)
 
-        side_one_verification = [
-            int(x) for x in side_one_verification_str.split(",") if x.strip().isdigit()
-        ]
-        side_two_verification = [
-            int(x) for x in side_two_verification_str.split(",") if x.strip().isdigit()
-        ]
+        # wait for the data to arrive
+        while motor_arduino.in_waiting < 1:
+            continue
+        for i in range(50):
+            ver1[i] = motor_arduino.read()
+        for i in range(50):
+            ver2[i] = motor_arduino.read()
 
-        are_equal_side_one = all(
-            side_one_indexes[i] == side_one_verification[i]
-            for i in range(len(side_one_indexes))
-        )
-        are_equal_side_two = all(
-            side_two_indexes[i] == side_two_verification[i]
-            for i in range(len(side_two_indexes))
-        )
+        print(ver1)
+        print(ver2)
 
-        if are_equal_side_one and are_equal_side_two:
-            logger.info("Both lists are identical, Schedule Send Complete.")
+        sd_one_eq = np.array_equal(side_one_schec, ver1)
+        sd_two_eq = np.array_equal(side_two_sched, ver2)
+
+        if sd_one_eq and sd_two_eq:
+            logger.info("Motor arduino valve trial schedules verified")
         else:
-            logger.error("Lists are not identical.")
-
-            GUIUtils.display_error("Verification Error", "Lists are not identical.")
+            GUIUtils.display_error(
+                "Verification Error",
+                "Schedule generated locally is not identical to that recieved from the motor arduino. If this error persists over many attempts, contact support.",
+            )
 
     def handle_licks(self, data, lick_data, state):
         if data == "<Stimulus One>":
@@ -138,9 +145,8 @@ class ArduinoData:
         modified_data = data[1:-1]
         self.record_lick_data(modified_data, state)
 
-    def process_laser(self, data, state):
+    def process_laser(self, data, state, trigger):
         lick_data = self.exp_data.lick_data
-
         match state:
             case "TTC":
                 self.handle_licks(data, lick_data, state)
@@ -150,10 +156,10 @@ class ArduinoData:
                 side_two = self.exp_data.lick_data.side_two_licks
                 # if 3 or more licks in a ttc time, jump straight to sample
                 if side_one > 2 or side_two > 2:
-                    self.trigger("SAMPLE")
+                    trigger("SAMPLE")
 
             case "SAMPLE":
-                self.handle_licks(data)
+                self.handle_licks(data, lick_data, state)
 
     def process_motor(self, data):
         if data == "<Finished Pair>":
@@ -177,19 +183,19 @@ class ArduinoData:
 
             motor_timestamps = self.parse_timestamps(cleaned_data)
 
-            self.exp_data.insert_trial_start_stop_into_licks_dataframe(motor_timestamps)
+            self.exp_data.lick_data.insert_trial_start_stop(motor_timestamps)
 
-    def process_data(self, source, data, state):
+    def process_data(self, source, data, state, trigger):
         """
         Process data received from the Arduino.
         """
         try:
             match source:
                 case "laser":
-                    self.process_laser(data, state)
+                    self.process_laser(data, state, trigger)
 
                 case "motor":
-                    self.process_motor()
+                    self.process_motor(data)
         except Exception as e:
             logging.error(f"Error processing data from {source}: {e}")
             raise
@@ -223,6 +229,9 @@ class ArduinoData:
         except Exception as e:
             logging.error(f"Error recording lick data: {e}")
             raise
+
+    def get_current_json_config(self) -> dict:
+        return self.load_configuration(config_name="last_used")
 
     @staticmethod
     def parse_timestamps(timestamp_string):

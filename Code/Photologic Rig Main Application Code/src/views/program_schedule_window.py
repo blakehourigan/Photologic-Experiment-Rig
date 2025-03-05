@@ -52,37 +52,36 @@ class ProgramScheduleWindow(tk.Toplevel):
 
         self.withdraw()
 
-    def update_window(self, current_trial):
-        self.update_licks(current_trial)
-        self.update_ttc_actual(current_trial)
+    def refresh_end_trial(self, logical_trial):
+        self.update_licks(logical_trial)
+        self.update_ttc_actual(logical_trial)
+
+        self.update_idletasks()
+
+    def refresh_start_trial(self, current_trial):
         self.update_row_color(current_trial)
 
         self.update_idletasks()
 
-    def update_ttc_actual(self, current_trial):
-        row_index = current_trial - 1
+    def update_ttc_actual(self, logical_trial):
         df = self.exp_data.program_schedule_df
 
-        if row_index - 1 >= 0:
-            # ttc actual update
-            self.cell_labels[row_index - 1][9].configure(
-                text=df.loc[row_index - 1, "TTC Actual"]
-            )
+        # ttc actual time taken update
+        self.cell_labels[logical_trial][9].configure(
+            text=df.loc[logical_trial, "TTC Actual"]
+        )
 
-    def update_licks(self, current_trial):
+    def update_licks(self, logical_trial):
         # Adjust indices for zero-based indexing
-        row_index = current_trial - 1
         df = self.exp_data.program_schedule_df
-
-        if row_index - 1 >= 0:
-            # side 1 licks update
-            self.cell_labels[row_index - 1][4].configure(
-                text=df.loc[row_index - 1, "Port 1 Licks"]
-            )
-            # side 2 licks update
-            self.cell_labels[row_index - 1][5].configure(
-                text=df.loc[row_index - 1, "Port 2 Licks"]
-            )
+        # side 1 licks update
+        self.cell_labels[logical_trial][4].configure(
+            text=df.loc[logical_trial, "Port 1 Licks"]
+        )
+        # side 2 licks update
+        self.cell_labels[logical_trial][5].configure(
+            text=df.loc[logical_trial, "Port 2 Licks"]
+        )
 
     def update_row_color(self, current_trial):
         """Function to update row color"""

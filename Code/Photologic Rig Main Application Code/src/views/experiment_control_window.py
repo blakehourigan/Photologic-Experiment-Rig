@@ -13,12 +13,23 @@ class ExperimentCtlWindow(tk.Toplevel):
     # this class requires stimuli related data and a callback to generate the
     # schedule when the 'generate schedule button is pressed"
     # also going to need num stimuli data from exp_var_entries in exp process data
-    def __init__(self, exp_data, stimuli_data, lick_data, show_window_callback):
+    def __init__(
+        self,
+        exp_data,
+        stimuli_data,
+        lick_data,
+        trigger,
+    ):
         super().__init__()
         self.exp_process_data = exp_data
         self.stimuli_data = stimuli_data
         self.licks_data = lick_data
-        self.show_window_callback = show_window_callback
+
+        ### ==========THIS IS UNNECESSARY==========###
+        # just trigger state trans to 'generate sched' state and call associated functions from there in other classes
+
+        # a callback function to immediately show the program window upon genration of schec
+        self.trigger = trigger
 
         # init window attributes
         self.title("Stimuli / Valves")
@@ -64,27 +75,19 @@ class ExperimentCtlWindow(tk.Toplevel):
 
         logger.info("Experiment Control Window created, but hidden for now.")
 
-    def button_init_method(self):
-        # if we can generate the schedule successfully, continue. else, tell the user we can't continue
-        # yet
-        if not self.exp_process_data.generate_schedule():
-            GUIUtils.display_error(
-                "No Stimuli Input",
-                "You need to change the names of the stimuli before continuing to generate the schedule!",
-            )
-            return
-
-        self.withdraw()
-        # show the program sched window via the callback passed into the class at initialization
-        self.show_window_callback("Program Schedule")
-        # self.send_arduino_json_data(send_schedule=True)
-
     def show(self):
         prev_num_stim = len(self.ui_components["entries"])
         curr_num_stimuli = self.exp_process_data.exp_var_entries["Num Stimuli"]
         if prev_num_stim != curr_num_stimuli:
             self.init_content()
         self.deiconify()
+
+    def generate_button_method(self):
+        # generate the program schedule df and fill it with stimuli that will be used
+        self.exp_process_data.generate_schedule()
+
+        self.withdraw()
+        self.trigger("GENERATE SCHEDULE")
 
     def init_content(self) -> None:
         try:
@@ -97,7 +100,7 @@ class ExperimentCtlWindow(tk.Toplevel):
             GUIUtils.create_button(
                 self,
                 "Generate Schedule",
-                lambda: self.button_init_method(),
+                lambda: self.generate_button_method(),
                 "green",
                 0,
                 0,

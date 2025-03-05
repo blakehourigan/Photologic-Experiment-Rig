@@ -29,6 +29,7 @@ class MainGUI(tk.Tk):
         self.scheduled_tasks = {}
 
         self.exp_data = exp_data
+
         self.trigger_state_change = trigger_state_change
 
         # set basic window attributes such as title and size
@@ -79,10 +80,7 @@ class MainGUI(tk.Tk):
 
         self.windows = {
             "Experiment Control": ExperimentCtlWindow(
-                self.exp_data,
-                stimuli_data,
-                lick_data,
-                self.show_secondary_window,
+                self.exp_data, stimuli_data, lick_data, self.trigger_state_change
             ),
             "Program Schedule": ProgramScheduleWindow(
                 self.exp_data,
@@ -505,8 +503,10 @@ class MainGUI(tk.Tk):
             logger.error(f"Error updating clock label: {e}")
             raise
 
-    def update_max_time(self, minutes, seconds) -> None:
+    def update_max_time(self) -> None:
         try:
+            minutes, seconds = self.exp_data.calculate_max_runtime()
+
             self.maximum_total_time.configure(
                 text="{:.0f} Minutes, {:.1f} S".format(minutes, seconds)
             )
@@ -515,6 +515,11 @@ class MainGUI(tk.Tk):
             raise
 
     def update_on_new_trial(self, side_1_stimulus, side_2_stimulus) -> None:
+        """
+        updates the program schedule window highlighting and updates
+        the main_gui window with current trial number and updates progress bar
+
+        """
         try:
             trial_number = self.exp_data.current_trial_number
             total_trials = self.exp_data.exp_var_entries["Num Trials"]
@@ -528,9 +533,10 @@ class MainGUI(tk.Tk):
 
             self.trial_number_label.configure(text=f"Trial Number: {trial_number}")
 
+            self.windows["Program Schedule"].refresh_start_trial(trial_number)
+
             self.update_progress_bar(trial_number, total_trials)
 
-            self.windows["Program Schedule"].update_window(trial_number)
             logger.info(f"Updated GUI for new trial {trial_number}.")
         except Exception as e:
             logger.error(f"Error updating GUI for new trial: {e}")
@@ -543,7 +549,7 @@ class MainGUI(tk.Tk):
             else:
                 # Set the new value for the progress
                 self.progress["value"] = (trial_number / total_trials) * 100
-            logger.debug("Progress bar updated.")
+            logger.info("Progress bar updated.")
         except Exception as e:
             logger.error(f"Error updating progress bar: {e}")
             raise
@@ -552,7 +558,7 @@ class MainGUI(tk.Tk):
         try:
             self.update_full_state_time(state_time_value)
             self.update_status(state)
-            logger.debug(f"Updated GUI on state change to {state}.")
+            logger.info(f"Updated GUI on state change to {state}.")
         except Exception as e:
             logger.error(f"Error updating GUI on state change: {e}")
             raise

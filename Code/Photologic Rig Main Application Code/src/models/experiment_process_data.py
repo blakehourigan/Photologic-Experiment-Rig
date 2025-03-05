@@ -59,7 +59,7 @@ class ExperimentProcessData:
             "sample_random_entry": 0,
         }
         self.exp_var_entries = {
-            "Num Trial Blocks": 1,
+            "Num Trial Blocks": 4,
             "Num Stimuli": 4,
             "Num Trials": 0,
         }
@@ -92,7 +92,7 @@ class ExperimentProcessData:
             # update other var types here
             return self.exp_var_entries[variable_name]
 
-    def generate_schedule(self) -> bool:
+    def generate_schedule(self) -> None:
         """
         This is a primary function of the program. This function generates the pseudo random schedule for what stimuli will be presented in which
         trials. It generates the intervals for ITI, TTC, and sample time using base time plus generated random +/- variations as given by user
@@ -106,21 +106,19 @@ class ExperimentProcessData:
             self.exp_var_entries["Num Trials"] = (num_stimuli // 2) * num_trial_blocks
 
             self.create_random_intervals()
-            minutes, seconds = self.calculate_max_runtime()
-            # self.controller.main_gui.update_max_time(minutes, seconds)
 
             pairs = self.create_trial_blocks()
 
             # stimuli_1 & stimuli_2 are lists that hold the stimuli to be introduced for each trial on their respective side
-            stimuli_1, stimuli_2 = self.generate_pairs(pairs)
+            stimuli_side_one, stimuli_side_two = self.generate_pairs(pairs)
 
-            # args needed -> stimuli_1, stimuli_2, num_stimuli, num_trial_blocks, num_trials
+            # args needed -> stimuli_1, stimuli_2
+            # these are lists of stimuli for each trial, for each side respectivelyc:w
             self.build_frame(
-                stimuli_1,
-                stimuli_2,
+                stimuli_side_one,
+                stimuli_side_two,
             )
 
-            return True
         except Exception as e:
             logger.error(f"Error generating program schedule {e}.")
 
@@ -184,7 +182,8 @@ class ExperimentProcessData:
         valve stimuli. For example, if we have valves 1 and 5 containing substance 1, and valves 2 and 6
         containing substance 2, this method will generate a list of two pairings that can occur in one trial block.
         We need each pairing to complete a block, so we generate [(substance 1, substance 2), (substance 2, substance 1)]
-        as our output. This covers each possible pairing.
+        as our output. This covers each possible pairing.          (valve 1),   (valve 6)      (valve 2),    (valve 5)
+                                                0 indexing ---->     (0)          (5)             (1)         (4)
         """
         try:
             # creating pairs list which stores all possible pairs
@@ -192,12 +191,7 @@ class ExperimentProcessData:
             num_stimuli = self.exp_var_entries["Num Stimuli"]
             block_sz = num_stimuli // 2
 
-            stimuli_names = [
-                stimulus
-                for i, (key, stimulus) in enumerate(
-                    self.stimuli_data.stimuli_vars.items()
-                )
-            ]
+            stimuli_names = list(self.stimuli_data.stimuli_vars.values())
 
             for i in range(block_sz):
                 pair_index = self.get_paired_index(i, num_stimuli)
@@ -216,6 +210,7 @@ class ExperimentProcessData:
         """
         try:
             pseudo_random_lineup: List[tuple] = []
+
             stimulus_1: List[str] = []
             stimulus_2: List[str] = []
 
@@ -257,13 +252,13 @@ class ExperimentProcessData:
                 "Port 2 Licks": np.full(num_trials, np.nan),
                 "ITI": self.ITI_intervals_final,
                 "TTC": self.TTC_intervals_final,
-                "Sample Time": self.sample_intervals_final,
+                "SAMPLE": self.sample_intervals_final,
                 "TTC Actual": np.full(num_trials, np.nan),
             }
 
             self.program_schedule_df = pd.DataFrame(data)
 
-            logger.debug("Initialized stimuli dataframe.")
+            logger.info("Initialized stimuli dataframe.")
         except Exception as e:
             logger.debug(f"Error Building Stimuli Frame: {e}.")
             raise

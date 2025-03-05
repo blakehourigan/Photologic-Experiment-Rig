@@ -1,0 +1,56 @@
+title = "aduino_long_term_storage"
+
+# durations that generally work well, or are a good baseline to test
+# from are defined in this header.
+[default_durations]
+side_one_durations = [
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125 
+]
+
+side_two_durations = [
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125
+]
+
+# program defaults to using these durations when available. These are tuned durations
+# to get a previously desired amount of liquid (5ul) per actuation.
+[selected_durations] 
+side_one_durations = [
+    30488,
+    26053,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125
+]
+side_two_durations = [
+    23020,
+    32253,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125,
+    24125
+]
+
+# maintain archives of old durations 
+# in case durations are accidentally overwritten.
+[archive_1] 
+[archive_2] 
+[archive_3] 

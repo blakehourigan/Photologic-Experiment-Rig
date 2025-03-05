@@ -37,11 +37,11 @@ class ValveControlWindow(tk.Toplevel):
         if self.motor_button_text.get() == "Move motor down":
             self.motor_button_text.set("Move motor up")
             self.motor_button.configure(bg="blue")
-            motor_command = "<D>"  # Replace with your specific down command
+            motor_command = "DOWN\n".encode("utf-8")
         else:
             self.motor_button_text.set("Move motor down")
             self.motor_button.configure(bg="green")
-            motor_command = "<U>"  # Replace with your specific up command
+            motor_command = "UP\n".encode("utf-8")
         self.controller.send_command_to_arduino(arduino="motor", command=motor_command)
 
     def create_motor_control_button(self):

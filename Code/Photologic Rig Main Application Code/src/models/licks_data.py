@@ -20,20 +20,25 @@ class LicksData:
         and create an empty first row to avoid a blank table when the program is first run
         """
         self.licks_dataframe = pd.DataFrame(
-            [[np.nan, np.nan, np.nan]],
-            columns=["Trial Number", "Licked Port", "Time Stamp"],
+            [[np.nan, np.nan, np.nan, np.nan]],
+            columns=["Trial Number", "Licked Port", "Time Stamp", "State"],
         )
         logger.info("Licks dataframe initialized.")
 
-    def get_lick_timestamps(self, trial_number) -> (list, list):
+    def get_lick_timestamps(self, logical_trial) -> (list, list):
         """
         Returns a list of timestamps for the given trial number and licked port.
         """
+        # get the ACTUAL trial number, not logical_trial because that is how
+        # trials are stored in licks df. 1-indexed, not 0-indexed
+        trial_number = logical_trial + 1
+
         try:
             filtered_df_side_one = self.licks_dataframe[
                 (self.licks_dataframe["Trial Number"] == trial_number)
                 & (self.licks_dataframe["Licked Port"].isin([1.0]))
             ]
+
             filtered_df_side_two = self.licks_dataframe[
                 (self.licks_dataframe["Trial Number"] == trial_number)
                 & (self.licks_dataframe["Licked Port"].isin([2.0]))
@@ -48,7 +53,7 @@ class LicksData:
             logger.error(f"Error getting lick timestamps for trial {trial_number}: {e}")
             raise
 
-    def insert_trial_start_stop_into_licks_dataframe(self, motor_timestamps):
+    def insert_trial_start_stop(self, motor_timestamps):
         try:
             arduino_start = next(
                 (

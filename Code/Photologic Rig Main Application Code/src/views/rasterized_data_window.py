@@ -68,28 +68,28 @@ class RasterizedDataWindow(tk.Toplevel):
         axes.set_xlim(0, 21)
         axes.set_ylim(0, num_trials + 1)
 
-        # Handle the re-open scenario by plotting all previous licks
-        if reopen:
-            # Clear existing data on the plot
-            axes.clear()
-            axes.set_xlim(0, 21)
-            axes.set_ylim(0, num_trials + 1)
+        ## Handle the re-open scenario by plotting all previous licks
+        # if reopen:
+        #    # Clear existing data on the plot
+        #    axes.clear()
+        #    axes.set_xlim(0, 21)
+        #    axes.set_ylim(0, num_trials + 1)
 
-            # Iterate through the side one and two licks if available and plot them
-            if side == 1:
-                for i, licks in enumerate(self.lick_data.side_one_trial_licks):
-                    if licks:
-                        self.plot_licks(
-                            axes, licks, i + 1, self.color_cycle(self.color_index)
-                        )
-                        self.color_index = (self.color_index + 1) % 10
-            elif side == 2:
-                for i, licks in enumerate(self.lick_data.side_two_trial_licks):
-                    if licks:
-                        self.plot_licks(
-                            axes, licks, i + 1, self.color_cycle(self.color_index)
-                        )
-                        self.color_index = (self.color_index + 1) % 10
+        #    # Iterate through the side one and two licks if available and plot them
+        #    if side == 1:
+        #        for i, licks in enumerate(self.lick_data.side_one_trial_licks):
+        #            if licks:
+        #                self.plot_licks(
+        #                    axes, licks, i + 1, self.color_cycle(self.color_index)
+        #                )
+        #                self.color_index = (self.color_index + 1) % 10
+        #    elif side == 2:
+        #        for i, licks in enumerate(self.lick_data.side_two_trial_licks):
+        #            if licks:
+        #                self.plot_licks(
+        #                    axes, licks, i + 1, self.color_cycle(self.color_index)
+        #                )
+        #                self.color_index = (self.color_index + 1) % 10
 
         if lick_times and len(lick_times) > 0:
             color = self.color_cycle(self.color_index)

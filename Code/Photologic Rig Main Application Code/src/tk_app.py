@@ -37,35 +37,18 @@ class TkinterApp:
     def __init__(self) -> None:
         try:
             # init exp_data, which initializes licks_data, stimuli_data, arduino_data
-            self.init_models()
-
-            # self.init_controllers()
-            # self.arduino_controller.send_arduino_json_data()
+            self.exp_data = ExperimentProcessData()
 
             """
             init views (gui windows), passing the reference to the data it will need, along with the 'trigger' function,
             which is used to transition the program from one state to another. Trigger is needed to manipulate state via
             the start and reset buttons
             """
-            self.init_view(self.exp_data, self.trigger)
+            self.main_gui = MainGUI(self.exp_data, self.trigger)
+
+            self.arduino_controller = ArduinoManager(self.exp_data, self.process_queue)
+
             logging.info("GUI started successfully.")
         except Exception as e:
             logging.error(f"Initialization error: {e}")
             raise
-
-    def init_models(self):
-        self.exp_data = ExperimentProcessData()
-
-        logging.info("Data Classes initialized.")
-
-    def init_controllers(self):
-        """Initialize managers."""
-        self.arduino_controller = ArduinoManager(self)
-
-        logging.info("Controllers initialized.")
-
-    def init_view(self, exp_data, trigger):
-        # instantiating MainGUI sets up our gui and the objects needed
-        self.main_gui = MainGUI(exp_data, trigger)
-
-        logging.info("View (GUI) initialized.")
