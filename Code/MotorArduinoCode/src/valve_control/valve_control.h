@@ -5,11 +5,10 @@
 
 class valve_control {
 public:
-  void toggle_solenoid(int valve_num, volatile uint8_t *PORT);
+  void toggle_solenoid(uint8_t valve_num, volatile uint8_t *PORT);
   void untoggle_solenoids();
-  void lick_handler(int valve_number, long int valve_duration,
+  void lick_handler(uint8_t valve_num, unsigned long valve_duration,
                     volatile uint8_t *PORT);
-  void lick_handler(int valve_num, long int valve_duration);
 
 private:
   static const int side_one_solenoids[];

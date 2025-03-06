@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 class StateMachine(TkinterApp):
     """
-    This class is the heart of the program. It inherits TkinterApp to create a gui, then defines and handles program state transitions.
-    It coordinates co-operation between view (gui), models (data), and controllers (this file and arduino controller).
+    This class is the heart of the program. It inherits TkinterApp to create a gui, instantiate model (data) classes, and the arduino controller,
+    then defines and handles program state transitions. It coordinates co-operation between view (gui) and models (data).
     """
 
     def __init__(self, result_container):
@@ -226,17 +226,17 @@ class GenerateSchedule:
         # send valve open durations stored in arduino_data.toml to the motor arduino
         self.arduino_controller.send_experiment_variables()
         self.arduino_controller.send_experiment_schedule()
-        # self.arduino_controller.send_valve_durations()
 
-        ## start new thread whose sole job is to field information from the arduinos and feed it to the data queue
-        # self.listener_thread = threading.Thread(
-        #    target=self.listen_for_serial, daemon=True
-        # )
+        self.arduino_controller.send_valve_durations()
 
-        # logger.info("Started listening thread for Arduino serial input.")
-        # self.arduino_controller.listener_thread.start()
-        # process_queue(self.arduino_controller.data_queue)
+        # start new thread whose sole job is to field information from the arduinos and feed it to the data queue
+        self.listener_thread = threading.Thread(
+            target=self.arduino_controller.listen_for_serial, daemon=True
+        ).start()
 
+        process_queue(self.arduino_controller.data_queue)
+
+        logger.info("Started listening thread for Arduino serial input.")
         self.trigger_state_change("IDLE")
 
 
@@ -288,7 +288,8 @@ class StopProgram:
             )
 
             for desc, sched_task in self.main_gui.scheduled_tasks.items():
-                self.main_gui.after_cancel(sched_task)
+                if desc != "PROCESS QUEUE":
+                    self.main_gui.after_cancel(sched_task)
 
             # finalize the program after 5 seconds because the door has not gone down yet. we still want the arduino
             # to record the time that the door goes up last
@@ -305,11 +306,8 @@ class StopProgram:
         offer to save the .
         """
         try:
-            motor = self.arduino_controller.motor_arduino
-            timestamps_command = "SEND TIMESTAMPS\n".encode("utf-8")
-            self.arduino_controller.send_command(
-                board=motor, command=timestamps_command
-            )
+            queue_id = self.main_gui.scheduled_tasks["PROCESS QUEUE"]
+            self.main_gui.after_cancel(queue_id)
 
             self.arduino_controller.reset_arduinos()
 
@@ -457,7 +455,9 @@ class TimeToContact:
         try:
             self.main_gui.state_timer_text.configure(text=(self.state + " Time:"))
 
+            # state time starts now, as does trial because lick availabilty starts now
             self.exp_data.state_start_time = time.time()
+            self.exp_data.trial_start_time = time.time()
 
             # find the amount of time available for TTC for this trial
             time_to_contact = self.exp_data.program_schedule_df.loc[
@@ -507,9 +507,10 @@ class SampleTime:
 
             # Tell the laser arduino to begin accepting licks and opening valves
             # resetting the lick counters for both spouts
-            # tell the laser to begin accepting licks
+            # tell the laser to begin opening valves on licks
             laser = self.arduino_controller.laser_arduino
-            self.arduino_controller.send_command(board=laser, command="B")
+            open_command = "BEGIN OPEN VALVES\n".encode("utf-8")
+            self.arduino_controller.send_command(board=laser, command=open_command)
 
             self.lick_data.side_one_licks = 0
             self.lick_data.side_two_licks = 0
@@ -558,6 +559,15 @@ class TrialEnd:
         logical_trial = self.exp_data.current_trial_number - 1
         program_schedule = self.main_gui.windows["Program Schedule"]
 
+        motor = self.arduino_controller.motor_arduino
+        up_command = "UP\n".encode("utf-8")
+        self.arduino_controller.send_command(board=motor, command=up_command)
+
+        # tell laser arduino that this is the end of trial, stop reading
+        laser = self.arduino_controller.laser_arduino
+        stop_command = "STOP OPEN VALVES\n".encode("utf-8")
+        self.arduino_controller.send_command(board=laser, command=stop_command)
+
         # end trial by incrementing self.exp_data.current_trial_num by one
         if self.end_trial():
             # if the experiment is over update the licks for the final trial
@@ -589,15 +599,6 @@ class TrialEnd:
         TTC time is not handled here because it would be impossible to grab that time at this point.
         Differs in TTC becuase actual ttc == allocated time can be grabbed at any later time in the program.
         """
-
-        # tell laser arduino that this is the end of trial, stop reading
-        laser = self.arduino_controller.laser_arduino
-        self.arduino_controller.send_command(board=laser, command="E")
-
-        # tell motor arduino the door should move up now
-        motor = self.arduino_controller.motor_arduino
-        up_command = "".encode("utf-8")
-        self.arduino_controller.send_command(board=motor, command=up_command)
 
         self.update_schedule_licks(logical_trial)
 

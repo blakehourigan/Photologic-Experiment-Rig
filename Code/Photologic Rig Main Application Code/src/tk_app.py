@@ -1,5 +1,7 @@
 import logging
-from logging.handlers import RotatingFileHandler
+import datetime
+from logging import FileHandler
+from pathlib import Path
 
 # Model (data) classe / sub-classes are init'd internally to this class
 from models.experiment_process_data import ExperimentProcessData
@@ -13,7 +15,7 @@ from controllers.arduino_control import ArduinoManager
 
 # Set up logging
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # Console handler for errors
 console_handler = logging.StreamHandler()
@@ -25,8 +27,17 @@ logger.addHandler(console_handler)
 
 # Rotating file handler for all logs, this means that once maxBytes is exceeded, the data rolls over into a new file.
 # for example, data will begin in app.log, then will roll over into app1.log
-file_handler = RotatingFileHandler("app.log", maxBytes=10 * 1024 * 1024, backupCount=3)
-file_handler.setLevel(logging.DEBUG)
+
+logfile_dir = Path(__file__).parent.parent.resolve()
+now = datetime.datetime.now()
+logfile_name = (
+    f"Experiment app log => {now.date()} | {now.hour}:{now.minute}:{now.second}"
+)
+logfile_path = logfile_dir / "logfiles" / f"{logfile_name}"
+
+
+file_handler = FileHandler(logfile_path)
+file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(
     logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 )

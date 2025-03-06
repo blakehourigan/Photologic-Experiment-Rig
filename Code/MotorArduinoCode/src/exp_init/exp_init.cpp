@@ -36,6 +36,8 @@ void receive_exp_variables() {
 }
 
 void receive_schedules() {
+  side_one_sched_vec.clear();
+  side_two_sched_vec.clear();
   // when this variable equals num trials, sd_one has been recieved,
   // move on to side two
   int elements_processed = 0;
@@ -68,79 +70,84 @@ void receive_schedules() {
   }
 }
 
-// void receive_durations() {
-//
-//
-//
-//     int cur_trial = doc["current_trial"];
-//     JsonArray valve_durations_side_one = doc["valve_durations_side_one"];
-//     JsonArray valve_durations_side_two = doc["valve_durations_side_two"];
-//
-//     // Update the global variables
-//     side_one_size = side_one_schedule.size();
-//     side_two_size = side_two_schedule.size();
-//
-//
-//     // Resize and populate the SIDE_ONE_SCHEDULE array
-//     side_one_durations = new unsigned long[VALVES_SIDE_ONE];
-//
-//     for (int i = 0; i < VALVES_SIDE_ONE; i++) {
-//         side_one_durations[i] = valve_durations_side_one[i].as<int>();
-//     }
-//
-//     // create new array for side_two_durations
-//     side_two_durations = new unsigned long[VALVES_SIDE_TWO];
-//
-//     for (int i = 0; i < VALVES_SIDE_TWO; i++) {
-//         side_two_durations[i] = valve_durations_side_two[i].as<int>();
-//     }
-//
-//
-//     // Update the current trial
-//     current_trial = cur_trial;
-//
-//     // Print side_one_schedule
-//     Serial.println("side_one_schedule:");
-//     for (JsonVariant value : side_one_schedule) {
-//       Serial.println(value.as<int>());
-//     }
-//
-//     // Print side_two_schedule
-//     Serial.println("side_two_schedule:");
-//     for (JsonVariant value : side_two_schedule) {
-//       Serial.println(value.as<int>());
-//     }
-//
-//     // Print current_trial
-//     Serial.print("current_trial: ");
-//     Serial.println(current_trial);
-//
-//     // Print valve_durations
-//     Serial.println("valve_durations_side_one:");
-//     for (JsonVariant value : valve_durations_side_one) {
-//       Serial.println(value.as<int>());
-//     }
-//     Serial.println("valve_durations_side_two:");
-//     for (JsonVariant value : valve_durations_side_one) {
-//       Serial.println(value.as<int>());
-//     }
-//
-//
-//     Serial.println("Data dictionary received and processed.");
-// }
+void receive_durations() {
+  side_one_dur_vec.clear();
+  side_two_dur_vec.clear();
+  // when this variable equals VALVES_PER_SIDE, sd_one has been recieved,
+  // move on to side two
+  int elements_processed = 0;
+  // holds current valve number being processed
+  unsigned long byte0 = 0;
+  unsigned long byte1 = 0;
+  unsigned long byte2 = 0;
+  unsigned long byte3 = 0;
+
+  unsigned long duration = 0;
+
+  // processing side one first
+  int side = 1;
+
+  while (1) {
+    // if we have any serial bytes available, read one byte in and
+    // say that this byte represents which valve to select for this trial
+    if (Serial.available() > 3) {
+      byte0 = Serial.read();
+      byte1 = Serial.read();
+      byte2 = Serial.read();
+      byte3 = Serial.read();
+
+      duration = byte0 | (byte1 << 8) | (byte2 << 16) | (byte3 << 24);
+
+      elements_processed++;
+
+      if (side == 1) {
+        side_one_dur_vec.push_back(duration);
+      } else if (side == 2) {
+        side_two_dur_vec.push_back(duration);
+      }
+
+      if (elements_processed == VALVES_PER_SIDE) {
+        if (side == 1) {
+          elements_processed = 0;
+          side = 2;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+}
 
 void schedule_verification() {
   // echo recieved schedules to python controller, so that it can verify that
   // we received them correctly
   for (int i = 0; i < side_one_sched_vec.size(); i++) {
-    Serial.print(side_one_sched_vec.at(i));
+    Serial.write(side_one_sched_vec.at(i));
   }
-  // Serial.println();
 
   for (int i = 0; i < side_two_sched_vec.size(); i++) {
-    Serial.print(side_two_sched_vec.at(i));
+    Serial.write(side_two_sched_vec.at(i));
   }
-  Serial.println();
+  // force all the data out
+  Serial.flush();
 
   // Serial.println("Schedule sent back for verification.");
+}
+
+void durations_verification() {
+  // echo recieved schedules to python controller, so that it can verify that
+  // we received them correctly
+  unsigned long val = 0;
+  for (int i = 0; i < side_one_dur_vec.size(); i++) {
+    //
+    val = side_one_dur_vec.at(i);
+    Serial.write((uint8_t *)&val, sizeof(val));
+  }
+
+  for (int i = 0; i < side_two_dur_vec.size(); i++) {
+    val = side_two_dur_vec.at(i);
+    Serial.write((uint8_t *)&val, sizeof(val));
+  }
+  // force all the data out
+  Serial.flush();
 }

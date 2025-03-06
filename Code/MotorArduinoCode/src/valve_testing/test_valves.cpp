@@ -19,7 +19,7 @@ void test_volume(char number_of_valves) {
   //      delay(100);
   //    }
   //    delay(100);
-  //    Serial.println("<Finished Pair>");
+  //    Serial.println("FINISHED PAIR");
   //
   //    while (true) {
   //      while (Serial.available() == 0) {
@@ -30,5 +30,5 @@ void test_volume(char number_of_valves) {
   //      }
   //    }
   //  }
-  //  Serial.println("Testing Complete");
+  //  Serial.println("TESTING COMPLETE");
 }

@@ -35,7 +35,7 @@ class LicksWindow(tk.Toplevel):
         # df we are working with is self.licks_data.licks_dataframe, get rid of self prefix and such to save room
         df = self.licks_data.licks_dataframe
         # num rows in that df currently
-        len_licks_df = df.shape[0]
+        len_licks_df = len(df)
 
         last_item = self.last_item
 
@@ -49,13 +49,14 @@ class LicksWindow(tk.Toplevel):
             # if the current item iid that we are evaluating exists already, don't worry about it
             if self.timestamped_licks.exists(nan_item_iid):
                 self.timestamped_licks.delete(nan_item_iid)
+                continue
 
             self.timestamped_licks.insert(
                 "", tk.END, iid=item_iid, values=list(row_content)
             )
         # update the last item with the LAST item that was added on this iteration, next time we will start
         # the loop with this, so that we don't unneccesarily update entries already there
-        self.last_item = i
+        self.last_item = len(df)
 
     def build_table(self) -> None:
         self.licks_frame = tk.Frame(self)

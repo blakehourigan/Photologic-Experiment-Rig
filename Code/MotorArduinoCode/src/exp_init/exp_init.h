@@ -42,4 +42,6 @@ void receive_durations();
 
 void schedule_verification();
 
+void durations_verification();
+
 #endif // EXP_INIT_H!

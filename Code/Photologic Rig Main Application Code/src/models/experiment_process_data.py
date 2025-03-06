@@ -32,6 +32,7 @@ class ExperimentProcessData:
 
     def __init__(self):
         self.start_time = 0.0
+        self.trial_start_time = 0.0
         self.state_start_time = 0.0
 
         # this number is centralized here so that all state classes can access and update it easily without
@@ -51,9 +52,9 @@ class ExperimentProcessData:
         self.TTC_lick_threshold = 3
 
         self.interval_vars = {
-            "ITI_var": 2000,
-            "TTC_var": 2000,
-            "sample_var": 2000,
+            "ITI_var": 5000,
+            "TTC_var": 5000,
+            "sample_var": 5000,
             "ITI_random_entry": 0,
             "TTC_random_entry": 0,
             "sample_random_entry": 0,

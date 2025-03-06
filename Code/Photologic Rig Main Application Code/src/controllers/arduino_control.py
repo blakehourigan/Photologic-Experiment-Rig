@@ -1,7 +1,5 @@
 import serial
 import serial.tools.list_ports
-import toml
-import json
 import time
 import threading
 from typing import Any
@@ -71,8 +69,8 @@ class ArduinoManager:
         else:
             # tell laser arduino that the program starts now
             laser = self.laser_arduino
-            start_command = "S".encode("utf-8")
-            self.send_command(board=laser, command=start_command)
+            # start_command = "S".encode("utf-8")
+            # self.send_command(board=laser, command=start_command)
             logger.info("Connected to Arduino boards successfully.")
 
     def listen_for_serial(self):
@@ -194,6 +192,17 @@ class ArduinoManager:
         # will load from arduino_data.toml from the last_used class by default
         # durations can be reset by passing reset_durations=True
         side_one, side_two = self.arduino_data.load_durations()
+        side_one_durs = side_one.tobytes()
+        side_two_durs = side_two.tobytes()
+        dur_packet = side_one_durs + side_two_durs
+
+        dur_command = "REC DURATIONS\n".encode("utf-8")
+        motor = self.motor_arduino
+        self.send_command(motor, dur_command)
+
+        self.send_command(motor, dur_packet)
+
+        self.verify_durations(motor, side_one, side_two)
 
     def verify_schedule(self, arduino, side_one, side_two):
         """
@@ -217,9 +226,13 @@ class ArduinoManager:
             while arduino.in_waiting < 0:
                 pass
             for i in range(num_trials):
-                ver1[i] = arduino.read()
+                ver1[i] = int.from_bytes(
+                    arduino.read(), byteorder="little", signed=False
+                )
             for i in range(num_trials):
-                ver2[i] = arduino.read()
+                ver2[i] = int.from_bytes(
+                    arduino.read(), byteorder="little", signed=False
+                )
             logger.info(f"Arduino recieved side one as => {ver1}")
             logger.info(f"Arduino recieved side two as => {ver2}")
 
@@ -236,18 +249,66 @@ class ArduinoManager:
         except Exception as e:
             logger.error(f"error verifying arduino schedule {e}")
 
+    def verify_durations(self, arduino, side_one, side_two):
+        """
+        Method to tell motor arduino to give us the schedules that it
+        recieved. It will send data byte by byte in the order that it
+        recieved it (side one schedule, then side two) it will send EXACTLY
+        num_trials * 2 bytes (8 bit / 1 byte int for each trial on each side).
+        if successful we continue execution and log success message.
+        """
+        try:
+            ver_dur_command = "VER DURATIONS\n".encode("utf-8")
+            self.send_command(arduino, ver_dur_command)
+
+            # each side has 8 valves, therefore 8 durations in each array
+            valves_per_side = 8
+
+            ver1 = np.zeros((valves_per_side,), dtype=np.int32)
+            ver2 = np.zeros((valves_per_side,), dtype=np.int32)
+
+            # wait for the data to arrive
+            while arduino.in_waiting < 4 * 8:
+                pass
+            for i in range(valves_per_side):
+                duration = int.from_bytes(
+                    arduino.read(4), byteorder="little", signed=False
+                )
+                ver1[i] = duration
+            for i in range(valves_per_side):
+                duration = int.from_bytes(
+                    arduino.read(4), byteorder="little", signed=False
+                )
+                ver2[i] = duration
+
+            logger.info(f"Arduino recieved side one as => {ver1}")
+            logger.info(f"Arduino recieved side two as => {ver2}")
+
+            if np.array_equal(side_one, ver1) and np.array_equal(side_two, ver2):
+                logger.info("Motor arduino has recieved and verified valve durations")
+            else:
+                GUIUtils.display_error(
+                    "======DURATIONS ERROR======",
+                    "MOTOR ARDUINO did not recieve the correct valve durations. Please restart the program and attempt\
+                        schedule generation again.",
+                )
+        except Exception as e:
+            logger.error(f"error verifying arduino durations -> {e}")
+
     @staticmethod
     def send_command(board, command) -> None:
-        """Send a specific command to the motor Arduino."""
+        """
+        Send a specific command to the motor Arduino. Command must be converted to raw bytes object
+        before being passed into this method
+        """
         try:
             if board:
-                # Flush before sending command
                 board.write(command)
-                logger.info(f"Sent {command} to -> motor: ")
+                logger.info(f"Sent {command} to -> {board.port}: ")
             else:
                 logger.error("{board} Arduino not connected.")
         except Exception as e:
-            error_message = f"Error sending command to motor Arduino: {e}"
+            error_message = f"Error sending command to {board.port} Arduino: {e}"
             GUIUtils.display_error(
                 "Error sending command to motor Arduino:", error_message
             )

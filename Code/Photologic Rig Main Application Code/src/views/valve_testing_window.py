@@ -28,13 +28,13 @@ class ValveTestWindow(tk.Toplevel):
 
         self.create_widgets()
         GUIUtils.center_window(self)
-        logging.debug("ValveTestWindow shown.")
+        logging.info("ValveTestWindow shown.")
         self.setup_trace_variables()
 
         # we don't want to show this window until the user decides to click the corresponding button,
         # withdraw (hide) it for now
         self.withdraw()
-        logging.debug("Valve Test Window initialized.")
+        logging.info("Valve Test Window initialized.")
 
     def show(self):
         self.deiconify()
@@ -67,7 +67,7 @@ class ValveTestWindow(tk.Toplevel):
             if pattern.match(user_input):
                 try:
                     value = float(user_input)
-                    logging.debug(f"Valid input received: {value}")
+                    logging.info(f"Valid input received: {value}")
                     return value  # Attempt to return the user input as a float
                 except ValueError:
                     logging.error(
@@ -79,7 +79,7 @@ class ValveTestWindow(tk.Toplevel):
     def setup_trace_variables(self):
         self.num_valves_to_test.trace_add("write", self.validate_and_update)
         self.desired_volume.trace_add("write", self.validate_and_update)
-        logging.debug("Trace variables set up.")
+        logging.info("Trace variables set up.")
 
     def testing_aborted(self):
         messagebox.showinfo(
@@ -90,7 +90,7 @@ class ValveTestWindow(tk.Toplevel):
 
     def ask_continue(self):
         response = messagebox.askyesno("Continue", "Are you ready to continue?")
-        logging.debug(f"User prompt to continue: {response}")
+        logging.info(f"User prompt to continue: {response}")
         return response
 
     def create_widgets(self):
@@ -102,7 +102,7 @@ class ValveTestWindow(tk.Toplevel):
         )
         self.create_valve_test_table()
         self.create_buttons()
-        logging.debug("Widgets created for ValveTestWindow.")
+        logging.info("Widgets created for ValveTestWindow.")
 
     def create_label_and_entry(self, label_text, variable, row):
         frame = tk.Frame(self, highlightbackground="black", highlightthickness=1)
@@ -112,7 +112,7 @@ class ValveTestWindow(tk.Toplevel):
             side="right", fill="x", expand=True
         )
         frame.grid_columnconfigure(1, weight=1)
-        logging.debug(f"Label and entry created for {label_text}.")
+        logging.info(f"Label and entry created for {label_text}.")
 
     def validate_and_update(self, *args):
         try:
@@ -120,7 +120,7 @@ class ValveTestWindow(tk.Toplevel):
             self.num_valves_to_test.get()
             # If successful, call the function to update/create the valve test table
             self.create_valve_test_table()
-            logging.debug("Valve test table updated.")
+            logging.info("Valve test table updated.")
         except tk.TclError:
             # If it fails to get a valid number (empty string or invalid data), do not update the table
             logging.warning("Invalid data for valve test table update.")
@@ -155,7 +155,7 @@ class ValveTestWindow(tk.Toplevel):
         if (side_one_valve_durations is not None) or (
             side_two_valve_durations is not None
         ):
-            logging.debug(
+            logging.info(
                 "Updating valve test table with opening times and dispensed volumes."
             )
             for i in range(self.num_valves_to_test.get() // 2):
@@ -185,7 +185,7 @@ class ValveTestWindow(tk.Toplevel):
                     "end",
                     values=(f"{i + 1}", f"{self.desired_volume.get()} ul", "0.00 s"),
                 )
-            logging.debug("Initial valve test table created.")
+            logging.info("Initial valve test table created.")
 
     def create_buttons(self):
         start_test_button_frame = tk.Frame(
@@ -200,7 +200,7 @@ class ValveTestWindow(tk.Toplevel):
             font=("Helvetica", 16),
         )
         start_test_button.pack(fill="both", expand=True)
-        logging.debug("Buttons created for ValveTestWindow.")
+        logging.info("Buttons created for ValveTestWindow.")
 
     def collect_user_inputs(self):
         user_inputs = []  # Initialize an empty list to store the inputs
@@ -223,16 +223,17 @@ class ValveTestWindow(tk.Toplevel):
         self.controller.valve_test_logic.update_and_send_opening_times(
             8, user_inputs[4:-1], 2
         )
-        logging.debug(f"Collected user inputs: {user_inputs}")
-        print(user_inputs)  # For debugging: Print the collected inputs
+        logging.info(f"Collected user inputs: {user_inputs}")
+        # For debugging: Print the collected inputs
+        print(user_inputs)
 
     def set_valve_opening_times(self, new_times):
         self.valve_opening_times = new_times
-        logging.debug(f"Set new valve opening times: {new_times}")
+        logging.info(f"Set new valve opening times: {new_times}")
 
     def set_ul_dispensed(self, new_volumes):
         self.ul_dispensed = new_volumes
-        logging.debug(f"Set new dispensed volumes: {new_volumes}")
+        logging.info(f"Set new dispensed volumes: {new_volumes}")
 
     def update_valve_test_table(
         self,

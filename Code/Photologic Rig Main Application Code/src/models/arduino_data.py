@@ -1,5 +1,4 @@
 import logging
-import json
 import time
 import toml
 import numpy as np
@@ -30,16 +29,20 @@ class ArduinoData:
         toml_dir = Path(__file__).parent.parent.parent.resolve()
         toml_path = toml_dir / "assets" / "valve_durations.toml"
 
+        VALVES_PER_SIDE = 8
+
         with open(toml_path, "r") as f:
             toml_file = toml.load(f)
 
-        default_durations = toml_file["default_durations"]
-        print(default_durations)
+        default_durations = toml_file["selected_durations"]
 
         # create 2 np arrays 8 n long with np.int32s
-        dur_side_one = np.full(8, np.int32(0))
-        dur_side_two = np.full(8, np.int32(0))
+        dur_side_one = np.full(VALVES_PER_SIDE, np.int32(0))
+        dur_side_two = np.full(VALVES_PER_SIDE, np.int32(0))
 
+        # keys here are names of durations i.e side_one_dur or side_two_dur, values
+        # are lists of durations, VALVES_PER_SIDE long. Will produce two lists
+        # VALVES_PER_SIDE long so that each valve in the rig is assigned a duration.
         for key, value in default_durations.items():
             if key == "side_one_durations":
                 for i, duration in enumerate(value):
@@ -77,73 +80,14 @@ class ArduinoData:
 
         return sched_side_one, sched_side_two
 
-    def write_to_json_file(self, arduino_data, filename="arduino_data.json"):
-        with open(filename, "w") as file:
-            json.dump(arduino_data, file, indent=4)
-
-    def read_json_file(self, filename="../arduino_data.json"):
-        with open(filename, "r") as file:
-            return json.load(file)
-
-    def load_configuration(
-        self, filename="../arduino_data.json", config_name="default"
-    ):
-        # Function to load a specific configuration
-        data = self.read_json_file(filename)
-        if config_name in data:
-            return data[config_name]
-        else:
-            raise ValueError(f"Configuration '{config_name}' not found in {filename}")
-
-    def save_configuration(
-        # Function to save a specific configuration
-        self,
-        filename="arduino_data.json",
-        config_name="last_used",
-        config_data=None,
-    ):
-        data = self.read_json_file(filename)
-        data[config_name] = config_data
-        self.write_to_json_file(data, filename)
-
-    def verify_schedule(self, motor_arduino, side_one_schec, side_two_sched):
-        num_trials = self.exp_data.exp_var_entries["Num Trials"]
-        ver1 = np.zeros((num_trials,), dtype=np.int8)
-        ver2 = np.zeros((num_trials,), dtype=np.int8)
-
-        # wait for the data to arrive
-        while motor_arduino.in_waiting < 1:
-            continue
-        for i in range(50):
-            ver1[i] = motor_arduino.read()
-        for i in range(50):
-            ver2[i] = motor_arduino.read()
-
-        print(ver1)
-        print(ver2)
-
-        sd_one_eq = np.array_equal(side_one_schec, ver1)
-        sd_two_eq = np.array_equal(side_two_sched, ver2)
-
-        if sd_one_eq and sd_two_eq:
-            logger.info("Motor arduino valve trial schedules verified")
-        else:
-            GUIUtils.display_error(
-                "Verification Error",
-                "Schedule generated locally is not identical to that recieved from the motor arduino. If this error persists over many attempts, contact support.",
-            )
-
     def handle_licks(self, data, lick_data, state):
-        if data == "<Stimulus One>":
+        if data[:12] == "STIMULUS ONE":
             lick_data.side_one_licks += 1
-            lick_data.total_licks += 1
-        elif data == "<Stimulus Two>":
+        elif data[:12] == "STIMULUS TWO":
             lick_data.side_two_licks += 1
-            lick_data.total_licks += 1
+        duration = data[13:]
 
-        # Remove the first and last characters (<, >)
-        modified_data = data[1:-1]
-        self.record_lick_data(modified_data, state)
+        self.record_lick_data(data, duration, state)
 
     def process_laser(self, data, state, trigger):
         lick_data = self.exp_data.lick_data
@@ -162,28 +106,56 @@ class ArduinoData:
                 self.handle_licks(data, lick_data, state)
 
     def process_motor(self, data):
-        if data == "<Finished Pair>":
-            self.valve_test_logic.append_to_volumes()
+        """
+        In this method we process a command given us by the motor.
+        This method is most often called to insert a door movement timestamp,
+        but is also used for valve testing purposes.
+        """
+        if data == "MOTOR MOVED DOWN":
+            # MOTOR MOVED DOWN | RELATIVE TO START | RELATIVE TO TRIAL
+            lick_data = self.exp_data.lick_data
 
-        elif "Testing Complete" in data:
-            self.valve_test_logic.begin_updating_opening_times(data)
+            current_trial = self.exp_data.current_trial_number
 
-        elif "SCHEDULE VERIFICATION" in data:
-            ###### REDO THIS #####
-            cleaned_data = data.replace("SCHEDULE VERIFICATION", "").strip()
+            start_time = self.exp_data.start_time
+            trial_start_time = self.exp_data.trial_start_time
 
-            self.verify_arduino_schedule(
-                self.data_mgr.side_one_indexes,
-                self.data_mgr.side_two_indexes,
-                cleaned_data,
+            time_since_start = round(time.time() - start_time, 3)
+            time_since_trial_start = round(time.time() - trial_start_time, 3)
+
+            lick_data.insert_row_into_df(
+                current_trial,
+                None,
+                None,
+                time_since_start,
+                time_since_trial_start,
+                "MOTOR DOWN",
             )
-            ###### REDO THIS #####
-        elif "Time Stamp Data" in data:
-            cleaned_data = data.replace("Time Stamp Data", "").strip()
 
-            motor_timestamps = self.parse_timestamps(cleaned_data)
+        elif data == "MOTOR MOVED UP":
+            lick_data = self.exp_data.lick_data
 
-            self.exp_data.lick_data.insert_trial_start_stop(motor_timestamps)
+            current_trial = self.exp_data.current_trial_number
+
+            start_time = self.exp_data.start_time
+            trial_start_time = self.exp_data.trial_start_time
+
+            time_since_start = round(time.time() - start_time, 3)
+            time_since_trial_start = round(time.time() - trial_start_time, 3)
+
+            lick_data.insert_row_into_df(
+                current_trial,
+                None,
+                None,
+                time_since_start,
+                time_since_trial_start,
+                "MOTOR UP",
+            )
+
+        elif data == "FINISHED PAIR":
+            self.valve_test_logic.append_to_volumes()
+        elif "TESTING COMPLETE" in data:
+            self.valve_test_logic.begin_updating_opening_times(data)
 
     def process_data(self, source, data, state, trigger):
         """
@@ -200,16 +172,18 @@ class ArduinoData:
             logging.error(f"Error processing data from {source}: {e}")
             raise
 
-    def record_lick_data(self, stimulus, state):
+    def record_lick_data(self, stimulus, duration, state):
         """Record lick data to the dataframe."""
         try:
-            licks_data = self.exp_data.lick_data
-            licks_dataframe = licks_data.licks_dataframe
-            total_licks = licks_data.total_licks
-            trial_number = self.exp_data.current_trial_number
-            start_time = self.exp_data.start_time
+            lick_data = self.exp_data.lick_data
 
-            lick_time = round(time.time() - start_time, 3)
+            current_trial = self.exp_data.current_trial_number
+
+            start_time = self.exp_data.start_time
+            trial_start_time = self.exp_data.trial_start_time
+
+            time_since_start = round(time.time() - start_time, 3)
+            time_since_trial_start = round(time.time() - trial_start_time, 3)
 
             port = None
             if stimulus == "Stimulus One":
@@ -217,49 +191,17 @@ class ArduinoData:
             else:
                 port = 2
 
-            licks_dataframe.loc[total_licks, "Trial Number"] = trial_number
-
-            licks_dataframe.loc[total_licks, "Licked Port"] = port
-
-            licks_dataframe.loc[total_licks, "Time Stamp"] = lick_time
-
-            licks_dataframe.loc[total_licks, "State"] = state
+            # insert the lick record into the dataframe
+            lick_data.insert_row_into_df(
+                current_trial,
+                port,
+                duration,
+                time_since_start,
+                time_since_trial_start,
+                state,
+            )
 
             logging.info(f"Lick data recorded for: {stimulus}")
         except Exception as e:
             logging.error(f"Error recording lick data: {e}")
-            raise
-
-    def get_current_json_config(self) -> dict:
-        return self.load_configuration(config_name="last_used")
-
-    @staticmethod
-    def parse_timestamps(timestamp_string):
-        """
-        Parse timestamps sent from the Arduino data.
-        """
-        try:
-            entries = timestamp_string.split("><")
-            # Remove the leading '<' from the first entry
-            entries[0] = entries[0][1:]
-            # Remove the trailing '>' from the last entry
-            entries[-1] = entries[-1][:-1]
-            parsed_entries = []
-
-            for entry in entries:
-                parts = entry.split(",")
-                command = parts[0]
-                trial_number = int(parts[1])
-                occurrence_time = int(parts[2])
-                timestamp = {
-                    "command": command,
-                    "trial_number": trial_number,
-                    "occurrence_time": occurrence_time,
-                }
-                parsed_entries.append(timestamp)
-
-            logging.info(f"Timestamps parsed: {parsed_entries}")
-            return parsed_entries
-        except Exception as e:
-            logging.error(f"Error parsing timestamps: {e}")
             raise

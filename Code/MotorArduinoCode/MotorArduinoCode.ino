@@ -8,12 +8,6 @@
 #define step_pin 51
 #define BAUD_RATE 115200
 
-struct TimeStamp {
-    String previous_command;
-    int trial_number;
-    unsigned long time_from_zero;
-};
-
 // variable is volatile because its value is checked in an interrupt
 // service routine
 volatile bool lick_available = false;
@@ -28,6 +22,9 @@ volatile uint8_t valve_side = 0;
 
 unsigned long program_start_time = 0; 
 
+// used to calculate which valve to select on side two.
+const uint8_t TOTAL_VALVES= 8;
+
 // door stepper motor constants
 const int STEPPER_UP_POSITION = 0;
 const int STEPPER_DOWN_POSITION = 6000;
@@ -36,84 +33,56 @@ const int ACCELERATION = 5500;
 bool motor_running = false; 
 bool experiment_started = false;
 
-Vector<TimeStamp> timestamps;
+String previous_command;
+
 AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
 valve_control valve_ctrl;
 
-void send_timestamps() {
-  String timestampsData = "";
-  timestampsData += "Time Stamp Data";
-  for (const auto& timestamp : timestamps) {
-    timestampsData += "<";
-    timestampsData += timestamp.previous_command;
-    timestampsData += ",";
-    timestampsData += String(timestamp.trial_number);
-    timestampsData += ",";
-    timestampsData += String(timestamp.time_from_zero);
-    timestampsData += ">";
-  }
-
-  Serial.println(timestampsData);
-  Serial.println("Sent timestamps data.");
-}
 void handle_lick(){
   volatile uint8_t *PORT;
-  int valve_num = 0;
+  
+  uint8_t valve_num = 0;
   long int duration = 0;
 
   if (valve_side == 0){
     valve_num = side_one_sched_vec.at(current_trial);
-    duration = side_one_dur_vec.at(current_trial);
+    duration = side_one_dur_vec.at(valve_num);
     PORT = &PORTA;
 
   }else{
-    valve_num = side_two_sched_vec.at(current_trial);
-    duration = side_two_dur_vec.at(current_trial);
-    PORT = &PORTC;
-
     // port is already calculated previously, however since ports are split between 
     // PORTA for side1 and PORTC for side 2 we must fix the pin num if side 2. 
-    // subtract num_stim / 2 from valve num -> valve num 5 becomes 5 - (8/2) = 1
-    // first pin on PORTC is actuated
-    valve_num = valve_num - (num_stimuli / 2);
+    // subtract valves / 2 from valve num -> valve num 5 becomes 5 - (8/2) = 1
+    // first pin on PORTC is actuated. The only thing that would change this calculation is 
+    // if total number of valves changed.
+    valve_num = side_two_sched_vec.at(current_trial);
 
+    valve_num = valve_num - (TOTAL_VALVES / 2);
+    duration = side_two_dur_vec.at(valve_num);
+    PORT = &PORTC;
   }
 
   valve_ctrl.lick_handler(valve_num, duration, PORT);
   lick_available = false;
-  Serial.println("Handled lick event.");
 
 }
 
-void create_timestamp(String command)
-{
-  TimeStamp timestamp;
-
-  // Assuming 'command' holds the previous command
-  timestamp.previous_command = command; 
-  timestamp.trial_number = current_trial + 1;
-  timestamp.time_from_zero = millis() - program_start_time;
-
-  timestamps.push_back(timestamp);
-  Serial.print("Timestamp created for command: "); Serial.println(command);
-}
-
-void complete_motor_movement(String command){
+void complete_motor_movement(String previous_command){
+  /* 
+  This function is called when the door finishes a movement operation. It takes the previous command as 
+  a parameter and tells the python controller that a movement has completed and which type of movement 
+  that was, so that we can mark these movements down in the lick dataframe. If the movement was up, 
+  that means a trial just ended and we can increment to the next trial.
+  */
   String command_description = "\0";
 
-  if (command.equals("UP")){
-    //command = "FINISHED UP";
-    //create_timestamp(command);
-
+  if (previous_command.equals("UP")){
     //// Door is finished moving up, we are now on the next trial
-    //current_trial++; 
-    //Serial.println("Motor finished moving up.");
+    current_trial++; 
+    Serial.println("MOTOR MOVED UP");
   }
-  else if(command.equals("DOWN")){
-    //command = "FINISHED DOWN";
-    //create_timestamp(command);
-
-    //Serial.println("Motor finished moving down.");
+  else if(previous_command.equals("DOWN")){
+    Serial.println("MOTOR MOVED DOWN");
   }
   motor_running = false;
 }
@@ -121,7 +90,6 @@ void complete_motor_movement(String command){
 void myISR() 
 {
   valve_side = (PINH & (1 << PH5)) >> PH5;
-  Serial.print("Lick detected on side: "); Serial.println(valve_side);
 
   lick_available = true;
 }
@@ -154,35 +122,36 @@ void loop()
   String command = "\0";
   // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
   if(lick_available && experiment_started) {
+    //Serial.print("Lick detected on side: ");
+    //Serial.println(valve_side);
     handle_lick();
   }
 
   // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
-    // THIS NEEDS TO BE FIXED.... IT WILL GET NULL EVERY TIME RIGHT NOW
-    complete_motor_movement(command);
+    complete_motor_movement(previous_command);
   }
 
   if (Serial.available() > 0) {
     // read until the newline char 
     command = Serial.readStringUntil('\n');
   }
-
+  // only process command cases if one has been recieved from the controller
   if (!command.equals("\0")){
-
-
     // tell door motor to move up
     if (command.equals("UP")) {
       noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
       interrupts();
-      Serial.println("Stepper moving up.");
+      //Serial.println("Stepper moving up.");
+      previous_command = command;
       motor_running = true;
     }
     // tell door motor to move down
     else if (command.equals("DOWN")){
       stepper.moveTo(STEPPER_DOWN_POSITION);
-      Serial.println("Stepper moving down.");
+      //Serial.println("Stepper moving down.");
+      previous_command = command;
       motor_running = true;
     }
     // reset the board
@@ -217,17 +186,12 @@ void loop()
     // mark t=0 time for the arduino side
     else if (command.equals("T=0")){
       program_start_time = millis();
+
       experiment_started = true;
-      //create_timestamp(command);
-      Serial.println("Program start time set.");
-    }
-    // send door motor up/down timestamps to the python controller
-    else if (command.equals("SEND TIMESTAMPS")){
-      send_timestamps();
     }
     // receive valve durations from the python controller
     else if (command.equals("REC DURATIONS")){
-      //receive_durations();
+      receive_durations();
     }
     // handle recieving program schedule
     else if (command.equals("REC SCHED")){
@@ -240,10 +204,13 @@ void loop()
     else if (command.equals("VER SCHED")){
       schedule_verification();
     }
+    else if (command.equals("VER DURATIONS")){
+      durations_verification();
+    }
     else {
       Serial.print("Unknown command received: ");
       if (command == "\0"){
-        Serial.println("null");
+        Serial.println("null command");
       }
       Serial.println(command);
     }

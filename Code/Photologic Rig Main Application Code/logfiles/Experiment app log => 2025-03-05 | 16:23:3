@@ -1,0 +1,250 @@
+2025-03-05 16:23:03,368 - INFO - Licks dataframe initialized.
+2025-03-05 16:23:03,407 - INFO - Timer 'Time Elapsed:' created.
+2025-03-05 16:23:03,416 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-05 16:23:03,421 - INFO - Timer 'State Time:' created.
+2025-03-05 16:23:03,424 - INFO - Timers displayed.
+2025-03-05 16:23:03,431 - INFO - Labeled entry 'ITI Time' created.
+2025-03-05 16:23:03,437 - INFO - Labeled entry 'TTC Time' created.
+2025-03-05 16:23:03,443 - INFO - Labeled entry 'Sample Time' created.
+2025-03-05 16:23:03,448 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-05 16:23:03,454 - INFO - Labeled entry '+/- ITI' created.
+2025-03-05 16:23:03,459 - INFO - Labeled entry '+/- TTC' created.
+2025-03-05 16:23:03,465 - INFO - Labeled entry '+/- Sample' created.
+2025-03-05 16:23:03,470 - INFO - Labeled entry '# Stimuli' created.
+2025-03-05 16:23:03,470 - INFO - Entry widgets displayed.
+2025-03-05 16:23:03,473 - INFO - Button 'Start' created.
+2025-03-05 16:23:03,476 - INFO - Button 'Reset' created.
+2025-03-05 16:23:03,476 - INFO - Main control buttons displayed.
+2025-03-05 16:23:03,479 - INFO - Button 'Calibrate Valves' created.
+2025-03-05 16:23:03,482 - INFO - Button 'Valve Control' created.
+2025-03-05 16:23:03,485 - INFO - Button 'Program Schedule' created.
+2025-03-05 16:23:03,488 - INFO - Button 'Valve / Stimuli' created.
+2025-03-05 16:23:03,491 - INFO - Button 'Lick Data' created.
+2025-03-05 16:23:03,494 - INFO - Button 'Rasterized Data' created.
+2025-03-05 16:23:03,497 - INFO - Button 'Save Data' created.
+2025-03-05 16:23:03,497 - INFO - Lower control buttons displayed.
+2025-03-05 16:23:03,511 - INFO - Status widget displayed.
+2025-03-05 16:23:03,511 - INFO - GUI setup completed.
+2025-03-05 16:23:03,523 - INFO - Labeled entry 'Valve 1' created.
+2025-03-05 16:23:03,529 - INFO - Labeled entry 'Valve 2' created.
+2025-03-05 16:23:03,535 - INFO - Labeled entry 'Valve 5' created.
+2025-03-05 16:23:03,540 - INFO - Labeled entry 'Valve 6' created.
+2025-03-05 16:23:03,540 - INFO - Stimuli frame populated.
+2025-03-05 16:23:03,543 - INFO - Button 'Generate Schedule' created.
+2025-03-05 16:23:03,543 - INFO - Filled contents of experiment control window.
+2025-03-05 16:23:03,543 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-05 16:23:03,687 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-05 16:23:03,690 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-05 16:23:03,691 - INFO - Initial valve test table created.
+2025-03-05 16:23:03,691 - INFO - Buttons created for ValveTestWindow.
+2025-03-05 16:23:03,691 - INFO - Widgets created for ValveTestWindow.
+2025-03-05 16:23:03,691 - INFO - Experiment control window centered.
+2025-03-05 16:23:03,691 - INFO - ValveTestWindow shown.
+2025-03-05 16:23:03,691 - INFO - Trace variables set up.
+2025-03-05 16:23:03,691 - INFO - Valve Test Window initialized.
+2025-03-05 16:23:03,692 - INFO - Experiment control window centered.
+2025-03-05 16:23:03,692 - INFO - MainGUI initialized.
+2025-03-05 16:23:04,697 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM1: 
+2025-03-05 16:23:04,700 - INFO - Arduino on port /dev/ttyACM1 identified as LASER
+2025-03-05 16:23:04,701 - INFO - Laser Arduino connected on port /dev/ttyACM1
+2025-03-05 16:23:05,702 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:05,712 - INFO - Arduino on port /dev/ttyACM0 identified as MOTOR
+2025-03-05 16:23:05,713 - INFO - Motor Arduino connected on port /dev/ttyACM0
+2025-03-05 16:23:05,713 - INFO - Sent b'S' to -> /dev/ttyACM1: 
+2025-03-05 16:23:05,713 - INFO - Connected to Arduino boards successfully.
+2025-03-05 16:23:05,713 - INFO - GUI started successfully.
+2025-03-05 16:23:11,555 - INFO - Labeled entry 'Valve 1' created.
+2025-03-05 16:23:11,558 - INFO - Labeled entry 'Valve 2' created.
+2025-03-05 16:23:11,561 - INFO - Labeled entry 'Valve 3' created.
+2025-03-05 16:23:11,564 - INFO - Labeled entry 'Valve 4' created.
+2025-03-05 16:23:11,567 - INFO - Labeled entry 'Valve 5' created.
+2025-03-05 16:23:11,570 - INFO - Labeled entry 'Valve 6' created.
+2025-03-05 16:23:11,573 - INFO - Labeled entry 'Valve 7' created.
+2025-03-05 16:23:11,576 - INFO - Labeled entry 'Valve 8' created.
+2025-03-05 16:23:11,576 - INFO - Stimuli frame populated.
+2025-03-05 16:23:11,576 - INFO - Button 'Generate Schedule' created.
+2025-03-05 16:23:11,576 - INFO - Filled contents of experiment control window.
+2025-03-05 16:23:18,103 - INFO - Random intervals created.
+2025-03-05 16:23:18,103 - INFO - Initialized stimuli dataframe.
+2025-03-05 16:23:18,143 - INFO - Sent b'REC VAR\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,144 - INFO - Sent b'\x08\x10' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,145 - INFO - Sent b'REC SCHED\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,146 - INFO - Sent b'\x02\x00\x03\x01\x01\x03\x00\x02\x03\x02\x01\x00\x03\x01\x00\x02\x07\x05\x06\x04\x04\x06\x05\x07\x06\x07\x04\x05\x06\x04\x05\x07' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,148 - INFO - Sent b'VER SCHED\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,156 - INFO - Arduino recieved side one as => [2 0 3 1 1 3 0 2 3 2 1 0 3 1 0 2]
+2025-03-05 16:23:18,156 - INFO - Arduino recieved side two as => [7 5 6 4 4 6 5 7 6 7 4 5 6 4 5 7]
+2025-03-05 16:23:18,156 - INFO - Motor arduino has recieved and verified experiment valve schedule
+2025-03-05 16:23:18,157 - INFO - Sent b'REC DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,158 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,164 - INFO - Sent b'VER DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,173 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-05 16:23:18,173 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-05 16:23:18,173 - INFO - Motor arduino has recieved and verified valve durations
+2025-03-05 16:23:18,173 - INFO - Started listening thread for Arduino serial input.
+2025-03-05 16:23:18,855 - INFO - Sent b'T=0\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:18,856 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-05 16:23:18,859 - INFO - Progress bar updated.
+2025-03-05 16:23:18,859 - INFO - Updated GUI for new trial 1.
+2025-03-05 16:23:18,859 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:18,859 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:23:18,859 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-05 16:23:23,860 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:23,860 - INFO - Full state time updated to 2238.
+2025-03-05 16:23:23,860 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:23:26,098 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:26,099 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:23:26,099 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-05 16:23:26,099 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 1.
+2025-03-05 16:23:31,100 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:31,103 - INFO - Progress bar updated.
+2025-03-05 16:23:31,103 - INFO - Updated GUI for new trial 2.
+2025-03-05 16:23:31,103 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:31,103 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:23:31,103 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-05 16:23:36,104 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:36,104 - INFO - Full state time updated to 2238.
+2025-03-05 16:23:36,104 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:23:38,343 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:38,343 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:23:38,343 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-05 16:23:38,343 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 2.
+2025-03-05 16:23:43,344 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:43,348 - INFO - Progress bar updated.
+2025-03-05 16:23:43,348 - INFO - Updated GUI for new trial 3.
+2025-03-05 16:23:43,348 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:43,348 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:23:43,349 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-05 16:23:48,349 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:48,349 - INFO - Full state time updated to 2238.
+2025-03-05 16:23:48,350 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:23:50,588 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:50,588 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:23:50,588 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-05 16:23:50,588 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 3.
+2025-03-05 16:23:55,590 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:23:55,593 - INFO - Progress bar updated.
+2025-03-05 16:23:55,593 - INFO - Updated GUI for new trial 4.
+2025-03-05 16:23:55,593 - INFO - Full state time updated to 5000.
+2025-03-05 16:23:55,593 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:23:55,593 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-05 16:24:00,594 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:00,594 - INFO - Full state time updated to 2238.
+2025-03-05 16:24:00,594 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:24:02,833 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:02,833 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:24:02,833 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-05 16:24:02,833 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 4.
+2025-03-05 16:24:07,834 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:07,837 - INFO - Progress bar updated.
+2025-03-05 16:24:07,837 - INFO - Updated GUI for new trial 5.
+2025-03-05 16:24:07,837 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:07,837 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:24:07,837 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-05 16:24:12,837 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:12,837 - INFO - Full state time updated to 2238.
+2025-03-05 16:24:12,837 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:24:15,076 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:15,076 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:24:15,076 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-05 16:24:15,076 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 5.
+2025-03-05 16:24:20,077 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:20,080 - INFO - Progress bar updated.
+2025-03-05 16:24:20,080 - INFO - Updated GUI for new trial 6.
+2025-03-05 16:24:20,081 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:20,081 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:24:20,081 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-05 16:24:25,081 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:25,081 - INFO - Full state time updated to 2238.
+2025-03-05 16:24:25,081 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:24:27,320 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:27,320 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:24:27,320 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-05 16:24:27,320 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 6.
+2025-03-05 16:24:32,321 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:32,325 - INFO - Progress bar updated.
+2025-03-05 16:24:32,325 - INFO - Updated GUI for new trial 7.
+2025-03-05 16:24:32,325 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:32,325 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:24:32,325 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-05 16:24:37,326 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:37,326 - INFO - Full state time updated to 2238.
+2025-03-05 16:24:37,326 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:24:39,565 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:39,565 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:24:39,565 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-05 16:24:39,565 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 7.
+2025-03-05 16:24:44,566 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:44,569 - INFO - Progress bar updated.
+2025-03-05 16:24:44,569 - INFO - Updated GUI for new trial 8.
+2025-03-05 16:24:44,569 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:44,570 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:24:44,570 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-05 16:24:49,570 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:49,571 - INFO - Full state time updated to 2238.
+2025-03-05 16:24:49,571 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:24:51,809 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:51,809 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:24:51,810 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-05 16:24:51,810 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 8.
+2025-03-05 16:24:56,811 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:24:56,814 - INFO - Progress bar updated.
+2025-03-05 16:24:56,814 - INFO - Updated GUI for new trial 9.
+2025-03-05 16:24:56,814 - INFO - Full state time updated to 5000.
+2025-03-05 16:24:56,814 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:24:56,815 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 9, completes in 5000.
+2025-03-05 16:25:01,815 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:01,816 - INFO - Full state time updated to 2238.
+2025-03-05 16:25:01,816 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:25:04,054 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:04,054 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:25:04,054 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 9, completes in 5000.
+2025-03-05 16:25:04,054 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 9.
+2025-03-05 16:25:09,055 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:09,059 - INFO - Progress bar updated.
+2025-03-05 16:25:09,059 - INFO - Updated GUI for new trial 10.
+2025-03-05 16:25:09,059 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:09,059 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:25:09,059 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 10, completes in 5000.
+2025-03-05 16:25:14,060 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:14,060 - INFO - Full state time updated to 2238.
+2025-03-05 16:25:14,060 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:25:16,298 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:16,298 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:25:16,298 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 10, completes in 5000.
+2025-03-05 16:25:16,298 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 10.
+2025-03-05 16:25:21,300 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:21,303 - INFO - Progress bar updated.
+2025-03-05 16:25:21,303 - INFO - Updated GUI for new trial 11.
+2025-03-05 16:25:21,303 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:21,303 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:25:21,303 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 11, completes in 5000.
+2025-03-05 16:25:26,304 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:26,304 - INFO - Full state time updated to 2238.
+2025-03-05 16:25:26,304 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:25:28,542 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:28,543 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:25:28,543 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 11, completes in 5000.
+2025-03-05 16:25:28,543 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 11.
+2025-03-05 16:25:33,544 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:33,547 - INFO - Progress bar updated.
+2025-03-05 16:25:33,547 - INFO - Updated GUI for new trial 12.
+2025-03-05 16:25:33,547 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:33,547 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:25:33,547 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 12, completes in 5000.
+2025-03-05 16:25:38,548 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:38,548 - INFO - Full state time updated to 2238.
+2025-03-05 16:25:38,548 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:25:40,787 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:40,787 - INFO - Updated GUI on state change to TTC.
+2025-03-05 16:25:40,787 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 12, completes in 5000.
+2025-03-05 16:25:40,787 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 12.
+2025-03-05 16:25:45,788 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:45,792 - INFO - Progress bar updated.
+2025-03-05 16:25:45,792 - INFO - Updated GUI for new trial 13.
+2025-03-05 16:25:45,792 - INFO - Full state time updated to 5000.
+2025-03-05 16:25:45,792 - INFO - Updated GUI on state change to ITI.
+2025-03-05 16:25:45,793 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 13, completes in 5000.
+2025-03-05 16:25:50,793 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-05 16:25:50,793 - INFO - Full state time updated to 2238.
+2025-03-05 16:25:50,794 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-05 16:25:52,885 - INFO - Application closed.

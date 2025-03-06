@@ -65,7 +65,7 @@ class GUIUtils:
             button.grid(row=0, sticky="nsew", ipadx=10, ipady=10)
 
             frame.grid_columnconfigure(0, weight=1)
-            logger.debug(f"Button '{button_text}' created.")
+            logger.info(f"Button '{button_text}' created.")
             return frame, button
         except Exception as e:
             logger.error(f"Error creating button '{button_text}': {e}")
@@ -98,7 +98,7 @@ class GUIUtils:
             )
             time_label.grid(row=0, column=1)
 
-            logger.debug(f"Timer '{timer_name}' created.")
+            logger.info(f"Timer '{timer_name}' created.")
             return frame, label, time_label
         except Exception as e:
             logger.error(f"Error creating timer '{timer_name}': {e}")
@@ -166,7 +166,7 @@ class GUIUtils:
 
             # Set the window's position
             window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-            logger.debug("Experiment control window centered.")
+            logger.info("Experiment control window centered.")
         except Exception as e:
             logger.error(f"Error centering experiment control window: {e}")
             raise
