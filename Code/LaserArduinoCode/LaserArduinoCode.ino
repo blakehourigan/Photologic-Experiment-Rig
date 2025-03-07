@@ -9,7 +9,6 @@
 
 // side two definitions
 #define SIDE_TWO_WRITE PORTA
-
 // digital 23, from photologic
 #define OPTICAL_DETECTOR_BIT_SIDE2 PA1   
 // digital 25, to led for side 2                                        

@@ -1,0 +1,385 @@
+2025-03-07 10:00:20,566 - INFO - Licks dataframe initialized.
+2025-03-07 10:00:20,607 - INFO - Timer 'Time Elapsed:' created.
+2025-03-07 10:00:20,615 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-07 10:00:20,621 - INFO - Timer 'State Time:' created.
+2025-03-07 10:00:20,624 - INFO - Timers displayed.
+2025-03-07 10:00:20,632 - INFO - Labeled entry 'ITI Time' created.
+2025-03-07 10:00:20,637 - INFO - Labeled entry 'TTC Time' created.
+2025-03-07 10:00:20,643 - INFO - Labeled entry 'Sample Time' created.
+2025-03-07 10:00:20,649 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-07 10:00:20,654 - INFO - Labeled entry '+/- ITI' created.
+2025-03-07 10:00:20,660 - INFO - Labeled entry '+/- TTC' created.
+2025-03-07 10:00:20,665 - INFO - Labeled entry '+/- Sample' created.
+2025-03-07 10:00:20,671 - INFO - Labeled entry '# Stimuli' created.
+2025-03-07 10:00:20,671 - INFO - Entry widgets displayed.
+2025-03-07 10:00:20,674 - INFO - Button 'Start' created.
+2025-03-07 10:00:20,677 - INFO - Button 'Reset' created.
+2025-03-07 10:00:20,677 - INFO - Main control buttons displayed.
+2025-03-07 10:00:20,680 - INFO - Button 'Calibrate Valves' created.
+2025-03-07 10:00:20,683 - INFO - Button 'Valve Control' created.
+2025-03-07 10:00:20,686 - INFO - Button 'Program Schedule' created.
+2025-03-07 10:00:20,689 - INFO - Button 'Valve / Stimuli' created.
+2025-03-07 10:00:20,692 - INFO - Button 'Lick Data' created.
+2025-03-07 10:00:20,694 - INFO - Button 'Rasterized Data' created.
+2025-03-07 10:00:20,697 - INFO - Button 'Save Data' created.
+2025-03-07 10:00:20,697 - INFO - Lower control buttons displayed.
+2025-03-07 10:00:20,712 - INFO - Status widget displayed.
+2025-03-07 10:00:20,712 - INFO - GUI setup completed.
+2025-03-07 10:00:20,723 - INFO - Labeled entry 'Valve 1' created.
+2025-03-07 10:00:20,729 - INFO - Labeled entry 'Valve 2' created.
+2025-03-07 10:00:20,735 - INFO - Labeled entry 'Valve 5' created.
+2025-03-07 10:00:20,740 - INFO - Labeled entry 'Valve 6' created.
+2025-03-07 10:00:20,740 - INFO - Stimuli frame populated.
+2025-03-07 10:00:20,743 - INFO - Button 'Generate Schedule' created.
+2025-03-07 10:00:20,743 - INFO - Filled contents of experiment control window.
+2025-03-07 10:00:20,743 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-07 10:00:20,883 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-07 10:00:20,886 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-07 10:00:20,886 - INFO - Initial valve test table created.
+2025-03-07 10:00:20,886 - INFO - Buttons created for ValveTestWindow.
+2025-03-07 10:00:20,886 - INFO - Widgets created for ValveTestWindow.
+2025-03-07 10:00:20,886 - INFO - Experiment control window centered.
+2025-03-07 10:00:20,886 - INFO - ValveTestWindow shown.
+2025-03-07 10:00:20,887 - INFO - Trace variables set up.
+2025-03-07 10:00:20,887 - INFO - Valve Test Window initialized.
+2025-03-07 10:00:20,888 - INFO - Experiment control window centered.
+2025-03-07 10:00:20,888 - INFO - MainGUI initialized.
+2025-03-07 10:00:21,896 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:22,142 - INFO - Arduino on port /dev/ttyACM0 identified as MOTOR
+2025-03-07 10:00:22,147 - INFO - Motor Arduino connected on port /dev/ttyACM0
+2025-03-07 10:00:22,147 - INFO - Connected to Arduino boards successfully.
+2025-03-07 10:00:22,147 - INFO - GUI started successfully.
+2025-03-07 10:00:25,532 - INFO - Random intervals created.
+2025-03-07 10:00:25,533 - INFO - Initialized stimuli dataframe.
+2025-03-07 10:00:25,556 - INFO - Sent b'REC VAR\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,557 - INFO - Sent b'\x04\x08' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,558 - INFO - Sent b'REC SCHED\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,559 - INFO - Sent b'\x01\x00\x00\x01\x00\x01\x00\x01\x04\x05\x05\x04\x05\x04\x05\x04' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,560 - INFO - Sent b'VER SCHED\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,566 - INFO - Arduino recieved side one as => [1 0 0 1 0 1 0 1]
+2025-03-07 10:00:25,566 - INFO - Arduino recieved side two as => [4 5 5 4 5 4 5 4]
+2025-03-07 10:00:25,566 - INFO - Motor arduino has recieved and verified experiment valve schedule
+2025-03-07 10:00:25,567 - INFO - Sent b'REC DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,568 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,573 - INFO - Sent b'VER DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:25,582 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-07 10:00:25,583 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-07 10:00:25,583 - INFO - Motor arduino has recieved and verified valve durations
+2025-03-07 10:00:25,583 - INFO - Started listening thread for Arduino serial input.
+2025-03-07 10:00:28,140 - INFO - Sent b'T=0\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:28,141 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-07 10:00:28,144 - INFO - Progress bar updated.
+2025-03-07 10:00:28,144 - INFO - Updated GUI for new trial 1.
+2025-03-07 10:00:28,145 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:28,145 - INFO - Updated GUI on state change to ITI.
+2025-03-07 10:00:28,145 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-07 10:00:30,264 - INFO - Received -> STIMULUS TWO|82 from arduino
+2025-03-07 10:00:33,146 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:33,146 - INFO - Full state time updated to 2238.
+2025-03-07 10:00:33,146 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-07 10:00:33,217 - INFO - Received -> STIMULUS TWO|83 from arduino
+2025-03-07 10:00:33,557 - INFO - Received -> STIMULUS TWO|80 from arduino
+2025-03-07 10:00:34,085 - INFO - Received -> STIMULUS TWO|70 from arduino
+2025-03-07 10:00:34,315 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:34,544 - INFO - Received -> STIMULUS TWO|73 from arduino
+2025-03-07 10:00:34,807 - INFO - Received -> STIMULUS TWO|59 from arduino
+2025-03-07 10:00:35,085 - INFO - Received -> STIMULUS TWO|59 from arduino
+2025-03-07 10:00:35,384 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:35,385 - INFO - Updated GUI on state change to TTC.
+2025-03-07 10:00:35,385 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-07 10:00:35,385 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 1.
+2025-03-07 10:00:35,523 - INFO - Received -> STIMULUS TWO|98 from arduino
+2025-03-07 10:00:35,588 - INFO - Lick data recorded for: STIMULUS TWO|98
+2025-03-07 10:00:35,879 - INFO - Received -> STIMULUS TWO|97 from arduino
+2025-03-07 10:00:35,925 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-07 10:00:36,089 - INFO - Lick data recorded for: STIMULUS TWO|97
+2025-03-07 10:00:36,298 - INFO - Received -> STIMULUS TWO|79 from arduino
+2025-03-07 10:00:36,340 - INFO - Lick data recorded for: STIMULUS TWO|79
+2025-03-07 10:00:36,341 - INFO - Sent b'BEGIN OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:36,341 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:36,341 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-07 10:00:36,341 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 1, completes in 5000.
+2025-03-07 10:00:36,850 - INFO - Received -> STIMULUS TWO|321 from arduino
+2025-03-07 10:00:37,067 - INFO - Received -> STIMULUS TWO|78 from arduino
+2025-03-07 10:00:37,091 - INFO - Lick data recorded for: STIMULUS TWO|321
+2025-03-07 10:00:37,091 - INFO - Lick data recorded for: STIMULUS TWO|78
+2025-03-07 10:00:37,313 - INFO - Received -> STIMULUS TWO|86 from arduino
+2025-03-07 10:00:37,342 - INFO - Lick data recorded for: STIMULUS TWO|86
+2025-03-07 10:00:37,519 - INFO - Received -> STIMULUS TWO|67 from arduino
+2025-03-07 10:00:37,593 - INFO - Lick data recorded for: STIMULUS TWO|67
+2025-03-07 10:00:37,703 - INFO - Received -> STIMULUS TWO|62 from arduino
+2025-03-07 10:00:37,843 - INFO - Lick data recorded for: STIMULUS TWO|62
+2025-03-07 10:00:37,887 - INFO - Received -> STIMULUS TWO|66 from arduino
+2025-03-07 10:00:38,094 - INFO - Lick data recorded for: STIMULUS TWO|66
+2025-03-07 10:00:38,124 - INFO - Received -> STIMULUS TWO|92 from arduino
+2025-03-07 10:00:38,341 - INFO - Received -> STIMULUS TWO|81 from arduino
+2025-03-07 10:00:38,344 - INFO - Lick data recorded for: STIMULUS TWO|92
+2025-03-07 10:00:38,344 - INFO - Lick data recorded for: STIMULUS TWO|81
+2025-03-07 10:00:38,497 - INFO - Received -> STIMULUS TWO|119 from arduino
+2025-03-07 10:00:38,595 - INFO - Lick data recorded for: STIMULUS TWO|119
+2025-03-07 10:00:38,988 - INFO - Received -> STIMULUS TWO|69 from arduino
+2025-03-07 10:00:39,095 - INFO - Lick data recorded for: STIMULUS TWO|69
+2025-03-07 10:00:39,550 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:00:39,596 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:00:39,877 - INFO - Received -> STIMULUS ONE|107 from arduino
+2025-03-07 10:00:40,097 - INFO - Lick data recorded for: STIMULUS ONE|107
+2025-03-07 10:00:40,126 - INFO - Received -> STIMULUS ONE|126 from arduino
+2025-03-07 10:00:40,221 - INFO - Received -> STIMULUS ONE|38 from arduino
+2025-03-07 10:00:40,348 - INFO - Lick data recorded for: STIMULUS ONE|126
+2025-03-07 10:00:40,348 - INFO - Lick data recorded for: STIMULUS ONE|38
+2025-03-07 10:00:40,454 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:00:40,599 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:00:40,602 - INFO - Received -> STIMULUS TWO|63 from arduino
+2025-03-07 10:00:40,749 - INFO - Received -> STIMULUS TWO|81 from arduino
+2025-03-07 10:00:40,849 - INFO - Lick data recorded for: STIMULUS TWO|63
+2025-03-07 10:00:40,849 - INFO - Lick data recorded for: STIMULUS TWO|81
+2025-03-07 10:00:40,873 - INFO - Received -> STIMULUS TWO|63 from arduino
+2025-03-07 10:00:41,011 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:41,100 - INFO - Lick data recorded for: STIMULUS TWO|63
+2025-03-07 10:00:41,100 - INFO - Lick data recorded for: STIMULUS TWO|72
+2025-03-07 10:00:41,159 - INFO - Received -> STIMULUS TWO|80 from arduino
+2025-03-07 10:00:41,298 - INFO - Received -> STIMULUS TWO|77 from arduino
+2025-03-07 10:00:41,342 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:41,342 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:41,343 - INFO - Lick timestamps retrieved for trial 1.
+2025-03-07 10:00:41,379 - INFO - Progress bar updated.
+2025-03-07 10:00:41,379 - INFO - Updated GUI for new trial 2.
+2025-03-07 10:00:41,380 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:41,380 - INFO - Updated GUI on state change to ITI.
+2025-03-07 10:00:41,380 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-07 10:00:41,433 - INFO - Received -> STIMULUS TWO|60 from arduino
+2025-03-07 10:00:41,740 - INFO - Received -> STIMULUS TWO|95 from arduino
+2025-03-07 10:00:41,867 - INFO - Received -> STIMULUS TWO|100 from arduino
+2025-03-07 10:00:42,027 - INFO - Received -> STIMULUS TWO|75 from arduino
+2025-03-07 10:00:42,155 - INFO - Received -> STIMULUS TWO|42 from arduino
+2025-03-07 10:00:42,301 - INFO - Received -> STIMULUS TWO|68 from arduino
+2025-03-07 10:00:42,395 - INFO - Received -> STIMULUS TWO|64 from arduino
+2025-03-07 10:00:42,539 - INFO - Received -> STIMULUS TWO|54 from arduino
+2025-03-07 10:00:42,671 - INFO - Received -> STIMULUS TWO|64 from arduino
+2025-03-07 10:00:42,801 - INFO - Received -> STIMULUS TWO|66 from arduino
+2025-03-07 10:00:42,921 - INFO - Received -> STIMULUS TWO|56 from arduino
+2025-03-07 10:00:43,056 - INFO - Received -> STIMULUS TWO|50 from arduino
+2025-03-07 10:00:43,309 - INFO - Received -> STIMULUS TWO|76 from arduino
+2025-03-07 10:00:43,579 - INFO - Received -> STIMULUS TWO|203 from arduino
+2025-03-07 10:00:43,723 - INFO - Received -> STIMULUS TWO|41 from arduino
+2025-03-07 10:00:43,923 - INFO - Received -> STIMULUS TWO|96 from arduino
+2025-03-07 10:00:44,129 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-07 10:00:44,522 - INFO - Received -> STIMULUS TWO|84 from arduino
+2025-03-07 10:00:44,669 - INFO - Received -> STIMULUS TWO|75 from arduino
+2025-03-07 10:00:44,820 - INFO - Received -> STIMULUS TWO|69 from arduino
+2025-03-07 10:00:44,969 - INFO - Received -> STIMULUS TWO|75 from arduino
+2025-03-07 10:00:45,116 - INFO - Received -> STIMULUS TWO|58 from arduino
+2025-03-07 10:00:45,267 - INFO - Received -> STIMULUS TWO|52 from arduino
+2025-03-07 10:00:45,422 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:45,571 - INFO - Received -> STIMULUS TWO|73 from arduino
+2025-03-07 10:00:45,729 - INFO - Received -> STIMULUS TWO|60 from arduino
+2025-03-07 10:00:46,380 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:46,380 - INFO - Full state time updated to 2238.
+2025-03-07 10:00:46,380 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-07 10:00:48,618 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:48,619 - INFO - Updated GUI on state change to TTC.
+2025-03-07 10:00:48,619 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-07 10:00:48,619 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 2.
+2025-03-07 10:00:49,154 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-07 10:00:49,805 - INFO - Received -> STIMULUS TWO|87 from arduino
+2025-03-07 10:00:49,855 - INFO - Lick data recorded for: STIMULUS TWO|87
+2025-03-07 10:00:51,657 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:51,856 - INFO - Lick data recorded for: STIMULUS TWO|72
+2025-03-07 10:00:51,993 - INFO - Received -> STIMULUS TWO|92 from arduino
+2025-03-07 10:00:52,107 - INFO - Lick data recorded for: STIMULUS TWO|92
+2025-03-07 10:00:52,107 - INFO - Sent b'BEGIN OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:52,107 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:52,108 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-07 10:00:52,108 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 2, completes in 5000.
+2025-03-07 10:00:52,304 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:52,358 - INFO - Lick data recorded for: STIMULUS TWO|72
+2025-03-07 10:00:52,614 - INFO - Received -> STIMULUS TWO|79 from arduino
+2025-03-07 10:00:52,859 - INFO - Lick data recorded for: STIMULUS TWO|79
+2025-03-07 10:00:52,955 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:53,110 - INFO - Lick data recorded for: STIMULUS TWO|72
+2025-03-07 10:00:53,139 - INFO - Received -> STIMULUS TWO|72 from arduino
+2025-03-07 10:00:53,291 - INFO - Received -> STIMULUS TWO|65 from arduino
+2025-03-07 10:00:53,360 - INFO - Lick data recorded for: STIMULUS TWO|72
+2025-03-07 10:00:53,360 - INFO - Lick data recorded for: STIMULUS TWO|65
+2025-03-07 10:00:53,442 - INFO - Received -> STIMULUS TWO|56 from arduino
+2025-03-07 10:00:53,597 - INFO - Received -> STIMULUS TWO|67 from arduino
+2025-03-07 10:00:53,611 - INFO - Lick data recorded for: STIMULUS TWO|56
+2025-03-07 10:00:53,611 - INFO - Lick data recorded for: STIMULUS TWO|67
+2025-03-07 10:00:53,754 - INFO - Received -> STIMULUS TWO|76 from arduino
+2025-03-07 10:00:53,862 - INFO - Lick data recorded for: STIMULUS TWO|76
+2025-03-07 10:00:53,905 - INFO - Received -> STIMULUS TWO|60 from arduino
+2025-03-07 10:00:54,061 - INFO - Received -> STIMULUS TWO|62 from arduino
+2025-03-07 10:00:54,113 - INFO - Lick data recorded for: STIMULUS TWO|60
+2025-03-07 10:00:54,113 - INFO - Lick data recorded for: STIMULUS TWO|62
+2025-03-07 10:00:54,217 - INFO - Received -> STIMULUS TWO|65 from arduino
+2025-03-07 10:00:54,364 - INFO - Lick data recorded for: STIMULUS TWO|65
+2025-03-07 10:00:54,384 - INFO - Received -> STIMULUS TWO|56 from arduino
+2025-03-07 10:00:54,562 - INFO - Received -> STIMULUS TWO|134 from arduino
+2025-03-07 10:00:54,614 - INFO - Lick data recorded for: STIMULUS TWO|56
+2025-03-07 10:00:54,615 - INFO - Lick data recorded for: STIMULUS TWO|134
+2025-03-07 10:00:54,712 - INFO - Received -> STIMULUS TWO|108 from arduino
+2025-03-07 10:00:54,865 - INFO - Lick data recorded for: STIMULUS TWO|108
+2025-03-07 10:00:55,183 - INFO - Received -> STIMULUS TWO|70 from arduino
+2025-03-07 10:00:55,343 - INFO - Received -> STIMULUS TWO|61 from arduino
+2025-03-07 10:00:55,366 - INFO - Lick data recorded for: STIMULUS TWO|70
+2025-03-07 10:00:55,366 - INFO - Lick data recorded for: STIMULUS TWO|61
+2025-03-07 10:00:55,495 - INFO - Received -> STIMULUS TWO|59 from arduino
+2025-03-07 10:00:55,617 - INFO - Lick data recorded for: STIMULUS TWO|59
+2025-03-07 10:00:55,662 - INFO - Received -> STIMULUS TWO|62 from arduino
+2025-03-07 10:00:55,790 - INFO - Received -> STIMULUS TWO|89 from arduino
+2025-03-07 10:00:55,868 - INFO - Lick data recorded for: STIMULUS TWO|62
+2025-03-07 10:00:55,868 - INFO - Lick data recorded for: STIMULUS TWO|89
+2025-03-07 10:00:55,957 - INFO - Received -> STIMULUS TWO|63 from arduino
+2025-03-07 10:00:56,119 - INFO - Lick data recorded for: STIMULUS TWO|63
+2025-03-07 10:00:56,121 - INFO - Received -> STIMULUS TWO|73 from arduino
+2025-03-07 10:00:56,369 - INFO - Lick data recorded for: STIMULUS TWO|73
+2025-03-07 10:00:56,756 - INFO - Received -> STIMULUS TWO|77 from arduino
+2025-03-07 10:00:56,870 - INFO - Lick data recorded for: STIMULUS TWO|77
+2025-03-07 10:00:57,100 - INFO - Received -> STIMULUS TWO|92 from arduino
+2025-03-07 10:00:57,108 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:57,108 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:00:57,109 - INFO - Lick timestamps retrieved for trial 2.
+2025-03-07 10:00:57,138 - INFO - Progress bar updated.
+2025-03-07 10:00:57,138 - INFO - Updated GUI for new trial 3.
+2025-03-07 10:00:57,138 - INFO - Full state time updated to 5000.
+2025-03-07 10:00:57,138 - INFO - Updated GUI on state change to ITI.
+2025-03-07 10:00:57,138 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-07 10:00:57,873 - INFO - Received -> STIMULUS ONE|69 from arduino
+2025-03-07 10:00:58,062 - INFO - Received -> STIMULUS ONE|79 from arduino
+2025-03-07 10:00:59,459 - INFO - Received -> STIMULUS ONE|85 from arduino
+2025-03-07 10:00:59,672 - INFO - Received -> STIMULUS ONE|99 from arduino
+2025-03-07 10:00:59,881 - INFO - Received -> STIMULUS ONE|106 from arduino
+2025-03-07 10:00:59,885 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-07 10:01:00,037 - INFO - Received -> STIMULUS TWO|90 from arduino
+2025-03-07 10:01:00,172 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:00,237 - INFO - Received -> STIMULUS TWO|93 from arduino
+2025-03-07 10:01:00,356 - INFO - Received -> STIMULUS ONE|88 from arduino
+2025-03-07 10:01:00,450 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:01:02,139 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-07 10:01:02,139 - INFO - Full state time updated to 2238.
+2025-03-07 10:01:02,139 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-07 10:01:04,378 - INFO - Full state time updated to 5000.
+2025-03-07 10:01:04,378 - INFO - Updated GUI on state change to TTC.
+2025-03-07 10:01:04,378 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-07 10:01:04,378 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 3.
+2025-03-07 10:01:04,783 - INFO - Received -> STIMULUS ONE|100 from arduino
+2025-03-07 10:01:04,873 - INFO - Lick data recorded for: STIMULUS ONE|100
+2025-03-07 10:01:04,914 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-07 10:01:04,935 - INFO - Received -> STIMULUS ONE|76 from arduino
+2025-03-07 10:01:05,107 - INFO - Received -> STIMULUS ONE|60 from arduino
+2025-03-07 10:01:05,124 - INFO - Lick data recorded for: STIMULUS ONE|76
+2025-03-07 10:01:05,124 - INFO - Lick data recorded for: STIMULUS ONE|60
+2025-03-07 10:01:05,125 - INFO - Sent b'BEGIN OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:01:05,125 - INFO - Full state time updated to 5000.
+2025-03-07 10:01:05,125 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-07 10:01:05,125 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 3, completes in 5000.
+2025-03-07 10:01:05,324 - INFO - Received -> STIMULUS ONE|80 from arduino
+2025-03-07 10:01:05,375 - INFO - Lick data recorded for: STIMULUS ONE|80
+2025-03-07 10:01:05,623 - INFO - Received -> STIMULUS ONE|81 from arduino
+2025-03-07 10:01:05,626 - INFO - Lick data recorded for: STIMULUS ONE|81
+2025-03-07 10:01:05,770 - INFO - Received -> STIMULUS ONE|56 from arduino
+2025-03-07 10:01:05,876 - INFO - Lick data recorded for: STIMULUS ONE|56
+2025-03-07 10:01:05,955 - INFO - Received -> STIMULUS ONE|69 from arduino
+2025-03-07 10:01:06,127 - INFO - Lick data recorded for: STIMULUS ONE|69
+2025-03-07 10:01:06,147 - INFO - Received -> STIMULUS TWO|101 from arduino
+2025-03-07 10:01:06,250 - INFO - Received -> STIMULUS ONE|64 from arduino
+2025-03-07 10:01:06,311 - INFO - Received -> STIMULUS TWO|38 from arduino
+2025-03-07 10:01:06,378 - INFO - Lick data recorded for: STIMULUS TWO|101
+2025-03-07 10:01:06,378 - INFO - Lick data recorded for: STIMULUS ONE|64
+2025-03-07 10:01:06,379 - INFO - Lick data recorded for: STIMULUS TWO|38
+2025-03-07 10:01:06,401 - INFO - Received -> STIMULUS ONE|53 from arduino
+2025-03-07 10:01:06,483 - INFO - Received -> STIMULUS TWO|57 from arduino
+2025-03-07 10:01:06,561 - INFO - Received -> STIMULUS ONE|53 from arduino
+2025-03-07 10:01:06,629 - INFO - Lick data recorded for: STIMULUS ONE|53
+2025-03-07 10:01:06,630 - INFO - Lick data recorded for: STIMULUS TWO|57
+2025-03-07 10:01:06,630 - INFO - Lick data recorded for: STIMULUS ONE|53
+2025-03-07 10:01:06,630 - INFO - Received -> STIMULUS TWO|45 from arduino
+2025-03-07 10:01:06,709 - INFO - Received -> STIMULUS ONE|41 from arduino
+2025-03-07 10:01:06,803 - INFO - Received -> STIMULUS TWO|68 from arduino
+2025-03-07 10:01:06,880 - INFO - Lick data recorded for: STIMULUS TWO|45
+2025-03-07 10:01:06,881 - INFO - Lick data recorded for: STIMULUS ONE|41
+2025-03-07 10:01:06,881 - INFO - Lick data recorded for: STIMULUS TWO|68
+2025-03-07 10:01:06,917 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:06,966 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:01:07,098 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:07,132 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:07,132 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:01:07,132 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:07,167 - INFO - Received -> STIMULUS TWO|95 from arduino
+2025-03-07 10:01:07,290 - INFO - Received -> STIMULUS ONE|96 from arduino
+2025-03-07 10:01:07,383 - INFO - Lick data recorded for: STIMULUS TWO|95
+2025-03-07 10:01:07,383 - INFO - Lick data recorded for: STIMULUS ONE|96
+2025-03-07 10:01:07,445 - INFO - Received -> STIMULUS ONE|40 from arduino
+2025-03-07 10:01:07,479 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:01:07,634 - INFO - Lick data recorded for: STIMULUS ONE|40
+2025-03-07 10:01:07,634 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:01:07,634 - INFO - Received -> STIMULUS TWO|59 from arduino
+2025-03-07 10:01:07,662 - INFO - Received -> STIMULUS ONE|84 from arduino
+2025-03-07 10:01:07,737 - INFO - Received -> STIMULUS ONE|46 from arduino
+2025-03-07 10:01:07,819 - INFO - Received -> STIMULUS TWO|57 from arduino
+2025-03-07 10:01:07,885 - INFO - Lick data recorded for: STIMULUS TWO|59
+2025-03-07 10:01:07,885 - INFO - Lick data recorded for: STIMULUS ONE|84
+2025-03-07 10:01:07,885 - INFO - Lick data recorded for: STIMULUS ONE|46
+2025-03-07 10:01:07,886 - INFO - Lick data recorded for: STIMULUS TWO|57
+2025-03-07 10:01:07,925 - INFO - Received -> STIMULUS ONE|51 from arduino
+2025-03-07 10:01:08,007 - INFO - Received -> STIMULUS TWO|57 from arduino
+2025-03-07 10:01:08,136 - INFO - Lick data recorded for: STIMULUS ONE|51
+2025-03-07 10:01:08,137 - INFO - Lick data recorded for: STIMULUS TWO|57
+2025-03-07 10:01:08,191 - INFO - Received -> STIMULUS TWO|25 from arduino
+2025-03-07 10:01:08,257 - INFO - Received -> STIMULUS ONE|89 from arduino
+2025-03-07 10:01:08,375 - INFO - Received -> STIMULUS TWO|25 from arduino
+2025-03-07 10:01:08,387 - INFO - Lick data recorded for: STIMULUS TWO|25
+2025-03-07 10:01:08,388 - INFO - Lick data recorded for: STIMULUS ONE|89
+2025-03-07 10:01:08,388 - INFO - Lick data recorded for: STIMULUS TWO|25
+2025-03-07 10:01:08,438 - INFO - Received -> STIMULUS ONE|88 from arduino
+2025-03-07 10:01:08,523 - INFO - Received -> STIMULUS TWO|58 from arduino
+2025-03-07 10:01:08,639 - INFO - Lick data recorded for: STIMULUS ONE|88
+2025-03-07 10:01:08,639 - INFO - Lick data recorded for: STIMULUS TWO|58
+2025-03-07 10:01:08,647 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:08,695 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:01:08,822 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:08,875 - INFO - Received -> STIMULUS TWO|77 from arduino
+2025-03-07 10:01:08,890 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:08,890 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:01:08,890 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:08,891 - INFO - Lick data recorded for: STIMULUS TWO|77
+2025-03-07 10:01:08,995 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:09,035 - INFO - Received -> STIMULUS TWO|66 from arduino
+2025-03-07 10:01:09,137 - INFO - Received -> STIMULUS ONE|47 from arduino
+2025-03-07 10:01:09,141 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:09,142 - INFO - Lick data recorded for: STIMULUS TWO|66
+2025-03-07 10:01:09,142 - INFO - Lick data recorded for: STIMULUS ONE|47
+2025-03-07 10:01:09,207 - INFO - Received -> STIMULUS TWO|47 from arduino
+2025-03-07 10:01:09,334 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:09,379 - INFO - Received -> STIMULUS TWO|71 from arduino
+2025-03-07 10:01:09,392 - INFO - Lick data recorded for: STIMULUS TWO|47
+2025-03-07 10:01:09,393 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:09,393 - INFO - Lick data recorded for: STIMULUS TWO|71
+2025-03-07 10:01:09,547 - INFO - Received -> STIMULUS ONE|25 from arduino
+2025-03-07 10:01:09,583 - INFO - Received -> STIMULUS TWO|60 from arduino
+2025-03-07 10:01:09,644 - INFO - Lick data recorded for: STIMULUS ONE|25
+2025-03-07 10:01:09,644 - INFO - Lick data recorded for: STIMULUS TWO|60
+2025-03-07 10:01:09,698 - INFO - Received -> STIMULUS ONE|77 from arduino
+2025-03-07 10:01:09,878 - INFO - Received -> STIMULUS ONE|103 from arduino
+2025-03-07 10:01:09,895 - INFO - Lick data recorded for: STIMULUS ONE|77
+2025-03-07 10:01:09,900 - INFO - Lick data recorded for: STIMULUS ONE|103
+2025-03-07 10:01:10,030 - INFO - Received -> STIMULUS ONE|49 from arduino
+2025-03-07 10:01:10,126 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-07 10:01:10,126 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM0: 
+2025-03-07 10:01:10,127 - INFO - Lick timestamps retrieved for trial 3.
+2025-03-07 10:01:10,146 - INFO - Received -> STIMULUS TWO|85 from arduino
+2025-03-07 10:01:10,156 - INFO - Progress bar updated.
+2025-03-07 10:01:10,156 - INFO - Updated GUI for new trial 4.
+2025-03-07 10:01:10,156 - INFO - Full state time updated to 5000.
+2025-03-07 10:01:10,157 - INFO - Updated GUI on state change to ITI.
+2025-03-07 10:01:10,157 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-07 10:01:10,436 - INFO - Received -> STIMULUS TWO|98 from arduino
+2025-03-07 10:01:10,576 - INFO - Received -> STIMULUS TWO|69 from arduino
+2025-03-07 10:01:12,902 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-07 10:01:15,157 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-07 10:01:15,157 - INFO - Full state time updated to 2238.
+2025-03-07 10:01:15,157 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-07 10:01:16,397 - INFO - Full state time updated to 0.
+2025-03-07 10:01:16,397 - INFO - Updated GUI on state change to Idle.
+2025-03-07 10:01:16,397 - INFO - Program stopped... waiting to finalize...
+2025-03-07 10:01:16,655 - INFO - Application closed.

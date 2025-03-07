@@ -85,89 +85,76 @@ class ArduinoData:
             lick_data.side_one_licks += 1
         elif data[:12] == "STIMULUS TWO":
             lick_data.side_two_licks += 1
-        duration = data[13:]
+        duration = np.float64(data[13:])
 
         self.record_lick_data(data, duration, state)
-
-    def process_laser(self, data, state, trigger):
-        lick_data = self.exp_data.lick_data
-        match state:
-            case "TTC":
-                self.handle_licks(data, lick_data, state)
-
-                # insert the values held in licks for respective sides in a shorter variable name
-                side_one = self.exp_data.lick_data.side_one_licks
-                side_two = self.exp_data.lick_data.side_two_licks
-                # if 3 or more licks in a ttc time, jump straight to sample
-                if side_one > 2 or side_two > 2:
-                    trigger("SAMPLE")
-
-            case "SAMPLE":
-                self.handle_licks(data, lick_data, state)
-
-    def process_motor(self, data):
-        """
-        In this method we process a command given us by the motor.
-        This method is most often called to insert a door movement timestamp,
-        but is also used for valve testing purposes.
-        """
-        if data == "MOTOR MOVED DOWN":
-            # MOTOR MOVED DOWN | RELATIVE TO START | RELATIVE TO TRIAL
-            lick_data = self.exp_data.lick_data
-
-            current_trial = self.exp_data.current_trial_number
-
-            start_time = self.exp_data.start_time
-            trial_start_time = self.exp_data.trial_start_time
-
-            time_since_start = round(time.time() - start_time, 3)
-            time_since_trial_start = round(time.time() - trial_start_time, 3)
-
-            lick_data.insert_row_into_df(
-                current_trial,
-                None,
-                None,
-                time_since_start,
-                time_since_trial_start,
-                "MOTOR DOWN",
-            )
-
-        elif data == "MOTOR MOVED UP":
-            lick_data = self.exp_data.lick_data
-
-            current_trial = self.exp_data.current_trial_number
-
-            start_time = self.exp_data.start_time
-            trial_start_time = self.exp_data.trial_start_time
-
-            time_since_start = round(time.time() - start_time, 3)
-            time_since_trial_start = round(time.time() - trial_start_time, 3)
-
-            lick_data.insert_row_into_df(
-                current_trial,
-                None,
-                None,
-                time_since_start,
-                time_since_trial_start,
-                "MOTOR UP",
-            )
-
-        elif data == "FINISHED PAIR":
-            self.valve_test_logic.append_to_volumes()
-        elif "TESTING COMPLETE" in data:
-            self.valve_test_logic.begin_updating_opening_times(data)
 
     def process_data(self, source, data, state, trigger):
         """
         Process data received from the Arduino.
         """
         try:
-            match source:
-                case "laser":
-                    self.process_laser(data, state, trigger)
+            lick_data = self.exp_data.lick_data
+            if data == "MOTOR MOVED DOWN":
+                # MOTOR MOVED DOWN | RELATIVE TO START | RELATIVE TO TRIAL
+                lick_data = self.exp_data.lick_data
 
-                case "motor":
-                    self.process_motor(data)
+                current_trial = self.exp_data.current_trial_number
+
+                start_time = self.exp_data.start_time
+                trial_start_time = self.exp_data.trial_start_time
+
+                time_since_start = round(time.time() - start_time, 3)
+                time_since_trial_start = round(time.time() - trial_start_time, 3)
+
+                lick_data.insert_row_into_df(
+                    current_trial,
+                    None,
+                    None,
+                    time_since_start,
+                    time_since_trial_start,
+                    "MOTOR DOWN",
+                )
+
+            elif data == "MOTOR MOVED UP":
+                lick_data = self.exp_data.lick_data
+
+                current_trial = self.exp_data.current_trial_number
+
+                start_time = self.exp_data.start_time
+                trial_start_time = self.exp_data.trial_start_time
+
+                time_since_start = round(time.time() - start_time, 3)
+                time_since_trial_start = round(time.time() - trial_start_time, 3)
+
+                lick_data.insert_row_into_df(
+                    current_trial,
+                    None,
+                    None,
+                    time_since_start,
+                    time_since_trial_start,
+                    "MOTOR UP",
+                )
+
+            elif data == "FINISHED PAIR":
+                self.valve_test_logic.append_to_volumes()
+            elif "TESTING COMPLETE" in data:
+                self.valve_test_logic.begin_updating_opening_times(data)
+            else:
+                match state:
+                    case "TTC":
+                        self.handle_licks(data, lick_data, state)
+
+                        # insert the values held in licks for respective sides in a shorter variable name
+                        side_one = self.exp_data.lick_data.side_one_licks
+                        side_two = self.exp_data.lick_data.side_two_licks
+                        # if 3 or more licks in a ttc time, jump straight to sample
+                        if side_one > 2 or side_two > 2:
+                            trigger("SAMPLE")
+
+                    case "SAMPLE":
+                        self.handle_licks(data, lick_data, state)
+
         except Exception as e:
             logging.error(f"Error processing data from {source}: {e}")
             raise

@@ -508,9 +508,9 @@ class SampleTime:
             # Tell the laser arduino to begin accepting licks and opening valves
             # resetting the lick counters for both spouts
             # tell the laser to begin opening valves on licks
-            laser = self.arduino_controller.laser_arduino
+            motor = self.arduino_controller.motor_arduino
             open_command = "BEGIN OPEN VALVES\n".encode("utf-8")
-            self.arduino_controller.send_command(board=laser, command=open_command)
+            self.arduino_controller.send_command(board=motor, command=open_command)
 
             self.lick_data.side_one_licks = 0
             self.lick_data.side_two_licks = 0
@@ -564,9 +564,9 @@ class TrialEnd:
         self.arduino_controller.send_command(board=motor, command=up_command)
 
         # tell laser arduino that this is the end of trial, stop reading
-        laser = self.arduino_controller.laser_arduino
+        motor = self.arduino_controller.motor_arduino
         stop_command = "STOP OPEN VALVES\n".encode("utf-8")
-        self.arduino_controller.send_command(board=laser, command=stop_command)
+        self.arduino_controller.send_command(board=motor, command=stop_command)
 
         # end trial by incrementing self.exp_data.current_trial_num by one
         if self.end_trial():

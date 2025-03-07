@@ -55,11 +55,11 @@ class ArduinoManager:
                         "response recieved but not recognized as laser or motor"
                     )
 
-        if self.laser_arduino is None:
-            error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
-            self.close_connections()
-            GUIUtils.display_error("Laser Arduino Not Found", error_message)
-            logger.error(error_message)
+        # if self.laser_arduino is None:
+        #    error_message = "Laser Arduino not connected. Connect Arduino boards and relaunch before running the program."
+        #    self.close_connections()
+        #    GUIUtils.display_error("Laser Arduino Not Found", error_message)
+        #    logger.error(error_message)
 
         if self.motor_arduino is None:
             error_message = "Motor Arduino not connected. Connect Arduino boards and relaunch before running the program."
@@ -68,7 +68,7 @@ class ArduinoManager:
             logger.error(error_message)
         else:
             # tell laser arduino that the program starts now
-            laser = self.laser_arduino
+            # laser = self.laser_arduino
             # start_command = "S".encode("utf-8")
             # self.send_command(board=laser, command=start_command)
             logger.info("Connected to Arduino boards successfully.")
@@ -78,13 +78,14 @@ class ArduinoManager:
             if self.stop_event.is_set():
                 break
             try:
-                if self.laser_arduino.in_waiting > 0:
-                    laser_data = self.laser_arduino.readline().decode("utf-8").strip()
-                    self.data_queue.put(("laser", laser_data))
+                # if self.laser_arduino.in_waiting > 0:
+                #    laser_data = self.laser_arduino.readline().decode("utf-8").strip()
+                #    self.data_queue.put(("laser", laser_data))
 
                 if self.motor_arduino.in_waiting > 0:
                     motor_data = self.motor_arduino.readline().decode("utf-8").strip()
                     self.data_queue.put(("motor", motor_data))
+                    logger.info(f"Received -> {motor_data} from arduino")
             except Exception as e:
                 logger.error(f"Error reading from Arduino: {e}")
                 break

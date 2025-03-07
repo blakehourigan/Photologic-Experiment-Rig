@@ -1,73 +1,26 @@
 #include <AccelStepper.h>
 #include <avr/wdt.h>
-#include "./src/valve_control/valve_control.h"
 #include "./src/exp_init/exp_init.h"
+#include "./src/optical_detection/optical_detection.h"
 #include <Vector.h>
 
-#define dir_pin 53
-#define step_pin 51
-#define BAUD_RATE 115200
-
-// variable is volatile because its value is checked in an interrupt
-// service routine
-volatile bool lick_available = false;
-
-// since we support up to 320 trials, 
-// we need more than 2^8 = 255 we use 
-// 16 bit int which provides vals up to 2^16 -1 = 65535
-uint16_t current_trial = 0;
-
-// only holds 0 or 1
-volatile uint8_t valve_side = 0;
-
-unsigned long program_start_time = 0; 
-
-// used to calculate which valve to select on side two.
-const uint8_t TOTAL_VALVES= 8;
+const unsigned long BAUD_RATE = 115200;
 
 // door stepper motor constants
 const int STEPPER_UP_POSITION = 0;
 const int STEPPER_DOWN_POSITION = 6000;
 const int MAX_SPEED = 5500; 
 const int ACCELERATION = 5500;
-bool motor_running = false; 
-bool experiment_started = false;
 
-String previous_command;
+const uint8_t DIR_PIN = 53;
+const uint8_t STEP_PIN = 51;
 
-AccelStepper stepper = AccelStepper(1, step_pin, dir_pin);
-valve_control valve_ctrl;
+const uint8_t SIDE_ONE = 0;
+const uint8_t SIDE_TWO = 1;
 
-void handle_lick(){
-  volatile uint8_t *PORT;
-  
-  uint8_t valve_num = 0;
-  long int duration = 0;
+AccelStepper stepper = AccelStepper(1, STEP_PIN, DIR_PIN);
 
-  if (valve_side == 0){
-    valve_num = side_one_sched_vec.at(current_trial);
-    duration = side_one_dur_vec.at(valve_num);
-    PORT = &PORTA;
-
-  }else{
-    // port is already calculated previously, however since ports are split between 
-    // PORTA for side1 and PORTC for side 2 we must fix the pin num if side 2. 
-    // subtract valves / 2 from valve num -> valve num 5 becomes 5 - (8/2) = 1
-    // first pin on PORTC is actuated. The only thing that would change this calculation is 
-    // if total number of valves changed.
-    valve_num = side_two_sched_vec.at(current_trial);
-
-    valve_num = valve_num - (TOTAL_VALVES / 2);
-    duration = side_two_dur_vec.at(valve_num);
-    PORT = &PORTC;
-  }
-
-  valve_ctrl.lick_handler(valve_num, duration, PORT);
-  lick_available = false;
-
-}
-
-void complete_motor_movement(String previous_command){
+void complete_motor_movement(String previous_command, uint16_t &current_trial, bool & motor_running){
   /* 
   This function is called when the door finishes a movement operation. It takes the previous command as 
   a parameter and tells the python controller that a movement has completed and which type of movement 
@@ -87,13 +40,6 @@ void complete_motor_movement(String previous_command){
   motor_running = false;
 }
 
-void myISR() 
-{
-  valve_side = (PINH & (1 << PH5)) >> PH5;
-
-  lick_available = true;
-}
-
 void setup() 
 {
   Serial.begin(BAUD_RATE);
@@ -105,6 +51,16 @@ void setup()
   DDRA |= (255); 
   // Set pins 30-37 as outputs (side two valves)
   DDRC |= (255); 
+  
+  // set the data direction register to output on pin 5 of the C register
+  DDRL |= (1 << LED_BIT_SIDE1);
+  // set the data direction register to output on pin 4 of the A register
+  DDRL |= (1 << LED_BIT_SIDE2);
+
+  // side one led is on portc pin 5
+  PORTL |= (1 << LED_BIT_SIDE1);
+  // side two led bit is on portA pin 4
+  PORTL |= (1 << LED_BIT_SIDE2);
 
   int inputPins[] = {2, 8, 9, 10, 11, 12};
 
@@ -112,25 +68,51 @@ void setup()
   {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
-
-  // attach interrupt on pin 2 to know when licks are detected
-  attachInterrupt(0, myISR, RISING); 
 }
 
-void loop() 
-{
+void loop() {
   String command = "\0";
-  // if lick is available, send necessary data to the handler to open the corresponding valve on the schedule
-  if(lick_available && experiment_started) {
-    //Serial.print("Lick detected on side: ");
-    //Serial.println(valve_side);
-    handle_lick();
-  }
+  // define all variables used in experiment runtime scope  
+  static String previous_command = "\0";
 
+  static ScheduleVectors schedules;
+  static bool schedule_received = false;
+  
+  static ValveDurations durations;
+  static bool durations_received = false;
+  
+  // stores whether motor should open valves or not
+  static bool open_valves = false;
+
+  static bool motor_running = false; 
+  static bool experiment_started = false;
+  // since we support up to 320 trials, 
+  // we need more than 2^8 = 255 we use 
+  // 16 bit int which provides vals up to 2^16 -1 = 65535
+  static uint16_t current_trial = 0;
+  
+  static unsigned long program_start_time = 0; 
+
+  static bool side_1_pin_state = 0;
+  static bool side_2_pin_state = 0;
+
+  static bool side_1_previous_state = 1;
+  static bool side_2_previous_state = 1;
+ 
   // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
-    complete_motor_movement(previous_command);
+    complete_motor_movement(previous_command, current_trial, motor_running);
   }
+
+  side_1_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+  side_2_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+  
+  if(schedule_received){
+    detect_licks(SIDE_ONE, side_1_pin_state, side_1_previous_state, current_trial, durations.side_one_dur_vec, schedules.side_one_sched_vec, open_valves);
+    detect_licks(SIDE_TWO, side_2_pin_state, side_2_previous_state, current_trial, durations.side_two_dur_vec, schedules.side_two_sched_vec, open_valves);
+  }
+
+  update_leds(side_1_pin_state, side_2_pin_state);
 
   if (Serial.available() > 0) {
     // read until the newline char 
@@ -191,21 +173,31 @@ void loop()
     }
     // receive valve durations from the python controller
     else if (command.equals("REC DURATIONS")){
-      receive_durations();
+      durations = receive_durations();
+      durations_received = true;
     }
     // handle recieving program schedule
     else if (command.equals("REC SCHED")){
-      receive_schedules();
+      schedules = receive_schedules();
+      schedule_received = true;
     }
     // handle recieving program variables (num_stim, num_trials)
     else if (command.equals("REC VAR")){
       receive_exp_variables();
     }
     else if (command.equals("VER SCHED")){
-      schedule_verification();
+      schedule_verification(schedules);
     }
     else if (command.equals("VER DURATIONS")){
-      durations_verification();
+      durations_verification(durations);
+    }
+    // begin opening valves from this point forward
+    else if (command.equals("BEGIN OPEN VALVES")) {
+      open_valves = true;
+    }
+    // stop opening valves
+    else if (command.equals("STOP OPEN VALVES")) {
+      open_valves = false;
     }
     else {
       Serial.print("Unknown command received: ");

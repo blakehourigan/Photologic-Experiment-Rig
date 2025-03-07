@@ -1,7 +1,8 @@
 #include "test_valves.h"
 
 void test_volume(char number_of_valves) {
-  //  int num_valves = number_of_valves - '0'; // convert char to int
+  // convert char to int
+  //  int num_valves = number_of_valves - '0';
   //  Serial.print("Testing volume with ");
   //  Serial.print(num_valves);
   //  Serial.println(" valves.");
