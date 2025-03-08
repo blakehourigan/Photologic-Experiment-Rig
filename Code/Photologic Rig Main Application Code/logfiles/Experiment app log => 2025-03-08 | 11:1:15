@@ -1,0 +1,69 @@
+2025-03-08 11:01:15,349 - INFO - Licks dataframe initialized.
+2025-03-08 11:01:15,503 - INFO - Timer 'Time Elapsed:' created.
+2025-03-08 11:01:15,512 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-08 11:01:15,518 - INFO - Timer 'State Time:' created.
+2025-03-08 11:01:15,521 - INFO - Timers displayed.
+2025-03-08 11:01:15,528 - INFO - Labeled entry 'ITI Time' created.
+2025-03-08 11:01:15,534 - INFO - Labeled entry 'TTC Time' created.
+2025-03-08 11:01:15,540 - INFO - Labeled entry 'Sample Time' created.
+2025-03-08 11:01:15,547 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-08 11:01:15,553 - INFO - Labeled entry '+/- ITI' created.
+2025-03-08 11:01:15,559 - INFO - Labeled entry '+/- TTC' created.
+2025-03-08 11:01:15,565 - INFO - Labeled entry '+/- Sample' created.
+2025-03-08 11:01:15,571 - INFO - Labeled entry '# Stimuli' created.
+2025-03-08 11:01:15,571 - INFO - Entry widgets displayed.
+2025-03-08 11:01:15,574 - INFO - Button 'Start' created.
+2025-03-08 11:01:15,577 - INFO - Button 'Reset' created.
+2025-03-08 11:01:15,577 - INFO - Main control buttons displayed.
+2025-03-08 11:01:15,580 - INFO - Button 'Calibrate Valves' created.
+2025-03-08 11:01:15,584 - INFO - Button 'Valve Control' created.
+2025-03-08 11:01:15,587 - INFO - Button 'Program Schedule' created.
+2025-03-08 11:01:15,590 - INFO - Button 'Valve / Stimuli' created.
+2025-03-08 11:01:15,593 - INFO - Button 'Lick Data' created.
+2025-03-08 11:01:15,596 - INFO - Button 'Rasterized Data' created.
+2025-03-08 11:01:15,599 - INFO - Button 'Save Data' created.
+2025-03-08 11:01:15,599 - INFO - Lower control buttons displayed.
+2025-03-08 11:01:15,615 - INFO - Status widget displayed.
+2025-03-08 11:01:15,615 - INFO - GUI setup completed.
+2025-03-08 11:01:15,627 - INFO - Labeled entry 'Valve 1' created.
+2025-03-08 11:01:15,634 - INFO - Labeled entry 'Valve 2' created.
+2025-03-08 11:01:15,640 - INFO - Labeled entry 'Valve 5' created.
+2025-03-08 11:01:15,646 - INFO - Labeled entry 'Valve 6' created.
+2025-03-08 11:01:15,646 - INFO - Stimuli frame populated.
+2025-03-08 11:01:15,649 - INFO - Button 'Generate Schedule' created.
+2025-03-08 11:01:15,649 - INFO - Filled contents of experiment control window.
+2025-03-08 11:01:15,649 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-08 11:01:15,804 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-08 11:01:15,807 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-08 11:01:15,807 - INFO - Initial valve test table created.
+2025-03-08 11:01:15,807 - INFO - Buttons created for ValveTestWindow.
+2025-03-08 11:01:15,807 - INFO - Widgets created for ValveTestWindow.
+2025-03-08 11:01:15,807 - INFO - Experiment control window centered.
+2025-03-08 11:01:15,807 - INFO - ValveTestWindow shown.
+2025-03-08 11:01:15,808 - INFO - Trace variables set up.
+2025-03-08 11:01:15,808 - INFO - Valve Test Window initialized.
+2025-03-08 11:01:15,809 - INFO - Experiment control window centered.
+2025-03-08 11:01:15,809 - INFO - MainGUI initialized.
+2025-03-08 11:01:15,817 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-08 11:01:15,817 - INFO - Connected to Arduino boards successfully.
+2025-03-08 11:01:15,817 - INFO - GUI started successfully.
+2025-03-08 11:01:19,909 - INFO - Random intervals created.
+2025-03-08 11:01:19,909 - INFO - Initialized stimuli dataframe.
+2025-03-08 11:01:19,934 - INFO - Sent b'REC VAR\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:19,934 - INFO - Sent b'\x04\x08' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:19,935 - INFO - Sent b'REC SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:19,936 - INFO - Sent b'\x00\x01\x00\x01\x01\x00\x01\x00\x05\x04\x05\x04\x04\x05\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:19,937 - INFO - Sent b'VER SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:19,937 - INFO - Arduino recieved side one as => [77 79 84 79 82 32 77 79]
+2025-03-08 11:01:19,937 - INFO - Arduino recieved side two as => [86 69 68 32 68 79 87 78]
+2025-03-08 11:01:23,885 - ERROR - Error displayed: ======SCHEDULE ERROR====== - ARDUINO did not recieve the correct schedule. Please restart the program and attempt                        schedule generation again.
+2025-03-08 11:01:23,886 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:23,887 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:23,892 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:01:23,901 - INFO - Arduino recieved side one as => [  16779789      65792   67436545   84149253 1998062852 1707409408
+ 1581056000 1581056000]
+2025-03-08 11:01:23,901 - INFO - Arduino recieved side two as => [1581056000 1581056000 1581056000 1581056000 1508638720 2113732608
+ 1581056000 1581056000]
+2025-03-08 11:01:25,589 - ERROR - Error displayed: ======DURATIONS ERROR====== - ARDUINO did not recieve the correct valve durations. Please restart the program and attempt                        schedule generation again.
+2025-03-08 11:01:25,590 - INFO - Started listening thread for Arduino serial input.
+2025-03-08 11:01:27,458 - INFO - Application closed.

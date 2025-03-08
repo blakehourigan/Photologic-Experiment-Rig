@@ -223,7 +223,7 @@ class GenerateSchedule:
         # show the program sched window via the callback passed into the class at initialization
         self.main_gui.show_secondary_window("Program Schedule")
 
-        # send valve open durations stored in arduino_data.toml to the motor arduino
+        # send valve open durations stored in arduino_data.toml to the arduino
         self.arduino_controller.send_experiment_variables()
         self.arduino_controller.send_experiment_schedule()
 
@@ -250,9 +250,8 @@ class StartProgram:
             self.main_gui = main_gui
             self.arduino_controller = arduino_controller
 
-            motor = self.arduino_controller.motor_arduino
             start_command = "T=0\n".encode("utf-8")
-            self.arduino_controller.send_command(board=motor, command=start_command)
+            self.arduino_controller.send_command(command=start_command)
 
             self.main_gui.update_clock_label()
 
@@ -302,14 +301,14 @@ class StopProgram:
 
     def finalize_program(self) -> None:
         """
-        Finalize the program by telling motor arduino to send the door up/down timestamps that it has, reset both Arduino boards,
+        Finalize the program by telling arduino to send the door up/down timestamps that it has, reset both Arduino boards,
         offer to save the .
         """
         try:
             queue_id = self.main_gui.scheduled_tasks["PROCESS QUEUE"]
             self.main_gui.after_cancel(queue_id)
 
-            self.arduino_controller.reset_arduinos()
+            self.arduino_controller.reset_arduino()
 
             self.main_gui.save_button_handler()
 
@@ -410,9 +409,8 @@ class OpeningDoor:
         self.trigger_state_change = trigger
 
         # send comment to arduino to move the door down
-        motor = self.arduino_controller.motor_arduino
         down_command = "DOWN\n".encode("utf-8")
-        self.arduino_controller.send_command(board=motor, command=down_command)
+        self.arduino_controller.send_command(command=down_command)
 
         # after the door is down, then we will begin the ttc state logic, found in run_ttc
         self.main_gui.after(DOOR_MOVE_TIME, lambda: self.trigger_state_change("TTC"))
@@ -508,9 +506,8 @@ class SampleTime:
             # Tell the laser arduino to begin accepting licks and opening valves
             # resetting the lick counters for both spouts
             # tell the laser to begin opening valves on licks
-            motor = self.arduino_controller.motor_arduino
             open_command = "BEGIN OPEN VALVES\n".encode("utf-8")
-            self.arduino_controller.send_command(board=motor, command=open_command)
+            self.arduino_controller.send_command(command=open_command)
 
             self.lick_data.side_one_licks = 0
             self.lick_data.side_two_licks = 0
@@ -559,14 +556,11 @@ class TrialEnd:
         logical_trial = self.exp_data.current_trial_number - 1
         program_schedule = self.main_gui.windows["Program Schedule"]
 
-        motor = self.arduino_controller.motor_arduino
         up_command = "UP\n".encode("utf-8")
-        self.arduino_controller.send_command(board=motor, command=up_command)
+        self.arduino_controller.send_command(command=up_command)
 
-        # tell laser arduino that this is the end of trial, stop reading
-        motor = self.arduino_controller.motor_arduino
         stop_command = "STOP OPEN VALVES\n".encode("utf-8")
-        self.arduino_controller.send_command(board=motor, command=stop_command)
+        self.arduino_controller.send_command(command=stop_command)
 
         # end trial by incrementing self.exp_data.current_trial_num by one
         if self.end_trial():

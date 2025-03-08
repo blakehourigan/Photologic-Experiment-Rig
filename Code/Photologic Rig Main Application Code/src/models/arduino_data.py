@@ -81,20 +81,37 @@ class ArduinoData:
         return sched_side_one, sched_side_two
 
     def handle_licks(self, data, lick_data, state):
-        if data[:12] == "STIMULUS ONE":
-            lick_data.side_one_licks += 1
-        elif data[:12] == "STIMULUS TWO":
-            lick_data.side_two_licks += 1
-        duration = np.float64(data[13:])
+        side = None
+        match state:
+            case "TTC":
+                # data will be of form
+                # side (0 or 1)|lick_duration (unsigned long 32-bit unsigned)
+                side = np.int8(data[0])
+                lick_duration = np.int32(data[2:])
+            case "SAMPLE":
+                fields = data.split("|")
+                if len(fields) > 2:
+                    side = np.int8(fields[0])
+                    lick_duration = np.int32(fields[1])
+                    valve_duration = np.int32(fields[2])
 
-        self.record_lick_data(data, duration, state)
+        match side:
+            case 0:
+                lick_data.side_one_licks += 1
+            case 1:
+                lick_data.side_two_licks += 1
+            case _:
+                print("invalid side")
+                logger.error("invalid side")
+
+        self.record_lick_data(data, lick_duration, state)
 
     def process_data(self, source, data, state, trigger):
         """
         Process data received from the Arduino.
         """
+        lick_data = self.exp_data.lick_data
         try:
-            lick_data = self.exp_data.lick_data
             if data == "MOTOR MOVED DOWN":
                 # MOTOR MOVED DOWN | RELATIVE TO START | RELATIVE TO TRIAL
                 lick_data = self.exp_data.lick_data
