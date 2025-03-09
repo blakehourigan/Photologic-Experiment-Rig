@@ -1,0 +1,66 @@
+2025-03-05 11:49:08,451 - INFO - Licks dataframe initialized.
+2025-03-05 11:49:08,594 - INFO - Timer 'Time Elapsed:' created.
+2025-03-05 11:49:08,603 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-05 11:49:08,608 - INFO - Timer 'State Time:' created.
+2025-03-05 11:49:08,611 - INFO - Timers displayed.
+2025-03-05 11:49:08,617 - INFO - Labeled entry 'ITI Time' created.
+2025-03-05 11:49:08,623 - INFO - Labeled entry 'TTC Time' created.
+2025-03-05 11:49:08,628 - INFO - Labeled entry 'Sample Time' created.
+2025-03-05 11:49:08,634 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-05 11:49:08,639 - INFO - Labeled entry '+/- ITI' created.
+2025-03-05 11:49:08,645 - INFO - Labeled entry '+/- TTC' created.
+2025-03-05 11:49:08,650 - INFO - Labeled entry '+/- Sample' created.
+2025-03-05 11:49:08,656 - INFO - Labeled entry '# Stimuli' created.
+2025-03-05 11:49:08,656 - INFO - Entry widgets displayed.
+2025-03-05 11:49:08,658 - INFO - Button 'Start' created.
+2025-03-05 11:49:08,661 - INFO - Button 'Reset' created.
+2025-03-05 11:49:08,661 - INFO - Main control buttons displayed.
+2025-03-05 11:49:08,664 - INFO - Button 'Calibrate Valves' created.
+2025-03-05 11:49:08,667 - INFO - Button 'Valve Control' created.
+2025-03-05 11:49:08,670 - INFO - Button 'Program Schedule' created.
+2025-03-05 11:49:08,672 - INFO - Button 'Valve / Stimuli' created.
+2025-03-05 11:49:08,675 - INFO - Button 'Lick Data' created.
+2025-03-05 11:49:08,678 - INFO - Button 'Rasterized Data' created.
+2025-03-05 11:49:08,681 - INFO - Button 'Save Data' created.
+2025-03-05 11:49:08,681 - INFO - Lower control buttons displayed.
+2025-03-05 11:49:08,694 - INFO - Status widget displayed.
+2025-03-05 11:49:08,694 - INFO - GUI setup completed.
+2025-03-05 11:49:08,706 - INFO - Labeled entry 'Valve 1' created.
+2025-03-05 11:49:08,711 - INFO - Labeled entry 'Valve 2' created.
+2025-03-05 11:49:08,716 - INFO - Labeled entry 'Valve 5' created.
+2025-03-05 11:49:08,722 - INFO - Labeled entry 'Valve 6' created.
+2025-03-05 11:49:08,722 - INFO - Stimuli frame populated.
+2025-03-05 11:49:08,725 - INFO - Button 'Generate Schedule' created.
+2025-03-05 11:49:08,725 - INFO - Filled contents of experiment control window.
+2025-03-05 11:49:08,725 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-05 11:49:08,868 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-05 11:49:08,871 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-05 11:49:08,871 - INFO - Initial valve test table created.
+2025-03-05 11:49:08,871 - INFO - Buttons created for ValveTestWindow.
+2025-03-05 11:49:08,871 - INFO - Widgets created for ValveTestWindow.
+2025-03-05 11:49:08,871 - INFO - Experiment control window centered.
+2025-03-05 11:49:08,871 - INFO - ValveTestWindow shown.
+2025-03-05 11:49:08,871 - INFO - Trace variables set up.
+2025-03-05 11:49:08,871 - INFO - Valve Test Window initialized.
+2025-03-05 11:49:08,873 - INFO - Experiment control window centered.
+2025-03-05 11:49:08,873 - INFO - MainGUI initialized.
+2025-03-05 11:49:09,877 - INFO - Sent b'WHO ARE YOU\n' to -> Serial<id=0x7f777d8615d0, open=True>(port='/dev/ttyACM1', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:09,881 - INFO - Arduino on port /dev/ttyACM1 identified as LASER
+2025-03-05 11:49:09,882 - INFO - Laser Arduino connected on port /dev/ttyACM1
+2025-03-05 11:49:10,883 - INFO - Sent b'WHO ARE YOU\n' to -> Serial<id=0x7f77801a3a90, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:10,895 - INFO - Arduino on port /dev/ttyACM0 identified as MOTOR
+2025-03-05 11:49:10,895 - INFO - Motor Arduino connected on port /dev/ttyACM0
+2025-03-05 11:49:10,896 - INFO - Sent b'S' to -> Serial<id=0x7f77801a54b0, open=True>(port='/dev/ttyACM1', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:10,896 - INFO - Connected to Arduino boards successfully.
+2025-03-05 11:49:10,896 - INFO - GUI started successfully.
+2025-03-05 11:49:15,609 - INFO - Random intervals created.
+2025-03-05 11:49:15,610 - INFO - Initialized stimuli dataframe.
+2025-03-05 11:49:15,634 - INFO - Sent b'REC VAR\n' to -> Serial<id=0x7f777d84fe20, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:15,635 - INFO - Sent b'\x04\x08' to -> Serial<id=0x7f777d84fe20, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:15,635 - INFO - Sent b'REC SCHED\n' to -> Serial<id=0x7f777d84fe20, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:15,636 - INFO - Sent b'\x01\x00\x01\x00\x00\x01\x00\x01\x04\x05\x04\x05\x05\x04\x05\x04' to -> Serial<id=0x7f777d84fe20, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:15,638 - INFO - Sent b'VER SCHED\n' to -> Serial<id=0x7f777d84fe20, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False): 
+2025-03-05 11:49:15,643 - INFO - Arduino recieved side one as => [1 0 1 0 0 1 0 1]
+2025-03-05 11:49:15,643 - INFO - Arduino recieved side two as => [4 5 4 5 5 4 5 4]
+2025-03-05 11:49:15,643 - INFO - Motor arduino has recieved and verified experiment valve schedule
+2025-03-05 11:49:18,517 - INFO - Application closed.

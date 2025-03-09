@@ -1,0 +1,278 @@
+2025-03-06 14:05:18,245 - INFO - Licks dataframe initialized.
+2025-03-06 14:05:18,398 - INFO - Timer 'Time Elapsed:' created.
+2025-03-06 14:05:18,407 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-06 14:05:18,413 - INFO - Timer 'State Time:' created.
+2025-03-06 14:05:18,417 - INFO - Timers displayed.
+2025-03-06 14:05:18,424 - INFO - Labeled entry 'ITI Time' created.
+2025-03-06 14:05:18,430 - INFO - Labeled entry 'TTC Time' created.
+2025-03-06 14:05:18,436 - INFO - Labeled entry 'Sample Time' created.
+2025-03-06 14:05:18,442 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-06 14:05:18,449 - INFO - Labeled entry '+/- ITI' created.
+2025-03-06 14:05:18,455 - INFO - Labeled entry '+/- TTC' created.
+2025-03-06 14:05:18,461 - INFO - Labeled entry '+/- Sample' created.
+2025-03-06 14:05:18,467 - INFO - Labeled entry '# Stimuli' created.
+2025-03-06 14:05:18,467 - INFO - Entry widgets displayed.
+2025-03-06 14:05:18,470 - INFO - Button 'Start' created.
+2025-03-06 14:05:18,473 - INFO - Button 'Reset' created.
+2025-03-06 14:05:18,473 - INFO - Main control buttons displayed.
+2025-03-06 14:05:18,477 - INFO - Button 'Calibrate Valves' created.
+2025-03-06 14:05:18,480 - INFO - Button 'Valve Control' created.
+2025-03-06 14:05:18,483 - INFO - Button 'Program Schedule' created.
+2025-03-06 14:05:18,486 - INFO - Button 'Valve / Stimuli' created.
+2025-03-06 14:05:18,489 - INFO - Button 'Lick Data' created.
+2025-03-06 14:05:18,492 - INFO - Button 'Rasterized Data' created.
+2025-03-06 14:05:18,495 - INFO - Button 'Save Data' created.
+2025-03-06 14:05:18,495 - INFO - Lower control buttons displayed.
+2025-03-06 14:05:18,511 - INFO - Status widget displayed.
+2025-03-06 14:05:18,511 - INFO - GUI setup completed.
+2025-03-06 14:05:18,523 - INFO - Labeled entry 'Valve 1' created.
+2025-03-06 14:05:18,529 - INFO - Labeled entry 'Valve 2' created.
+2025-03-06 14:05:18,536 - INFO - Labeled entry 'Valve 5' created.
+2025-03-06 14:05:18,542 - INFO - Labeled entry 'Valve 6' created.
+2025-03-06 14:05:18,542 - INFO - Stimuli frame populated.
+2025-03-06 14:05:18,545 - INFO - Button 'Generate Schedule' created.
+2025-03-06 14:05:18,545 - INFO - Filled contents of experiment control window.
+2025-03-06 14:05:18,545 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-06 14:05:18,703 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-06 14:05:18,706 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-06 14:05:18,706 - INFO - Initial valve test table created.
+2025-03-06 14:05:18,706 - INFO - Buttons created for ValveTestWindow.
+2025-03-06 14:05:18,706 - INFO - Widgets created for ValveTestWindow.
+2025-03-06 14:05:18,706 - INFO - Experiment control window centered.
+2025-03-06 14:05:18,706 - INFO - ValveTestWindow shown.
+2025-03-06 14:05:18,706 - INFO - Trace variables set up.
+2025-03-06 14:05:18,706 - INFO - Valve Test Window initialized.
+2025-03-06 14:05:18,708 - INFO - Experiment control window centered.
+2025-03-06 14:05:18,708 - INFO - MainGUI initialized.
+2025-03-06 14:05:19,717 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:19,966 - INFO - Arduino on port /dev/ttyACM0 identified as MOTOR
+2025-03-06 14:05:19,971 - INFO - Motor Arduino connected on port /dev/ttyACM0
+2025-03-06 14:05:20,972 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM1: 
+2025-03-06 14:05:20,979 - INFO - Arduino on port /dev/ttyACM1 identified as LASER
+2025-03-06 14:05:20,980 - INFO - Laser Arduino connected on port /dev/ttyACM1
+2025-03-06 14:05:20,980 - INFO - Connected to Arduino boards successfully.
+2025-03-06 14:05:20,980 - INFO - GUI started successfully.
+2025-03-06 14:05:24,389 - INFO - Random intervals created.
+2025-03-06 14:05:24,389 - INFO - Initialized stimuli dataframe.
+2025-03-06 14:05:24,416 - INFO - Sent b'REC VAR\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,417 - INFO - Sent b'\x04\x08' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,418 - INFO - Sent b'REC SCHED\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,420 - INFO - Sent b'\x01\x00\x00\x01\x00\x01\x00\x01\x04\x05\x05\x04\x05\x04\x05\x04' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,420 - INFO - Sent b'VER SCHED\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,424 - INFO - Arduino recieved side one as => [1 0 0 1 0 1 0 1]
+2025-03-06 14:05:24,424 - INFO - Arduino recieved side two as => [4 5 5 4 5 4 5 4]
+2025-03-06 14:05:24,424 - INFO - Motor arduino has recieved and verified experiment valve schedule
+2025-03-06 14:05:24,425 - INFO - Sent b'REC DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,426 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,431 - INFO - Sent b'VER DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:24,440 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-06 14:05:24,440 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-06 14:05:24,440 - INFO - Motor arduino has recieved and verified valve durations
+2025-03-06 14:05:24,441 - INFO - Started listening thread for Arduino serial input.
+2025-03-06 14:05:25,108 - INFO - Sent b'T=0\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:25,109 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-06 14:05:25,112 - INFO - Progress bar updated.
+2025-03-06 14:05:25,112 - INFO - Updated GUI for new trial 1.
+2025-03-06 14:05:25,112 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:25,113 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:05:25,113 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-06 14:05:30,113 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:30,114 - INFO - Full state time updated to 2238.
+2025-03-06 14:05:30,114 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:05:32,352 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:32,352 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:05:32,352 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-06 14:05:32,352 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 1.
+2025-03-06 14:05:32,443 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:32,444 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:32,694 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:32,695 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:32,695 - INFO - Sent b'BEGIN OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:05:32,695 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:32,696 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-06 14:05:32,696 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 1, completes in 5000.
+2025-03-06 14:05:32,946 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:32,946 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:33,197 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,197 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,197 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,448 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,448 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,699 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:33,699 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,950 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,950 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:33,951 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,201 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,452 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,452 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,703 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,703 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:34,954 - INFO - Lick data recorded for: TIMULUS TWO|9
+2025-03-06 14:05:34,954 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:35,205 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,205 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,455 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,456 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,456 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,706 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:35,707 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,957 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:35,958 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,208 - INFO - Lick data recorded for: TIMULUS TWO|7
+2025-03-06 14:05:36,208 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:36,459 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,459 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,459 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,710 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,710 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,960 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:36,961 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:37,211 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:37,212 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:37,212 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:37,462 - INFO - Lick data recorded for: TIMULUS TWO|6
+2025-03-06 14:05:37,463 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:37,697 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:37,697 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:05:37,698 - INFO - Lick timestamps retrieved for trial 1.
+2025-03-06 14:05:37,735 - INFO - Progress bar updated.
+2025-03-06 14:05:37,735 - INFO - Updated GUI for new trial 2.
+2025-03-06 14:05:37,735 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:37,735 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:05:37,736 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-06 14:05:42,736 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:42,736 - INFO - Full state time updated to 2238.
+2025-03-06 14:05:42,737 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:05:44,975 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:44,975 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:05:44,975 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-06 14:05:44,975 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 2.
+2025-03-06 14:05:49,976 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:49,976 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:05:49,980 - INFO - Progress bar updated.
+2025-03-06 14:05:49,980 - INFO - Updated GUI for new trial 3.
+2025-03-06 14:05:49,980 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:49,980 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:05:49,980 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-06 14:05:54,981 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:05:54,981 - INFO - Full state time updated to 2238.
+2025-03-06 14:05:54,981 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:05:57,220 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:57,220 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:05:57,220 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-06 14:05:57,220 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 3.
+2025-03-06 14:05:57,469 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:57,470 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:57,721 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:57,721 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:57,722 - INFO - Sent b'BEGIN OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:05:57,722 - INFO - Full state time updated to 5000.
+2025-03-06 14:05:57,722 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-06 14:05:57,722 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 3, completes in 5000.
+2025-03-06 14:05:57,972 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:57,972 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:58,223 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:58,474 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:58,724 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:58,725 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:58,975 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,226 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,226 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,476 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,477 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,727 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,727 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,728 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,978 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:05:59,978 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:00,229 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:00,479 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:00,730 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:00,730 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:01,731 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:01,981 - INFO - Lick data recorded for: TIMULUS TWO|5
+2025-03-06 14:06:02,723 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:02,723 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:06:02,724 - INFO - Lick timestamps retrieved for trial 3.
+2025-03-06 14:06:02,757 - INFO - Progress bar updated.
+2025-03-06 14:06:02,757 - INFO - Updated GUI for new trial 4.
+2025-03-06 14:06:02,758 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:02,758 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:06:02,758 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-06 14:06:07,758 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:07,758 - INFO - Full state time updated to 2238.
+2025-03-06 14:06:07,758 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:06:09,997 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:09,997 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:06:09,997 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-06 14:06:09,997 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 4.
+2025-03-06 14:06:14,997 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:14,998 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:06:15,001 - INFO - Progress bar updated.
+2025-03-06 14:06:15,001 - INFO - Updated GUI for new trial 5.
+2025-03-06 14:06:15,001 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:15,002 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:06:15,002 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-06 14:06:20,002 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:20,002 - INFO - Full state time updated to 2238.
+2025-03-06 14:06:20,003 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:06:22,241 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:22,241 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:06:22,241 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-06 14:06:22,241 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 5.
+2025-03-06 14:06:27,241 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:27,242 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:06:27,246 - INFO - Progress bar updated.
+2025-03-06 14:06:27,246 - INFO - Updated GUI for new trial 6.
+2025-03-06 14:06:27,246 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:27,246 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:06:27,246 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-06 14:06:32,247 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:32,247 - INFO - Full state time updated to 2238.
+2025-03-06 14:06:32,247 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:06:34,485 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:34,485 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:06:34,485 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-06 14:06:34,485 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 6.
+2025-03-06 14:06:39,486 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:39,486 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:06:39,490 - INFO - Progress bar updated.
+2025-03-06 14:06:39,507 - INFO - Updated GUI for new trial 7.
+2025-03-06 14:06:39,508 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:39,508 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:06:39,508 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-06 14:06:44,508 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:44,508 - INFO - Full state time updated to 2238.
+2025-03-06 14:06:44,509 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:06:46,747 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:46,747 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:06:46,747 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-06 14:06:46,747 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 7.
+2025-03-06 14:06:51,748 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:51,748 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:06:51,751 - INFO - Progress bar updated.
+2025-03-06 14:06:51,769 - INFO - Updated GUI for new trial 8.
+2025-03-06 14:06:51,770 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:51,770 - INFO - Updated GUI on state change to ITI.
+2025-03-06 14:06:51,770 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-06 14:06:56,770 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-06 14:06:56,771 - INFO - Full state time updated to 2238.
+2025-03-06 14:06:56,792 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-06 14:06:59,009 - INFO - Full state time updated to 5000.
+2025-03-06 14:06:59,009 - INFO - Updated GUI on state change to TTC.
+2025-03-06 14:06:59,009 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-06 14:06:59,009 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 8.
+2025-03-06 14:07:04,010 - INFO - Sent b'UP\n' to -> /dev/ttyACM0: 
+2025-03-06 14:07:04,010 - INFO - Sent b'STOP OPEN VALVES\n' to -> /dev/ttyACM1: 
+2025-03-06 14:07:04,011 - INFO - Full state time updated to 0.
+2025-03-06 14:07:04,011 - INFO - Updated GUI on state change to Idle.
+2025-03-06 14:07:04,011 - INFO - Program stopped... waiting to finalize...
+2025-03-06 14:07:09,012 - INFO - Serial<id=0x7f1ec7e14d30, open=True>(port='/dev/ttyACM1', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False) Arduino reset.
+2025-03-06 14:07:09,012 - INFO - Serial<id=0x7f1ec7e7f790, open=True>(port='/dev/ttyACM0', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=False, rtscts=False, dsrdtr=False) Arduino reset.
+2025-03-06 14:07:11,390 - INFO - User cancelled saving the stimuli dataframe.
+2025-03-06 14:07:11,390 - INFO - Data saved to xlsx files.
+2025-03-06 14:07:11,942 - INFO - User cancelled saving the stimuli dataframe.
+2025-03-06 14:07:11,942 - INFO - Data saved to xlsx files.
+2025-03-06 14:07:11,942 - INFO - Program finalized, arduino boards reset.
+2025-03-06 14:09:13,881 - INFO - Application closed.

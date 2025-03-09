@@ -1,0 +1,451 @@
+2025-03-08 11:46:42,408 - INFO - Licks dataframe initialized.
+2025-03-08 11:46:42,565 - INFO - Timer 'Time Elapsed:' created.
+2025-03-08 11:46:42,574 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-08 11:46:42,580 - INFO - Timer 'State Time:' created.
+2025-03-08 11:46:42,583 - INFO - Timers displayed.
+2025-03-08 11:46:42,590 - INFO - Labeled entry 'ITI Time' created.
+2025-03-08 11:46:42,596 - INFO - Labeled entry 'TTC Time' created.
+2025-03-08 11:46:42,603 - INFO - Labeled entry 'Sample Time' created.
+2025-03-08 11:46:42,609 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-08 11:46:42,615 - INFO - Labeled entry '+/- ITI' created.
+2025-03-08 11:46:42,621 - INFO - Labeled entry '+/- TTC' created.
+2025-03-08 11:46:42,627 - INFO - Labeled entry '+/- Sample' created.
+2025-03-08 11:46:42,634 - INFO - Labeled entry '# Stimuli' created.
+2025-03-08 11:46:42,634 - INFO - Entry widgets displayed.
+2025-03-08 11:46:42,637 - INFO - Button 'Start' created.
+2025-03-08 11:46:42,640 - INFO - Button 'Reset' created.
+2025-03-08 11:46:42,640 - INFO - Main control buttons displayed.
+2025-03-08 11:46:42,644 - INFO - Button 'Calibrate Valves' created.
+2025-03-08 11:46:42,647 - INFO - Button 'Valve Control' created.
+2025-03-08 11:46:42,650 - INFO - Button 'Program Schedule' created.
+2025-03-08 11:46:42,653 - INFO - Button 'Valve / Stimuli' created.
+2025-03-08 11:46:42,656 - INFO - Button 'Lick Data' created.
+2025-03-08 11:46:42,659 - INFO - Button 'Rasterized Data' created.
+2025-03-08 11:46:42,662 - INFO - Button 'Save Data' created.
+2025-03-08 11:46:42,663 - INFO - Lower control buttons displayed.
+2025-03-08 11:46:42,679 - INFO - Status widget displayed.
+2025-03-08 11:46:42,679 - INFO - GUI setup completed.
+2025-03-08 11:46:42,692 - INFO - Labeled entry 'Valve 1' created.
+2025-03-08 11:46:42,698 - INFO - Labeled entry 'Valve 2' created.
+2025-03-08 11:46:42,704 - INFO - Labeled entry 'Valve 5' created.
+2025-03-08 11:46:42,711 - INFO - Labeled entry 'Valve 6' created.
+2025-03-08 11:46:42,711 - INFO - Stimuli frame populated.
+2025-03-08 11:46:42,714 - INFO - Button 'Generate Schedule' created.
+2025-03-08 11:46:42,714 - INFO - Filled contents of experiment control window.
+2025-03-08 11:46:42,714 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-08 11:46:42,869 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-08 11:46:42,872 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-08 11:46:42,873 - INFO - Initial valve test table created.
+2025-03-08 11:46:42,873 - INFO - Buttons created for ValveTestWindow.
+2025-03-08 11:46:42,873 - INFO - Widgets created for ValveTestWindow.
+2025-03-08 11:46:42,873 - INFO - Experiment control window centered.
+2025-03-08 11:46:42,873 - INFO - ValveTestWindow shown.
+2025-03-08 11:46:42,873 - INFO - Trace variables set up.
+2025-03-08 11:46:42,873 - INFO - Valve Test Window initialized.
+2025-03-08 11:46:42,874 - INFO - Experiment control window centered.
+2025-03-08 11:46:42,874 - INFO - MainGUI initialized.
+2025-03-08 11:46:42,882 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-08 11:46:42,882 - INFO - Connected to Arduino boards successfully.
+2025-03-08 11:46:42,882 - INFO - GUI started successfully.
+2025-03-08 11:46:47,456 - INFO - Random intervals created.
+2025-03-08 11:46:47,457 - INFO - Initialized stimuli dataframe.
+2025-03-08 11:46:47,482 - INFO - Sent b'REC VAR\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,483 - INFO - Sent b'\x04\x08' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,483 - INFO - Sent b'REC SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,484 - INFO - Sent b'\x01\x00\x00\x01\x01\x00\x01\x00\x04\x05\x05\x04\x04\x05\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,486 - INFO - Sent b'VER SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,489 - INFO - Arduino recieved side one as => [1 0 0 1 1 0 1 0]
+2025-03-08 11:46:47,489 - INFO - Arduino recieved side two as => [4 5 5 4 4 5 4 5]
+2025-03-08 11:46:47,489 - INFO - arduino has recieved and verified experiment valve schedule
+2025-03-08 11:46:47,490 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,491 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,497 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:47,506 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-08 11:46:47,506 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-08 11:46:47,506 - INFO - arduino has recieved and verified valve durations
+2025-03-08 11:46:47,506 - INFO - Started listening thread for Arduino serial input.
+2025-03-08 11:46:48,584 - INFO - Sent b'T=0\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:48,585 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-08 11:46:48,588 - INFO - Progress bar updated.
+2025-03-08 11:46:48,588 - INFO - Updated GUI for new trial 1.
+2025-03-08 11:46:48,588 - INFO - Full state time updated to 5000.
+2025-03-08 11:46:48,588 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:46:48,589 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-08 11:46:53,589 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:53,589 - INFO - Full state time updated to 2238.
+2025-03-08 11:46:53,589 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:46:55,828 - INFO - Full state time updated to 5000.
+2025-03-08 11:46:55,828 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:46:55,828 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-08 11:46:55,828 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 1.
+2025-03-08 11:46:55,944 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:46:56,603 - INFO - Received -> 0|78 from arduino
+2025-03-08 11:46:56,759 - INFO - Lick data recorded for: 0|78
+2025-03-08 11:46:56,873 - INFO - Received -> 0|71 from arduino
+2025-03-08 11:46:57,009 - INFO - Lick data recorded for: 0|71
+2025-03-08 11:46:57,086 - INFO - Received -> 0|81 from arduino
+2025-03-08 11:46:57,260 - INFO - Lick data recorded for: 0|81
+2025-03-08 11:46:57,261 - INFO - Sent b'BEGIN OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:46:57,261 - INFO - Full state time updated to 5000.
+2025-03-08 11:46:57,261 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-08 11:46:57,261 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 1, completes in 5000.
+2025-03-08 11:46:57,311 - INFO - Received -> 0|73|13467356 from arduino
+2025-03-08 11:46:57,511 - INFO - Lick data recorded for: 0|73|13467356
+2025-03-08 11:46:57,528 - INFO - Received -> 0|68|26072 from arduino
+2025-03-08 11:46:57,749 - INFO - Received -> 0|83|26068 from arduino
+2025-03-08 11:46:57,761 - INFO - Lick data recorded for: 0|68|26072
+2025-03-08 11:46:57,762 - INFO - Lick data recorded for: 0|83|26068
+2025-03-08 11:46:57,978 - INFO - Received -> 0|77|26068 from arduino
+2025-03-08 11:46:58,012 - INFO - Lick data recorded for: 0|77|26068
+2025-03-08 11:46:58,205 - INFO - Received -> 0|73|26072 from arduino
+2025-03-08 11:46:58,263 - INFO - Lick data recorded for: 0|73|26072
+2025-03-08 11:46:58,429 - INFO - Received -> 0|77|26064 from arduino
+2025-03-08 11:46:58,513 - INFO - Lick data recorded for: 0|77|26064
+2025-03-08 11:46:58,626 - INFO - Received -> 0|74|26072 from arduino
+2025-03-08 11:46:58,764 - INFO - Lick data recorded for: 0|74|26072
+2025-03-08 11:46:58,819 - INFO - Received -> 0|59|26072 from arduino
+2025-03-08 11:46:59,014 - INFO - Lick data recorded for: 0|59|26072
+2025-03-08 11:46:59,027 - INFO - Received -> 0|74|26064 from arduino
+2025-03-08 11:46:59,265 - INFO - Lick data recorded for: 0|74|26064
+2025-03-08 11:46:59,376 - INFO - Received -> 0|69|26068 from arduino
+2025-03-08 11:46:59,515 - INFO - Lick data recorded for: 0|69|26068
+2025-03-08 11:46:59,736 - INFO - Received -> 0|89|26064 from arduino
+2025-03-08 11:46:59,766 - INFO - Lick data recorded for: 0|89|26064
+2025-03-08 11:46:59,940 - INFO - Received -> 0|83|26064 from arduino
+2025-03-08 11:47:00,016 - INFO - Lick data recorded for: 0|83|26064
+2025-03-08 11:47:00,296 - INFO - Received -> 0|83|26068 from arduino
+2025-03-08 11:47:00,465 - INFO - Received -> 0|75|26068 from arduino
+2025-03-08 11:47:00,517 - INFO - Lick data recorded for: 0|83|26068
+2025-03-08 11:47:00,517 - INFO - Lick data recorded for: 0|75|26068
+2025-03-08 11:47:00,621 - INFO - Received -> 0|81|26072 from arduino
+2025-03-08 11:47:00,752 - INFO - Received -> 0|96|26064 from arduino
+2025-03-08 11:47:00,768 - INFO - Lick data recorded for: 0|81|26072
+2025-03-08 11:47:00,768 - INFO - Lick data recorded for: 0|96|26064
+2025-03-08 11:47:00,957 - INFO - Received -> 1|114|24152 from arduino
+2025-03-08 11:47:01,018 - INFO - Lick data recorded for: 1|114|24152
+2025-03-08 11:47:01,154 - INFO - Received -> 1|81|24152 from arduino
+2025-03-08 11:47:01,269 - INFO - Lick data recorded for: 1|81|24152
+2025-03-08 11:47:01,460 - INFO - Received -> 1|92|24148 from arduino
+2025-03-08 11:47:01,520 - INFO - Lick data recorded for: 1|92|24148
+2025-03-08 11:47:02,116 - INFO - Received -> 0|58|26064 from arduino
+2025-03-08 11:47:02,261 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:02,262 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:02,263 - INFO - Lick timestamps retrieved for trial 1.
+2025-03-08 11:47:02,271 - INFO - Received -> 0|51 from arduino
+2025-03-08 11:47:02,300 - INFO - Progress bar updated.
+2025-03-08 11:47:02,300 - INFO - Updated GUI for new trial 2.
+2025-03-08 11:47:02,300 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:02,300 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:47:02,300 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-08 11:47:02,435 - INFO - Received -> 0|67 from arduino
+2025-03-08 11:47:02,595 - INFO - Received -> 0|77 from arduino
+2025-03-08 11:47:04,618 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:47:07,301 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:07,301 - INFO - Full state time updated to 2238.
+2025-03-08 11:47:07,301 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:47:09,539 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:09,540 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:47:09,540 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-08 11:47:09,540 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 2.
+2025-03-08 11:47:09,656 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:47:10,143 - INFO - Received -> 0|69 from arduino
+2025-03-08 11:47:10,273 - INFO - Lick data recorded for: 0|69
+2025-03-08 11:47:10,287 - INFO - Received -> 0|49 from arduino
+2025-03-08 11:47:10,450 - INFO - Received -> 0|75 from arduino
+2025-03-08 11:47:10,524 - INFO - Lick data recorded for: 0|49
+2025-03-08 11:47:10,524 - INFO - Lick data recorded for: 0|75
+2025-03-08 11:47:10,524 - INFO - Sent b'BEGIN OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:10,524 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:10,524 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-08 11:47:10,525 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 2, completes in 5000.
+2025-03-08 11:47:10,594 - INFO - Received -> 0|64|4268244260 from arduino
+2025-03-08 11:47:10,750 - INFO - Received -> 0|85|30528 from arduino
+2025-03-08 11:47:10,775 - INFO - Lick data recorded for: 0|64|4268244260
+2025-03-08 11:47:10,775 - INFO - Lick data recorded for: 0|85|30528
+2025-03-08 11:47:10,905 - INFO - Received -> 0|86|30528 from arduino
+2025-03-08 11:47:11,026 - INFO - Lick data recorded for: 0|86|30528
+2025-03-08 11:47:11,045 - INFO - Received -> 0|107|30528 from arduino
+2025-03-08 11:47:11,195 - INFO - Received -> 0|63|30528 from arduino
+2025-03-08 11:47:11,276 - INFO - Lick data recorded for: 0|107|30528
+2025-03-08 11:47:11,276 - INFO - Lick data recorded for: 0|63|30528
+2025-03-08 11:47:11,347 - INFO - Received -> 0|51|30528 from arduino
+2025-03-08 11:47:11,503 - INFO - Received -> 0|61|30520 from arduino
+2025-03-08 11:47:11,527 - INFO - Lick data recorded for: 0|51|30528
+2025-03-08 11:47:11,528 - INFO - Lick data recorded for: 0|61|30520
+2025-03-08 11:47:11,655 - INFO - Received -> 0|51|30524 from arduino
+2025-03-08 11:47:11,778 - INFO - Lick data recorded for: 0|51|30524
+2025-03-08 11:47:11,810 - INFO - Received -> 0|65|30524 from arduino
+2025-03-08 11:47:11,974 - INFO - Received -> 0|71|30524 from arduino
+2025-03-08 11:47:12,029 - INFO - Lick data recorded for: 0|65|30524
+2025-03-08 11:47:12,029 - INFO - Lick data recorded for: 0|71|30524
+2025-03-08 11:47:12,118 - INFO - Received -> 0|101|30528 from arduino
+2025-03-08 11:47:12,269 - INFO - Received -> 0|66|30528 from arduino
+2025-03-08 11:47:12,280 - INFO - Lick data recorded for: 0|101|30528
+2025-03-08 11:47:12,280 - INFO - Lick data recorded for: 0|66|30528
+2025-03-08 11:47:12,421 - INFO - Received -> 0|51|30520 from arduino
+2025-03-08 11:47:12,530 - INFO - Lick data recorded for: 0|51|30520
+2025-03-08 11:47:12,589 - INFO - Received -> 0|69|30528 from arduino
+2025-03-08 11:47:12,744 - INFO - Received -> 0|61|30528 from arduino
+2025-03-08 11:47:12,781 - INFO - Lick data recorded for: 0|69|30528
+2025-03-08 11:47:12,781 - INFO - Lick data recorded for: 0|61|30528
+2025-03-08 11:47:12,904 - INFO - Received -> 0|74|30528 from arduino
+2025-03-08 11:47:13,032 - INFO - Lick data recorded for: 0|74|30528
+2025-03-08 11:47:13,035 - INFO - Received -> 0|80|30524 from arduino
+2025-03-08 11:47:13,283 - INFO - Lick data recorded for: 0|80|30524
+2025-03-08 11:47:13,367 - INFO - Received -> 1|81|24148 from arduino
+2025-03-08 11:47:13,502 - INFO - Received -> 1|75|24152 from arduino
+2025-03-08 11:47:13,533 - INFO - Lick data recorded for: 1|81|24148
+2025-03-08 11:47:13,534 - INFO - Lick data recorded for: 1|75|24152
+2025-03-08 11:47:13,735 - INFO - Received -> 1|82|24156 from arduino
+2025-03-08 11:47:13,784 - INFO - Lick data recorded for: 1|82|24156
+2025-03-08 11:47:13,920 - INFO - Received -> 1|89|24152 from arduino
+2025-03-08 11:47:14,035 - INFO - Lick data recorded for: 1|89|24152
+2025-03-08 11:47:14,096 - INFO - Received -> 1|88|24156 from arduino
+2025-03-08 11:47:14,285 - INFO - Lick data recorded for: 1|88|24156
+2025-03-08 11:47:14,406 - INFO - Received -> 1|245|24152 from arduino
+2025-03-08 11:47:14,535 - INFO - Lick data recorded for: 1|245|24152
+2025-03-08 11:47:14,555 - INFO - Received -> 1|66|24148 from arduino
+2025-03-08 11:47:14,786 - INFO - Lick data recorded for: 1|66|24148
+2025-03-08 11:47:14,870 - INFO - Received -> 1|95|24148 from arduino
+2025-03-08 11:47:15,036 - INFO - Lick data recorded for: 1|95|24148
+2025-03-08 11:47:15,049 - INFO - Received -> 1|84|24152 from arduino
+2025-03-08 11:47:15,247 - INFO - Received -> 1|123|24148 from arduino
+2025-03-08 11:47:15,287 - INFO - Lick data recorded for: 1|84|24152
+2025-03-08 11:47:15,287 - INFO - Lick data recorded for: 1|123|24148
+2025-03-08 11:47:15,394 - INFO - Received -> 1|120|24148 from arduino
+2025-03-08 11:47:15,525 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:15,525 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:15,526 - INFO - Lick timestamps retrieved for trial 2.
+2025-03-08 11:47:15,558 - INFO - Progress bar updated.
+2025-03-08 11:47:15,558 - INFO - Updated GUI for new trial 3.
+2025-03-08 11:47:15,558 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:15,558 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:47:15,558 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-08 11:47:15,648 - INFO - Received -> 1|104 from arduino
+2025-03-08 11:47:17,880 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:47:20,559 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:20,559 - INFO - Full state time updated to 2238.
+2025-03-08 11:47:20,580 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:47:22,797 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:22,798 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:47:22,798 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-08 11:47:22,798 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 3.
+2025-03-08 11:47:22,914 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:47:22,935 - INFO - Received -> 0|59 from arduino
+2025-03-08 11:47:23,040 - INFO - Lick data recorded for: 0|59
+2025-03-08 11:47:23,118 - INFO - Received -> 0|65 from arduino
+2025-03-08 11:47:23,283 - INFO - Received -> 0|64 from arduino
+2025-03-08 11:47:23,291 - INFO - Lick data recorded for: 0|65
+2025-03-08 11:47:23,291 - INFO - Lick data recorded for: 0|64
+2025-03-08 11:47:23,292 - INFO - Sent b'BEGIN OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:23,292 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:23,292 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-08 11:47:23,292 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 3, completes in 5000.
+2025-03-08 11:47:23,438 - INFO - Received -> 0|58|30524 from arduino
+2025-03-08 11:47:23,542 - INFO - Lick data recorded for: 0|58|30524
+2025-03-08 11:47:23,590 - INFO - Received -> 0|61|30524 from arduino
+2025-03-08 11:47:23,745 - INFO - Received -> 0|58|30520 from arduino
+2025-03-08 11:47:23,792 - INFO - Lick data recorded for: 0|61|30524
+2025-03-08 11:47:23,793 - INFO - Lick data recorded for: 0|58|30520
+2025-03-08 11:47:23,901 - INFO - Received -> 0|62|30524 from arduino
+2025-03-08 11:47:24,043 - INFO - Lick data recorded for: 0|62|30524
+2025-03-08 11:47:24,048 - INFO - Received -> 0|59|30524 from arduino
+2025-03-08 11:47:24,204 - INFO - Received -> 0|59|30520 from arduino
+2025-03-08 11:47:24,294 - INFO - Lick data recorded for: 0|59|30524
+2025-03-08 11:47:24,294 - INFO - Lick data recorded for: 0|59|30520
+2025-03-08 11:47:24,355 - INFO - Received -> 0|59|30524 from arduino
+2025-03-08 11:47:24,503 - INFO - Received -> 0|56|30524 from arduino
+2025-03-08 11:47:24,545 - INFO - Lick data recorded for: 0|59|30524
+2025-03-08 11:47:24,545 - INFO - Lick data recorded for: 0|56|30524
+2025-03-08 11:47:24,651 - INFO - Received -> 0|52|30528 from arduino
+2025-03-08 11:47:24,796 - INFO - Lick data recorded for: 0|52|30528
+2025-03-08 11:47:24,798 - INFO - Received -> 0|55|30520 from arduino
+2025-03-08 11:47:24,946 - INFO - Received -> 0|56|30520 from arduino
+2025-03-08 11:47:25,046 - INFO - Lick data recorded for: 0|55|30520
+2025-03-08 11:47:25,047 - INFO - Lick data recorded for: 0|56|30520
+2025-03-08 11:47:25,084 - INFO - Received -> 0|57|30520 from arduino
+2025-03-08 11:47:25,220 - INFO - Received -> 0|54|30520 from arduino
+2025-03-08 11:47:25,297 - INFO - Lick data recorded for: 0|57|30520
+2025-03-08 11:47:25,297 - INFO - Lick data recorded for: 0|54|30520
+2025-03-08 11:47:25,363 - INFO - Received -> 0|56|30528 from arduino
+2025-03-08 11:47:25,495 - INFO - Received -> 0|53|30524 from arduino
+2025-03-08 11:47:25,548 - INFO - Lick data recorded for: 0|56|30528
+2025-03-08 11:47:25,549 - INFO - Lick data recorded for: 0|53|30524
+2025-03-08 11:47:25,879 - INFO - Received -> 0|60|30524 from arduino
+2025-03-08 11:47:26,014 - INFO - Received -> 0|64|30528 from arduino
+2025-03-08 11:47:26,049 - INFO - Lick data recorded for: 0|60|30524
+2025-03-08 11:47:26,050 - INFO - Lick data recorded for: 0|64|30528
+2025-03-08 11:47:26,142 - INFO - Received -> 0|61|30524 from arduino
+2025-03-08 11:47:26,273 - INFO - Received -> 0|54|30520 from arduino
+2025-03-08 11:47:26,301 - INFO - Lick data recorded for: 0|61|30524
+2025-03-08 11:47:26,301 - INFO - Lick data recorded for: 0|54|30520
+2025-03-08 11:47:26,400 - INFO - Received -> 0|48|30528 from arduino
+2025-03-08 11:47:26,502 - INFO - Received -> 0|67|30528 from arduino
+2025-03-08 11:47:26,552 - INFO - Lick data recorded for: 0|48|30528
+2025-03-08 11:47:26,552 - INFO - Lick data recorded for: 0|67|30528
+2025-03-08 11:47:26,645 - INFO - Received -> 0|55|30528 from arduino
+2025-03-08 11:47:26,803 - INFO - Lick data recorded for: 0|55|30528
+2025-03-08 11:47:26,879 - INFO - Received -> 1|95|24152 from arduino
+2025-03-08 11:47:27,034 - INFO - Received -> 1|60|24156 from arduino
+2025-03-08 11:47:27,053 - INFO - Lick data recorded for: 1|95|24152
+2025-03-08 11:47:27,054 - INFO - Lick data recorded for: 1|60|24156
+2025-03-08 11:47:27,293 - INFO - Received -> 1|61|24156 from arduino
+2025-03-08 11:47:27,304 - INFO - Lick data recorded for: 1|61|24156
+2025-03-08 11:47:27,448 - INFO - Received -> 0|60|30520 from arduino
+2025-03-08 11:47:27,555 - INFO - Lick data recorded for: 0|60|30520
+2025-03-08 11:47:27,612 - INFO - Received -> 0|71|30528 from arduino
+2025-03-08 11:47:27,759 - INFO - Received -> 0|68|30524 from arduino
+2025-03-08 11:47:27,806 - INFO - Lick data recorded for: 0|71|30528
+2025-03-08 11:47:27,806 - INFO - Lick data recorded for: 0|68|30524
+2025-03-08 11:47:27,898 - INFO - Received -> 0|62|30528 from arduino
+2025-03-08 11:47:28,057 - INFO - Lick data recorded for: 0|62|30528
+2025-03-08 11:47:28,293 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:28,293 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:28,294 - INFO - Lick timestamps retrieved for trial 3.
+2025-03-08 11:47:28,327 - INFO - Progress bar updated.
+2025-03-08 11:47:28,327 - INFO - Updated GUI for new trial 4.
+2025-03-08 11:47:28,327 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:28,327 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:47:28,327 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-08 11:47:28,426 - INFO - Received -> 1|221 from arduino
+2025-03-08 11:47:30,650 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:47:33,328 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:33,328 - INFO - Full state time updated to 2238.
+2025-03-08 11:47:33,328 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:47:35,566 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:35,566 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:47:35,566 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 4, completes in 5000.
+2025-03-08 11:47:35,566 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 4.
+2025-03-08 11:47:35,681 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:47:39,875 - INFO - Received -> 0|77 from arduino
+2025-03-08 11:47:40,018 - INFO - Received -> 0|40 from arduino
+2025-03-08 11:47:40,062 - INFO - Lick data recorded for: 0|77
+2025-03-08 11:47:40,062 - INFO - Lick data recorded for: 0|40
+2025-03-08 11:47:40,194 - INFO - Received -> 0|67 from arduino
+2025-03-08 11:47:40,313 - INFO - Lick data recorded for: 0|67
+2025-03-08 11:47:40,314 - INFO - Sent b'BEGIN OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:40,314 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:40,314 - INFO - Updated GUI on state change to SAMPLE.
+2025-03-08 11:47:40,314 - INFO - STATE CHANGE: SAMPLE BEGINS NOW for trial-> 4, completes in 5000.
+2025-03-08 11:47:40,350 - INFO - Received -> 0|67|0 from arduino
+2025-03-08 11:47:40,506 - INFO - Received -> 0|69|26064 from arduino
+2025-03-08 11:47:40,564 - INFO - Lick data recorded for: 0|67|0
+2025-03-08 11:47:40,564 - INFO - Lick data recorded for: 0|69|26064
+2025-03-08 11:47:40,653 - INFO - Received -> 0|50|26072 from arduino
+2025-03-08 11:47:40,812 - INFO - Received -> 0|62|26072 from arduino
+2025-03-08 11:47:40,814 - INFO - Lick data recorded for: 0|50|26072
+2025-03-08 11:47:40,815 - INFO - Lick data recorded for: 0|62|26072
+2025-03-08 11:47:40,964 - INFO - Received -> 0|63|26072 from arduino
+2025-03-08 11:47:41,066 - INFO - Lick data recorded for: 0|63|26072
+2025-03-08 11:47:41,115 - INFO - Received -> 0|55|26068 from arduino
+2025-03-08 11:47:41,275 - INFO - Received -> 0|74|26068 from arduino
+2025-03-08 11:47:41,316 - INFO - Lick data recorded for: 0|55|26068
+2025-03-08 11:47:41,316 - INFO - Lick data recorded for: 0|74|26068
+2025-03-08 11:47:41,431 - INFO - Received -> 0|69|26072 from arduino
+2025-03-08 11:47:41,567 - INFO - Lick data recorded for: 0|69|26072
+2025-03-08 11:47:41,600 - INFO - Received -> 0|85|26068 from arduino
+2025-03-08 11:47:41,758 - INFO - Received -> 0|81|26064 from arduino
+2025-03-08 11:47:41,818 - INFO - Lick data recorded for: 0|85|26068
+2025-03-08 11:47:41,818 - INFO - Lick data recorded for: 0|81|26064
+2025-03-08 11:47:42,119 - INFO - Received -> 1|261|24156 from arduino
+2025-03-08 11:47:42,234 - INFO - Received -> 1|83|24156 from arduino
+2025-03-08 11:47:42,319 - INFO - Lick data recorded for: 1|261|24156
+2025-03-08 11:47:42,319 - INFO - Lick data recorded for: 1|83|24156
+2025-03-08 11:47:42,377 - INFO - Received -> 1|51|24148 from arduino
+2025-03-08 11:47:42,570 - INFO - Lick data recorded for: 1|51|24148
+2025-03-08 11:47:42,606 - INFO - Received -> 1|49|24152 from arduino
+2025-03-08 11:47:42,821 - INFO - Lick data recorded for: 1|49|24152
+2025-03-08 11:47:42,962 - INFO - Received -> 1|44|24148 from arduino
+2025-03-08 11:47:43,071 - INFO - Lick data recorded for: 1|44|24148
+2025-03-08 11:47:43,233 - INFO - Received -> 1|93|24156 from arduino
+2025-03-08 11:47:43,322 - INFO - Lick data recorded for: 1|93|24156
+2025-03-08 11:47:43,422 - INFO - Received -> 1|82|24148 from arduino
+2025-03-08 11:47:43,572 - INFO - Lick data recorded for: 1|82|24148
+2025-03-08 11:47:43,586 - INFO - Received -> 0|85|26068 from arduino
+2025-03-08 11:47:43,725 - INFO - Received -> 0|62|26072 from arduino
+2025-03-08 11:47:43,823 - INFO - Lick data recorded for: 0|85|26068
+2025-03-08 11:47:43,824 - INFO - Lick data recorded for: 0|62|26072
+2025-03-08 11:47:43,995 - INFO - Received -> 0|55|26064 from arduino
+2025-03-08 11:47:44,074 - INFO - Lick data recorded for: 0|55|26064
+2025-03-08 11:47:44,298 - INFO - Received -> 0|79|26072 from arduino
+2025-03-08 11:47:44,325 - INFO - Lick data recorded for: 0|79|26072
+2025-03-08 11:47:44,470 - INFO - Received -> 0|79|26068 from arduino
+2025-03-08 11:47:44,575 - INFO - Lick data recorded for: 0|79|26068
+2025-03-08 11:47:44,757 - INFO - Received -> 0|170|26068 from arduino
+2025-03-08 11:47:44,826 - INFO - Lick data recorded for: 0|170|26068
+2025-03-08 11:47:45,105 - INFO - Received -> 1|208|24148 from arduino
+2025-03-08 11:47:45,314 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:45,315 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:45,316 - INFO - Lick timestamps retrieved for trial 4.
+2025-03-08 11:47:45,347 - INFO - Progress bar updated.
+2025-03-08 11:47:45,347 - INFO - Updated GUI for new trial 5.
+2025-03-08 11:47:45,347 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:45,347 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:47:45,347 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-08 11:47:45,355 - INFO - Received -> 1|67 from arduino
+2025-03-08 11:47:45,502 - INFO - Received -> 1|110 from arduino
+2025-03-08 11:47:47,673 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:47:50,348 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:50,348 - INFO - Full state time updated to 2238.
+2025-03-08 11:47:50,348 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:47:52,587 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:52,587 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:47:52,587 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 5, completes in 5000.
+2025-03-08 11:47:52,587 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 5.
+2025-03-08 11:47:52,703 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:47:57,587 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:57,588 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:47:57,591 - INFO - Progress bar updated.
+2025-03-08 11:47:57,591 - INFO - Updated GUI for new trial 6.
+2025-03-08 11:47:57,591 - INFO - Full state time updated to 5000.
+2025-03-08 11:47:57,591 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:47:57,591 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-08 11:47:59,945 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:48:02,592 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:02,592 - INFO - Full state time updated to 2238.
+2025-03-08 11:48:02,592 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:48:04,831 - INFO - Full state time updated to 5000.
+2025-03-08 11:48:04,831 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:48:04,831 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 6, completes in 5000.
+2025-03-08 11:48:04,831 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 6.
+2025-03-08 11:48:04,945 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:48:09,832 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:09,832 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:09,836 - INFO - Progress bar updated.
+2025-03-08 11:48:09,836 - INFO - Updated GUI for new trial 7.
+2025-03-08 11:48:09,836 - INFO - Full state time updated to 5000.
+2025-03-08 11:48:09,837 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:48:09,837 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-08 11:48:12,190 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:48:14,837 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:14,838 - INFO - Full state time updated to 2238.
+2025-03-08 11:48:14,838 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:48:17,076 - INFO - Full state time updated to 5000.
+2025-03-08 11:48:17,076 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:48:17,076 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 7, completes in 5000.
+2025-03-08 11:48:17,076 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 7.
+2025-03-08 11:48:17,191 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:48:22,077 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:22,077 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:22,080 - INFO - Progress bar updated.
+2025-03-08 11:48:22,080 - INFO - Updated GUI for new trial 8.
+2025-03-08 11:48:22,080 - INFO - Full state time updated to 5000.
+2025-03-08 11:48:22,081 - INFO - Updated GUI on state change to ITI.
+2025-03-08 11:48:22,081 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-08 11:48:24,434 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:48:27,081 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:27,081 - INFO - Full state time updated to 2238.
+2025-03-08 11:48:27,082 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-08 11:48:29,320 - INFO - Full state time updated to 5000.
+2025-03-08 11:48:29,320 - INFO - Updated GUI on state change to TTC.
+2025-03-08 11:48:29,341 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 8, completes in 5000.
+2025-03-08 11:48:29,342 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 8.
+2025-03-08 11:48:29,434 - INFO - Received -> MOTOR MOVED DOWN from arduino
+2025-03-08 11:48:34,342 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:34,342 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-08 11:48:34,365 - INFO - Full state time updated to 0.
+2025-03-08 11:48:34,365 - INFO - Updated GUI on state change to Idle.
+2025-03-08 11:48:34,365 - INFO - Program stopped... waiting to finalize...
+2025-03-08 11:48:36,699 - INFO - Received -> MOTOR MOVED UP from arduino
+2025-03-08 11:48:39,365 - ERROR - Error completing program: 'ArduinoManager' object has no attribute 'reset_arduinos'
+2025-03-08 11:52:16,392 - INFO - Application closed.

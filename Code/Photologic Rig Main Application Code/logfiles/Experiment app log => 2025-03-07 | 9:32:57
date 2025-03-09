@@ -1,0 +1,79 @@
+2025-03-07 09:32:57,923 - INFO - Licks dataframe initialized.
+2025-03-07 09:32:58,067 - INFO - Timer 'Time Elapsed:' created.
+2025-03-07 09:32:58,075 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-07 09:32:58,080 - INFO - Timer 'State Time:' created.
+2025-03-07 09:32:58,083 - INFO - Timers displayed.
+2025-03-07 09:32:58,090 - INFO - Labeled entry 'ITI Time' created.
+2025-03-07 09:32:58,095 - INFO - Labeled entry 'TTC Time' created.
+2025-03-07 09:32:58,101 - INFO - Labeled entry 'Sample Time' created.
+2025-03-07 09:32:58,106 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-07 09:32:58,112 - INFO - Labeled entry '+/- ITI' created.
+2025-03-07 09:32:58,117 - INFO - Labeled entry '+/- TTC' created.
+2025-03-07 09:32:58,123 - INFO - Labeled entry '+/- Sample' created.
+2025-03-07 09:32:58,128 - INFO - Labeled entry '# Stimuli' created.
+2025-03-07 09:32:58,128 - INFO - Entry widgets displayed.
+2025-03-07 09:32:58,131 - INFO - Button 'Start' created.
+2025-03-07 09:32:58,134 - INFO - Button 'Reset' created.
+2025-03-07 09:32:58,134 - INFO - Main control buttons displayed.
+2025-03-07 09:32:58,136 - INFO - Button 'Calibrate Valves' created.
+2025-03-07 09:32:58,139 - INFO - Button 'Valve Control' created.
+2025-03-07 09:32:58,142 - INFO - Button 'Program Schedule' created.
+2025-03-07 09:32:58,145 - INFO - Button 'Valve / Stimuli' created.
+2025-03-07 09:32:58,147 - INFO - Button 'Lick Data' created.
+2025-03-07 09:32:58,150 - INFO - Button 'Rasterized Data' created.
+2025-03-07 09:32:58,153 - INFO - Button 'Save Data' created.
+2025-03-07 09:32:58,153 - INFO - Lower control buttons displayed.
+2025-03-07 09:32:58,166 - INFO - Status widget displayed.
+2025-03-07 09:32:58,166 - INFO - GUI setup completed.
+2025-03-07 09:32:58,177 - INFO - Labeled entry 'Valve 1' created.
+2025-03-07 09:32:58,183 - INFO - Labeled entry 'Valve 2' created.
+2025-03-07 09:32:58,188 - INFO - Labeled entry 'Valve 5' created.
+2025-03-07 09:32:58,194 - INFO - Labeled entry 'Valve 6' created.
+2025-03-07 09:32:58,194 - INFO - Stimuli frame populated.
+2025-03-07 09:32:58,196 - INFO - Button 'Generate Schedule' created.
+2025-03-07 09:32:58,196 - INFO - Filled contents of experiment control window.
+2025-03-07 09:32:58,196 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-07 09:32:58,337 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-07 09:32:58,339 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-07 09:32:58,340 - INFO - Initial valve test table created.
+2025-03-07 09:32:58,340 - INFO - Buttons created for ValveTestWindow.
+2025-03-07 09:32:58,340 - INFO - Widgets created for ValveTestWindow.
+2025-03-07 09:32:58,340 - INFO - Experiment control window centered.
+2025-03-07 09:32:58,340 - INFO - ValveTestWindow shown.
+2025-03-07 09:32:58,340 - INFO - Trace variables set up.
+2025-03-07 09:32:58,340 - INFO - Valve Test Window initialized.
+2025-03-07 09:32:58,341 - INFO - Experiment control window centered.
+2025-03-07 09:32:58,341 - INFO - MainGUI initialized.
+2025-03-07 09:32:59,350 - INFO - Sent b'WHO ARE YOU\n' to -> /dev/ttyACM0: 
+2025-03-07 09:32:59,591 - INFO - Arduino on port /dev/ttyACM0 identified as MOTOR
+2025-03-07 09:32:59,595 - INFO - Motor Arduino connected on port /dev/ttyACM0
+2025-03-07 09:32:59,595 - INFO - Connected to Arduino boards successfully.
+2025-03-07 09:32:59,595 - INFO - GUI started successfully.
+2025-03-07 09:33:02,999 - INFO - Random intervals created.
+2025-03-07 09:33:03,000 - INFO - Initialized stimuli dataframe.
+2025-03-07 09:33:03,025 - INFO - Sent b'REC VAR\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,026 - INFO - Sent b'\x04\x08' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,026 - INFO - Sent b'REC SCHED\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,027 - INFO - Sent b'\x00\x01\x01\x00\x01\x00\x00\x01\x05\x04\x04\x05\x04\x05\x05\x04' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,029 - INFO - Sent b'VER SCHED\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,034 - INFO - Arduino recieved side one as => [0 1 1 0 1 0 0 1]
+2025-03-07 09:33:03,034 - INFO - Arduino recieved side two as => [5 4 4 5 4 5 5 4]
+2025-03-07 09:33:03,034 - INFO - Motor arduino has recieved and verified experiment valve schedule
+2025-03-07 09:33:03,035 - INFO - Sent b'REC DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,036 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,041 - INFO - Sent b'VER DURATIONS\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:03,050 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-07 09:33:03,050 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-07 09:33:03,050 - INFO - Motor arduino has recieved and verified valve durations
+2025-03-07 09:33:03,050 - INFO - Started listening thread for Arduino serial input.
+2025-03-07 09:33:06,024 - INFO - Sent b'T=0\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:06,024 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-07 09:33:06,027 - INFO - Progress bar updated.
+2025-03-07 09:33:06,027 - INFO - Updated GUI for new trial 1.
+2025-03-07 09:33:06,027 - INFO - Full state time updated to 5000.
+2025-03-07 09:33:06,027 - INFO - Updated GUI on state change to ITI.
+2025-03-07 09:33:06,027 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-07 09:33:11,028 - INFO - Sent b'DOWN\n' to -> /dev/ttyACM0: 
+2025-03-07 09:33:11,028 - INFO - Full state time updated to 2238.
+2025-03-07 09:33:11,028 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-07 09:33:12,579 - INFO - Application closed.

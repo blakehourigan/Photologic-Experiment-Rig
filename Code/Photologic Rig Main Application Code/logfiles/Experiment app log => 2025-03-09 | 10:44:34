@@ -1,0 +1,209 @@
+2025-03-09 10:44:34,011 - INFO - Licks dataframe initialized.
+2025-03-09 10:44:34,166 - INFO - Timer 'Time Elapsed:' created.
+2025-03-09 10:44:34,175 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-09 10:44:34,181 - INFO - Timer 'State Time:' created.
+2025-03-09 10:44:34,185 - INFO - Timers displayed.
+2025-03-09 10:44:34,192 - INFO - Labeled entry 'ITI Time' created.
+2025-03-09 10:44:34,198 - INFO - Labeled entry 'TTC Time' created.
+2025-03-09 10:44:34,204 - INFO - Labeled entry 'Sample Time' created.
+2025-03-09 10:44:34,211 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-09 10:44:34,217 - INFO - Labeled entry '+/- ITI' created.
+2025-03-09 10:44:34,223 - INFO - Labeled entry '+/- TTC' created.
+2025-03-09 10:44:34,229 - INFO - Labeled entry '+/- Sample' created.
+2025-03-09 10:44:34,235 - INFO - Labeled entry '# Stimuli' created.
+2025-03-09 10:44:34,235 - INFO - Entry widgets displayed.
+2025-03-09 10:44:34,239 - INFO - Button 'Start' created.
+2025-03-09 10:44:34,242 - INFO - Button 'Reset' created.
+2025-03-09 10:44:34,242 - INFO - Main control buttons displayed.
+2025-03-09 10:44:34,245 - INFO - Button 'Calibrate Valves' created.
+2025-03-09 10:44:34,248 - INFO - Button 'Valve Control' created.
+2025-03-09 10:44:34,251 - INFO - Button 'Program Schedule' created.
+2025-03-09 10:44:34,254 - INFO - Button 'Valve / Stimuli' created.
+2025-03-09 10:44:34,257 - INFO - Button 'Lick Data' created.
+2025-03-09 10:44:34,260 - INFO - Button 'Rasterized Data' created.
+2025-03-09 10:44:34,264 - INFO - Button 'Save Data' created.
+2025-03-09 10:44:34,264 - INFO - Lower control buttons displayed.
+2025-03-09 10:44:34,279 - INFO - Status widget displayed.
+2025-03-09 10:44:34,279 - INFO - GUI setup completed.
+2025-03-09 10:44:34,292 - INFO - Labeled entry 'Valve 1' created.
+2025-03-09 10:44:34,299 - INFO - Labeled entry 'Valve 2' created.
+2025-03-09 10:44:34,305 - INFO - Labeled entry 'Valve 5' created.
+2025-03-09 10:44:34,311 - INFO - Labeled entry 'Valve 6' created.
+2025-03-09 10:44:34,311 - INFO - Stimuli frame populated.
+2025-03-09 10:44:34,314 - INFO - Button 'Generate Schedule' created.
+2025-03-09 10:44:34,314 - INFO - Filled contents of experiment control window.
+2025-03-09 10:44:34,314 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-09 10:44:34,473 - INFO - Label and entry created for Number of Valves to Test.
+2025-03-09 10:44:34,476 - INFO - Label and entry created for Desired Volume to Dispense (ul).
+2025-03-09 10:44:34,476 - INFO - Initial valve test table created.
+2025-03-09 10:44:34,476 - INFO - Buttons created for ValveTestWindow.
+2025-03-09 10:44:34,476 - INFO - Widgets created for ValveTestWindow.
+2025-03-09 10:44:34,476 - INFO - Experiment control window centered.
+2025-03-09 10:44:34,476 - INFO - ValveTestWindow shown.
+2025-03-09 10:44:34,476 - INFO - Trace variables set up.
+2025-03-09 10:44:34,476 - INFO - Valve Test Window initialized.
+2025-03-09 10:44:34,478 - INFO - Experiment control window centered.
+2025-03-09 10:44:34,478 - INFO - MainGUI initialized.
+2025-03-09 10:44:34,486 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-09 10:44:34,486 - INFO - Connected to Arduino boards successfully.
+2025-03-09 10:44:34,486 - INFO - GUI started successfully.
+2025-03-09 10:44:40,985 - INFO - Random intervals created.
+2025-03-09 10:44:40,986 - INFO - Initialized stimuli dataframe.
+2025-03-09 10:44:41,010 - INFO - Sent b'REC VAR\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,011 - INFO - Sent b'\x04\x08' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,012 - INFO - Sent b'REC SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,012 - INFO - Sent b'\x00\x01\x00\x01\x00\x01\x01\x00\x05\x04\x05\x04\x05\x04\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,015 - INFO - Sent b'VER SCHED\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,020 - INFO - Arduino recieved side one as => [0 1 0 1 0 1 1 0]
+2025-03-09 10:44:41,020 - INFO - Arduino recieved side two as => [5 4 5 4 5 4 4 5]
+2025-03-09 10:44:41,020 - INFO - arduino has recieved and verified experiment valve schedule
+2025-03-09 10:44:41,021 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,022 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,027 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:41,037 - INFO - Arduino recieved side one as => [30488 26053 24125 24125 24125 24125 24125 24125]
+2025-03-09 10:44:41,037 - INFO - Arduino recieved side two as => [23020 32253 24125 24125 24125 24125 24125 24125]
+2025-03-09 10:44:41,037 - INFO - arduino has recieved and verified valve durations
+2025-03-09 10:44:41,037 - INFO - Started listening thread for Arduino serial input.
+2025-03-09 10:44:42,169 - INFO - Sent b'T=0\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:42,170 - INFO - ==========EXPERIMENT BEGINS NOW==========
+2025-03-09 10:44:42,174 - INFO - Progress bar updated.
+2025-03-09 10:44:42,174 - INFO - Updated GUI for new trial 1.
+2025-03-09 10:44:42,174 - INFO - Full state time updated to 5000.
+2025-03-09 10:44:42,174 - INFO - Updated GUI on state change to ITI.
+2025-03-09 10:44:42,174 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-09 10:44:47,175 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:47,175 - INFO - Full state time updated to 2238.
+2025-03-09 10:44:47,175 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-09 10:44:49,413 - INFO - Full state time updated to 5000.
+2025-03-09 10:44:49,413 - INFO - Updated GUI on state change to TTC.
+2025-03-09 10:44:49,414 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 1, completes in 5000.
+2025-03-09 10:44:49,414 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 1.
+2025-03-09 10:44:49,519 - INFO - Received -> MOTOR|DOWN|2338|7342|7342 from arduino
+2025-03-09 10:44:49,970 - INFO - Received -> 0|90|7703|0 from arduino
+2025-03-09 10:44:50,335 - INFO - Received -> 0|52|8106|0 from arduino
+2025-03-09 10:44:50,682 - INFO - Received -> 0|68|8438|0 from arduino
+2025-03-09 10:44:51,002 - INFO - Received -> 0|80|8746|0 from arduino
+2025-03-09 10:44:51,289 - INFO - Received -> 0|80|9031|0 from arduino
+2025-03-09 10:44:51,588 - INFO - Received -> 0|80|9329|0 from arduino
+2025-03-09 10:44:51,878 - INFO - Received -> 0|77|9625|0 from arduino
+2025-03-09 10:44:52,308 - INFO - Received -> 0|85|10046|0 from arduino
+2025-03-09 10:44:52,632 - INFO - Received -> 0|96|10356|0 from arduino
+2025-03-09 10:44:52,931 - INFO - Received -> 0|78|10674|0 from arduino
+2025-03-09 10:44:53,233 - INFO - Received -> 0|81|10972|0 from arduino
+2025-03-09 10:44:53,533 - INFO - Received -> 0|90|11265|0 from arduino
+2025-03-09 10:44:53,828 - INFO - Received -> 0|82|11568|0 from arduino
+2025-03-09 10:44:54,160 - INFO - Received -> 0|90|11890|0 from arduino
+2025-03-09 10:44:54,414 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:54,415 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:54,418 - INFO - Progress bar updated.
+2025-03-09 10:44:54,418 - INFO - Updated GUI for new trial 2.
+2025-03-09 10:44:54,418 - INFO - Full state time updated to 5000.
+2025-03-09 10:44:54,418 - INFO - Updated GUI on state change to ITI.
+2025-03-09 10:44:54,419 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-09 10:44:54,459 - INFO - Received -> 0|90|12190|0 from arduino
+2025-03-09 10:44:56,761 - INFO - Received -> MOTOR|UP|2341|14580|14580 from arduino
+2025-03-09 10:44:59,137 - INFO - Received -> 0|75|16880|0 from arduino
+2025-03-09 10:44:59,419 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:44:59,419 - INFO - Full state time updated to 2238.
+2025-03-09 10:44:59,419 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-09 10:44:59,611 - INFO - Received -> 0|70|17359|0 from arduino
+2025-03-09 10:45:00,045 - INFO - Received -> 0|72|17793|0 from arduino
+2025-03-09 10:45:00,283 - INFO - Received -> 0|78|18023|0 from arduino
+2025-03-09 10:45:00,496 - INFO - Received -> 0|72|18239|0 from arduino
+2025-03-09 10:45:00,689 - INFO - Received -> 0|66|18440|0 from arduino
+2025-03-09 10:45:00,890 - INFO - Received -> 0|72|18634|0 from arduino
+2025-03-09 10:45:01,078 - INFO - Received -> 0|63|18832|0 from arduino
+2025-03-09 10:45:01,270 - INFO - Received -> 0|72|19014|0 from arduino
+2025-03-09 10:45:01,451 - INFO - Received -> 0|75|19193|0 from arduino
+2025-03-09 10:45:01,627 - INFO - Received -> 0|67|19378|0 from arduino
+2025-03-09 10:45:01,658 - INFO - Full state time updated to 5000.
+2025-03-09 10:45:01,658 - INFO - Updated GUI on state change to TTC.
+2025-03-09 10:45:01,658 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 2, completes in 5000.
+2025-03-09 10:45:01,658 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 2.
+2025-03-09 10:45:01,769 - INFO - Received -> MOTOR|DOWN|2343|19584|19584 from arduino
+2025-03-09 10:45:01,822 - INFO - Received -> 0|82|19556|0 from arduino
+2025-03-09 10:45:02,159 - INFO - Received -> 0|67|19908|0 from arduino
+2025-03-09 10:45:02,339 - INFO - Received -> 0|56|20101|0 from arduino
+2025-03-09 10:45:02,516 - INFO - Received -> 0|65|20268|0 from arduino
+2025-03-09 10:45:02,691 - INFO - Received -> 0|65|20441|0 from arduino
+2025-03-09 10:45:02,868 - INFO - Received -> 0|66|20618|0 from arduino
+2025-03-09 10:45:03,048 - INFO - Received -> 0|73|20790|0 from arduino
+2025-03-09 10:45:03,223 - INFO - Received -> 0|65|20972|0 from arduino
+2025-03-09 10:45:03,392 - INFO - Received -> 0|58|21149|0 from arduino
+2025-03-09 10:45:03,568 - INFO - Received -> 0|65|21319|0 from arduino
+2025-03-09 10:45:03,739 - INFO - Received -> 0|62|21491|0 from arduino
+2025-03-09 10:45:03,912 - INFO - Received -> 0|62|21664|0 from arduino
+2025-03-09 10:45:04,084 - INFO - Received -> 0|65|21834|0 from arduino
+2025-03-09 10:45:04,248 - INFO - Received -> 0|61|22001|0 from arduino
+2025-03-09 10:45:04,424 - INFO - Received -> 0|58|22183|0 from arduino
+2025-03-09 10:45:04,612 - INFO - Received -> 0|83|22345|0 from arduino
+2025-03-09 10:45:04,772 - INFO - Received -> 0|56|22533|0 from arduino
+2025-03-09 10:45:04,949 - INFO - Received -> 0|58|22706|0 from arduino
+2025-03-09 10:45:05,129 - INFO - Received -> 0|74|22871|0 from arduino
+2025-03-09 10:45:05,301 - INFO - Received -> 0|65|23050|0 from arduino
+2025-03-09 10:45:05,465 - INFO - Received -> 0|65|23213|0 from arduino
+2025-03-09 10:45:05,791 - INFO - Received -> 0|83|23522|0 from arduino
+2025-03-09 10:45:05,960 - INFO - Received -> 0|74|23700|0 from arduino
+2025-03-09 10:45:06,132 - INFO - Received -> 0|70|23876|0 from arduino
+2025-03-09 10:45:06,328 - INFO - Received -> 0|75|24066|0 from arduino
+2025-03-09 10:45:06,517 - INFO - Received -> 0|134|24197|0 from arduino
+2025-03-09 10:45:06,658 - INFO - Sent b'UP\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:45:06,659 - INFO - Sent b'STOP OPEN VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:45:06,663 - INFO - Progress bar updated.
+2025-03-09 10:45:06,663 - INFO - Updated GUI for new trial 3.
+2025-03-09 10:45:06,663 - INFO - Full state time updated to 5000.
+2025-03-09 10:45:06,663 - INFO - Updated GUI on state change to ITI.
+2025-03-09 10:45:06,663 - INFO - STATE CHANGE: ITI BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-09 10:45:06,701 - INFO - Received -> 0|81|24436|0 from arduino
+2025-03-09 10:45:07,070 - INFO - Received -> 0|91|24795|0 from arduino
+2025-03-09 10:45:07,254 - INFO - Received -> 0|74|24993|0 from arduino
+2025-03-09 10:45:07,438 - INFO - Received -> 0|70|25181|0 from arduino
+2025-03-09 10:45:07,647 - INFO - Received -> 0|83|25377|0 from arduino
+2025-03-09 10:45:07,896 - INFO - Received -> 0|91|25620|0 from arduino
+2025-03-09 10:45:08,057 - INFO - Received -> 0|50|25821|0 from arduino
+2025-03-09 10:45:08,232 - INFO - Received -> 0|69|25975|0 from arduino
+2025-03-09 10:45:08,376 - INFO - Received -> 0|93|26095|0 from arduino
+2025-03-09 10:45:08,557 - INFO - Received -> 0|72|26298|0 from arduino
+2025-03-09 10:45:08,733 - INFO - Received -> 0|78|26468|0 from arduino
+2025-03-09 10:45:08,917 - INFO - Received -> 0|87|26643|0 from arduino
+2025-03-09 10:45:09,011 - INFO - Received -> MOTOR|UP|2346|26823|26823 from arduino
+2025-03-09 10:45:09,093 - INFO - Received -> 0|85|26821|0 from arduino
+2025-03-09 10:45:09,265 - INFO - Received -> 0|74|27005|0 from arduino
+2025-03-09 10:45:09,436 - INFO - Received -> 0|69|27179|0 from arduino
+2025-03-09 10:45:09,682 - INFO - Received -> 0|89|27405|0 from arduino
+2025-03-09 10:45:09,851 - INFO - Received -> 0|59|27606|0 from arduino
+2025-03-09 10:45:10,047 - INFO - Received -> 0|78|27780|0 from arduino
+2025-03-09 10:45:10,203 - INFO - Received -> 0|100|27915|0 from arduino
+2025-03-09 10:45:10,391 - INFO - Received -> 0|64|28137|0 from arduino
+2025-03-09 10:45:10,559 - INFO - Received -> 0|64|28305|0 from arduino
+2025-03-09 10:45:10,719 - INFO - Received -> 0|57|28473|0 from arduino
+2025-03-09 10:45:10,878 - INFO - Received -> 0|58|28633|0 from arduino
+2025-03-09 10:45:11,055 - INFO - Received -> 0|69|28797|0 from arduino
+2025-03-09 10:45:11,663 - INFO - Sent b'DOWN\n' to arduino on -> /dev/ttyACM0: 
+2025-03-09 10:45:11,664 - INFO - Full state time updated to 2238.
+2025-03-09 10:45:11,664 - INFO - Updated GUI on state change to OPENING DOOR.
+2025-03-09 10:45:11,902 - INFO - Received -> 1|137|29576|0 from arduino
+2025-03-09 10:45:12,108 - INFO - Received -> 1|71|29846|0 from arduino
+2025-03-09 10:45:12,251 - INFO - Received -> 1|55|30008|0 from arduino
+2025-03-09 10:45:12,390 - INFO - Received -> 1|58|30144|0 from arduino
+2025-03-09 10:45:12,534 - INFO - Received -> 1|70|30276|0 from arduino
+2025-03-09 10:45:12,664 - INFO - Received -> 1|69|30405|0 from arduino
+2025-03-09 10:45:12,775 - INFO - Received -> 1|65|30522|0 from arduino
+2025-03-09 10:45:12,890 - INFO - Received -> 1|63|30639|0 from arduino
+2025-03-09 10:45:13,012 - INFO - Received -> 1|60|30765|0 from arduino
+2025-03-09 10:45:13,143 - INFO - Received -> 1|73|30880|0 from arduino
+2025-03-09 10:45:13,254 - INFO - Received -> 1|57|31006|0 from arduino
+2025-03-09 10:45:13,365 - INFO - Received -> 1|51|31124|0 from arduino
+2025-03-09 10:45:13,492 - INFO - Received -> 1|72|31231|0 from arduino
+2025-03-09 10:45:13,602 - INFO - Received -> 1|52|31362|0 from arduino
+2025-03-09 10:45:13,729 - INFO - Received -> 1|62|31479|0 from arduino
+2025-03-09 10:45:13,857 - INFO - Received -> 1|60|31606|0 from arduino
+2025-03-09 10:45:13,902 - INFO - Full state time updated to 5000.
+2025-03-09 10:45:13,902 - INFO - Updated GUI on state change to TTC.
+2025-03-09 10:45:13,903 - INFO - STATE CHANGE: TTC BEGINS NOW for trial -> 3, completes in 5000.
+2025-03-09 10:45:13,903 - INFO - STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> 3.
+2025-03-09 10:45:13,983 - INFO - Received -> 1|52|31739|0 from arduino
+2025-03-09 10:45:14,016 - INFO - Received -> MOTOR|DOWN|2347|31826|31826 from arduino
+2025-03-09 10:45:14,106 - INFO - Received -> 1|72|31845|0 from arduino
+2025-03-09 10:45:14,208 - INFO - Received -> 1|51|31966|0 from arduino
+2025-03-09 10:45:15,894 - INFO - Application closed.
