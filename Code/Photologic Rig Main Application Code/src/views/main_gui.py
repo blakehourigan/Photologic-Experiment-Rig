@@ -8,7 +8,7 @@ from views.gui_common import GUIUtils
 # import other GUI classes that can spawn from main GUI
 from views.rasterized_data_window import RasterizedDataWindow
 from views.experiment_control_window import ExperimentCtlWindow
-from views.licks_window import LicksWindow
+from views.event_window import EventWindow
 from views.valve_testing_window import ValveTestWindow
 from views.program_schedule_window import ProgramScheduleWindow
 from views.valve_control_window import ValveControlWindow
@@ -76,11 +76,11 @@ class MainGUI(tk.Tk):
         """
         # define the data that ExperimentCtlWindow() needs to function
         stimuli_data = self.exp_data.stimuli_data
-        lick_data = self.exp_data.lick_data
+        event_data = self.exp_data.event_data
 
         self.windows = {
             "Experiment Control": ExperimentCtlWindow(
-                self.exp_data, stimuli_data, lick_data, self.trigger_state_change
+                self.exp_data, stimuli_data, event_data, self.trigger_state_change
             ),
             "Program Schedule": ProgramScheduleWindow(
                 self.exp_data,
@@ -90,9 +90,7 @@ class MainGUI(tk.Tk):
                 RasterizedDataWindow(1, self.exp_data),
                 RasterizedDataWindow(2, self.exp_data),
             ),
-            "Lick Data": LicksWindow(
-                lick_data,
-            ),
+            "Event Data": EventWindow(event_data),
             "Valve Testing": ValveTestWindow(),
             "Valve Control": ValveControlWindow(),
         }
@@ -441,8 +439,8 @@ class MainGUI(tk.Tk):
             )
             self.lick_window_button_frame = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
-                button_text="Lick Data",
-                command=lambda: self.show_secondary_window("Lick Data"),
+                button_text="Event Data",
+                command=lambda: self.show_secondary_window("Event Data"),
                 bg="grey",
                 row=1,
                 column=1,
@@ -470,9 +468,9 @@ class MainGUI(tk.Tk):
 
     def save_button_handler(self):
         sched_df = self.exp_data.program_schedule_df
-        lick_df = self.exp_data.lick_data.licks_dataframe
+        event_df = self.exp_data.event_data.event_dataframe
 
-        if sched_df.empty or lick_df.empty:
+        if sched_df.empty or event_df.empty:
             response = GUIUtils.askyesno(
                 "Hmm...",
                 "The program schedule window appears to be empty... save anyway?",

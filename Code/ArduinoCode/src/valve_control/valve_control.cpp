@@ -1,12 +1,12 @@
 #include "valve_control.h"
 #include "../exp_init/exp_init.h"
-#include "../time_details/time_details.h"
 #include "Arduino.h"
+#include <cstdint>
 
 // the print statements in this file are commented out for performance sake. Can
 // be un-commented for debugging purposes.
 
-bool close_valve(lickTimeDetails lick_time, SideData *side_data,
+bool close_valve(valveTimeDetails valve_time, SideData *side_data,
                  uint16_t current_trial) {
 
   uint8_t valve_num = side_data->experiment_schedule[current_trial];
@@ -15,7 +15,7 @@ bool close_valve(lickTimeDetails lick_time, SideData *side_data,
 
   unsigned long current_time = micros();
 
-  if ((current_time - lick_time.valve_open_time) > allotted_duration) {
+  if ((current_time - valve_time.valve_open_time) > allotted_duration) {
     // reset all valve pins to zero to turn them off
     PORTA = 0;
     PORTC = 0;
@@ -23,6 +23,15 @@ bool close_valve(lickTimeDetails lick_time, SideData *side_data,
     return true;
   }
   return false;
+}
+
+void open_valve_testing(volatile uint8_t *PORT, uint8_t valve_number) {
+  // open the valve on the desired port
+  *PORT = (1 << valve_number);
+}
+void close_single_valve(volatile uint8_t *PORT, uint8_t valve_number) {
+  // close the valve on the desired port at the valve number
+  *PORT &= ~(1 << valve_number);
 }
 
 void open_valve(SideData *side_data, uint16_t current_trial) {

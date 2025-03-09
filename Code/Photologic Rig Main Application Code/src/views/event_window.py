@@ -4,15 +4,16 @@ from tkinter import ttk
 from views.gui_common import GUIUtils
 
 
-class LicksWindow(tk.Toplevel):
-    # inject the licks dataframe when we create the class so we have access to that data
-    def __init__(self, licks_data) -> None:
+class EventWindow(tk.Toplevel):
+    # inject the event dataframe when we create the class so we have access to that data
+    def __init__(self, event_data) -> None:
         super().__init__()
-        # reference to licks model
-        self.licks_data = licks_data
+        # reference to event model
+        self.event_data = event_data
 
-        self.title("Licks Data")
+        self.title("Experiment Event Data")
         self.bind("<Control-w>", lambda event: self.withdraw())
+
         # Bind closing the window to self.withdraw()
         self.protocol("WM_DELETE_WINDOW", self.withdraw())
 
@@ -32,15 +33,15 @@ class LicksWindow(tk.Toplevel):
         self.deiconify()
 
     def update_table(self):
-        # df we are working with is self.licks_data.licks_dataframe, get rid of self prefix and such to save room
-        df = self.licks_data.licks_dataframe
+        # df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room
+        df = self.event_data.event_dataframe
         # num rows in that df currently
-        len_licks_df = len(df)
+        len_event_df = len(df)
 
         last_item = self.last_item
 
         # Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))
-        for i in range(last_item, len_licks_df):
+        for i in range(last_item, len_event_df):
             row_content = df.iloc[i]
 
             item_iid = f"item {i}"
@@ -67,7 +68,7 @@ class LicksWindow(tk.Toplevel):
         self.timestamped_licks = ttk.Treeview(self.licks_frame, show="headings")
 
         self.timestamped_licks["columns"] = list(
-            self.licks_data.licks_dataframe.columns
+            self.event_data.event_dataframe.columns
         )
 
         # Configure the columns

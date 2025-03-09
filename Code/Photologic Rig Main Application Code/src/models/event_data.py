@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class LicksData:
+class EventData:
     def __init__(self):
         # list of lists where each list inside the overall list is a trial full of lick timestamp data
         self.side_one_trial_licks: list[list[float]] = []
@@ -20,12 +20,13 @@ class LicksData:
         """
         # add in trial relative stamp
         # add in lick duration
-        self.licks_dataframe = pd.DataFrame(
-            [[np.nan, np.nan, np.nan, np.nan, np.nan, ""]],
+        self.event_dataframe = pd.DataFrame(
+            [[np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, ""]],
             columns=[
                 "Trial Number",
                 "Licked Port",
-                "Lick Duration",
+                "Event Duration",
+                "Valve Duration",
                 "Time Stamp",
                 "Trial Relative Stamp",
                 "State",
@@ -34,24 +35,33 @@ class LicksData:
         logger.info("Licks dataframe initialized.")
 
     def insert_row_into_df(
-        self, trial_num, port, duration, time_stamp, state_rel_stamp, state
+        self,
+        trial_num,
+        port,
+        duration,
+        time_stamp,
+        state_rel_stamp,
+        state,
+        valve_duration=None,
     ):
         # current length in rows of the dataframe, this is where we are going
         # to insert our next element
 
-        licks_df = self.licks_dataframe
-        cur_len = len(licks_df)
+        event_df = self.event_dataframe
+        cur_len = len(event_df)
 
         # optional params, only apply to licks, not motor stamps
         if port is not None:
-            licks_df.loc[cur_len, "Licked Port"] = port
+            event_df.loc[cur_len, "Licked Port"] = port
         if duration is not None:
-            licks_df.loc[cur_len, "Lick Duration"] = duration
+            event_df.loc[cur_len, "Event Duration"] = duration
+        if valve_duration is not None:
+            event_df.loc[cur_len, "Valve Duration"] = valve_duration
 
-        licks_df.loc[cur_len, "Trial Number"] = trial_num
-        licks_df.loc[cur_len, "Time Stamp"] = time_stamp
-        licks_df.loc[cur_len, "Trial Relative Stamp"] = state_rel_stamp
-        licks_df.loc[cur_len, "State"] = state
+        event_df.loc[cur_len, "Trial Number"] = trial_num
+        event_df.loc[cur_len, "Time Stamp"] = time_stamp
+        event_df.loc[cur_len, "Trial Relative Stamp"] = state_rel_stamp
+        event_df.loc[cur_len, "State"] = state
 
     def get_lick_timestamps(self, logical_trial) -> (list, list):
         """
@@ -62,14 +72,14 @@ class LicksData:
         trial_number = logical_trial + 1
 
         try:
-            filtered_df_side_one = self.licks_dataframe[
-                (self.licks_dataframe["Trial Number"] == trial_number)
-                & (self.licks_dataframe["Licked Port"].isin([1.0]))
+            filtered_df_side_one = self.event_dataframe[
+                (self.event_dataframe["Trial Number"] == trial_number)
+                & (self.event_dataframe["Licked Port"].isin([1.0]))
             ]
 
-            filtered_df_side_two = self.licks_dataframe[
-                (self.licks_dataframe["Trial Number"] == trial_number)
-                & (self.licks_dataframe["Licked Port"].isin([2.0]))
+            filtered_df_side_two = self.event_dataframe[
+                (self.event_dataframe["Trial Number"] == trial_number)
+                & (self.event_dataframe["Licked Port"].isin([2.0]))
             ]
 
             timestamps_side_one = filtered_df_side_one["Time Stamp"].tolist()

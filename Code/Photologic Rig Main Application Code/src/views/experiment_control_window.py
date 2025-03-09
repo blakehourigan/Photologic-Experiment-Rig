@@ -17,13 +17,13 @@ class ExperimentCtlWindow(tk.Toplevel):
         self,
         exp_data,
         stimuli_data,
-        lick_data,
+        event_data,
         trigger,
     ):
         super().__init__()
         self.exp_process_data = exp_data
         self.stimuli_data = stimuli_data
-        self.licks_data = lick_data
+        self.event_data = event_data
 
         ### ==========THIS IS UNNECESSARY==========###
         # just trigger state trans to 'generate sched' state and call associated functions from there in other classes

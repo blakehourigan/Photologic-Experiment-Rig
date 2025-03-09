@@ -2,7 +2,6 @@
 
 #define OPTICAL_DET_H
 
-#include "../time_details/time_details.h"
 #include <Vector.h>
 
 // digital 31, from photologic
@@ -32,8 +31,4 @@ void update_leds(bool side_1_pin_state, bool side_two_pin_state);
 bool lick_started(SideData side_data);
 bool lick_ended(SideData *side_data);
 
-void report_ttc_lick(uint8_t side, unsigned long lick_time);
-
-void report_sample_lick(uint8_t side, unsigned long lick_time,
-                        unsigned long valve_time, unsigned long rel_to_start);
 #endif // !OPTICAL_DET_H

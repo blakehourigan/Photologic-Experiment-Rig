@@ -47,7 +47,7 @@ logger.addHandler(file_handler)
 class TkinterApp:
     def __init__(self) -> None:
         try:
-            # init exp_data, which initializes licks_data, stimuli_data, arduino_data
+            # init exp_data, which initializes event_data, stimuli_data, arduino_data
             self.exp_data = ExperimentProcessData()
 
             """

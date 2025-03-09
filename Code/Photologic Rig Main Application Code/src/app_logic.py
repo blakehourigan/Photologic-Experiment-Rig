@@ -6,7 +6,9 @@ import logging
 from views.gui_common import GUIUtils
 
 # number of milliseconds it takes for the door to close
-DOOR_MOVE_TIME = 2238
+# pulled from arduinos self reported numbers, generally turns out to be
+# something like this figure
+DOOR_MOVE_TIME = 2338
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +149,13 @@ class StateMachine(TkinterApp):
             case "TTC":
 
                 def state_target():
-                    TimeToContact(self.exp_data, self.main_gui, new_state, self.trigger)
+                    TimeToContact(
+                        self.exp_data,
+                        self.arduino_controller,
+                        self.main_gui,
+                        new_state,
+                        self.trigger,
+                    )
             case "SAMPLE":
 
                 def state_target():
@@ -346,7 +354,7 @@ class InitialTimeInterval:
     ) -> None:
         self.prev_state = prev_state
         self.exp_data = exp_data
-        self.lick_data = self.exp_data.lick_data
+        self.event_data = self.exp_data.event_data
         self.main_gui = main_gui
         self.arduino_controller = arduino_controller
 
@@ -370,8 +378,8 @@ class InitialTimeInterval:
         updating the models, and setting the .after call to transition to TTC.
         """
         try:
-            self.lick_data.side_one_licks = 0
-            self.lick_data.side_two_licks = 0
+            self.event_data.side_one_licks = 0
+            self.event_data.side_two_licks = 0
 
             self.main_gui.state_timer_text.configure(text=(self.state + "Time:"))
             self.exp_data.state_start_time = time.time()
@@ -428,11 +436,12 @@ class TimeToContact:
     State class for time to contact experiment state
     """
 
-    def __init__(self, exp_data, main_gui, state, trigger):
+    def __init__(self, exp_data, arduino_controller, main_gui, state, trigger):
         """
         this is the initial transition state that occurs every single time we transition to TTC
         """
         self.exp_data = exp_data
+        self.arduino_controller = arduino_controller
         self.main_gui = main_gui
         self.state = state
         self.trigger_state_change = trigger
@@ -451,6 +460,10 @@ class TimeToContact:
 
     def run_ttc(self):
         try:
+            # tell the arduino that the trial begins now, becuase the rats are able to licks beginning now
+            command = "TRIAL START\n".encode("utf-8")
+            self.arduino_controller.send_command(command)
+
             self.main_gui.state_timer_text.configure(text=(self.state + " Time:"))
 
             # state time starts now, as does trial because lick availabilty starts now
@@ -488,7 +501,7 @@ class SampleTime:
 
     def __init__(self, exp_data, main_gui, arduino_controller, state, trigger):
         self.exp_data = exp_data
-        self.lick_data = self.exp_data.lick_data
+        self.event_data = self.exp_data.event_data
         self.main_gui = main_gui
         self.arduino_controller = arduino_controller
 
@@ -509,8 +522,8 @@ class SampleTime:
             open_command = "BEGIN OPEN VALVES\n".encode("utf-8")
             self.arduino_controller.send_command(command=open_command)
 
-            self.lick_data.side_one_licks = 0
-            self.lick_data.side_two_licks = 0
+            self.event_data.side_one_licks = 0
+            self.event_data.side_two_licks = 0
 
             self.exp_data.state_start_time = time.time()
 
@@ -547,7 +560,7 @@ class SampleTime:
 class TrialEnd:
     def __init__(self, exp_data, main_gui, arduino_controller, prev_state, trigger):
         self.exp_data = exp_data
-        self.lick_data = self.exp_data.lick_data
+        self.event_data = self.exp_data.event_data
         self.main_gui = main_gui
         self.arduino_controller = arduino_controller
 
@@ -638,8 +651,8 @@ class TrialEnd:
     def update_schedule_licks(self, logical_trial):
         program_df = self.exp_data.program_schedule_df
 
-        licks_sd_one = self.lick_data.side_one_licks
-        licks_sd_two = self.lick_data.side_two_licks
+        licks_sd_one = self.event_data.side_one_licks
+        licks_sd_two = self.event_data.side_two_licks
 
         program_df.loc[logical_trial, "Port 1 Licks"] = licks_sd_one
 
@@ -651,17 +664,17 @@ class TrialEnd:
 
         # if we just finished a trial, and we're moving back around to the ITI, update
         # lick model,
-        lick_stamps_side_one, lick_stamps_side_two = self.lick_data.get_lick_timestamps(
-            logical_trial
+        lick_stamps_side_one, lick_stamps_side_two = (
+            self.event_data.get_lick_timestamps(logical_trial)
         )
 
-        self.lick_data.side_one_trial_licks.append(lick_stamps_side_one)
-        self.lick_data.side_two_trial_licks.append(lick_stamps_side_two)
+        self.event_data.side_one_trial_licks.append(lick_stamps_side_one)
+        self.event_data.side_two_trial_licks.append(lick_stamps_side_two)
         return lick_stamps_side_one, lick_stamps_side_two
 
     def update_raster(self, lick_stamps_side_one, lick_stamps_side_two, logical_trial):
         """
-        update raster with
+        update raster with lick events using the timestamps for each lick
         """
         lick_stamps = [lick_stamps_side_one, lick_stamps_side_two]
 

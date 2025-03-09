@@ -9,7 +9,7 @@ class RasterizedDataWindow(tk.Toplevel):
     def __init__(self, side, exp_data) -> None:
         super().__init__()
         self.exp_data = exp_data
-        self.lick_data = self.exp_data.lick_data
+        self.event_data = self.exp_data.event_data
 
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
         self.bind("<Control-w>", lambda e: self.withdraw())
@@ -43,8 +43,8 @@ class RasterizedDataWindow(tk.Toplevel):
         window.canvas = canvas
         window.axes = axes
 
-        sd1_len = len(self.lick_data.side_one_trial_licks)
-        sd2_len = len(self.lick_data.side_one_trial_licks) > 0
+        sd1_len = len(self.event_data.side_one_trial_licks)
+        sd2_len = len(self.event_data.side_one_trial_licks) > 0
 
         if sd1_len > 0 or sd2_len:
             # Pass the whole window to update_plot
@@ -68,28 +68,7 @@ class RasterizedDataWindow(tk.Toplevel):
         axes.set_xlim(0, 21)
         axes.set_ylim(0, num_trials + 1)
 
-        ## Handle the re-open scenario by plotting all previous licks
-        # if reopen:
-        #    # Clear existing data on the plot
-        #    axes.clear()
-        #    axes.set_xlim(0, 21)
-        #    axes.set_ylim(0, num_trials + 1)
-
-        #    # Iterate through the side one and two licks if available and plot them
-        #    if side == 1:
-        #        for i, licks in enumerate(self.lick_data.side_one_trial_licks):
-        #            if licks:
-        #                self.plot_licks(
-        #                    axes, licks, i + 1, self.color_cycle(self.color_index)
-        #                )
-        #                self.color_index = (self.color_index + 1) % 10
-        #    elif side == 2:
-        #        for i, licks in enumerate(self.lick_data.side_two_trial_licks):
-        #            if licks:
-        #                self.plot_licks(
-        #                    axes, licks, i + 1, self.color_cycle(self.color_index)
-        #                )
-        #                self.color_index = (self.color_index + 1) % 10
+        self.color_index = (self.color_index + 1) % 10
 
         if lick_times and len(lick_times) > 0:
             color = self.color_cycle(self.color_index)

@@ -1,35 +1,65 @@
 #include "test_valves.h"
+#include "../valve_control/valve_control.h"
+
+const uint16_t NUMBER_OF_TESTS = 1000;
+
+/* the best way to do this may be to accept a schedule from controller, and just
+ * read from each schedule while theres items left in it if that makes sense
+ * like, user can pick, i want to test 1,2, and 5, if for whatever reason they
+ * want just those tested. then the program will run through each list until its
+ * empty.
+ *
+ *
+ * also, num iterations should be default but variable from the controller.
+ */
+
+void recieve_test_params() {
+  /* receive the sched (maybe or maybe not using the exp_init method),
+   * durations, and NUMBER OF TESTS iterations for each valve.
+   */
+}
 
 void test_volume(char number_of_valves) {
   // convert char to int
-  //  int num_valves = number_of_valves - '0';
-  //  Serial.print("Testing volume with ");
-  //  Serial.print(num_valves);
-  //  Serial.println(" valves.");
-  //
-  //  for (int i = 0; i < num_valves / 2;
-  //       i++) // i is the current valve number on either side
-  //  {
-  //    Serial.print("Testing valve pair: ");
-  //    Serial.println(i + 1);
-  //    for (int j = 0; j < 1000; j++) {
-  //      // valve_ctrl.lick_handler(0, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE,
-  //      // side_one_durations, side_two_durations, current_trial, true, i);
-  //      // valve_ctrl.lick_handler(1, SIDE_ONE_SCHEDULE, SIDE_TWO_SCHEDULE,
-  //      // side_one_durations, side_two_durations ,current_trial, true, i);
-  //      delay(100);
-  //    }
-  //    delay(100);
-  //    Serial.println("FINISHED PAIR");
-  //
-  //    while (true) {
-  //      while (Serial.available() == 0) {
-  //      }
-  //
-  //      if (received_transmission == "continue") {
-  //        break;
-  //      }
-  //    }
-  //  }
-  //  Serial.println("TESTING COMPLETE");
+  uint8_t num_valves = number_of_valves - '0';
+
+  uint8_t total_iterations = num_valves / 2;
+
+  /*
+  for (int i = 0; i < sched_one.size(); i++) {
+    for (int j = 0; j < NUMBER_OF_TESTS; j++) {
+      open_valve_testing(&PORTA, i);
+
+      open_valve_testing(p, );
+    }
+  }
+  etc, etc
+  */
+
+  // i is the current valve number on either side
+  for (int i = 0; i < total_iterations; i++) {
+    Serial.print("Testing valve pair: ");
+    Serial.println(i + 1);
+
+    for (int j = 0; j < NUMBER_OF_TESTS; j++) {
+      open_valve_testing(&PORTA, i);
+
+      open_valve_testing(p, );
+    }
+
+    Serial.println("FINISHED PAIR");
+
+    String command = "\0";
+
+    while (true) {
+      if (Serial.available() > 0) {
+        Serial.readLineUntil('\n');
+      }
+    }
+    if (command.equals("continue")) {
+      break;
+    }
+  }
+
+  Serial.println("TESTING COMPLETE");
 }

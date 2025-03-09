@@ -80,132 +80,122 @@ class ArduinoData:
 
         return sched_side_one, sched_side_two
 
-    def handle_licks(self, data, lick_data, state):
-        side = None
-        match state:
-            case "TTC":
-                # data will be of form
-                # side (0 or 1)|lick_duration (unsigned long 32-bit unsigned)
-                side = np.int8(data[0])
-                lick_duration = np.int32(data[2:])
-            case "SAMPLE":
-                fields = data.split("|")
-                if len(fields) > 2:
-                    side = np.int8(fields[0])
-                    lick_duration = np.int32(fields[1])
-                    valve_duration = np.int32(fields[2])
-
+    def increment_licks(self, side, event_data):
         match side:
             case 0:
-                lick_data.side_one_licks += 1
+                event_data.side_one_licks += 1
             case 1:
-                lick_data.side_two_licks += 1
+                event_data.side_two_licks += 1
             case _:
                 print("invalid side")
                 logger.error("invalid side")
 
-        self.record_lick_data(data, lick_duration, state)
+    def handle_licks(self, split_data, event_data, state, trigger):
+        side = None
+        valve_duration = None
+        match state:
+            case "TTC":
+                # split_data will have the below form for ttc
+                # 0(side)|67(duration)|6541(stamp_rel_to_start)|6541(stamp_rel_to_trial)
+                side = np.int8(split_data[0])
+                self.increment_licks(side, event_data)
+
+                lick_duration = np.int32(split_data[1])
+                time_rel_to_start = np.int32(split_data[2]) / 1000
+                time_rel_to_trial = np.int32(split_data[3]) / 1000
+
+                # insert the values held in licks for respective sides in a shorter variable name
+                side_one = self.exp_data.event_data.side_one_licks
+                side_two = self.exp_data.event_data.side_two_licks
+                # if 3 or more licks in a ttc time, jump straight to sample
+                if side_one > 2 or side_two > 2:
+                    trigger("SAMPLE")
+                self.record_event(
+                    side, lick_duration, time_rel_to_start, time_rel_to_trial, state
+                )
+
+            case "SAMPLE":
+                try:
+                    # 0|87|26064|8327|8327
+                    side = np.int8(split_data[0])
+                    self.increment_licks(side, event_data)
+
+                    lick_duration = np.int32(split_data[1])
+                    valve_duration = np.int32(split_data[2])
+                    time_rel_to_start = np.int32(split_data[3]) / 1000
+                    time_rel_to_trial = np.int32(split_data[4]) / 1000
+
+                    self.record_event(
+                        side,
+                        lick_duration,
+                        time_rel_to_start,
+                        time_rel_to_trial,
+                        state,
+                        valve_duration,
+                    )
+
+                except Exception as e:
+                    logging.error("IMPROPER DATA.... IGNORING.....")
+
+    def record_event(
+        self,
+        side,
+        duration,
+        time_rel_to_start,
+        time_rel_to_trial,
+        state,
+        valve_dur=None,
+    ):
+        """Record lick data to the dataframe."""
+        try:
+            event_data = self.exp_data.event_data
+            current_trial = self.exp_data.current_trial_number
+            # insert the lick record into the dataframe
+            event_data.insert_row_into_df(
+                current_trial,
+                side + 1,
+                duration,
+                time_rel_to_start,
+                time_rel_to_trial,
+                state,
+                valve_duration=(valve_dur if valve_dur else None),
+            )
+
+            logging.info(f"Lick data recorded for side: {side + 1}")
+        except Exception as e:
+            logging.error(f"Error recording lick data: {e}")
+            raise
 
     def process_data(self, source, data, state, trigger):
         """
         Process data received from the Arduino.
         """
-        lick_data = self.exp_data.lick_data
+        event_data = self.exp_data.event_data
+        split_data = data.split("|")
         try:
-            if data == "MOTOR MOVED DOWN":
-                # MOTOR MOVED DOWN | RELATIVE TO START | RELATIVE TO TRIAL
-                lick_data = self.exp_data.lick_data
+            if split_data[0] == "MOTOR":
+                # data will arrive in the following format
+                # MOTOR|DOWN|2338|7340|7340
+                # MOTOR|MOVEMENT|DURATION|END_TIME_REL_TO_PROG_START|END_TIME_REL_TO_PROG_TRIAL_START
+                event_data = self.exp_data.event_data
 
                 current_trial = self.exp_data.current_trial_number
 
-                start_time = self.exp_data.start_time
-                trial_start_time = self.exp_data.trial_start_time
-
-                time_since_start = round(time.time() - start_time, 3)
-                time_since_trial_start = round(time.time() - trial_start_time, 3)
-
-                lick_data.insert_row_into_df(
+                event_data.insert_row_into_df(
                     current_trial,
                     None,
-                    None,
-                    time_since_start,
-                    time_since_trial_start,
-                    "MOTOR DOWN",
+                    np.int32(split_data[2]),
+                    (np.int32(split_data[3]) / 1000),
+                    (np.int32(split_data[4]) / 1000),
+                    f"MOTOR {split_data[1]}",
                 )
-
-            elif data == "MOTOR MOVED UP":
-                lick_data = self.exp_data.lick_data
-
-                current_trial = self.exp_data.current_trial_number
-
-                start_time = self.exp_data.start_time
-                trial_start_time = self.exp_data.trial_start_time
-
-                time_since_start = round(time.time() - start_time, 3)
-                time_since_trial_start = round(time.time() - trial_start_time, 3)
-
-                lick_data.insert_row_into_df(
-                    current_trial,
-                    None,
-                    None,
-                    time_since_start,
-                    time_since_trial_start,
-                    "MOTOR UP",
-                )
-
-            elif data == "FINISHED PAIR":
-                self.valve_test_logic.append_to_volumes()
-            elif "TESTING COMPLETE" in data:
-                self.valve_test_logic.begin_updating_opening_times(data)
-            else:
-                match state:
-                    case "TTC":
-                        self.handle_licks(data, lick_data, state)
-
-                        # insert the values held in licks for respective sides in a shorter variable name
-                        side_one = self.exp_data.lick_data.side_one_licks
-                        side_two = self.exp_data.lick_data.side_two_licks
-                        # if 3 or more licks in a ttc time, jump straight to sample
-                        if side_one > 2 or side_two > 2:
-                            trigger("SAMPLE")
-
-                    case "SAMPLE":
-                        self.handle_licks(data, lick_data, state)
+            # elif data == "FINISHED PAIR":
+            #    self.valve_test_logic.append_to_volumes()
+            # elif "TESTING COMPLETE" in data:
+            #    self.valve_test_logic.begin_updating_opening_times(data)
+            elif split_data[0] == "0" or split_data[0] == "1":
+                self.handle_licks(split_data, event_data, state, trigger)
 
         except Exception as e:
             logging.error(f"Error processing data from {source}: {e}")
-            raise
-
-    def record_lick_data(self, stimulus, duration, state):
-        """Record lick data to the dataframe."""
-        try:
-            lick_data = self.exp_data.lick_data
-
-            current_trial = self.exp_data.current_trial_number
-
-            start_time = self.exp_data.start_time
-            trial_start_time = self.exp_data.trial_start_time
-
-            time_since_start = round(time.time() - start_time, 3)
-            time_since_trial_start = round(time.time() - trial_start_time, 3)
-
-            port = None
-            if stimulus == "Stimulus One":
-                port = 1
-            else:
-                port = 2
-
-            # insert the lick record into the dataframe
-            lick_data.insert_row_into_df(
-                current_trial,
-                port,
-                duration,
-                time_since_start,
-                time_since_trial_start,
-                state,
-            )
-
-            logging.info(f"Lick data recorded for: {stimulus}")
-        except Exception as e:
-            logging.error(f"Error recording lick data: {e}")
             raise

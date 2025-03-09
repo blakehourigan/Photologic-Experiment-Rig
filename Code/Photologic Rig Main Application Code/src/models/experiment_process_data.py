@@ -6,7 +6,7 @@ from typing import Tuple, List
 import datetime
 
 from models.stimuli_data import StimuliData
-from models.licks_data import LicksData
+from models.event_data import EventData
 from models.arduino_data import ArduinoData
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,7 @@ class ExperimentProcessData:
 
         self.experiment_executed = False
 
-        self.lick_data = LicksData()
+        self.event_data = EventData()
         self.stimuli_data = StimuliData()
         self.arduino_data = ArduinoData(self)
 
@@ -267,7 +267,7 @@ class ExperimentProcessData:
     def save_all_data(self):
         dataframes = {
             "Experiment Schedule": self.program_schedule_df,
-            "Individual Lick Data": self.lick_data.licks_dataframe,
+            "Individual Lick Data": self.event_data.event_dataframe,
         }
 
         for name, df_reference in dataframes.items():
