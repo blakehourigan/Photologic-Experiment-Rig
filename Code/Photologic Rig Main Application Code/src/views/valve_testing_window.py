@@ -164,12 +164,15 @@ class ValveTestWindow(tk.Toplevel):
             self.valve_table_frame,
             show="headings",
         )
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        self.valve_table.heading("Valve", text="Valve #")
-        self.valve_table.heading(
-            "Amount Dispensed", text="Amount Dispensed Per Lick (ul)"
-=======
+
+        headings = [
+            "Valve",
+            "Amount Dispensed Per Lick (ul)",
+            "Testing Opening Time of (ms)",
+        ]
+
+        self.valve_table["columns"] = headings
+
         self.valve_table.grid(row=1, sticky="ew")
 
         button = tk.Button(
@@ -179,53 +182,19 @@ class ValveTestWindow(tk.Toplevel):
             bg="light blue",
             highlightbackground="black",
             highlightthickness=1,
->>>>>>> Stashed changes
         )
-        self.valve_table.heading("Valve Opening Times", text="Valve Opening Time (ms)")
-        self.valve_table.pack(expand=True, fill="both")
 
-<<<<<<< Updated upstream
-        # if the tests have been ran and we now have opening times, then update the table to show the opening times and the ul we recieved from the arduinos calculations
-        if (side_one_valve_durations is not None) or (
-            side_two_valve_durations is not None
-        ):
-            logging.info(
-                "Updating valve test table with opening times and dispensed volumes."
-=======
-=======
-        self.valve_table.grid(row=1, sticky="ew")
-
-        button = tk.Button(
-            self.valve_table_frame,
-            text="Manual Valve Duration Override",
-            command=lambda: ManualTimeAdjustment(self.arduino_controller.arduino_data),
-            bg="light blue",
-            highlightbackground="black",
-            highlightthickness=1,
-        )
         button.grid(row=0, sticky="e")
-
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
-        headings = [
-            "Valve",
-            "Amount Dispensed Per Lick (ul)",
-            "Testing Opening Time of (ms)",
-        ]
-
-        self.valve_table["columns"] = headings
 
         # Configure the columns
         for col in self.valve_table["columns"]:
             self.valve_table.heading(col, text=col)
 
         arduino_data = self.arduino_controller.arduino_data
-<<<<<<< HEAD
+
         side_one_durations, side_two_durations, date_used = (
             arduino_data.load_durations()
         )
-=======
-        side_one_durations, side_two_durations = arduino_data.load_durations()
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
 
         # insert default entries for each total valve until user selects how many
         # they want to test
@@ -247,10 +216,6 @@ class ValveTestWindow(tk.Toplevel):
                     "Test Not Complete",
                     f"{side_one_durations[i + TOTAL_VALVES // 2]} ms",
                 ),
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
             )
 
     def update_table_entries(self, test_completed=False) -> None:
@@ -388,11 +353,6 @@ class ValveTestWindow(tk.Toplevel):
             "CONFIRM THE TEST SCHEDULE",
             f"Valves {valves}, will be tested. Review the test table to confirm schedule and timings. Each valve will be actuated {valve_acuations} times. Ok to begin?",
         )
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
 
         ### include section to manually modify timings
         if test_confirmed:
@@ -422,11 +382,7 @@ class ValveTestWindow(tk.Toplevel):
 
 
 class ManualTimeAdjustment(tk.Toplevel):
-<<<<<<< HEAD
     def __init__(self, arduino_data, valve_selections):
-=======
-    def __init__(self, arduino_data):
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
         super().__init__()
 
         self.arduino_data = arduino_data
@@ -436,7 +392,6 @@ class ManualTimeAdjustment(tk.Toplevel):
 
         self.resizable(False, False)
 
-<<<<<<< HEAD
         self.tk_vars = {}
         self.labelled_entries = [None] * 8
 
@@ -578,11 +533,3 @@ class ManualTimeAdjustment(tk.Toplevel):
 
         # save new durations in the selected slot of the configuration file
         self.arduino_data.save_durations(side_one_new, side_two_new, "selected")
->>>>>>> Stashed changes
-=======
-        window_icon_path = GUIUtils.get_window_icon_path()
-        GUIUtils.set_program_icon(self, icon_path=window_icon_path)
-
-    def create_interface(self):
-        pass
->>>>>>> 0e668c65127430a018b69e97e10add84bc948422
