@@ -135,7 +135,7 @@ class ArduinoManager:
         # get side_one and side_two durations from the arduino data model
         # will load from arduino_data.toml from the last_used class by default
         # durations can be reset by passing reset_durations=True
-        side_one, side_two = self.arduino_data.load_durations()
+        side_one, side_two, date_used = self.arduino_data.load_durations()
         side_one_durs = side_one.tobytes()
         side_two_durs = side_two.tobytes()
         dur_packet = side_one_durs + side_two_durs

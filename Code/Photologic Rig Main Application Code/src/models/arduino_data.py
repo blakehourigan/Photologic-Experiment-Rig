@@ -1,6 +1,8 @@
 import logging
 import time
 import toml
+import datetime
+import copy
 import numpy as np
 from pathlib import Path
 
@@ -13,13 +15,92 @@ logger = logging.getLogger()
 class ArduinoData:
     def __init__(self, exp_data):
         self.exp_data = exp_data
-        self.valve_indexes_side_one = []
-        self.valve_indexes_side_two = []
 
-    def save_durations(self):
-        pass
+    def find_first_not_filled(self, toml_file) -> int:
+        first_available = 0
+        for i in range(1, 4):
+            archive = toml_file[f"archive_{i}"]
+            if archive["filled"]:
+                continue
+            else:
+                first_available = i
+        return first_available
 
-    def load_durations(self, reset_durations=False):
+    def save_durations(self, side_one, side_two, type_durations):
+        """
+        Function to save durations into long term storage valve_durations.toml file.
+        You must provide a type_durations paramter to specify where you are saving the durations.
+        Can be either "selected" to set new primary durations, or "archive" to archive previous
+        "selected" durations.
+        """
+        toml_dir = Path(__file__).parent.parent.parent.resolve()
+        toml_path = toml_dir / "assets" / "valve_durations.toml"
+
+        with open(toml_path, "r") as f:
+            toml_file = toml.load(f)
+
+        if type_durations == "selected":
+            selected_durations = toml_file["selected_durations"]
+
+            # toml only knows how to deal with python native types (list, int, etc)
+            # so we convert np arrays to lists
+            selected_durations["date_used"] = datetime.datetime.now()
+            selected_durations["side_one_durations"] = side_one.tolist()
+            selected_durations["side_two_durations"] = side_two.tolist()
+
+            # save the file with the updated content
+            with open(toml_path, "w") as f:
+                toml.dump(toml_file, f)
+        elif type_durations == "archive":
+            # find first archive not filled
+            first_avail = self.find_first_not_filled(toml_file)
+            print(first_avail)
+            match first_avail:
+                case 1:
+                    # 1 is available just insert
+                    archive = toml_file["archive_1"]
+
+                    archive["filled"] = True
+                    archive["date_used"] = datetime.datetime.now()
+                    archive["side_one_durations"] = side_one.tolist()
+                    archive["side_two_durations"] = side_two.tolist()
+
+                    with open(toml_path, "w") as f:
+                        toml.dump(toml_file, f)
+                case 2:
+                    # move 1-> 2, insert 1
+                    toml_file["archive_2"] = copy.deepcopy(toml_file["archive_1"])
+
+                    archive_1 = toml_file["archive_1"]
+
+                    archive_1["filled"] = True
+                    archive_1["date_used"] = datetime.datetime.now()
+                    archive_1["side_one_durations"] = side_one.tolist()
+                    archive_1["side_two_durations"] = side_two.tolist()
+
+                    with open(toml_path, "w") as f:
+                        toml.dump(toml_file, f)
+                    pass
+
+                case 3 | 0:
+                    # case 3) 2 -> 3, 1-> 2, insert 1
+                    # case 0 (no available archives) ) del / overwrite 3 (oldest), 2 -> 3, 1-> 2, insert 1
+                    toml_file["archive_3"] = copy.deepcopy(toml_file["archive_2"])
+                    toml_file["archive_2"] = copy.deepcopy(toml_file["archive_1"])
+
+                    archive_1 = toml_file["archive_1"]
+
+                    archive_1["filled"] = True
+                    archive_1["date_used"] = datetime.datetime.now()
+                    archive_1["side_one_durations"] = side_one.tolist()
+                    archive_1["side_two_durations"] = side_two.tolist()
+
+                    with open(toml_path, "w") as f:
+                        toml.dump(toml_file, f)
+
+    def load_durations(
+        self, type_durations="selected_durations", reset_durations=False
+    ):
         """
         This method loads data in from the valve_durations.toml file located in assets. By default,
         it will load the last used durations becuase this is what is most often utilized. Optionally,
@@ -34,7 +115,7 @@ class ArduinoData:
         with open(toml_path, "r") as f:
             toml_file = toml.load(f)
 
-        default_durations = toml_file["selected_durations"]
+        file_durations = toml_file[type_durations]
 
         # create 2 np arrays 8 n long with np.int32s
         dur_side_one = np.full(VALVES_PER_SIDE, np.int32(0))
@@ -43,7 +124,7 @@ class ArduinoData:
         # keys here are names of durations i.e side_one_dur or side_two_dur, values
         # are lists of durations, VALVES_PER_SIDE long. Will produce two lists
         # VALVES_PER_SIDE long so that each valve in the rig is assigned a duration.
-        for key, value in default_durations.items():
+        for key, value in file_durations.items():
             if key == "side_one_durations":
                 for i, duration in enumerate(value):
                     dur_side_one[i] = duration
@@ -51,7 +132,11 @@ class ArduinoData:
                 for i, duration in enumerate(value):
                     dur_side_two[i] = duration
 
-        return dur_side_one, dur_side_two
+        if type_durations != "default_durations":
+            date_used = file_durations["date_used"]
+        else:
+            date_used = "N/A"
+        return dur_side_one, dur_side_two, date_used
 
     def load_schedule_indices(self):
         stimuli_data = self.exp_data.stimuli_data

@@ -1,56 +1,28 @@
-title = "aduino_long_term_storage"
+title = "arduino_long_term_storage"
 
-# durations that generally work well, or are a good baseline to test
-# from are defined in this header.
 [default_durations]
-side_one_durations = [
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125 
-]
+side_one_durations = [ 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125,]
+side_two_durations = [ 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125,]
 
-side_two_durations = [
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125
-]
+[selected_durations]
+side_one_durations = [ 30488, 26053, 24125, 25000, 24125, 24125, 24125, 24125,]
+side_two_durations = [ 23020, 32253, 27000, 24125, 24125, 24125, 24125, 24125,]
+date_used = 2025-03-12T11:50:56.831739
 
-# program defaults to using these durations when available. These are tuned durations
-# to get a previously desired amount of liquid (5ul) per actuation.
-[selected_durations] 
-side_one_durations = [
-    30488,
-    26053,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125
-]
-side_two_durations = [
-    23020,
-    32253,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125,
-    24125
-]
+[archive_1]
+filled = true
+side_one_durations = [ 30488, 26053, 21000, 25000, 24125, 24125, 24125, 24125,]
+side_two_durations = [ 23020, 32253, 27000, 24125, 24125, 24125, 24125, 24125,]
+date_used = 2025-03-12T11:50:56.831078
 
-# maintain archives of old durations 
-# in case durations are accidentally overwritten.
-[archive_1] 
-[archive_2] 
-[archive_3] 
+[archive_2]
+filled = true
+side_one_durations = [ 30488, 26053, 27500, 25000, 24125, 24125, 24125, 24125,]
+side_two_durations = [ 23020, 32253, 27000, 24125, 24125, 24125, 24125, 24125,]
+date_used = 2025-03-12T11:50:56.831078
+
+[archive_3]
+filled = true
+side_one_durations = [ 30488, 26053, 27500, 25000, 24125, 24125, 24125, 24125,]
+side_two_durations = [ 23020, 32253, 24125, 24125, 24125, 24125, 24125, 24125,]
+date_used = 2025-03-12T11:50:56.831078

@@ -43,7 +43,7 @@ class GUIUtils:
                 highlightthickness=1,
                 highlightbackground="black",
             )
-            entry.grid(row=1, sticky="nsew")
+            entry.grid(row=1, sticky="nsew", pady=10)
 
             frame.grid_columnconfigure(0, weight=1)
             frame.grid_rowconfigure(1, weight=1)
