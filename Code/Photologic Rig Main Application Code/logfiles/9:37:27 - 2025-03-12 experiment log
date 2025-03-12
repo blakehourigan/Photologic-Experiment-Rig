@@ -1,0 +1,64 @@
+2025-03-12 09:37:27,508 - INFO - Licks dataframe initialized.
+2025-03-12 09:37:27,516 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-12 09:37:27,516 - INFO - Connected to Arduino boards successfully.
+2025-03-12 09:37:27,558 - INFO - Timer 'Time Elapsed:' created.
+2025-03-12 09:37:27,568 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-12 09:37:27,574 - INFO - Timer 'State Time:' created.
+2025-03-12 09:37:27,577 - INFO - Timers displayed.
+2025-03-12 09:37:27,586 - INFO - Labeled entry 'ITI Time' created.
+2025-03-12 09:37:27,592 - INFO - Labeled entry 'TTC Time' created.
+2025-03-12 09:37:27,598 - INFO - Labeled entry 'Sample Time' created.
+2025-03-12 09:37:27,604 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-12 09:37:27,611 - INFO - Labeled entry '+/- ITI' created.
+2025-03-12 09:37:27,617 - INFO - Labeled entry '+/- TTC' created.
+2025-03-12 09:37:27,623 - INFO - Labeled entry '+/- Sample' created.
+2025-03-12 09:37:27,629 - INFO - Labeled entry '# Stimuli' created.
+2025-03-12 09:37:27,629 - INFO - Entry widgets displayed.
+2025-03-12 09:37:27,632 - INFO - Button 'Start' created.
+2025-03-12 09:37:27,635 - INFO - Button 'Reset' created.
+2025-03-12 09:37:27,635 - INFO - Main control buttons displayed.
+2025-03-12 09:37:27,638 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-12 09:37:27,642 - INFO - Button 'Valve Control' created.
+2025-03-12 09:37:27,645 - INFO - Button 'Program Schedule' created.
+2025-03-12 09:37:27,648 - INFO - Button 'Valve / Stimuli' created.
+2025-03-12 09:37:27,651 - INFO - Button 'Event Data' created.
+2025-03-12 09:37:27,654 - INFO - Button 'Rasterized Data' created.
+2025-03-12 09:37:27,657 - INFO - Button 'Save Data' created.
+2025-03-12 09:37:27,657 - INFO - Lower control buttons displayed.
+2025-03-12 09:37:27,673 - INFO - Status widget displayed.
+2025-03-12 09:37:27,673 - INFO - GUI setup completed.
+2025-03-12 09:37:27,686 - INFO - Labeled entry 'Valve 1' created.
+2025-03-12 09:37:27,692 - INFO - Labeled entry 'Valve 2' created.
+2025-03-12 09:37:27,699 - INFO - Labeled entry 'Valve 5' created.
+2025-03-12 09:37:27,705 - INFO - Labeled entry 'Valve 6' created.
+2025-03-12 09:37:27,705 - INFO - Stimuli frame populated.
+2025-03-12 09:37:27,708 - INFO - Button 'Generate Schedule' created.
+2025-03-12 09:37:27,708 - INFO - Filled contents of experiment control window.
+2025-03-12 09:37:27,708 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-12 09:37:27,859 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-12 09:37:27,863 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 1' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 5' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 2' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 6' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 3' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 7' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 4' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Valve 8' created.
+2025-03-12 09:37:27,863 - INFO - Button 'Start Testing' created.
+2025-03-12 09:37:27,864 - INFO - Experiment control window centered.
+2025-03-12 09:37:27,867 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-12 09:37:27,871 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-12 09:37:27,874 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-12 09:37:27,877 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-12 09:37:27,880 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-12 09:37:27,883 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-12 09:37:27,886 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-12 09:37:27,889 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-12 09:37:27,892 - INFO - Button 'Write Timing Changes' created.
+2025-03-12 09:37:27,894 - INFO - Valve Test Window initialized.
+2025-03-12 09:37:27,896 - INFO - Experiment control window centered.
+2025-03-12 09:37:27,896 - INFO - MainGUI initialized.
+2025-03-12 09:37:27,896 - INFO - GUI started successfully.
+2025-03-12 09:37:28,310 - INFO - Experiment control window centered.
+2025-03-12 09:38:30,374 - INFO - Application closed.
