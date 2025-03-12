@@ -1,0 +1,19 @@
+
+
+title = "########========PHOTOLOGIC EXPERIMENT RIG GLOBAL CONFIGURATION=======########"
+
+[valve_config]
+# this value is used in some situations that have been designed to be future-proof. Some functions (valve duration generation/transmission)
+# on the assumption that 16 valves COULD be used someday. so data is sent for 16 valves, even if some may go unused. for that reason however, 
+# we need both constant values
+TOTAL_POSSIBLE_VALVES = 16
+# this may change to 16 in the future, but for now everything is 8 based.
+TOTAL_CURRENT_VALVES = 8
+
+
+[door_motor_config]
+# number of milliseconds it takes for the door to close
+# pulled from arduinos self reported numbers, generally turns out to be
+# something like this figure
+DOOR_MOVE_TIME = 2338
+

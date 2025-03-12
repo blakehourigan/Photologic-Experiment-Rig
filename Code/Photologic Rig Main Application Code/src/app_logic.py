@@ -2,21 +2,29 @@ from tk_app import TkinterApp
 import time
 import threading
 import logging
+import toml
+from pathlib import Path
 
 from views.gui_common import GUIUtils
 
-# number of milliseconds it takes for the door to close
-# pulled from arduinos self reported numbers, generally turns out to be
-# something like this figure
-DOOR_MOVE_TIME = 2338
 
 logger = logging.getLogger(__name__)
+
+toml_config_dir = Path(__file__).parent.resolve()
+toml_config_path = toml_config_dir / "rig_config.toml"
+
+with open(toml_config_path, "r") as f:
+    DOOR_CONFIG = toml.load(f)["door_motor_config"]
+
+# pull total valves constant from toml config
+DOOR_MOVE_TIME = DOOR_CONFIG["DOOR_MOVE_TIME"]
 
 
 class StateMachine(TkinterApp):
     """
     This class is the heart of the program. It inherits TkinterApp to create a gui, instantiate model (data) classes, and the arduino controller,
-    then defines and handles program state transitions. It coordinates co-operation between view (gui) and models (data).
+    then defines and handles program state transitions. It coordinates co-operation between view (gui) and models (data). State transitions are
+    handled by the 'trigger' function.
     """
 
     def __init__(self, result_container):
@@ -56,6 +64,9 @@ class StateMachine(TkinterApp):
         self.main_gui.mainloop()
 
     def trigger(self, event):
+        """
+        This function
+        """
         transition = (self.state, event)
         self.prev_state = self.state
         new_state = None
@@ -76,7 +87,7 @@ class StateMachine(TkinterApp):
                 "============WARNING============",
                 "THIS ACTION WILL ERASE ALL DATA CURRENTLY STORED FOR THIS EXPERIMENT... ARE YOU SURE YOU WANT TO CONTINUE?",
             )
-            # if true, go ahead with the reset, if no return to prev_state
+            # if true, go ahead with the reset, if false return to prev_state
             if not response:
                 new_state = self.prev_state
 
@@ -236,11 +247,6 @@ class GenerateSchedule:
         self.arduino_controller.send_experiment_schedule()
 
         self.arduino_controller.send_valve_durations()
-
-        # start new thread whose sole job is to field information from the arduinos and feed it to the data queue
-        self.listener_thread = threading.Thread(
-            target=self.arduino_controller.listen_for_serial, daemon=True
-        ).start()
 
         process_queue(self.arduino_controller.data_queue)
 

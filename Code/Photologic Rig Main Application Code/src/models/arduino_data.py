@@ -1,5 +1,4 @@
 import logging
-import time
 import toml
 import numpy as np
 from pathlib import Path
@@ -8,6 +7,16 @@ from views.gui_common import GUIUtils
 
 # Get the logger in use for the app
 logger = logging.getLogger()
+
+toml_config_dir = Path(__file__).parent.parent.resolve()
+toml_config_path = toml_config_dir / "rig_config.toml"
+
+with open(toml_config_path, "r") as f:
+    VALVE_CONFIG = toml.load(f)["valve_config"]
+
+# pull total valves constant from toml config
+TOTAL_POSSIBLE_VALVES = VALVE_CONFIG["TOTAL_POSSIBLE_VALVES"]
+VALVES_PER_SIDE = TOTAL_POSSIBLE_VALVES // 2
 
 
 class ArduinoData:
@@ -28,8 +37,6 @@ class ArduinoData:
         """
         toml_dir = Path(__file__).parent.parent.parent.resolve()
         toml_path = toml_dir / "assets" / "valve_durations.toml"
-
-        VALVES_PER_SIDE = 8
 
         with open(toml_path, "r") as f:
             toml_file = toml.load(f)

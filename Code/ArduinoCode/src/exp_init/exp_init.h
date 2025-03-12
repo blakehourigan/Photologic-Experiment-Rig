@@ -23,9 +23,21 @@ struct ScheduleVectors {
   bool schedules_recieved = false;
 };
 
+struct DurationsArray {
+  unsigned long durations[MAX_VALVES_PER_SIDE];
+  uint8_t len = 0;
+
+  void append(unsigned long val) {
+    if (this->len < MAX_VALVES_PER_SIDE) {
+      this->durations[this->len] = val;
+    }
+    this->len++;
+  };
+};
+
 struct ValveDurations {
-  Vector<unsigned long> side_one_dur_vec;
-  Vector<unsigned long> side_two_dur_vec;
+  DurationsArray side_one;
+  DurationsArray side_two;
   bool durations_recieved = false;
 };
 

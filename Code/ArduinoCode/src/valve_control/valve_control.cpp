@@ -1,7 +1,6 @@
 #include "valve_control.h"
 #include "../exp_init/exp_init.h"
 #include "Arduino.h"
-#include <cstdint>
 
 // the print statements in this file are commented out for performance sake. Can
 // be un-commented for debugging purposes.
@@ -11,7 +10,8 @@ bool close_valve(valveTimeDetails valve_time, SideData *side_data,
 
   uint8_t valve_num = side_data->experiment_schedule[current_trial];
 
-  unsigned long allotted_duration = side_data->valve_durations[valve_num];
+  unsigned long allotted_duration =
+      side_data->valve_durations.durations[valve_num];
 
   unsigned long current_time = micros();
 
@@ -23,6 +23,12 @@ bool close_valve(valveTimeDetails valve_time, SideData *side_data,
     return true;
   }
   return false;
+}
+
+void close_all() {
+
+  PORTA = 0;
+  PORTC = 0;
 }
 
 void open_valve_testing(volatile uint8_t *PORT, uint8_t valve_number) {
