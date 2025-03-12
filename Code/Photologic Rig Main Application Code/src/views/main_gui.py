@@ -21,7 +21,7 @@ logger = logging.getLogger()
 # using tk.Tk here says that this class is going to be a tkinter app. when we call super().__init__() this actuall creates the tkinter main window
 # then we can use it as if it were root - e.g self.title("title") sets the root window title
 class MainGUI(tk.Tk):
-    def __init__(self, exp_data, trigger_state_change) -> None:
+    def __init__(self, exp_data, trigger_state_change, arduino_controller) -> None:
         # init the Tk instance to create a GUI
         super().__init__()
         # self.scheduled_tasks is a dict where keys are short task descriptions (e.g ttc_to_iti) and the values are
@@ -29,6 +29,7 @@ class MainGUI(tk.Tk):
         self.scheduled_tasks = {}
 
         self.exp_data = exp_data
+        self.arduino_controller = arduino_controller
 
         self.trigger_state_change = trigger_state_change
 
@@ -91,7 +92,7 @@ class MainGUI(tk.Tk):
                 RasterizedDataWindow(2, self.exp_data),
             ),
             "Event Data": EventWindow(event_data),
-            "Valve Testing": ValveTestWindow(),
+            "Valve Testing": ValveTestWindow(self.arduino_controller),
             "Valve Control": ValveControlWindow(),
         }
 
@@ -407,7 +408,7 @@ class MainGUI(tk.Tk):
 
             self.test_valves_button_frame, _ = GUIUtils.create_button(
                 parent=self.lower_control_buttons_frame,
-                button_text="Calibrate Valves",
+                button_text="Valve Testing / Prime Valves",
                 command=lambda: self.show_secondary_window("Valve Testing"),
                 bg="grey",
                 row=0,

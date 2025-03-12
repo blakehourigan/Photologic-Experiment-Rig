@@ -1,5 +1,6 @@
 #include "./src/optical_detection/optical_detection.h"
 #include "./src/valve_control/valve_control.h"
+#include "./src/valve_testing/test_valves.h"
 #include "./src/reporting/reporting.h"
 #include "./src/exp_init/exp_init.h"
 #include <AccelStepper.h>
@@ -22,34 +23,25 @@ const uint8_t SIDE_TWO = 1;
 
 AccelStepper stepper = AccelStepper(1, STEP_PIN, DIR_PIN);
 
-void setup() 
-{
+void setup() {
   Serial.begin(BAUD_RATE);
 
   stepper.setMaxSpeed(MAX_SPEED);
   stepper.setAcceleration(ACCELERATION);
 
-  // Set pins 22-29 as outputs (side one valves)
-  DDRA |= (255); 
-  // Set pins 30-37 as outputs (side two valves)
-  DDRC |= (255); 
+  // Set digital pins 22-29 (PORTA) as outputs (side one valves)
+  DDRA = 255; 
+  // Set digital pins 30-37 (PORTC) as outputs (side two valves)
+  DDRC = 255; 
   
-  // set the data direction register to output on pin 5 of the C register
+  // set the data direction register to output on pin 4 & pin 5 of the L register
   DDRL |= (1 << LED_BIT_SIDE1);
-  // set the data direction register to output on pin 4 of the A register
   DDRL |= (1 << LED_BIT_SIDE2);
-
-  // side one led is on portc pin 5
+  
+  // turn each side's (yellow&red) lick indicator LEDs to on
   PORTL |= (1 << LED_BIT_SIDE1);
-  // side two led bit is on portA pin 4
   PORTL |= (1 << LED_BIT_SIDE2);
 
-  int inputPins[] = {2, 8, 9, 10, 11, 12};
-
-  for(unsigned int i = 0; i < sizeof(inputPins) / sizeof(inputPins[0]); i++) 
-  {
-    pinMode(inputPins[i], INPUT_PULLUP);
-  }
 }
 
 void loop() {
@@ -90,8 +82,8 @@ void loop() {
   SIDE_ONE,
   side_one_pin_state,
   side_one_previous_state,
-  durations.side_one_dur_vec,
-  schedules.side_one_sched_vec,
+  durations.side_one,
+  schedules.side_two_sched_vec,
   };
   
   // side two struct  
@@ -99,14 +91,14 @@ void loop() {
   SIDE_TWO,
   side_two_pin_state,
   side_two_previous_state,
-  durations.side_two_dur_vec,
+  durations.side_two,
   schedules.side_two_sched_vec,
   };
   
   // a pointer to the side_data for the side that was licked most recently
   static SideData * side_data;
  
-  // check motor running first to avoid unneccessary calls to stepper.distanceToGo()
+  // check if motor_running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
     // at this stage we have filled movement_start, movement_type, and now movement_end
     motor_time.movement_end = millis();
@@ -246,8 +238,11 @@ void loop() {
       // reset the board
       wdt_enable(WDTO_1S);
     }
+    else if(command.equals("PRIME VALVES")){
+        
+        }
     else if (command.equals("TEST VOL")){
-      //test_volume(full_command[2]);
+      run_valve_test(side_one_data.valve_durations, side_two_data.valve_durations);
     }
     else if (command.equals("REC DURATIONS")){
       // receive valve durations from the python controller

@@ -71,7 +71,7 @@ class EventWindow(tk.Toplevel):
             self.event_data.event_dataframe.columns
         )
 
-        # Configure the columns
+        # Configure the names of the colums to reflect the heaader labels
         for col in self.timestamped_licks["columns"]:
             self.timestamped_licks.heading(col, text=col)
 

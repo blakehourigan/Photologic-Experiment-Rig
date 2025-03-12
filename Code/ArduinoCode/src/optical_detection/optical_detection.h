@@ -2,7 +2,7 @@
 
 #define OPTICAL_DET_H
 
-#include <Vector.h>
+#include "./../exp_init/exp_init.h"
 
 // digital 31, from photologic
 #define OPTICAL_DETECTOR_BIT_SIDE1 PL0
@@ -22,7 +22,7 @@ struct SideData {
   uint8_t SIDE;
   bool &current_input_state;
   bool &previous_input_state;
-  Vector<unsigned long> &valve_durations;
+  DurationsArray &valve_durations;
   Vector<uint8_t> &experiment_schedule;
 };
 

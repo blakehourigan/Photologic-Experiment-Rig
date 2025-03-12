@@ -12,4 +12,6 @@ void open_valve(SideData *side_data, uint16_t current_trial);
 bool close_valve(valveTimeDetails valve_time, SideData *side_data,
                  uint16_t current_trial);
 
+void close_single_valve(volatile uint8_t *PORT, uint8_t valve_number);
+void close_all();
 #endif

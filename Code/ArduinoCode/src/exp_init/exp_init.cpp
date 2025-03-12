@@ -69,13 +69,11 @@ ScheduleVectors receive_schedules() {
 }
 
 ValveDurations receive_durations() {
+
+  DurationsArray side_one;
+  DurationsArray side_two;
+
   ValveDurations durations;
-
-  unsigned long side_one_durations[MAX_VALVES_PER_SIDE];
-  unsigned long side_two_durations[MAX_VALVES_PER_SIDE];
-
-  Vector<unsigned long> side_one_dur = side_one_durations;
-  Vector<unsigned long> side_two_dur = side_two_durations;
 
   // when this variable equals MAX_VALVES_PER_SIDE, sd_one has been recieved,
   // move on to side two
@@ -105,9 +103,9 @@ ValveDurations receive_durations() {
       elements_processed++;
 
       if (side == 1) {
-        side_one_dur.push_back(duration);
+        side_one.append(duration);
       } else if (side == 2) {
-        side_two_dur.push_back(duration);
+        side_two.append(duration);
       }
 
       if (elements_processed == MAX_VALVES_PER_SIDE) {
@@ -120,8 +118,9 @@ ValveDurations receive_durations() {
       }
     }
   }
-  durations.side_one_dur_vec = side_one_dur;
-  durations.side_two_dur_vec = side_two_dur;
+
+  durations.side_one = side_one;
+  durations.side_two = side_two;
   durations.durations_recieved = true;
   return durations;
 }
@@ -146,19 +145,19 @@ void schedule_verification(ScheduleVectors schedules) {
 }
 
 void durations_verification(ValveDurations durations) {
-  Vector<unsigned long> side_one_dur_vec = durations.side_one_dur_vec;
-  Vector<unsigned long> side_two_dur_vec = durations.side_two_dur_vec;
+  DurationsArray side_one = durations.side_one;
+  DurationsArray side_two = durations.side_two;
   // echo recieved schedules to python controller, so that it can verify that
   // we received them correctly
   unsigned long val = 0;
-  for (int i = 0; i < side_one_dur_vec.size(); i++) {
+  for (int i = 0; i < side_one.len; i++) {
     //
-    val = side_one_dur_vec.at(i);
+    val = side_one.durations[i];
     Serial.write((uint8_t *)&val, sizeof(val));
   }
 
-  for (int i = 0; i < side_two_dur_vec.size(); i++) {
-    val = side_two_dur_vec.at(i);
+  for (int i = 0; i < side_two.len; i++) {
+    val = side_two.durations[i];
     Serial.write((uint8_t *)&val, sizeof(val));
   }
   // force all the data out
