@@ -30,9 +30,7 @@ logger.addHandler(console_handler)
 
 logfile_dir = Path(__file__).parent.parent.resolve()
 now = datetime.datetime.now()
-logfile_name = (
-    f"Experiment app log => {now.date()} | {now.hour}:{now.minute}:{now.second}"
-)
+logfile_name = f"{now.hour}:{now.minute}:{now.second} - {now.date()} experiment log"
 logfile_path = logfile_dir / "logfiles" / f"{logfile_name}"
 
 
@@ -55,9 +53,11 @@ class TkinterApp:
             which is used to transition the program from one state to another. Trigger is needed to manipulate state via
             the start and reset buttons
             """
-            self.main_gui = MainGUI(self.exp_data, self.trigger)
-
             self.arduino_controller = ArduinoManager(self.exp_data, self.process_queue)
+
+            self.main_gui = MainGUI(
+                self.exp_data, self.trigger, self.arduino_controller
+            )
 
             logging.info("GUI started successfully.")
         except Exception as e:

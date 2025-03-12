@@ -14,9 +14,9 @@ toml_config_path = toml_config_dir / "rig_config.toml"
 with open(toml_config_path, "r") as f:
     VALVE_CONFIG = toml.load(f)["valve_config"]
 
+
 # pull total valves constant from toml config
-TOTAL_POSSIBLE_VALVES = VALVE_CONFIG["TOTAL_POSSIBLE_VALVES"]
-VALVES_PER_SIDE = TOTAL_POSSIBLE_VALVES // 2
+TOTAL_CURRENT_VALVES = VALVE_CONFIG["TOTAL_CURRENT_VALVES"]
 
 
 class ArduinoData:

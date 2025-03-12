@@ -16,13 +16,14 @@ class ValveControlWindow(tk.Toplevel):
         self.maximum_num_valves = 8
         self.valve_states = ["0"] * self.maximum_num_valves
 
+        self.motor_button_text = tk.StringVar()
+        self.motor_button_text.set("Move Motor Down")
+
         self.valves_frame = tk.Frame(self)
         self.valves_frame.pack(pady=10)
         self.create_valve_buttons()
-        # self.create_motor_control_button()
+        self.create_motor_control_button()
 
-        self.motor_button_text = tk.StringVar()
-        self.motor_button_text.set("")
         # self.setup_ui()
         GUIUtils.center_window(self)
 
