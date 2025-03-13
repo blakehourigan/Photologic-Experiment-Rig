@@ -1,0 +1,102 @@
+2025-03-13 09:21:44,606 - INFO - Licks dataframe initialized.
+2025-03-13 09:21:44,612 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-13 09:21:44,612 - INFO - Connected to Arduino boards successfully.
+2025-03-13 09:21:44,656 - INFO - Timer 'Time Elapsed:' created.
+2025-03-13 09:21:44,665 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-13 09:21:44,671 - INFO - Timer 'State Time:' created.
+2025-03-13 09:21:44,674 - INFO - Timers displayed.
+2025-03-13 09:21:44,682 - INFO - Labeled entry 'ITI Time' created.
+2025-03-13 09:21:44,689 - INFO - Labeled entry 'TTC Time' created.
+2025-03-13 09:21:44,695 - INFO - Labeled entry 'Sample Time' created.
+2025-03-13 09:21:44,701 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-13 09:21:44,707 - INFO - Labeled entry '+/- ITI' created.
+2025-03-13 09:21:44,713 - INFO - Labeled entry '+/- TTC' created.
+2025-03-13 09:21:44,719 - INFO - Labeled entry '+/- Sample' created.
+2025-03-13 09:21:44,726 - INFO - Labeled entry '# Stimuli' created.
+2025-03-13 09:21:44,726 - INFO - Entry widgets displayed.
+2025-03-13 09:21:44,729 - INFO - Button 'Start' created.
+2025-03-13 09:21:44,732 - INFO - Button 'Reset' created.
+2025-03-13 09:21:44,732 - INFO - Main control buttons displayed.
+2025-03-13 09:21:44,735 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-13 09:21:44,738 - INFO - Button 'Valve Control' created.
+2025-03-13 09:21:44,741 - INFO - Button 'Program Schedule' created.
+2025-03-13 09:21:44,745 - INFO - Button 'Valve / Stimuli' created.
+2025-03-13 09:21:44,748 - INFO - Button 'Event Data' created.
+2025-03-13 09:21:44,751 - INFO - Button 'Rasterized Data' created.
+2025-03-13 09:21:44,754 - INFO - Button 'Save Data' created.
+2025-03-13 09:21:44,754 - INFO - Lower control buttons displayed.
+2025-03-13 09:21:44,769 - INFO - Status widget displayed.
+2025-03-13 09:21:44,769 - INFO - GUI setup completed.
+2025-03-13 09:21:44,782 - INFO - Labeled entry 'Valve 1' created.
+2025-03-13 09:21:44,789 - INFO - Labeled entry 'Valve 2' created.
+2025-03-13 09:21:44,795 - INFO - Labeled entry 'Valve 5' created.
+2025-03-13 09:21:44,801 - INFO - Labeled entry 'Valve 6' created.
+2025-03-13 09:21:44,801 - INFO - Stimuli frame populated.
+2025-03-13 09:21:44,805 - INFO - Button 'Generate Schedule' created.
+2025-03-13 09:21:44,805 - INFO - Filled contents of experiment control window.
+2025-03-13 09:21:44,805 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-13 09:21:44,958 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-13 09:21:44,961 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-13 09:21:44,961 - INFO - Button 'Valve 1' created.
+2025-03-13 09:21:44,961 - INFO - Button 'Valve 5' created.
+2025-03-13 09:21:44,961 - INFO - Button 'Valve 2' created.
+2025-03-13 09:21:44,961 - INFO - Button 'Valve 6' created.
+2025-03-13 09:21:44,962 - INFO - Button 'Valve 3' created.
+2025-03-13 09:21:44,962 - INFO - Button 'Valve 7' created.
+2025-03-13 09:21:44,962 - INFO - Button 'Valve 4' created.
+2025-03-13 09:21:44,962 - INFO - Button 'Valve 8' created.
+2025-03-13 09:21:44,962 - INFO - Button 'Start Testing' created.
+2025-03-13 09:21:44,962 - INFO - Experiment control window centered.
+2025-03-13 09:21:44,969 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-13 09:21:44,969 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-13 09:21:44,969 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-13 09:21:44,970 - INFO - Button 'Write Timing Changes' created.
+2025-03-13 09:21:44,971 - INFO - Valve Test Window initialized.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 1: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 5: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 2: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 6: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 3: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 7: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 4: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Valve 8: Closed' created.
+2025-03-13 09:21:44,973 - INFO - Button 'Move Motor Down' created.
+2025-03-13 09:21:44,973 - INFO - MainGUI initialized.
+2025-03-13 09:21:44,973 - INFO - GUI started successfully.
+2025-03-13 09:21:46,533 - INFO - Experiment control window centered.
+2025-03-13 09:21:48,428 - INFO - Valve test table updated.
+2025-03-13 09:21:48,740 - INFO - Valve test table updated.
+2025-03-13 09:21:49,965 - INFO - Valve test table updated.
+2025-03-13 09:21:50,653 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-13 09:21:50,654 - INFO - Sent b'\x18w\x00\x00\xc5e\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\xecY\x00\x00\xfd}\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-13 09:21:50,660 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-13 09:21:50,669 - INFO - Arduino recieved side one as => [30488 26053 24125 25000 24125 24125 24125 24125]
+2025-03-13 09:21:50,669 - INFO - Arduino recieved side two as => [23020 32253 27000 24125 24125 24125 24125 24125]
+2025-03-13 09:21:50,669 - INFO - arduino has recieved and verified valve durations
+2025-03-13 09:21:50,671 - INFO - Sent b'TEST VOL\n' to arduino on -> /dev/ttyACM0: 
+2025-03-13 09:21:50,671 - INFO - Sent b'\x02\x01\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-13 09:21:55,149 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:56,613 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:57,349 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:57,581 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:57,773 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:57,965 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:58,117 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:21:58,724 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,213 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,405 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,548 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,701 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,829 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:11,949 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,084 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,205 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,333 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,468 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,589 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'
+2025-03-13 09:22:12,716 - ERROR - Error closing application: 'ArduinoManager' object has no attribute 'listener_thread'

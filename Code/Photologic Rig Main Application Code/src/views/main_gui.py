@@ -9,7 +9,8 @@ from views.gui_common import GUIUtils
 from views.rasterized_data_window import RasterizedDataWindow
 from views.experiment_control_window import ExperimentCtlWindow
 from views.event_window import EventWindow
-from views.valve_testing_window import ValveTestWindow
+from views.valve_testing.valve_testing_window import ValveTestWindow
+
 from views.program_schedule_window import ProgramScheduleWindow
 from views.valve_control_window import ValveControlWindow
 
@@ -600,7 +601,10 @@ class MainGUI(tk.Tk):
 
     def update_on_reset(self) -> None:
         try:
-            elapsed_time, state_elapsed_time = 0, 0  # reset the elapsed time variables
+            # reset the elapsed time variables
+            elapsed_time = 0
+            state_elapsed_time = 0
+
             self.main_timer_text.configure(text="{:.1f}s".format(elapsed_time))
             self.state_timer_text.configure(text="{:.3f}s".format(state_elapsed_time))
 
@@ -620,7 +624,11 @@ class MainGUI(tk.Tk):
 
     def on_close(self):
         try:
-            self.arduino_controller.stop_listener_thread()
+            if self.arduino_controller.listener_thread is not None:
+                # stop the listener thread so that it will not block exit
+                self.arduino_controller.stop_listener_thread()
+
+            # quit the mainloop and destroy the application
             self.quit()
             self.destroy()
             logger.info("Application closed.")

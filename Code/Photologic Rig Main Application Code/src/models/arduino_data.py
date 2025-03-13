@@ -63,7 +63,6 @@ class ArduinoData:
         elif type_durations == "archive":
             # find first archive not filled
             first_avail = self.find_first_not_filled(toml_file)
-            print(first_avail)
             match first_avail:
                 case 1:
                     # 1 is available just insert

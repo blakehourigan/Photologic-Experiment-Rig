@@ -25,6 +25,7 @@ class ArduinoManager:
 
         self.data_queue: queue.Queue[Any] = queue.Queue()
         self.stop_event = threading.Event()
+        self.listener_thread = None
 
         self.connect_to_arduino()
 
