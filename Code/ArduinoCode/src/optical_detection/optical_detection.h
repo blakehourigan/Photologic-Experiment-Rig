@@ -3,7 +3,6 @@
 #define OPTICAL_DET_H
 
 #include "./../exp_init/exp_init.h"
-#include <Arduino.h>
 
 // digital 31, from photologic
 #define OPTICAL_DETECTOR_BIT_SIDE1 PL0
