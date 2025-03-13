@@ -5,7 +5,6 @@
 #include "./src/exp_init/exp_init.h"
 #include <AccelStepper.h>
 #include <avr/wdt.h>
-#include <Vector.h>
 
 const unsigned long BAUD_RATE = 115200;
 
@@ -50,7 +49,7 @@ void loop() {
   static String previous_command = "\0";
   
   // structs that hold schedule and duration vectors for the experiment
-  static ScheduleVectors schedules;
+  static ValveSchedules schedules;
   static ValveDurations durations;
   
   // stores whether motor should open valves or not
@@ -83,7 +82,7 @@ void loop() {
   side_one_pin_state,
   side_one_previous_state,
   durations.side_one,
-  schedules.side_two_sched_vec,
+  schedules.side_two,
   };
   
   // side two struct  
@@ -92,7 +91,7 @@ void loop() {
   side_two_pin_state,
   side_two_previous_state,
   durations.side_two,
-  schedules.side_two_sched_vec,
+  schedules.side_two,
   };
   
   // a pointer to the side_data for the side that was licked most recently
@@ -243,6 +242,9 @@ void loop() {
         }
     else if (command.equals("TEST VOL")){
       run_valve_test(side_one_data.valve_durations, side_two_data.valve_durations);
+    }
+    else if (command.equals("OPEN SPECIFIC")){
+      control_specific_valves(); 
     }
     else if (command.equals("REC DURATIONS")){
       // receive valve durations from the python controller

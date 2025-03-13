@@ -5,7 +5,10 @@
 #include "../reporting/reporting.h"
 #include <avr/wdt.h>
 
-void open_valve_testing(volatile uint8_t *PORT, uint8_t valve_number);
+void open_single_valve(volatile uint8_t *PORT, uint8_t valve_number);
+
+// method used for opening specific valves for arbitrary amounts of time
+void control_specific_valves();
 
 void open_valve(SideData *side_data, uint16_t current_trial);
 

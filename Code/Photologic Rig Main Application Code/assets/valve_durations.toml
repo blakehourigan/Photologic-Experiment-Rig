@@ -3,6 +3,7 @@ title = "arduino_long_term_storage"
 [default_durations]
 side_one_durations = [ 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125,]
 side_two_durations = [ 24125, 24125, 24125, 24125, 24125, 24125, 24125, 24125,]
+date_used = 2025-03-12T11:50:56.831078
 
 [selected_durations]
 side_one_durations = [ 30488, 26053, 24125, 25000, 24125, 24125, 24125, 24125,]

@@ -178,7 +178,7 @@ class ValveTestWindow(tk.Toplevel):
         button = tk.Button(
             self.valve_table_frame,
             text="Manual Valve Duration Override",
-            command=lambda: self.manual_adjust_window.deiconify(),
+            command=lambda: self.manual_adjust_window.show(),
             bg="light blue",
             highlightbackground="black",
             highlightthickness=1,
@@ -395,40 +395,45 @@ class ManualTimeAdjustment(tk.Toplevel):
         self.tk_vars = {}
         self.labelled_entries = [None] * 8
 
-        self.fill_tk_vars()
-        self.create_interface(valve_selections)
+        # load default 'selected' dur profile
+        side_one, side_two, date_used = self.arduino_data.load_durations()
+
+        self.fill_tk_vars(side_one, side_two)
+        self.create_interface(valve_selections, date_used)
 
         window_icon_path = GUIUtils.get_window_icon_path()
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)
 
     def show(self):
-        self.update_interface()
+        self.deiconify()
 
     def update_interface(self, event):
         # event is the selection event of the self.combobox. using .get gets the self.duration_type dict key
         load_durations_key = self.duration_types[f"{event.widget.get()}"]
+
         side_one, side_two, date_used = self.arduino_data.load_durations(
             load_durations_key
         )
-        print(side_one)
-        print(side_two)
-        print(date_used)
-        pass
+
+        for i, duration in enumerate(side_one):
+            self.tk_vars[f"Valve {i + 1}"].set(duration)
+        for i, duration in enumerate(side_two):
+            self.tk_vars[f"Valve {i + 9}"].set(duration)
 
     def create_dropdown(self):
         self.duration_types = {
             "Default": "default_durations",
             "Last Used": "selected_durations",
-            "Archive 1": "archive_1",
+            "(most recent) Archive 1": "archive_1",
             "Archive 2": "archive_2",
-            "Archive 3": "archive_3",
+            "(oldest) Archive 3": "archive_3",
         }
         self.dropdown = ttk.Combobox(self, values=list(self.duration_types.keys()))
         self.dropdown.current(1)
-        self.dropdown.grid(row=1, column=0)
+        self.dropdown.grid(row=1, column=0, sticky="e", padx=10)
         self.dropdown.bind("<<ComboboxSelected>>", lambda e: self.update_interface(e))
 
-    def create_interface(self, valve_selections):
+    def create_interface(self, valve_selections, date_used):
         warning = tk.Label(
             self,
             text="ALL TIMINGS IN MICROSECONDS (e.g 24125 equivalent to 24.125 ms)",
@@ -439,9 +444,22 @@ class ManualTimeAdjustment(tk.Toplevel):
             highlightbackground="black",
         )
 
-        warning.grid(row=0, column=0, sticky="nsew", pady=10)
+        warning.grid(row=0, column=0, sticky="nsew", pady=10, padx=10)
 
         self.create_dropdown()
+
+        formatted_date = date_used.strftime("%B/%d/%Y")
+        formatted_time = date_used.strftime("%I:%M %p")
+        self.date_used_label = tk.Label(
+            self,
+            text=f"Timing profile created on: {formatted_date} at {formatted_time}",
+            bg="white",
+            fg="black",
+            font=("Helvetica", 15),
+            highlightthickness=1,
+            highlightbackground="black",
+        )
+        self.date_used_label.grid(row=1, column=0, sticky="w", padx=10)
 
         self.timing_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
@@ -472,7 +490,7 @@ class ManualTimeAdjustment(tk.Toplevel):
 
         warning = tk.Label(
             self,
-            text="This will archive current configuration in assets/valve_durations.toml and set \nthis config to selected timings",
+            text="This action will archive the current timing configuration into assets/valve_durations.toml\n and set these new timings to selected timings",
             bg="white",
             fg="black",
             font=("Helvetica", 15),
@@ -480,7 +498,7 @@ class ManualTimeAdjustment(tk.Toplevel):
             highlightbackground="black",
         )
 
-        warning.grid(row=3, column=0)
+        warning.grid(row=3, column=0, padx=10)
         self.save_changes_bttn = GUIUtils.create_button(
             self,
             "Write Timing Changes",
@@ -490,12 +508,11 @@ class ManualTimeAdjustment(tk.Toplevel):
             column=0,
         )[1]
 
-    def fill_tk_vars(self):
+    def fill_tk_vars(self, side_one, side_two):
         """
         in this function we fill self.tk_vars dictionary with tk.IntVar objects usable in tkinter entry objects. we fill these
         variables by default with the selected durations saved in the toml configuration file for the arduino timings.
         """
-        side_one, side_two, date_used = self.arduino_data.load_durations()
 
         for i, duration in enumerate(side_one):
             self.tk_vars[f"Valve {i + 1}"] = tk.IntVar(value=duration)

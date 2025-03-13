@@ -1,0 +1,30 @@
+2025-03-12 14:22:30,206 - INFO - Licks dataframe initialized.
+2025-03-12 14:22:30,215 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-12 14:22:30,215 - INFO - Connected to Arduino boards successfully.
+2025-03-12 14:22:30,357 - INFO - Timer 'Time Elapsed:' created.
+2025-03-12 14:22:30,366 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-12 14:22:30,371 - INFO - Timer 'State Time:' created.
+2025-03-12 14:22:30,374 - INFO - Timers displayed.
+2025-03-12 14:22:30,380 - INFO - Labeled entry 'ITI Time' created.
+2025-03-12 14:22:30,386 - INFO - Labeled entry 'TTC Time' created.
+2025-03-12 14:22:30,392 - INFO - Labeled entry 'Sample Time' created.
+2025-03-12 14:22:30,397 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-12 14:22:30,403 - INFO - Labeled entry '+/- ITI' created.
+2025-03-12 14:22:30,408 - INFO - Labeled entry '+/- TTC' created.
+2025-03-12 14:22:30,414 - INFO - Labeled entry '+/- Sample' created.
+2025-03-12 14:22:30,419 - INFO - Labeled entry '# Stimuli' created.
+2025-03-12 14:22:30,419 - INFO - Entry widgets displayed.
+2025-03-12 14:22:30,422 - INFO - Button 'Start' created.
+2025-03-12 14:22:30,425 - INFO - Button 'Reset' created.
+2025-03-12 14:22:30,425 - INFO - Main control buttons displayed.
+2025-03-12 14:22:30,428 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-12 14:22:30,431 - INFO - Button 'Valve Control' created.
+2025-03-12 14:22:30,434 - INFO - Button 'Program Schedule' created.
+2025-03-12 14:22:30,436 - INFO - Button 'Valve / Stimuli' created.
+2025-03-12 14:22:30,439 - INFO - Button 'Event Data' created.
+2025-03-12 14:22:30,442 - INFO - Button 'Rasterized Data' created.
+2025-03-12 14:22:30,445 - INFO - Button 'Save Data' created.
+2025-03-12 14:22:30,445 - INFO - Lower control buttons displayed.
+2025-03-12 14:22:30,460 - INFO - Status widget displayed.
+2025-03-12 14:22:30,460 - INFO - GUI setup completed.
+2025-03-12 14:22:30,460 - ERROR - Initialization error: name 'ExperimentCtlWindow' is not defined

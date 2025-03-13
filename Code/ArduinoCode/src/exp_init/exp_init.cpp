@@ -23,14 +23,11 @@ void receive_exp_variables() {
   num_trials = Serial.read();
 }
 
-ScheduleVectors receive_schedules() {
-  ScheduleVectors schedule_vectors;
+ValveSchedules receive_schedules() {
+  ValveSchedules schedules;
 
-  uint8_t side_one_schedule[MAX_SCHEDULE_SIZE];
-  uint8_t side_two_schedule[MAX_SCHEDULE_SIZE];
-
-  Vector<uint8_t> side_one_sched = side_one_schedule;
-  Vector<uint8_t> side_two_sched = side_two_schedule;
+  ExpScheduleArray side_one_arr;
+  ExpScheduleArray side_two_arr;
 
   // when this variable equals num trials, sd_one has been recieved,
   // move on to side two
@@ -48,9 +45,9 @@ ScheduleVectors receive_schedules() {
       elements_processed++;
 
       if (side == 1) {
-        side_one_sched.push_back(valve);
+        side_one_arr.append(valve);
       } else if (side == 2) {
-        side_two_sched.push_back(valve);
+        side_two_arr.append(valve);
       }
       if (elements_processed == num_trials) {
         if (side == 1) {
@@ -62,10 +59,10 @@ ScheduleVectors receive_schedules() {
       }
     }
   }
-  schedule_vectors.side_one_sched_vec = side_one_sched;
-  schedule_vectors.side_two_sched_vec = side_two_sched;
-  schedule_vectors.schedules_recieved = true;
-  return schedule_vectors;
+  schedules.side_one = side_one_arr;
+  schedules.side_two = side_two_arr;
+  schedules.schedules_recieved = true;
+  return schedules;
 }
 
 ValveDurations receive_durations() {
@@ -125,18 +122,18 @@ ValveDurations receive_durations() {
   return durations;
 }
 
-void schedule_verification(ScheduleVectors schedules) {
-  Vector<uint8_t> side_one_sched_vec = schedules.side_one_sched_vec;
-  Vector<uint8_t> side_two_sched_vec = schedules.side_two_sched_vec;
+void schedule_verification(ValveSchedules schedules) {
+  ExpScheduleArray side_one = schedules.side_one;
+  ExpScheduleArray side_two = schedules.side_two;
 
   // echo recieved schedules to python controller, so that it can verify
   // that we received them correctly
-  for (int i = 0; i < side_one_sched_vec.size(); i++) {
-    Serial.write(side_one_sched_vec.at(i));
+  for (int i = 0; i < side_one.len; i++) {
+    Serial.write(side_one.schedule[i]);
   }
 
-  for (int i = 0; i < side_two_sched_vec.size(); i++) {
-    Serial.write(side_two_sched_vec.at(i));
+  for (int i = 0; i < side_two.len; i++) {
+    Serial.write(side_two.schedule[i]);
   }
   // force all the data out
   Serial.flush();

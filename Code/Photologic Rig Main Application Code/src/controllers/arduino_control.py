@@ -59,7 +59,6 @@ class ArduinoManager:
             try:
                 if self.arduino.in_waiting > 0:
                     data = self.arduino.readline().decode("utf-8").strip()
-                    print(data)
                     self.data_queue.put(("Arduino", data))
                     logger.info(f"Received -> {data} from arduino")
             except Exception as e:

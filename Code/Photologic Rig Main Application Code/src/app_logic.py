@@ -250,6 +250,11 @@ class GenerateSchedule:
 
         process_queue(self.arduino_controller.data_queue)
 
+        self.arduino_controller.listener_thread = threading.Thread(
+            target=self.arduino_controller.listen_for_serial
+        )
+        self.arduino_controller.listener_thread.start()
+
         logger.info("Started listening thread for Arduino serial input.")
         self.trigger_state_change("IDLE")
 
@@ -303,6 +308,10 @@ class StopProgram:
             for desc, sched_task in self.main_gui.scheduled_tasks.items():
                 if desc != "PROCESS QUEUE":
                     self.main_gui.after_cancel(sched_task)
+
+            # stop the arduino listener so that the program can shut down
+            # and not be blocked
+            self.arduino_controller.stop_listener_thread()
 
             # finalize the program after 5 seconds because the door has not gone down yet. we still want the arduino
             # to record the time that the door goes up last

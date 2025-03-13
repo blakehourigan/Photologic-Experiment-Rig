@@ -1,7 +1,8 @@
 #ifndef TEST_VALVESH
 #define TEST_VALVESH
 
-#include "./../exp_init/exp_init.h"
+#include "../exp_init/exp_init.h"
+#include <stdint.h>
 
 struct TestParams {
   uint8_t num_valves_side_one;
@@ -9,8 +10,8 @@ struct TestParams {
 
   uint16_t max_test_actuations;
 
-  Vector<uint8_t> side_one_sched;
-  Vector<uint8_t> side_two_sched;
+  ExpScheduleArray side_one_sched;
+  ExpScheduleArray side_two_sched;
 };
 
 void run_valve_test(DurationsArray side_one_dur_vec,

@@ -1,137 +1,133 @@
 import tkinter as tk
+import toml
+import numpy as np
+from pathlib import Path
 
 from views.gui_common import GUIUtils
 
+toml_config_dir = Path(__file__).parent.parent.resolve()
+toml_config_path = toml_config_dir / "rig_config.toml"
+with open(toml_config_path, "r") as f:
+    VALVE_CONFIG = toml.load(f)["valve_config"]
+
+# pull total valves constant from toml config
+TOTAL_CURRENT_VALVES = VALVE_CONFIG["TOTAL_CURRENT_VALVES"]
+VALVES_PER_SIDE = TOTAL_CURRENT_VALVES // 2
+
 
 class ValveControlWindow(tk.Toplevel):
-    def __init__(self) -> None:
+    def __init__(self, arduino_controller) -> None:
         super().__init__()
         self.title("Valve Control")
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
         self.bind("<Control-w>", lambda event: self.withdraw())
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        self.arduino_controller = arduino_controller
+
         window_icon_path = GUIUtils.get_window_icon_path()
-        GUIUtils().set_program_icon(self, window_icon_path)
+        GUIUtils.set_program_icon(self, window_icon_path)
 
-        self.maximum_num_valves = 8
-        self.valve_states = ["0"] * self.maximum_num_valves
+        self.valve_selections = np.zeros((TOTAL_CURRENT_VALVES,), dtype=np.int8)
 
-        self.motor_button_text = tk.StringVar()
-        self.motor_button_text.set("Move Motor Down")
-
-        self.valves_frame = tk.Frame(self)
-        self.valves_frame.pack(pady=10)
-        self.create_valve_buttons()
-        self.create_motor_control_button()
-
-        # self.setup_ui()
-        GUIUtils.center_window(self)
+        self.create_interface()
+        self.motor_down = False
 
         # we don't want to show this window until the user decides to click the corresponding button,
         # withdraw (hide) it for now
         self.withdraw()
 
     def show(self):
+        GUIUtils.center_window(self)
         self.deiconify()
 
+    def create_interface(self):
+        self.valves_frame = tk.Frame(self)
+        self.valves_frame.grid(row=0, column=0, pady=10, sticky="nsew")
+
+        self.valves_frame.grid_columnconfigure(0, weight=1)
+        self.valves_frame.grid_rowconfigure(0, weight=1)
+
+        self.create_buttons()
+
     def toggle_motor(self):
-        if self.motor_button_text.get() == "Move motor down":
-            self.motor_button_text.set("Move motor up")
-            self.motor_button.configure(bg="blue")
+        # if motor is not down, command it down
+        if self.motor_down is False:
+            self.motor_button.configure(text="Move Motor Up", bg="blue", fg="white")
+
             motor_command = "DOWN\n".encode("utf-8")
+            self.motor_down = True
         else:
-            self.motor_button_text.set("Move motor down")
-            self.motor_button.configure(bg="green")
+            self.motor_button.configure(text="Move motor down", bg="green", fg="black")
+
             motor_command = "UP\n".encode("utf-8")
-        self.controller.send_command_to_arduino(arduino="motor", command=motor_command)
+            self.motor_down = False
 
-    def create_motor_control_button(self):
-        self.motor_button = tk.Button(
-            self.valves_frame,
-            textvariable=self.motor_button_text,
-            bg="green",
-            command=self.toggle_motor,
-        )
-        self.motor_button.pack(pady=2)
+        self.arduino_controller.send_command(command=motor_command)
 
-    def create_valve_buttons(self):
+    def create_buttons(self):
         # Create list of buttons to be able to access each one easily later
-        self.buttons = []
+        self.buttons = [None] * TOTAL_CURRENT_VALVES
 
         # Side one valves (1-4)
-        for i in range(self.maximum_num_valves // 2):  # This runs 0, 1, 2, 3
+        for i in range(VALVES_PER_SIDE):  # This runs 0, 1, 2, 3
             btn_text = f"Valve {i + 1}: Closed"
-            btn = tk.Button(
+            button = GUIUtils.create_button(
                 self.valves_frame,
-                text=btn_text,
-                bg="red",
-                command=lambda b=i: self.toggle_button(b),
-            )
-            btn.pack(pady=2, padx=2, fill=tk.X)
-            self.buttons.append(btn)
+                btn_text,
+                lambda i=i: self.toggle_valve_button(i),
+                "firebrick1",
+                row=i,
+                column=0,
+            )[1]
+            self.buttons[i] = button
 
-        # Side two valves (5-8)
-        for i in range(
-            self.maximum_num_valves // 2, self.maximum_num_valves
-        ):  # This runs 4, 5, 6, 7
-            btn_text = f"Valve {i + 1}: Closed"
-            btn = tk.Button(
+            # This runs 4, 5, 6, 7
+            btn_text = f"Valve {i + VALVES_PER_SIDE + 1}: Closed"
+            button = GUIUtils.create_button(
                 self.valves_frame,
-                text=btn_text,
-                bg="red",
-                command=lambda b=i: self.toggle_button(b),
+                btn_text,
+                lambda i=i + VALVES_PER_SIDE: self.toggle_valve_button(i),
+                "firebrick1",
+                row=i,
+                column=2,
+            )[1]
+            self.buttons[i + VALVES_PER_SIDE] = button
+
+        self.motor_button = GUIUtils.create_button(
+            self.valves_frame,
+            "Move Motor Down",
+            command=lambda: self.toggle_motor(),
+            bg="green",
+            row=TOTAL_CURRENT_VALVES,
+            column=1,
+        )[1]
+
+    def toggle_valve_button(self, valve_num):
+        """
+        Every time that a valve button is toggled, we will send a np array TOTAL_CURRENT_VALVES bits wide
+        to the arduino. a 1 represents a on valve, while 0 means off. arduino will iterate through half of this
+        array for side one valves, and hald for side two.
+        """
+        # if a valve is currently a zero (off), make it a 1, and turn the button green
+        if self.valve_selections[valve_num] == 0:
+            self.buttons[valve_num].configure(
+                text=f"Valve {valve_num + 1}: Open", bg="green"
             )
-            btn.pack(pady=2, padx=2, fill=tk.X)
-            self.buttons.append(btn)
+            self.valve_selections[valve_num] = 1
 
-        # self.update_valve_states()
-
-    def toggle_button(self, index):
-        btn = self.buttons[index]
-        if btn["text"].endswith("Open"):
-            btn.configure(text=f"Valve {index + 1}: Closed", bg="red")
-            self.valve_states[index] = "0"
+        # if a valve is currently a one (on), make it a zero (off), and turn the button red
         else:
-            btn.configure(text=f"Valve {index + 1}: Open", bg="green")
-            self.valve_states[index] = "1"
-        self.update_valve_states()
+            self.buttons[valve_num].configure(
+                text=f"Valve {valve_num + 1}: Closed", bg="firebrick1"
+            )
+            self.valve_selections[valve_num] = 0
 
-    def update_valve_states(self):
-        """This method looks at the current states of self.valve_states, splits the valves into their respective sides, and sends a command to the motor Arduino to open and
-        close valves as the user selects via the buttons in the GUI."""
+        open_command = "OPEN SPECIFIC\n".encode("utf-8")
+        self.arduino_controller.send_command(command=open_command)
 
-        # Determine how many valves are on each side based on the value stored in self.maximum_num_valves
-        valves_per_side = self.maximum_num_valves // 2
-        # Select side ones states from valve_states
-        side_one_valves = self.valve_states[:valves_per_side]
-        """While the states are stored in self.valves_states incrementally, e.g state 1 stored at pos 0 starting from the left, then state 2 at pos 1, etc.
-        Arduino's PORTC which controls the side one valves begins with its least significant value on the rightmost bit moving left, where valve one is 
-        associated with the rightmost bit. for this reason we must reverse the list to line up the bits to match. """
-        side_one_valves.reverse()  # Reverses in place
-        side_one_valves = "".join(
-            side_one_valves
-        )  # This collapses the list into one value stored in a string variable
-
-        """Repeat the steps for side one here, except there is no need to reverse the list, because here the lowest numbered valve is associated with PORTA's most 
-        significant bit PA7"""
-        side_two_valves = self.valve_states[-valves_per_side:]
-        side_two_valves.reverse()  # Reverses in place
-        side_two_valves = "".join(side_two_valves)
-        # side_two_valves += "0000"
-        """Adding these extra bits is necessary because valves 5-8 are tied to the most significant bits in the PORTC register. 
-        so simply using four bits in the case of maximum 8 valves would result in the computer sending signals to the pins meant to control valves 12-16 which are yet to be added."""
-
-        # Convert the binary values we have constructed to decimal values to be sent to the motor Arduino
-        side_one_valves = self.binary_to_decimal(side_one_valves)
-        side_two_valves = self.binary_to_decimal(side_two_valves)
-
-        # Send the command to open the valves with the current selection from the buttons in the GUI
-        self.controller.send_command_to_arduino(
-            arduino="motor",
-            command="<O," + f"{side_one_valves}," + f"{side_two_valves}" + ">",
-        )
-
-    def binary_to_decimal(self, binary_number):
-        # Convert the binary string to decimal
-        decimal_number = int(str(binary_number), 2)
-        return decimal_number
+        # send desired valve states to the arduino
+        selections = self.valve_selections.tobytes()
+        self.arduino_controller.send_command(command=selections)

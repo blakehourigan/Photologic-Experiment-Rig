@@ -1,0 +1,142 @@
+2025-03-12 15:53:53,338 - INFO - Licks dataframe initialized.
+2025-03-12 15:53:53,347 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-12 15:53:53,347 - INFO - Connected to Arduino boards successfully.
+2025-03-12 15:53:53,385 - INFO - Timer 'Time Elapsed:' created.
+2025-03-12 15:53:53,393 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-12 15:53:53,398 - INFO - Timer 'State Time:' created.
+2025-03-12 15:53:53,401 - INFO - Timers displayed.
+2025-03-12 15:53:53,410 - INFO - Labeled entry 'ITI Time' created.
+2025-03-12 15:53:53,415 - INFO - Labeled entry 'TTC Time' created.
+2025-03-12 15:53:53,421 - INFO - Labeled entry 'Sample Time' created.
+2025-03-12 15:53:53,426 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-12 15:53:53,432 - INFO - Labeled entry '+/- ITI' created.
+2025-03-12 15:53:53,437 - INFO - Labeled entry '+/- TTC' created.
+2025-03-12 15:53:53,443 - INFO - Labeled entry '+/- Sample' created.
+2025-03-12 15:53:53,448 - INFO - Labeled entry '# Stimuli' created.
+2025-03-12 15:53:53,448 - INFO - Entry widgets displayed.
+2025-03-12 15:53:53,451 - INFO - Button 'Start' created.
+2025-03-12 15:53:53,454 - INFO - Button 'Reset' created.
+2025-03-12 15:53:53,454 - INFO - Main control buttons displayed.
+2025-03-12 15:53:53,457 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-12 15:53:53,460 - INFO - Button 'Valve Control' created.
+2025-03-12 15:53:53,462 - INFO - Button 'Program Schedule' created.
+2025-03-12 15:53:53,465 - INFO - Button 'Valve / Stimuli' created.
+2025-03-12 15:53:53,468 - INFO - Button 'Event Data' created.
+2025-03-12 15:53:53,471 - INFO - Button 'Rasterized Data' created.
+2025-03-12 15:53:53,473 - INFO - Button 'Save Data' created.
+2025-03-12 15:53:53,473 - INFO - Lower control buttons displayed.
+2025-03-12 15:53:53,487 - INFO - Status widget displayed.
+2025-03-12 15:53:53,487 - INFO - GUI setup completed.
+2025-03-12 15:53:53,499 - INFO - Labeled entry 'Valve 1' created.
+2025-03-12 15:53:53,504 - INFO - Labeled entry 'Valve 2' created.
+2025-03-12 15:53:53,510 - INFO - Labeled entry 'Valve 5' created.
+2025-03-12 15:53:53,515 - INFO - Labeled entry 'Valve 6' created.
+2025-03-12 15:53:53,515 - INFO - Stimuli frame populated.
+2025-03-12 15:53:53,518 - INFO - Button 'Generate Schedule' created.
+2025-03-12 15:53:53,518 - INFO - Filled contents of experiment control window.
+2025-03-12 15:53:53,518 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-12 15:53:53,657 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-12 15:53:53,660 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 1' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 5' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 2' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 6' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 3' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 7' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 4' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Valve 8' created.
+2025-03-12 15:53:53,660 - INFO - Button 'Start Testing' created.
+2025-03-12 15:53:53,661 - INFO - Experiment control window centered.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-12 15:53:53,667 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-12 15:53:53,668 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-12 15:53:53,668 - INFO - Button 'Write Timing Changes' created.
+2025-03-12 15:53:53,669 - INFO - Valve Test Window initialized.
+2025-03-12 15:53:53,670 - INFO - Button 'Valve 1: Closed' created.
+2025-03-12 15:53:53,670 - INFO - Button 'Valve 5: Closed' created.
+2025-03-12 15:53:53,670 - INFO - Button 'Valve 2: Closed' created.
+2025-03-12 15:53:53,670 - INFO - Button 'Valve 6: Closed' created.
+2025-03-12 15:53:53,670 - INFO - Button 'Valve 3: Closed' created.
+2025-03-12 15:53:53,671 - INFO - Button 'Valve 7: Closed' created.
+2025-03-12 15:53:53,671 - INFO - Button 'Valve 4: Closed' created.
+2025-03-12 15:53:53,671 - INFO - Button 'Valve 8: Closed' created.
+2025-03-12 15:53:53,671 - INFO - Button 'Move Motor Down' created.
+2025-03-12 15:53:53,671 - INFO - MainGUI initialized.
+2025-03-12 15:53:53,671 - INFO - GUI started successfully.
+2025-03-12 15:53:55,430 - INFO - Experiment control window centered.
+2025-03-12 15:53:56,654 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:53:56,655 - INFO - Sent b'\x00\x01\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:53:58,445 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:53:58,446 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:53:59,661 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:53:59,662 - INFO - Sent b'\x00\x00\x01\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:00,157 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:00,158 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:00,941 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:00,942 - INFO - Sent b'\x00\x00\x00\x01\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:01,405 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:01,406 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:03,198 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:03,198 - INFO - Sent b'\x00\x00\x00\x00\x01\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:10,165 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:10,166 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:10,677 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:10,678 - INFO - Sent b'\x00\x00\x00\x00\x01\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,141 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,142 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,509 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,510 - INFO - Sent b'\x00\x00\x00\x00\x01\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,925 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:11,926 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:13,285 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:13,286 - INFO - Sent b'\x00\x00\x00\x00\x00\x01\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:13,821 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:13,822 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:14,141 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:14,142 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:14,533 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:14,534 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:15,573 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:15,574 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:16,005 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:16,006 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:17,237 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:17,238 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:18,093 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:18,094 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:18,845 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:18,846 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:19,197 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:19,198 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,061 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,062 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,237 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,238 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,533 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,534 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,709 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,710 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,941 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:20,942 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,485 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,486 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,661 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,662 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,989 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:21,990 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,349 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,350 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,637 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,638 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,885 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:22,886 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:23,333 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:23,334 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:23,765 - INFO - Sent b'OPEN SPECIFIC\n' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:23,766 - INFO - Sent b'\x00\x00\x00\x00\x00\x00\x01\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-12 15:54:24,961 - INFO - Application closed.

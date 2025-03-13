@@ -93,7 +93,7 @@ class MainGUI(tk.Tk):
             ),
             "Event Data": EventWindow(event_data),
             "Valve Testing": ValveTestWindow(self.arduino_controller),
-            "Valve Control": ValveControlWindow(),
+            "Valve Control": ValveControlWindow(self.arduino_controller),
         }
 
     def show_secondary_window(self, window):
@@ -620,7 +620,7 @@ class MainGUI(tk.Tk):
 
     def on_close(self):
         try:
-            # get rid of all .after calls
+            self.arduino_controller.stop_listener_thread()
             self.quit()
             self.destroy()
             logger.info("Application closed.")

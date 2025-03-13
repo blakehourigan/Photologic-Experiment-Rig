@@ -139,10 +139,8 @@ class ArduinoData:
                 for i, duration in enumerate(value):
                     dur_side_two[i] = duration
 
-        if type_durations != "default_durations":
-            date_used = file_durations["date_used"]
-        else:
-            date_used = "N/A"
+        date_used = file_durations["date_used"]
+
         return dur_side_one, dur_side_two, date_used
 
     def load_schedule_indices(self):

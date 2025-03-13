@@ -3,6 +3,7 @@
 #define OPTICAL_DET_H
 
 #include "./../exp_init/exp_init.h"
+#include <Arduino.h>
 
 // digital 31, from photologic
 #define OPTICAL_DETECTOR_BIT_SIDE1 PL0
@@ -23,7 +24,7 @@ struct SideData {
   bool &current_input_state;
   bool &previous_input_state;
   DurationsArray &valve_durations;
-  Vector<uint8_t> &experiment_schedule;
+  ExpScheduleArray &experiment_schedule;
 };
 
 void update_leds(bool side_1_pin_state, bool side_two_pin_state);

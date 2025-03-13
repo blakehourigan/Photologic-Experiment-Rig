@@ -1,6 +1,5 @@
 #include "optical_detection.h"
 #include <Arduino.h>
-#include <Vector.h>
 #include <avr/io.h>
 #include <avr/wdt.h>
 

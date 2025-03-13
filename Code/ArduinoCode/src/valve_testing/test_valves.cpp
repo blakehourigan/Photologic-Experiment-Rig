@@ -1,8 +1,6 @@
 #include "test_valves.h"
-#include "../exp_init/exp_init.h"
 #include "../valve_control/valve_control.h"
 #include "Arduino.h"
-#include "Vector.h"
 
 /* the best way to do this may be to accept a schedule from controller, and just
  * read from each schedule while theres items left in it if that makes sense
@@ -10,11 +8,15 @@
  * want just those tested. then the program will run through each list until its
  * empty.
  *
- *
- * also, num iterations should be default but variable from the controller.
  */
 
 TestParams receive_test_params() {
+  /* This function receives valve testing parametes such as how many valves will
+   * be tested on side one and side two, and how many times each valve will
+   * actuate. Once recieved, it echoes these values back to the controller for
+   * validation. It returns these values to be used in receive_test_schedules.
+   */
+
   TestParams test_params;
 
   while (Serial.available() < 4) {
@@ -40,17 +42,17 @@ TestParams receive_test_params() {
 }
 
 void schedule_verification(TestParams test_params) {
-  Vector<uint8_t> side_one_sched_vec = test_params.side_one_sched;
-  Vector<uint8_t> side_two_sched_vec = test_params.side_two_sched;
+  ExpScheduleArray side_one_arr;
+  ExpScheduleArray side_two_arr;
 
   // echo recieved schedules to python controller, so that it can verify
   // that we received them correctly
-  for (int i = 0; i < side_one_sched_vec.size(); i++) {
-    Serial.write(side_one_sched_vec.at(i));
+  for (int i = 0; i < side_one_arr.len; i++) {
+    Serial.write(side_one_arr.schedule[i]);
   }
 
-  for (int i = 0; i < side_two_sched_vec.size(); i++) {
-    Serial.write(side_two_sched_vec.at(i));
+  for (int i = 0; i < side_two_arr.len; i++) {
+    Serial.write(side_two_arr.schedule[i]);
   }
   // force all the data out
   Serial.flush();
@@ -71,11 +73,8 @@ TestParams receive_test_schedules() {
 
   TestParams test_params = receive_test_params();
 
-  uint8_t side_one_schedule_arr[MAX_VALVES_PER_SIDE];
-  uint8_t side_two_schedule_arr[MAX_VALVES_PER_SIDE];
-
-  Vector<uint8_t> side_one_schedule = side_one_schedule_arr;
-  Vector<uint8_t> side_two_schedule = side_two_schedule_arr;
+  ExpScheduleArray side_one_arr;
+  ExpScheduleArray side_two_arr;
 
   // if we have any serial bytes available, read one byte in and
   // say that this byte represents which valve to select for this trial
@@ -86,14 +85,14 @@ TestParams receive_test_schedules() {
   }
 
   for (int i = 0; i < test_params.num_valves_side_one; i++) {
-    side_one_schedule.push_back(Serial.read());
+    side_one_arr.append(Serial.read());
   }
 
   for (int i = 0; i < test_params.num_valves_side_two; i++) {
-    side_two_schedule.push_back(Serial.read());
+    side_two_arr.append(Serial.read());
   }
-  test_params.side_one_sched = side_one_schedule;
-  test_params.side_two_sched = side_two_schedule;
+  test_params.side_one_sched = side_one_arr;
+  test_params.side_two_sched = side_two_arr;
 
   schedule_verification(test_params);
 
@@ -109,8 +108,8 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
 
   TestParams test_params = receive_test_schedules();
 
-  Vector<uint8_t> side_one_sched = test_params.side_one_sched;
-  Vector<uint8_t> side_two_sched = test_params.side_two_sched;
+  ExpScheduleArray side_one_sched = test_params.side_one_sched;
+  ExpScheduleArray side_two_sched = test_params.side_two_sched;
 
   bool testing = false;
 
@@ -141,10 +140,10 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
           return;
         }
       }
-      if (sched_location < side_one_sched.size()) {
-        uint8_t valve = side_one_sched.at(sched_location);
+      if (sched_location < side_one_sched.len) {
+        uint8_t valve = side_one_sched.schedule[sched_location];
 
-        open_valve_testing(&PORTA, valve);
+        open_single_valve(&PORTA, valve);
 
         unsigned long delay_time = side_one.durations[valve];
 
@@ -158,11 +157,11 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
       } else {
         delay(25);
       }
-      if (sched_location < side_two_sched.size()) {
-        uint8_t valve =
-            side_two_sched.at(sched_location) - ((MAX_VALVES_PER_SIDE / 2));
+      if (sched_location < side_two_sched.len) {
+        uint8_t valve = side_two_sched.schedule[sched_location] -
+                        ((MAX_VALVES_PER_SIDE / 2));
 
-        open_valve_testing(&PORTC, valve);
+        open_single_valve(&PORTC, valve);
 
         unsigned long delay_time = side_two.durations[valve];
 
@@ -194,8 +193,8 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
         }
       }
 
-      if (sched_location >= side_one_sched.size() &&
-          sched_location >= side_two_sched.size()) {
+      if (sched_location >= side_one_sched.len &&
+          sched_location >= side_two_sched.len) {
         testing = false;
       }
     }
