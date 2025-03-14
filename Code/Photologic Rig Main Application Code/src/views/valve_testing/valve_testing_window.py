@@ -540,7 +540,7 @@ class ValveTestWindow(tk.Toplevel):
             desired_per_open_vol = self.desired_volume.get() / 1000
 
             # divide by 1000 to get amount per opening, NOT changing units
-            actual_per_open_vol = dispensed_amt / 1000
+            actual_per_open_vol = dispensed_amt / self.actuations.get()
 
             self.update_table_entry_test_status(valve, actual_per_open_vol)
 
