@@ -37,6 +37,7 @@ class ValveTestWindow(tk.Toplevel):
         super().__init__()
         self.title("Valve Testing")
         self.bind("<Control-w>", lambda event: self.withdraw())
+        self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
 
         self.resizable(False, False)
 

@@ -30,7 +30,7 @@ logger.addHandler(console_handler)
 
 logfile_dir = Path(__file__).parent.parent.resolve()
 now = datetime.datetime.now()
-logfile_name = f"{now.hour}:{now.minute}:{now.second} - {now.date()} experiment log"
+logfile_name = f"{now.hour}_{now.minute}_{now.second} - {now.date()} experiment log"
 logfile_path = logfile_dir / "logfiles" / f"{logfile_name}"
 
 
