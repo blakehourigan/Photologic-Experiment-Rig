@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from typing import Tuple, List
 import datetime
+from pathlib import Path
 
 from models.stimuli_data import StimuliData
 from models.event_data import EventData
@@ -309,6 +310,8 @@ class ExperimentProcessData:
                 defaultextension=".xlsx",
                 filetypes=[("Excel Files", "*.xlsx")],
                 initialfile=f"{name}, {datetime.date.today()}",
+                initialdir=Path(__file__).parent.parent.parent.resolve()
+                / "data_outputs",
                 title="Save Excel file",
             )
 
