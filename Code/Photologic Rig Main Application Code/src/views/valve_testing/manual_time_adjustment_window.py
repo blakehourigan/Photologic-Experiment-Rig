@@ -41,11 +41,17 @@ class ManualTimeAdjustment(tk.Toplevel):
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)
 
     def show(self):
+        self.update_interface(event=None)
         self.deiconify()
 
     def update_interface(self, event):
         # event is the selection event of the self.combobox. using .get gets the self.duration_type dict key
-        load_durations_key = self.duration_types[f"{event.widget.get()}"]
+
+        load_durations_key = None
+        if event is None:
+            load_durations_key = self.duration_types["Last Used"]
+        else:
+            load_durations_key = self.duration_types[f"{event.widget.get()}"]
 
         side_one, side_two, date_used = self.arduino_data.load_durations(
             load_durations_key

@@ -1,0 +1,91 @@
+2025-03-14 08:38:12,189 - INFO - Licks dataframe initialized.
+2025-03-14 08:38:12,197 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-14 08:38:12,197 - INFO - Connected to Arduino boards successfully.
+2025-03-14 08:38:12,350 - INFO - Timer 'Time Elapsed:' created.
+2025-03-14 08:38:12,360 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-14 08:38:12,366 - INFO - Timer 'State Time:' created.
+2025-03-14 08:38:12,369 - INFO - Timers displayed.
+2025-03-14 08:38:12,376 - INFO - Labeled entry 'ITI Time' created.
+2025-03-14 08:38:12,382 - INFO - Labeled entry 'TTC Time' created.
+2025-03-14 08:38:12,388 - INFO - Labeled entry 'Sample Time' created.
+2025-03-14 08:38:12,394 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-14 08:38:12,400 - INFO - Labeled entry '+/- ITI' created.
+2025-03-14 08:38:12,407 - INFO - Labeled entry '+/- TTC' created.
+2025-03-14 08:38:12,413 - INFO - Labeled entry '+/- Sample' created.
+2025-03-14 08:38:12,419 - INFO - Labeled entry '# Stimuli' created.
+2025-03-14 08:38:12,419 - INFO - Entry widgets displayed.
+2025-03-14 08:38:12,422 - INFO - Button 'Start' created.
+2025-03-14 08:38:12,425 - INFO - Button 'Reset' created.
+2025-03-14 08:38:12,425 - INFO - Main control buttons displayed.
+2025-03-14 08:38:12,428 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-14 08:38:12,431 - INFO - Button 'Valve Control' created.
+2025-03-14 08:38:12,434 - INFO - Button 'Program Schedule' created.
+2025-03-14 08:38:12,438 - INFO - Button 'Valve / Stimuli' created.
+2025-03-14 08:38:12,441 - INFO - Button 'Event Data' created.
+2025-03-14 08:38:12,444 - INFO - Button 'Rasterized Data' created.
+2025-03-14 08:38:12,447 - INFO - Button 'Save Data' created.
+2025-03-14 08:38:12,447 - INFO - Lower control buttons displayed.
+2025-03-14 08:38:12,463 - INFO - Status widget displayed.
+2025-03-14 08:38:12,463 - INFO - GUI setup completed.
+2025-03-14 08:38:12,476 - INFO - Labeled entry 'Valve 1' created.
+2025-03-14 08:38:12,482 - INFO - Labeled entry 'Valve 2' created.
+2025-03-14 08:38:12,489 - INFO - Labeled entry 'Valve 5' created.
+2025-03-14 08:38:12,495 - INFO - Labeled entry 'Valve 6' created.
+2025-03-14 08:38:12,495 - INFO - Stimuli frame populated.
+2025-03-14 08:38:12,498 - INFO - Button 'Generate Schedule' created.
+2025-03-14 08:38:12,498 - INFO - Filled contents of experiment control window.
+2025-03-14 08:38:12,498 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-14 08:38:12,648 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-14 08:38:12,652 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 1' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 5' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 2' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 6' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 3' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 7' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 4' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Valve 8' created.
+2025-03-14 08:38:12,652 - INFO - Button 'Start Testing' created.
+2025-03-14 08:38:12,653 - INFO - Experiment control window centered.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-14 08:38:12,660 - INFO - Button 'Write Timing Changes' created.
+2025-03-14 08:38:12,662 - INFO - Valve Test Window initialized.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 1: Closed' created.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 5: Closed' created.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 2: Closed' created.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 6: Closed' created.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 3: Closed' created.
+2025-03-14 08:38:12,663 - INFO - Button 'Valve 7: Closed' created.
+2025-03-14 08:38:12,664 - INFO - Button 'Valve 4: Closed' created.
+2025-03-14 08:38:12,664 - INFO - Button 'Valve 8: Closed' created.
+2025-03-14 08:38:12,664 - INFO - Button 'Move Motor Down' created.
+2025-03-14 08:38:12,664 - INFO - MainGUI initialized.
+2025-03-14 08:38:12,664 - INFO - GUI started successfully.
+2025-03-14 08:38:13,186 - INFO - Experiment control window centered.
+2025-03-14 08:38:14,051 - INFO - Valve test table updated.
+2025-03-14 08:38:14,460 - INFO - Valve test table updated.
+2025-03-14 08:38:14,852 - INFO - Valve test table updated.
+2025-03-14 08:38:16,612 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,613 - INFO - Sent b'\xfb`\x00\x00\xe2\xb6\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00jl\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,619 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,629 - INFO - Arduino recieved side one as => [24827 46818 24125 25000 24125 24125 24125 24125]
+2025-03-14 08:38:16,629 - INFO - Arduino recieved side two as => [27754 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 08:38:16,629 - INFO - arduino has recieved and verified valve durations
+2025-03-14 08:38:16,629 - INFO - Sent b'TEST VOL\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,630 - INFO - Sent b'\x02\x01\n\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,632 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 08:38:16,633 - INFO - Sent b'\x00\x01\x04' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:16,637 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 4]===
+2025-03-14 08:38:16,637 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 08:38:17,236 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:29,698 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:31,506 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 08:38:31,509 - INFO - Experiment control window centered.
+2025-03-14 08:38:43,910 - INFO - Application closed.

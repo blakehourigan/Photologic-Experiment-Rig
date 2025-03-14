@@ -235,16 +235,38 @@ class ValveTestWindow(tk.Toplevel):
                 ),
             )
 
+    def update_table_entry_test_status(self, valve, l_per_lick):
+        self.valve_table.set(
+            self.table_entries[valve - 1], column=1, value=f"{l_per_lick * 1000} uL"
+        )
+
     def update_table_entries(self, test_completed=False) -> None:
         """
         all that this funtion does is show or hide valve information based on which valves are
         selected and de-selected. dispensed liquid during a test will be calculated later.
         """
-
+        side_one, side_two, date_used = self.arduino_data.load_durations()
+        # np array where the entry is not zero but the valve number itself
         selected_valves = self.valve_selections[self.valve_selections != 0]
 
+        # for all valve numbers, if that number is in selected_valves -1 (the entire array
+        # decremented by one) place it in the table and ensure its duration is up-to-date
         for i in range(TOTAL_VALVES):
+            # if the iter number is also contained in the selected valves arr
             if i in (selected_valves - 1):
+                # check if it's side two or side one
+                if i >= VALVES_PER_SIDE:
+                    duration = side_two[i - VALVES_PER_SIDE]
+                else:
+                    duration = side_one[i]
+                self.valve_table.item(
+                    self.table_entries[i],
+                    values=(
+                        f"{i + 1}",
+                        "Test Not Complete",
+                        f"{duration} ms",
+                    ),
+                )
                 self.valve_table.reattach(self.table_entries[i], "", i)
             else:
                 self.valve_table.detach(self.table_entries[i])
@@ -414,14 +436,16 @@ class ValveTestWindow(tk.Toplevel):
         for valve in valves_tested:
             response = simpledialog.askfloat(
                 "INPUT AMOUNT DISPENSED",
-                "Please input the amount of liquid dispensed for the test of valve {valve}",
+                f"Please input the amount of liquid dispensed for the test of valve {valve}",
             )
             if response is None:
                 self.abort_test()
             else:
                 self.ml_dispensed.append((valve, response))
-
-        self.arduino_controller.send_command(np.int8(1).tobytes())
+        if pair_num_override is not None:
+            self.arduino_controller.send_command(np.int8(0).tobytes())
+        else:
+            self.arduino_controller.send_command(np.int8(1).tobytes())
 
     def run_test(self):
         """
@@ -492,7 +516,9 @@ class ValveTestWindow(tk.Toplevel):
 
         ## save current durations in the oldest valve duration archival location
         side_one, side_two, date_used = self.arduino_data.load_durations()
-        self.arduino_data.save_durations(side_one, side_two, "archive")
+
+        side_one_old = side_one.copy()
+        side_two_old = side_two.copy()
 
         for valve, dispensed_amt in self.ml_dispensed:
             logical_valve = None
@@ -501,10 +527,12 @@ class ValveTestWindow(tk.Toplevel):
 
             if valve > VALVES_PER_SIDE:
                 logical_valve = (valve - 1) - VALVES_PER_SIDE
+
                 tested_duration = side_two[logical_valve]
                 side_durations = side_two
             else:
                 logical_valve = valve - 1
+
                 tested_duration = side_one[logical_valve]
                 side_durations = side_one
 
@@ -513,6 +541,8 @@ class ValveTestWindow(tk.Toplevel):
 
             # divide by 1000 to get amount per opening, NOT changing units
             actual_per_open_vol = dispensed_amt / 1000
+
+            self.update_table_entry_test_status(valve, actual_per_open_vol)
 
             new_duration = round(
                 tested_duration * (desired_per_open_vol / actual_per_open_vol)
@@ -523,8 +553,12 @@ class ValveTestWindow(tk.Toplevel):
             changed_durations.append((valve, (tested_duration, new_duration)))
 
         ValveChanges(
-            changed_durations, lambda: self.confirm_valve_changes(side_one, side_two)
+            changed_durations,
+            lambda: self.confirm_valve_changes(
+                side_one, side_two, side_one_old, side_two_old
+            ),
         )
 
-    def confirm_valve_changes(self, side_one, side_two):
+    def confirm_valve_changes(self, side_one, side_two, side_one_old, side_two_old):
+        self.arduino_data.save_durations(side_one_old, side_two_old, "archive")
         self.arduino_data.save_durations(side_one, side_two, "selected")

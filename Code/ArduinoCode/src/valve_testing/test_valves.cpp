@@ -1,6 +1,7 @@
 #include "test_valves.h"
 #include "../valve_control/valve_control.h"
 #include "Arduino.h"
+#include "HardwareSerial.h"
 
 /* the best way to do this may be to accept a schedule from controller, and just
  * read from each schedule while theres items left in it if that makes sense
@@ -42,8 +43,8 @@ TestParams receive_test_params() {
 }
 
 void schedule_verification(TestParams test_params) {
-  ExpScheduleArray side_one_arr;
-  ExpScheduleArray side_two_arr;
+  ExpScheduleArray side_one_arr = test_params.side_one_sched;
+  ExpScheduleArray side_two_arr = test_params.side_two_sched;
 
   // echo recieved schedules to python controller, so that it can verify
   // that we received them correctly
@@ -179,23 +180,35 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
       valve_openings = 0;
       sched_location++;
 
-      if (Serial.available() > 0) {
-
-        // there are only two options at this point, continue or abort
-        bool command = Serial.read();
-
-        if (command == 1) {
-          // continue to the next pair
-          continue;
-        } else if (command == 0) {
-          // abort
-          return;
-        }
-      }
-
       if (sched_location >= side_one_sched.len &&
           sched_location >= side_two_sched.len) {
         testing = false;
+        // send 0 indicating no more valves remaining.
+        // send sched location-1 to maintain data format of 2 bytes per tx
+        Serial.write(0);
+        Serial.write(sched_location - 1);
+        Serial.flush();
+        // testing complete, exit function
+        return;
+      }
+
+      // send 1 indicating more valves remain.
+      // send sched location -1 to tell controller which pair we tested.
+      Serial.write(1);
+      Serial.write(sched_location - 1);
+      Serial.flush();
+      while (Serial.available() == 0) {
+      }
+
+      // there are only two options at this point, continue or abort
+      bool command = Serial.read();
+
+      if (command == 1) {
+        // continue to the next pair
+        continue;
+      } else if (command == 0) {
+        // abort
+        return;
       }
     }
   }

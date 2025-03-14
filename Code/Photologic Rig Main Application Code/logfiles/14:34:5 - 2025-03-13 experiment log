@@ -1,0 +1,71 @@
+2025-03-13 14:34:05,963 - INFO - Licks dataframe initialized.
+2025-03-13 14:34:05,967 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-13 14:34:05,967 - INFO - Connected to Arduino boards successfully.
+2025-03-13 14:34:06,009 - INFO - Timer 'Time Elapsed:' created.
+2025-03-13 14:34:06,018 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-13 14:34:06,024 - INFO - Timer 'State Time:' created.
+2025-03-13 14:34:06,028 - INFO - Timers displayed.
+2025-03-13 14:34:06,036 - INFO - Labeled entry 'ITI Time' created.
+2025-03-13 14:34:06,042 - INFO - Labeled entry 'TTC Time' created.
+2025-03-13 14:34:06,049 - INFO - Labeled entry 'Sample Time' created.
+2025-03-13 14:34:06,055 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-13 14:34:06,061 - INFO - Labeled entry '+/- ITI' created.
+2025-03-13 14:34:06,067 - INFO - Labeled entry '+/- TTC' created.
+2025-03-13 14:34:06,073 - INFO - Labeled entry '+/- Sample' created.
+2025-03-13 14:34:06,079 - INFO - Labeled entry '# Stimuli' created.
+2025-03-13 14:34:06,079 - INFO - Entry widgets displayed.
+2025-03-13 14:34:06,082 - INFO - Button 'Start' created.
+2025-03-13 14:34:06,085 - INFO - Button 'Reset' created.
+2025-03-13 14:34:06,085 - INFO - Main control buttons displayed.
+2025-03-13 14:34:06,089 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-13 14:34:06,092 - INFO - Button 'Valve Control' created.
+2025-03-13 14:34:06,095 - INFO - Button 'Program Schedule' created.
+2025-03-13 14:34:06,098 - INFO - Button 'Valve / Stimuli' created.
+2025-03-13 14:34:06,101 - INFO - Button 'Event Data' created.
+2025-03-13 14:34:06,104 - INFO - Button 'Rasterized Data' created.
+2025-03-13 14:34:06,107 - INFO - Button 'Save Data' created.
+2025-03-13 14:34:06,107 - INFO - Lower control buttons displayed.
+2025-03-13 14:34:06,123 - INFO - Status widget displayed.
+2025-03-13 14:34:06,123 - INFO - GUI setup completed.
+2025-03-13 14:34:06,135 - INFO - Labeled entry 'Valve 1' created.
+2025-03-13 14:34:06,141 - INFO - Labeled entry 'Valve 2' created.
+2025-03-13 14:34:06,147 - INFO - Labeled entry 'Valve 5' created.
+2025-03-13 14:34:06,153 - INFO - Labeled entry 'Valve 6' created.
+2025-03-13 14:34:06,153 - INFO - Stimuli frame populated.
+2025-03-13 14:34:06,157 - INFO - Button 'Generate Schedule' created.
+2025-03-13 14:34:06,157 - INFO - Filled contents of experiment control window.
+2025-03-13 14:34:06,157 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-13 14:34:06,310 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-13 14:34:06,313 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 1' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 5' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 2' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 6' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 3' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 7' created.
+2025-03-13 14:34:06,313 - INFO - Button 'Valve 4' created.
+2025-03-13 14:34:06,314 - INFO - Button 'Valve 8' created.
+2025-03-13 14:34:06,314 - INFO - Button 'Start Testing' created.
+2025-03-13 14:34:06,314 - INFO - Experiment control window centered.
+2025-03-13 14:34:06,321 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-13 14:34:06,321 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-13 14:34:06,321 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-13 14:34:06,321 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-13 14:34:06,321 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-13 14:34:06,322 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-13 14:34:06,322 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-13 14:34:06,322 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-13 14:34:06,322 - INFO - Button 'Write Timing Changes' created.
+2025-03-13 14:34:06,323 - INFO - Valve Test Window initialized.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 1: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 5: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 2: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 6: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 3: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 7: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 4: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Valve 8: Closed' created.
+2025-03-13 14:34:06,325 - INFO - Button 'Move Motor Down' created.
+2025-03-13 14:34:06,325 - INFO - MainGUI initialized.
+2025-03-13 14:34:06,325 - INFO - GUI started successfully.
+2025-03-13 14:34:06,700 - INFO - Application closed.
