@@ -267,7 +267,7 @@ class ExperimentProcessData:
     def save_all_data(self):
         dataframes = {
             "Experiment Schedule": self.program_schedule_df,
-            "Individual Lick Data": self.event_data.event_dataframe,
+            "Detailed Event Log Data": self.event_data.event_dataframe,
         }
 
         for name, df_reference in dataframes.items():

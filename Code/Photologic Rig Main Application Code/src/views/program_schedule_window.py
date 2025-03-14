@@ -72,7 +72,6 @@ class ProgramScheduleWindow(tk.Toplevel):
         )
 
     def update_licks(self, logical_trial):
-        # Adjust indices for zero-based indexing
         df = self.exp_data.program_schedule_df
         # side 1 licks update
         self.cell_labels[logical_trial][4].configure(

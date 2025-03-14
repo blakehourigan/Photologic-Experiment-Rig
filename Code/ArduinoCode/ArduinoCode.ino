@@ -82,7 +82,7 @@ void loop() {
   side_one_pin_state,
   side_one_previous_state,
   durations.side_one,
-  schedules.side_two,
+  schedules.side_one,
   };
   
   // side two struct  
@@ -140,6 +140,7 @@ void loop() {
           handling_lick = true;
 
           if (open_valves){
+            
             open_valve(side_data, current_trial);
             valve_time.valve_open_time = micros();
           }

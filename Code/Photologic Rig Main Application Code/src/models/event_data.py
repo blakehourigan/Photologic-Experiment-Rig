@@ -21,16 +21,15 @@ class EventData:
         # add in trial relative stamp
         # add in lick duration
         self.event_dataframe = pd.DataFrame(
-            [[np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, ""]],
-            columns=[
-                "Trial Number",
-                "Licked Port",
-                "Event Duration",
-                "Valve Duration",
-                "Time Stamp",
-                "Trial Relative Stamp",
-                "State",
-            ],
+            {
+                "Trial Number": pd.Series(dtype="float64"),
+                "Licked Port": pd.Series(dtype="float64"),
+                "Event Duration": pd.Series(dtype="float64"),
+                "Valve Duration": pd.Series(dtype="float64"),
+                "Time Stamp": pd.Series(dtype="float64"),
+                "Trial Relative Stamp": pd.Series(dtype="float64"),
+                "State": pd.Series(dtype="str"),
+            }
         )
         logger.info("Licks dataframe initialized.")
 

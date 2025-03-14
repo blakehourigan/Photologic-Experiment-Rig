@@ -18,6 +18,7 @@ class RasterizedDataWindow(tk.Toplevel):
 
         # Initialize the color cycle
         self.color_cycle = cm.get_cmap("tab10", 10)
+
         # Initialize the color index
         self.color_index = 0
 
@@ -71,11 +72,14 @@ class RasterizedDataWindow(tk.Toplevel):
         self.color_index = (self.color_index + 1) % 10
 
         if lick_times and len(lick_times) > 0:
-            color = self.color_cycle(self.color_index)
+            color = [self.color_cycle(self.color_index)]
+
             lick_times = [stamp - lick_times[0] for stamp in lick_times]
+
             axes.scatter(
                 lick_times, [trial_index] * len(lick_times), marker="|", c=color, s=100
             )
+
             self.color_index = (self.color_index + 1) % 10
 
         canvas.draw()

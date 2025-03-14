@@ -176,7 +176,6 @@ class ArduinoData:
             case 1:
                 event_data.side_two_licks += 1
             case _:
-                print("invalid side")
                 logger.error("invalid side")
 
     def handle_licks(self, split_data, event_data, state, trigger):
@@ -278,10 +277,6 @@ class ArduinoData:
                     (np.int32(split_data[4]) / 1000),
                     f"MOTOR {split_data[1]}",
                 )
-            # elif data == "FINISHED PAIR":
-            #    self.valve_test_logic.append_to_volumes()
-            # elif "TESTING COMPLETE" in data:
-            #    self.valve_test_logic.begin_updating_opening_times(data)
             elif split_data[0] == "0" or split_data[0] == "1":
                 self.handle_licks(split_data, event_data, state, trigger)
 

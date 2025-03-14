@@ -71,7 +71,7 @@ class StateMachine(TkinterApp):
         self.prev_state = self.state
         new_state = None
 
-        print("transition ->", transition)
+        logger.info(f"state transition -> {transition}")
         # checking if the attemped transition is valid according to the table
         if transition in self.transitions:
             new_state = self.transitions[transition]
@@ -102,7 +102,7 @@ class StateMachine(TkinterApp):
 
         # if we have a new state, do the thing associated with that state
         if new_state:
-            print("new state ->", new_state)
+            logger.info(f"new state -> {new_state}")
             self.execute_state(new_state)
 
     def execute_state(self, new_state):
@@ -203,7 +203,6 @@ class StateMachine(TkinterApp):
         try:
             while not data_queue.empty():
                 source, data = data_queue.get()
-                print(source, data)
                 arduino_data.process_data(source, data, self.state, self.trigger)
 
             # run this command every 250ms
@@ -590,7 +589,7 @@ class TrialEnd:
         stop_command = "STOP OPEN VALVES\n".encode("utf-8")
         self.arduino_controller.send_command(command=stop_command)
 
-        # end trial by incrementing self.exp_data.current_trial_num by one
+        #######TRIAL NUMBER IS INCREMENTED HERE#######
         if self.end_trial():
             # if the experiment is over update the licks for the final trial
             self.update_schedule_licks(logical_trial)
@@ -634,7 +633,7 @@ class TrialEnd:
         """
         Handle the case that we are ending a trial after a TTC state. Rat did not engage in this trial.
         """
-        self.update_ttc_actual()
+        self.update_ttc_actual(logical_trial)
         self.update_schedule_licks(logical_trial)
 
         self.trigger_state_change("ITI")
@@ -654,13 +653,11 @@ class TrialEnd:
         self.exp_data.current_trial_number += 1
         return False
 
-    def update_ttc_actual(self):
+    def update_ttc_actual(self, logical_trial):
         # if we just came from ttc, then update actual ttc time taken
-        logical_trial = self.exp_data.current_trial_number - 1
         program_df = self.exp_data.program_schedule_df
 
         cur_value = program_df.loc[logical_trial, "TTC"]
-
         program_df.loc[logical_trial, "TTC Actual"] = cur_value
 
     def update_schedule_licks(self, logical_trial):

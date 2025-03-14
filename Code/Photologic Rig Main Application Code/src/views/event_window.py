@@ -45,12 +45,6 @@ class EventWindow(tk.Toplevel):
             row_content = df.iloc[i]
 
             item_iid = f"item {i}"
-            nan_item_iid = "item 0"
-
-            # if the current item iid that we are evaluating exists already, don't worry about it
-            if self.timestamped_licks.exists(nan_item_iid):
-                self.timestamped_licks.delete(nan_item_iid)
-                continue
 
             self.timestamped_licks.insert(
                 "", tk.END, iid=item_iid, values=list(row_content)
