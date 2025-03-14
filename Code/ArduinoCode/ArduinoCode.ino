@@ -238,7 +238,7 @@ void loop() {
       wdt_enable(WDTO_1S);
     }
     else if(command.equals("PRIME VALVES")){
-        
+      prime_valves();             
         }
     else if (command.equals("TEST VOL")){
       run_valve_test(side_one_data.valve_durations, side_two_data.valve_durations);

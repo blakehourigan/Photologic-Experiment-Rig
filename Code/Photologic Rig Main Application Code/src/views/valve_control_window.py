@@ -21,9 +21,7 @@ class ValveControlWindow(tk.Toplevel):
         self.title("Valve Control")
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
         self.bind("<Control-w>", lambda event: self.withdraw())
-
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.resizable(False, False)
 
         self.arduino_controller = arduino_controller
 

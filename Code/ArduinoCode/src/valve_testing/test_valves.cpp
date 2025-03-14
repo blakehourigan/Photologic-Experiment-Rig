@@ -2,6 +2,7 @@
 #include "../valve_control/valve_control.h"
 #include "Arduino.h"
 #include "HardwareSerial.h"
+#include <stdint.h>
 
 /* the best way to do this may be to accept a schedule from controller, and just
  * read from each schedule while theres items left in it if that makes sense
@@ -102,6 +103,47 @@ TestParams receive_test_schedules() {
   // wait until LEN_VALVE_SCHED_1 LEN_VALVE_SCHED_2 bytes are avail, because
   // these will be uint8_t, read LEN_VALVE_SCHED_1 bytes into the first sched
   // vec, then read LEN_VALVE_SCHED_2 bytes into second vec
+}
+
+void prime_valves() {
+  TestParams test_params = receive_test_schedules();
+
+  ExpScheduleArray side_one_sched = test_params.side_one_sched;
+  ExpScheduleArray side_two_sched = test_params.side_two_sched;
+
+  while (!(Serial.available() > 0)) {
+  }
+  bool abort = Serial.read();
+
+  if (abort) {
+    return;
+  }
+
+  for (int i = 0; i <= test_params.max_test_actuations; i++) {
+    if (Serial.available() > 0) {
+      // 1 means exit, 0 is continue
+      bool exit = Serial.read();
+      if (exit) {
+        return;
+      }
+    }
+    for (int j = 0; j < max(side_one_sched.len, side_two_sched.len); j++) {
+      if (j < side_one_sched.len) {
+        uint8_t valve = side_one_sched.schedule[j];
+        open_single_valve(&PORTA, valve);
+      }
+      if (j < side_two_sched.len) {
+        uint8_t valve =
+            side_two_sched.schedule[j] - ((MAX_VALVES_PER_SIDE / 2));
+
+        open_single_valve(&PORTC, valve);
+      }
+
+      delay(30);
+      close_all();
+      delay(30);
+    }
+  }
 }
 
 void run_valve_test(DurationsArray side_one, DurationsArray side_two) {

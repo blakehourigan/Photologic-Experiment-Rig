@@ -5,6 +5,7 @@ import logging
 import threading
 from tkinter import ttk
 import toml
+from enum import Enum
 from pathlib import Path
 
 from views.gui_common import GUIUtils
@@ -26,10 +27,15 @@ TOTAL_VALVES = VALVE_CONFIG["TOTAL_CURRENT_VALVES"]
 VALVES_PER_SIDE = TOTAL_VALVES // 2
 
 
+class WindowMode(Enum):
+    TESTING = "Testing"
+    PRIMING = "Priming"
+
+
 class ValveTestWindow(tk.Toplevel):
     def __init__(self, arduino_controller):
         super().__init__()
-        self.title("Valve Testing / Valve Priming")
+        self.title("Valve Testing")
         self.bind("<Control-w>", lambda event: self.withdraw())
 
         self.resizable(False, False)
@@ -40,7 +46,10 @@ class ValveTestWindow(tk.Toplevel):
         self.arduino_controller = arduino_controller
         self.arduino_data = arduino_controller.arduino_data
 
+        self.window_mode = WindowMode.TESTING
+
         self.test_running = False
+        self.prime_running = False
 
         # desired volume to dispense in ul
         self.desired_volume = tk.DoubleVar(value=5)
@@ -63,12 +72,13 @@ class ValveTestWindow(tk.Toplevel):
         self.side_one_tests = None
         self.side_two_tests = None
 
-        # will be used to halt test listener thread if test is
+        # will be used to halt valve test arduino listener thread if test is
         # aborted
         self.stop_event = threading.Event()
 
-        self.create_widgets()
+        self.create_interface()
 
+        self.update_idletasks()
         GUIUtils.center_window(self)
 
         # we don't want to show this window until the user decides to click the corresponding button,
@@ -76,42 +86,100 @@ class ValveTestWindow(tk.Toplevel):
         self.withdraw()
 
         # create and hide manual timing adjustment window
+        # so that we don't have to generate it later
         self.manual_adjust_window = ManualTimeAdjustment(
             self.arduino_controller.arduino_data, self.valve_selections
         )
         self.manual_adjust_window.withdraw()
+
         logging.info("Valve Test Window initialized.")
 
     def show(self):
-        GUIUtils.center_window(self)
         self.deiconify()
 
-    def create_widgets(self):
+    def switch_window_mode(self):
+        if self.window_mode == WindowMode.TESTING:
+            self.title("Valve Priming")
+
+            self.window_mode = WindowMode.PRIMING
+
+            self.mode_button.configure(text="Switch to Testing Mode", bg="DeepSkyBlue3")
+
+            # orig. row 1
+            self.dispensed_vol_frame.grid_forget()
+            # orig. row 3
+            self.valve_table_frame.grid_forget()
+
+            # start testing button -> start priming button / command
+            self.valve_test_button.configure(
+                text="Start Priming",
+                bg="coral",
+                command=lambda: self.send_schedules(),
+            )
+
+        else:
+            self.title("Valve Testing")
+
+            self.window_mode = WindowMode.TESTING
+
+            self.mode_button.configure(text="Switch to Priming Mode", bg="coral")
+
+            self.valve_table_frame.grid(
+                row=3, column=0, sticky="nsew", pady=10, padx=10
+            )
+            self.dispensed_vol_frame.grid(row=1, column=0, padx=5, sticky="nsew")
+
+            self.valve_test_button.configure(
+                text="Start Testing",
+                bg="green",
+                command=lambda: self.start_testing_toggle(),
+            )
+
+        # resize the window to fit current content
+        self.update_idletasks()
+        GUIUtils.center_window(self)
+
+    def create_interface(self):
         """
         Create and place the various buttons/entry boxes/table into the window
         """
-        GUIUtils.create_labeled_entry(
+
+        self.mode_button = GUIUtils.create_button(
+            self,
+            "Switch to Priming Mode",
+            command=lambda: self.switch_window_mode(),
+            bg="coral",
+            row=0,
+            column=0,
+        )[1]
+
+        # return the frame so we can remove the element on mode switch
+        self.dispensed_vol_frame = GUIUtils.create_labeled_entry(
             self,
             "Desired Dispensed Volume in Microliters (ul)",
             self.desired_volume,
+            1,
             0,
-            0,
-        )
+        )[0]
 
         GUIUtils.create_labeled_entry(
             self,
             "How Many Times Should the Valve Actuate?",
             self.actuations,
-            1,
+            2,
             0,
         )
+
+        ### ROW 3 ###
+        self.create_valve_test_table()
 
         # setup frames for valve buttons
         self.valve_buttons_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
         )
 
-        self.valve_buttons_frame.grid(row=3, column=0, pady=10, padx=10, sticky="nsew")
+        ### ROW 4 ###
+        self.valve_buttons_frame.grid(row=4, column=0, pady=10, padx=10, sticky="nsew")
         self.valve_buttons_frame.grid_columnconfigure(0, weight=1)
 
         self.side_one_valves_frame = tk.Frame(
@@ -124,11 +192,10 @@ class ValveTestWindow(tk.Toplevel):
         )
         self.side_two_valves_frame.grid(row=0, column=1, pady=10, padx=10, sticky="e")
 
+        ### ROW 5 ###
         self.create_buttons()
 
-        self.create_valve_test_table()
-
-    def start_toggle_handler(self):
+    def start_testing_toggle(self):
         if self.test_running:
             self.valve_test_button.configure(text="Start Testing", bg="green")
             self.abort_test()
@@ -165,7 +232,7 @@ class ValveTestWindow(tk.Toplevel):
             )[1]
 
         self.valve_test_button = GUIUtils.create_button(
-            self, "Start Testing", lambda: self.start_toggle_handler(), "green", 4, 0
+            self, "Start Testing", lambda: self.start_testing_toggle(), "green", 5, 0
         )[1]
 
     def create_valve_test_table(self):
@@ -173,7 +240,7 @@ class ValveTestWindow(tk.Toplevel):
         self.valve_table_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
         )
-        self.valve_table_frame.grid(row=2, column=0, sticky="nsew", pady=10, padx=10)
+        self.valve_table_frame.grid(row=3, column=0, sticky="nsew", pady=10, padx=10)
         # tell the frame to fill the available width
         self.valve_table_frame.grid_columnconfigure(0, weight=1)
 
@@ -299,7 +366,6 @@ class ValveTestWindow(tk.Toplevel):
         verification_data = (
             ver_len_sched_sd_one + ver_len_sched_sd_two + ver_valve_act_time
         )
-
         if verification_data == original_data:
             logger.info("====VERIFIED TEST VARIABLES====")
             return True
@@ -364,10 +430,14 @@ class ValveTestWindow(tk.Toplevel):
         valve_acuations = valve_acuations
 
         self.arduino_controller.send_valve_durations()
+        if self.window_mode == WindowMode.TESTING:
+            ###====SENDING TEST COMMAND====###
+            command = "TEST VOL\n".encode("utf-8")
+            self.arduino_controller.send_command(command)
 
-        ###====SENDING TEST COMMAND====###
-        command = "TEST VOL\n".encode("utf-8")
-        self.arduino_controller.send_command(command)
+        elif self.window_mode == WindowMode.PRIMING:
+            command = "PRIME VALVES\n".encode("utf-8")
+            self.arduino_controller.send_command(command)
 
         ###====SENDING TEST VARIABLES (len side one, two, num_actuations per test)====###
         data_bytes = (
@@ -381,32 +451,58 @@ class ValveTestWindow(tk.Toplevel):
         if not self.verify_variables(data_bytes):
             return
 
-        ###====SENDING TEST SCHEDULE====###
+        ###====SENDING SCHEDULE====###
         sched_data_bytes = schedule.tobytes()
         self.arduino_controller.send_command(sched_data_bytes)
 
         if not self.verify_schedule(len_sched, schedule):
             return
 
-        ####### ARDUINO SHOULD HALT HERE UNTIL THE GO-AHEAD IS GIVEN HERE
-        # inc each sched element by one so that it is 1-indexes and matches the valve labels
         schedule += 1
 
         valves = ",".join(str(valve) for valve in schedule)
+        if self.window_mode == WindowMode.TESTING:
+            ####### ARDUINO HALTS HERE UNTIL THE GO-AHEAD IS GIVEN #######
+            # inc each sched element by one so that it is 1-indexes and matches the valve labels
+            test_confirmed = GUIUtils.askyesno(
+                "CONFIRM THE TEST SCHEDULE",
+                f"Valves {valves}, will be tested. Review the test table to confirm schedule and timings. Each valve will be actuated {valve_acuations} times. Ok to begin?",
+            )
 
-        test_confirmed = GUIUtils.askyesno(
-            "CONFIRM THE TEST SCHEDULE",
-            f"Valves {valves}, will be tested. Review the test table to confirm schedule and timings. Each valve will be actuated {valve_acuations} times. Ok to begin?",
+            self.ml_dispensed = []
+            ### include section to manually modify timings
+            if test_confirmed:
+                self.bind("<<event0>>", self.testing_complete)
+                self.bind("<<event1>>", self.take_input)
+                threading.Thread(target=self.run_test).start()
+            else:
+                self.abort_test()
+        elif self.window_mode == WindowMode.PRIMING:
+            priming_confirmed = GUIUtils.askyesno(
+                "CONFIRM THE ACTION",
+                f"Valves {valves}, will be primed (opened and closed) {valve_acuations} times. Ok to begin?",
+            )
+            if priming_confirmed:
+                # in case of prime, we send 0 to mean continue or start
+                # and we send a 1 at any point to abort or cancel the prime
+                start = np.int8(0).tobytes()
+                self.arduino_controller.send_command(command=start)
+
+                self.valve_test_button.configure(
+                    text="STOP Priming",
+                    bg="gold",
+                    command=lambda: self.stop_priming(),
+                )
+
+    def stop_priming(self):
+        self.valve_test_button.configure(
+            text="Start Priming",
+            bg="coral",
+            command=lambda: self.send_schedules(),
         )
 
-        self.ml_dispensed = []
-        ### include section to manually modify timings
-        if test_confirmed:
-            self.bind("<<event0>>", self.testing_complete)
-            self.bind("<<event1>>", self.take_input)
-            threading.Thread(target=self.run_test).start()
-        else:
-            self.abort_test()
+        stop = np.int8(1).tobytes()
+        self.arduino_controller.send_command(command=stop)
 
     def take_input(self, event, pair_num_override=None):
         if event is not None:

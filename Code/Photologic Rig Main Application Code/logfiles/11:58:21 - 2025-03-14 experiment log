@@ -1,0 +1,149 @@
+2025-03-14 11:58:21,799 - INFO - Licks dataframe initialized.
+2025-03-14 11:58:21,807 - INFO - Arduino connected on port /dev/ttyACM0
+2025-03-14 11:58:21,807 - INFO - Connected to Arduino boards successfully.
+2025-03-14 11:58:21,962 - INFO - Timer 'Time Elapsed:' created.
+2025-03-14 11:58:21,972 - INFO - Timer 'Maximum Total Time:' created.
+2025-03-14 11:58:21,978 - INFO - Timer 'State Time:' created.
+2025-03-14 11:58:21,981 - INFO - Timers displayed.
+2025-03-14 11:58:21,988 - INFO - Labeled entry 'ITI Time' created.
+2025-03-14 11:58:21,994 - INFO - Labeled entry 'TTC Time' created.
+2025-03-14 11:58:22,000 - INFO - Labeled entry 'Sample Time' created.
+2025-03-14 11:58:22,006 - INFO - Labeled entry '# Trial Blocks' created.
+2025-03-14 11:58:22,012 - INFO - Labeled entry '+/- ITI' created.
+2025-03-14 11:58:22,019 - INFO - Labeled entry '+/- TTC' created.
+2025-03-14 11:58:22,025 - INFO - Labeled entry '+/- Sample' created.
+2025-03-14 11:58:22,031 - INFO - Labeled entry '# Stimuli' created.
+2025-03-14 11:58:22,031 - INFO - Entry widgets displayed.
+2025-03-14 11:58:22,034 - INFO - Button 'Start' created.
+2025-03-14 11:58:22,037 - INFO - Button 'Reset' created.
+2025-03-14 11:58:22,037 - INFO - Main control buttons displayed.
+2025-03-14 11:58:22,040 - INFO - Button 'Valve Testing / Prime Valves' created.
+2025-03-14 11:58:22,043 - INFO - Button 'Valve Control' created.
+2025-03-14 11:58:22,046 - INFO - Button 'Program Schedule' created.
+2025-03-14 11:58:22,049 - INFO - Button 'Valve / Stimuli' created.
+2025-03-14 11:58:22,052 - INFO - Button 'Event Data' created.
+2025-03-14 11:58:22,055 - INFO - Button 'Rasterized Data' created.
+2025-03-14 11:58:22,059 - INFO - Button 'Save Data' created.
+2025-03-14 11:58:22,059 - INFO - Lower control buttons displayed.
+2025-03-14 11:58:22,074 - INFO - Status widget displayed.
+2025-03-14 11:58:22,074 - INFO - GUI setup completed.
+2025-03-14 11:58:22,087 - INFO - Labeled entry 'Valve 1' created.
+2025-03-14 11:58:22,094 - INFO - Labeled entry 'Valve 2' created.
+2025-03-14 11:58:22,101 - INFO - Labeled entry 'Valve 5' created.
+2025-03-14 11:58:22,107 - INFO - Labeled entry 'Valve 6' created.
+2025-03-14 11:58:22,107 - INFO - Stimuli frame populated.
+2025-03-14 11:58:22,110 - INFO - Button 'Generate Schedule' created.
+2025-03-14 11:58:22,110 - INFO - Filled contents of experiment control window.
+2025-03-14 11:58:22,110 - INFO - Experiment Control Window created, but hidden for now.
+2025-03-14 11:58:22,262 - INFO - Button 'Switch to Priming Mode' created.
+2025-03-14 11:58:22,265 - INFO - Labeled entry 'Desired Dispensed Volume in Microliters (ul)' created.
+2025-03-14 11:58:22,268 - INFO - Labeled entry 'How Many Times Should the Valve Actuate?' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 1' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 5' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 2' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 6' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 3' created.
+2025-03-14 11:58:22,269 - INFO - Button 'Valve 7' created.
+2025-03-14 11:58:22,270 - INFO - Button 'Valve 4' created.
+2025-03-14 11:58:22,270 - INFO - Button 'Valve 8' created.
+2025-03-14 11:58:22,270 - INFO - Button 'Start Testing' created.
+2025-03-14 11:58:22,290 - INFO - Experiment control window centered.
+2025-03-14 11:58:22,297 - INFO - Labeled entry 'Valve 1 Open Time' created.
+2025-03-14 11:58:22,297 - INFO - Labeled entry 'Valve 5 Open Time' created.
+2025-03-14 11:58:22,297 - INFO - Labeled entry 'Valve 2 Open Time' created.
+2025-03-14 11:58:22,297 - INFO - Labeled entry 'Valve 6 Open Time' created.
+2025-03-14 11:58:22,298 - INFO - Labeled entry 'Valve 3 Open Time' created.
+2025-03-14 11:58:22,298 - INFO - Labeled entry 'Valve 7 Open Time' created.
+2025-03-14 11:58:22,298 - INFO - Labeled entry 'Valve 4 Open Time' created.
+2025-03-14 11:58:22,298 - INFO - Labeled entry 'Valve 8 Open Time' created.
+2025-03-14 11:58:22,298 - INFO - Button 'Write Timing Changes' created.
+2025-03-14 11:58:22,299 - INFO - Valve Test Window initialized.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 1: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 5: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 2: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 6: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 3: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 7: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 4: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Valve 8: Closed' created.
+2025-03-14 11:58:22,301 - INFO - Button 'Move Motor Down' created.
+2025-03-14 11:58:22,301 - INFO - MainGUI initialized.
+2025-03-14 11:58:22,301 - INFO - GUI started successfully.
+2025-03-14 11:58:23,777 - INFO - Experiment control window centered.
+2025-03-14 11:58:24,833 - INFO - Valve test table updated.
+2025-03-14 11:58:25,152 - INFO - Valve test table updated.
+2025-03-14 11:58:25,760 - INFO - Valve test table updated.
+2025-03-14 11:58:26,017 - INFO - Valve test table updated.
+2025-03-14 11:58:27,009 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,010 - INFO - Sent b'Nn\x00\x00Tp\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\x01o\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,016 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,026 - INFO - Arduino recieved side one as => [28238 28756 24125 25000 24125 24125 24125 24125]
+2025-03-14 11:58:27,026 - INFO - Arduino recieved side two as => [28417 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 11:58:27,026 - INFO - arduino has recieved and verified valve durations
+2025-03-14 11:58:27,027 - INFO - Sent b'PRIME VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,028 - INFO - Sent b'\x02\x02\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,030 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 11:58:27,030 - INFO - Sent b'\x00\x01\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:27,034 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 4 5]===
+2025-03-14 11:58:27,034 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 11:58:28,768 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:30,481 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,186 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,186 - INFO - Sent b'Nn\x00\x00Tp\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\x01o\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,192 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,200 - INFO - Arduino recieved side one as => [28238 28756 24125 25000 24125 24125 24125 24125]
+2025-03-14 11:58:31,200 - INFO - Arduino recieved side two as => [28417 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 11:58:31,200 - INFO - arduino has recieved and verified valve durations
+2025-03-14 11:58:31,200 - INFO - Sent b'PRIME VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,201 - INFO - Sent b'\x02\x02\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,204 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 11:58:31,204 - INFO - Sent b'\x00\x01\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:31,208 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 4 5]===
+2025-03-14 11:58:31,208 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 11:58:32,193 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:33,632 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,330 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,330 - INFO - Sent b'Nn\x00\x00Tp\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\x01o\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,336 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,345 - INFO - Arduino recieved side one as => [28238 28756 24125 25000 24125 24125 24125 24125]
+2025-03-14 11:58:34,346 - INFO - Arduino recieved side two as => [28417 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 11:58:34,346 - INFO - arduino has recieved and verified valve durations
+2025-03-14 11:58:34,346 - INFO - Sent b'PRIME VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,347 - INFO - Sent b'\x02\x02\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,349 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 11:58:34,349 - INFO - Sent b'\x00\x01\x04\x05' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:34,353 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 4 5]===
+2025-03-14 11:58:34,353 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 11:58:35,394 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:36,793 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:37,945 - INFO - Valve test table updated.
+2025-03-14 11:58:38,449 - INFO - Valve test table updated.
+2025-03-14 11:58:38,778 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,779 - INFO - Sent b'Nn\x00\x00Tp\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\x01o\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,800 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,810 - INFO - Arduino recieved side one as => [28238 28756 24125 25000 24125 24125 24125 24125]
+2025-03-14 11:58:38,810 - INFO - Arduino recieved side two as => [28417 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 11:58:38,810 - INFO - arduino has recieved and verified valve durations
+2025-03-14 11:58:38,810 - INFO - Sent b'PRIME VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,811 - INFO - Sent b'\x03\x03\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,813 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 11:58:38,814 - INFO - Sent b'\x00\x01\x02\x04\x05\x06' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:38,818 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 2 4 5 6]===
+2025-03-14 11:58:38,818 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 11:58:39,760 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:44,754 - INFO - Sent b'\x01' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:46,610 - INFO - Valve test table updated.
+2025-03-14 11:58:47,402 - INFO - Valve test table updated.
+2025-03-14 11:58:47,658 - INFO - Sent b'REC DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,659 - INFO - Sent b'Nn\x00\x00Tp\x00\x00=^\x00\x00\xa8a\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00\x01o\x00\x00|\x9d\x00\x00xi\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00=^\x00\x00' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,665 - INFO - Sent b'VER DURATIONS\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,673 - INFO - Arduino recieved side one as => [28238 28756 24125 25000 24125 24125 24125 24125]
+2025-03-14 11:58:47,673 - INFO - Arduino recieved side two as => [28417 40316 27000 24125 24125 24125 24125 24125]
+2025-03-14 11:58:47,673 - INFO - arduino has recieved and verified valve durations
+2025-03-14 11:58:47,674 - INFO - Sent b'PRIME VALVES\n' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,675 - INFO - Sent b'\x04\x04\xe8\x03' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,677 - INFO - ====VERIFIED TEST VARIABLES====
+2025-03-14 11:58:47,677 - INFO - Sent b'\x00\x01\x02\x03\x04\x05\x06\x07' to arduino on -> /dev/ttyACM0: 
+2025-03-14 11:58:47,681 - INFO - ===TESTING SCHEDULE VERIFIED as ==> [0 1 2 3 4 5 6 7]===
+2025-03-14 11:58:47,681 - INFO - ====================BEGIN TESTING NOW====================
+2025-03-14 11:58:48,386 - INFO - Sent b'\x00' to arduino on -> /dev/ttyACM0: 

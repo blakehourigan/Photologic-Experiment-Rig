@@ -14,8 +14,9 @@ struct TestParams {
   ExpScheduleArray side_two_sched;
 };
 
-void run_valve_test(DurationsArray side_one_dur_vec,
-                    DurationsArray side_two_dur_vec);
+void prime_valves();
+
+void run_valve_test(DurationsArray side_one_dur, DurationsArray side_two_dur);
 
 TestParams receive_test_params();
 TestParams receive_test_schedules();
