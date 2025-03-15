@@ -55,7 +55,7 @@ This repository contains all files needed to reproduce a experimental rig of thi
 how to configure the system once assembled.
 
 ## Usage
-A **SOP (Standard Operating Procedure) for using this rig in an experiment can be found [here]().
+A **SOP** (Standard Operating Procedure) for using this rig in an experiment can be found [here]().
 
 
 ## Navigating the Directory Structure
