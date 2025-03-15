@@ -52,23 +52,20 @@ This repository contains all files needed to reproduce a experimental rig of thi
 
 ### Configuration
 
-
 how to configure the system once assembled.
 
 ## Usage
+A **SOP (Standard Operating Procedure) for using this rig in an experiment can be found [here]().
 
 
-usage guide
-
+## Navigating the Directory Structure
+- **CAD Files:** All CAD files for 3D printing and machining.
+- **Code:** The code directory contains all code written for this project. The primary sub-directory here is the 'Photologic Rig Main Application Code' directory which contains the rig controller applcation code to be executed on the lab desktop connected to the arduino boards. The structure of this program was designed with the intention of being easy to understand and modify. It follows a model-view-controller model in principle where 'model' refers to the data structures of the program, view refers to all graphical user interface (GUI) related code, and controller refers to the code that coordinates operations requiring both of these aspects of the program. This should make the task of searching for code performing specific functions simpler. For example, the code that generates the schedule of stimuli for the experiment can be found at 'models/experiment_process_data.py' becuase the methods that implement this functionality operate directly on data related to the process of the experiment. Stimulus related data such as the stimuli substance names can be found at 'models/stimuli_data.py'. It is my hope that this design simplifies the experience of working with this code for future users and maintainers.
 
 ## License
 
-
 This project is licensed under the MIT License - see LICENSE.txt for details.
 
-
-- **CAD Files:** All CAD files for 3D printing and machining.
-- **Code:** The code directory contains all code written for this project. The primary sub-directory here is the 'Photologic Rig Main Application Code' directory which contains the rig controller applcation code to be executed on the lab desktop connected to the arduino boards. The structure of this program was designed with the intention of being easy to understand and modify. It follows a model-view-controller model in principle where 'model' refers to the data structures of the program, view refers to all graphical user interface (GUI) related code, and controller refers to the code that coordinates operations requiring both of these aspects of the program. This should make the task of searching for code performing specific functions simpler. For example, the code that generates the schedule of stimuli for the experiment can be found at 'models/experiment_process_data.py' becuase the methods that implement this functionality operate directly on data related to the process of the experiment. Stimulus related data such as the stimuli substance names can be found at 'models/stimuli_data.py'. It is my hope that this design simplifies the experience of working with this code for future users and maintainers. 
 
   
 - **Documentation:** Detailed documents and instructions.
