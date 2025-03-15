@@ -13,6 +13,12 @@ def get_documents_dir():
          return os.path.join(os.getenv('USERPROFILE'), 'Documents')
     elif current_os =='Linux':
         return os.path.join(os.getenv('HOME'), 'Documents')
+    
+def get_assets_path():
+    documents_dir = get_documents_dir()
+
+    assets_dir = os.path.join(documents_dir, "Photologic-Experiment-Rig-Files", "assets")
+    return assets_dir
 
 def get_rig_config():
     documents_dir = get_documents_dir()

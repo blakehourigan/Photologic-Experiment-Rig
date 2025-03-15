@@ -5,6 +5,8 @@ import os
 from tkinter import messagebox
 import logging
 
+import system_config
+
 logger = logging.getLogger()
 
 
@@ -109,9 +111,8 @@ class GUIUtils:
         # get the absolute path of two directories above the file from which this file is called
         # we need to get to the assets folder at photologic exp rig/assets and are currently in
         # photologic exp rig/src/views. need to go up twice then down to assets, which is what we do here
-        base_path = os.path.dirname(
-            os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
-        )
+        base_path = system_config.get_assets_path()
+        
 
         # Determine the operating system
         os_name = platform.system()
@@ -124,7 +125,7 @@ class GUIUtils:
             # Linux and macOS use .png
             icon_filename = "rat.png"
 
-        return os.path.join(base_path, "assets", icon_filename)
+        return os.path.join(base_path, icon_filename)
 
     @staticmethod
     def set_program_icon(window, icon_path):
