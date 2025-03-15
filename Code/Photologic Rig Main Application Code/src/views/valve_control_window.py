@@ -1,13 +1,13 @@
 import tkinter as tk
 import toml
 import numpy as np
-from pathlib import Path
+import system_config
 
 from views.gui_common import GUIUtils
 
-toml_config_dir = Path(__file__).parent.parent.resolve()
-toml_config_path = toml_config_dir / "rig_config.toml"
-with open(toml_config_path, "r") as f:
+rig_config = system_config.get_rig_config()
+
+with open(rig_config, "r") as f:
     VALVE_CONFIG = toml.load(f)["valve_config"]
 
 # pull total valves constant from toml config

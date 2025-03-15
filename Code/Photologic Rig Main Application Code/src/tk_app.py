@@ -1,7 +1,7 @@
 import logging
 import datetime
 from logging import FileHandler
-from pathlib import Path
+import system_config
 
 # Model (data) classe / sub-classes are init'd internally to this class
 from models.experiment_process_data import ExperimentProcessData
@@ -28,11 +28,10 @@ logger.addHandler(console_handler)
 # Rotating file handler for all logs, this means that once maxBytes is exceeded, the data rolls over into a new file.
 # for example, data will begin in app.log, then will roll over into app1.log
 
-logfile_dir = Path(__file__).parent.parent.resolve()
 now = datetime.datetime.now()
-logfile_name = f"{now.hour}_{now.minute}_{now.second} - {now.date()} experiment log"
-logfile_path = logfile_dir / "logfiles" / f"{logfile_name}"
 
+logfile_name = f"{now.hour}_{now.minute}_{now.second} - {now.date()} experiment log"
+logfile_path = system_config.get_log_path(logfile_name)
 
 file_handler = FileHandler(logfile_path)
 file_handler.setLevel(logging.INFO)

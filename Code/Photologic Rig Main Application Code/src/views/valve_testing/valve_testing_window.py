@@ -7,6 +7,7 @@ from tkinter import ttk
 import toml
 from enum import Enum
 from pathlib import Path
+import system_config
 
 from views.gui_common import GUIUtils
 from views.valve_testing.manual_time_adjustment_window import ManualTimeAdjustment
@@ -16,9 +17,9 @@ from views.valve_testing.valve_changes_window import ValveChanges
 # Get the logger in use for the app
 logger = logging.getLogger()
 
-toml_config_dir = Path(__file__).parent.parent.parent.resolve()
-toml_config_path = toml_config_dir / "rig_config.toml"
-with open(toml_config_path, "r") as f:
+rig_config = system_config.get_rig_config()
+
+with open(rig_config, "r") as f:
     VALVE_CONFIG = toml.load(f)["valve_config"]
 
 # pull total valves constant from toml config

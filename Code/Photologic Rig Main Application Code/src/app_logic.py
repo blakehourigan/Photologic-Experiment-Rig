@@ -3,17 +3,17 @@ import time
 import threading
 import logging
 import toml
-from pathlib import Path
+
 
 from views.gui_common import GUIUtils
+import system_config
 
 
 logger = logging.getLogger(__name__)
 
-toml_config_dir = Path(__file__).parent.resolve()
-toml_config_path = toml_config_dir / "rig_config.toml"
 
-with open(toml_config_path, "r") as f:
+rig_config = system_config.get_rig_config()
+with open(rig_config, "r") as f:
     DOOR_CONFIG = toml.load(f)["door_motor_config"]
 
 # pull total valves constant from toml config

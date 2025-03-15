@@ -1,19 +1,16 @@
 import logging
-import toml
 import datetime
 import copy
+import toml
 import numpy as np
-from pathlib import Path
-
-from views.gui_common import GUIUtils
+import system_config 
 
 # Get the logger in use for the app
 logger = logging.getLogger()
 
-toml_config_dir = Path(__file__).parent.parent.resolve()
-toml_config_path = toml_config_dir / "rig_config.toml"
+rig_config = system_config.get_rig_config()
 
-with open(toml_config_path, "r") as f:
+with open(rig_config, "r") as f:
     VALVE_CONFIG = toml.load(f)["valve_config"]
 
 # pull total valves constant from toml config
@@ -115,10 +112,9 @@ class ArduinoData:
         the user can reset all these values to default values of 24125ms if the reset_durations
         parameter flag is set to true.
         """
-        toml_dir = Path(__file__).parent.parent.parent.resolve()
-        toml_path = toml_dir / "assets" / "valve_durations.toml"
+        valve_durations_toml= system_config.get_valve_durations() 
 
-        with open(toml_path, "r") as f:
+        with open(valve_durations_toml, "r") as f:
             toml_file = toml.load(f)
 
         file_durations = toml_file[type_durations]

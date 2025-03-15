@@ -1,1 +1,1 @@
-pyinstaller --onefile --windowed --icon=rat.ico "Upgraded Experiment Rig.py"
+nuitka --standalone --enable-plugin=tk-inter main.py
