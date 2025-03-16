@@ -6,7 +6,6 @@ import threading
 from tkinter import ttk
 import toml
 from enum import Enum
-from pathlib import Path
 import system_config
 
 from views.gui_common import GUIUtils
@@ -101,6 +100,13 @@ class ValveTestWindow(tk.Toplevel):
 
     def switch_window_mode(self):
         if self.window_mode == WindowMode.TESTING:
+            if self.test_running:
+                # if the test is currently running we do not want to switch modes. Stop testing to switch modes
+                GUIUtils.display_error(
+                    "ACTION PROHIBITED",
+                    "You cannot switch modes while a test is running. If you'd like to switch modes, please abort the test and try again.",
+                )
+                return
             self.title("Valve Priming")
 
             self.window_mode = WindowMode.PRIMING
@@ -120,6 +126,14 @@ class ValveTestWindow(tk.Toplevel):
             )
 
         else:
+            if self.prime_running:
+                # if the test is currently running we do not want to switch modes. Stop testing to switch modes
+                GUIUtils.display_error(
+                    "ACTION PROHIBITED",
+                    "You cannot switch modes while a valve prime operation is running. If you'd like to switch modes, please abort the prime and try again.",
+                )
+                return
+
             self.title("Valve Testing")
 
             self.window_mode = WindowMode.TESTING
@@ -438,6 +452,8 @@ class ValveTestWindow(tk.Toplevel):
             self.arduino_controller.send_command(command)
 
         elif self.window_mode == WindowMode.PRIMING:
+            self.prime_running = True
+
             command = "PRIME VALVES\n".encode("utf-8")
             self.arduino_controller.send_command(command)
 
@@ -497,6 +513,8 @@ class ValveTestWindow(tk.Toplevel):
                 )
 
     def stop_priming(self):
+        self.prime_running = False
+
         self.valve_test_button.configure(
             text="Start Priming",
             bg="coral",
