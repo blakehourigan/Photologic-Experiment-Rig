@@ -7,6 +7,8 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+Code/'Photologic Rig Main Application Code'/src/main.build/
+Code/'Photologic Rig Main Application Code'/src/main.dist/
 main.dist/
 main.build/
 .Python
