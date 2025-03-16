@@ -6,15 +6,23 @@ This project was created to enable novel experiments regarding smell and taste i
 This repository contains all files needed to reproduce a experimental rig of this type, including all 3d models, CNC machining files, code, and circuit design. 
 
 ## Features
-
-- Accurate data retreival
+-  **Data Accuracy** - Important event timing data such as onset, end, duration, onset relative to program start, and onset relative to trial start is measured **on Arduino Mega 2560 device** as these events occur. This ensured event timing results are accurate as viewed in the controller program.
+-  **Data Representation** - Licks can be analyzed via a built in lick rasterization plot. This allows for simple visual verification of lick times relative to one another. One can ensure that licks are not occuring too close or too far apart in time. 
+-  **Individual Valve / Motor Control** - Users can control each connected valve, opening or closing valves for arbitrary amounts of time. Users can also command the door motor to move up or down at any time. 
+-  **Lick/Valve Prohibition** - Lick detection and valve actuation are decoupled events. A lick initiates a valve actuation, however, another lick CANNOT be detected until BOTH the valve has been closed from previous actuation AND tongue has cleared the beam (beam has restored a connection). This helps to avoid licks from occuring too close in succession. Furthermore, a continued beam break does not result in a continuous stream from a valve. A lick initiation will result in a valve opening of the determined length. This will not happen again until beam is restored and broken again. 
+-  **Phantom Lick Removal** - Licks that complete in less than 10ms are disregarded and not sent to the controller (PC). This helps avoid invalid licks (due to equipment quirks) being recorded.  
+-  **Simplicity** - Significant effort has been expended to ensure that software is easy to install and use. The previous model of using two Arduino boards to control the rig was found to be unnecessary. It was found to be far more effiecient to move to a one Arduino model, simplifying physical setup and communication protocols. 
+-  **Speed** - Multiple threads (many cpu workers) are utilized so that GUI is always responsive regardless of logic operations underway at a given moment, without affecting the efficiency of those logic operations. 
 
 
 ### Required Physical Materials
 
-
-- prerequisites 
-
+- 1 Arduino Mega 2560
+- 1 PC Controller Computer
+- 1 Motor Logic Circuit Board
+- 1 Experiment Box (3D CAD and CNC files included in this repository)
+- 2 - 16 Valves and Cylinders 
+ 
 ### Assembly Instructions / Requirements for a Functioning Rig
 1. **Rig Controller Code**
     #### Prerequisites / Dependencies
