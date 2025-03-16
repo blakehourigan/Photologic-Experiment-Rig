@@ -7,7 +7,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-Code/Photologic Rig Main Application Code/src/arduino-ide_2.3.4_Windows_64bit.exe
 Code/Photologic Rig Main Application Code/src/main.dist/
 Code/Photologic Rig Main Application Code/src/main.build/
 Code/Photologic Rig Main Application Code/src/main.dist
