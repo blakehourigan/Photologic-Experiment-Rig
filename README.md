@@ -100,7 +100,3 @@ Each subdirectory in this project contains a README that explains the structure 
 ## License
 
 This project is licensed under the MIT License - see LICENSE.txt for details.
-  
-- **Documentation:** Detailed documents and instructions.
-- **Example:** Images and examples of the final assembled product.
-- **Circuitry:** Diagrams and files related to the electrical components.
