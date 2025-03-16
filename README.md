@@ -50,7 +50,7 @@ This repository contains all files needed to reproduce a experimental rig of thi
     #### Building an Executable for a New Version of the Program
     For those that create new versions of the program to better suit their needs or to fix bugs that will undoubdedly arise through the usage of this program, a [Github Gist](https://gist.github.com/blakehourigan/5e176f2600446a793547babff372299c) has been put together detailing the steps you can take to create a new executable file and installer that will make installation/distribution of the program much simpler. 
     
-3. **Arduino Code**
+2. **Arduino Code**
     #### Prerequisites / Dependencies
     To upload this code, you will need either the arduino-cli or the Arduino IDE. The Arduino IDE will be easiest to work with and can be found [here](https://www.arduino.cc/en/software).
 
@@ -67,12 +67,25 @@ This repository contains all files needed to reproduce a experimental rig of thi
        **NOTE** - If you see lots of red messages and this code does not upload successfully, please make absolutely sure you installed the 'ArduinoStepper' library and that the board is connected **and** selected. You might try the board selection dropdown again to make sure of this. If this does not work, try disconnecting and reconnecting the board, and restarting your PC. 
     7. At this point your Arduino board and your PC are ready to communicate with each other for your experiments. 
  
-5. **3D Printing:**   3d print instruc
-6. **Machining:**   machining parts 
-7. **Assembly:**   assembly instruc
-8. **Optical Fiber Setup:**   fiber instruc
-9. **Circuitry:** Circuitry details / instructions
+3. **3D Printing:**
 
+   Under contruction
+
+4. **Machining:**   
+
+   Under Contruction 
+
+5. **Assembly:** 
+
+   Under contruction
+
+6. **Optical Fiber Setup:**   
+
+   Under contruction
+
+7. **Circuitry:** 
+
+   Under contruction 
 
 ### Configuration
 
@@ -81,16 +94,12 @@ how to configure the system once assembled.
 ## Usage
 A **SOP** (Standard Operating Procedure) for using this rig in an experiment can be found [here]().
 
-
 ## Navigating the Directory Structure
-- **CAD Files:** All CAD files for 3D printing and machining.
-- **Code:** The code directory contains all code written for this project. The primary sub-directory here is the 'Photologic Rig Main Application Code' directory which contains the rig controller applcation code to be executed on the lab desktop connected to the arduino boards. The structure of this program was designed with the intention of being easy to understand and modify. It follows a model-view-controller model in principle where 'model' refers to the data structures of the program, view refers to all graphical user interface (GUI) related code, and controller refers to the code that coordinates operations requiring both of these aspects of the program. This should make the task of searching for code performing specific functions simpler. For example, the code that generates the schedule of stimuli for the experiment can be found at 'models/experiment_process_data.py' becuase the methods that implement this functionality operate directly on data related to the process of the experiment. Stimulus related data such as the stimuli substance names can be found at 'models/stimuli_data.py'. It is my hope that this design simplifies the experience of working with this code for future users and maintainers.
+Each subdirectory in this project contains a README that explains the structure of the files contained within.
 
 ## License
 
 This project is licensed under the MIT License - see LICENSE.txt for details.
-
-
   
 - **Documentation:** Detailed documents and instructions.
 - **Example:** Images and examples of the final assembled product.
