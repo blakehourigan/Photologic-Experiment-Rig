@@ -330,7 +330,7 @@ class StopProgram:
             queue_id = self.main_gui.scheduled_tasks["PROCESS QUEUE"]
             self.main_gui.after_cancel(queue_id)
 
-            self.arduino_controller.reset_arduino()
+            self.arduino_controller.close_connection()
 
             self.main_gui.save_button_handler()
 
