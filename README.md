@@ -23,7 +23,7 @@ This repository contains all files needed to reproduce a experimental rig of thi
     #### Windows Installation 
     To install the program on windows, there are two options. 
     
-    1. **.exe Installer File** - To simplify this portion of the rig assembly / installation, a simple .exe installer has been provided. It can be found [here]().
+    1. **Exe Installer File** - To simplify this portion of the rig assembly / installation, a simple .exe installer has been provided. It can be found [here]().
     
     2. **Running the Source Code** - For those that would rather run the program via source code, the process for getting the source code up and running can be found below.
         1. **Install Python 3.12** - This program was developed with Python version 3.12. This program is NOT guaranteed to work with any versions other than Python3.12. It can be installed [here](https://www.python.org/downloads/release/python-3120/).
@@ -38,8 +38,11 @@ This repository contains all files needed to reproduce a experimental rig of thi
 
     #### Running the Program on Linux-based Systems
     There is no installation file for linux-based systems. Follow the 'Running the Source Code' steps described above.
+
+    #### Building an Executable for a New Version of the Program
+    For those that create new versions of the program to better suit their needs or to fix bugs that will undoubdedly arise through the usage of this program, a [Github Gist](https://gist.github.com/blakehourigan/5e176f2600446a793547babff372299c) has been put together detailing the steps you can take to create a new executable file and installer that will make installation/distribution of the program much simpler. 
     
-2. **Arduino Code Installation/Upload**
+3. **Arduino Code Installation/Upload**
     #### Prerequisites / Dependencies
     To upload this code, you will need either the arduino-cli or the Arduino IDE. The Arduino IDE will be easiest to work with and can be found [here](https://www.arduino.cc/en/software).
  
