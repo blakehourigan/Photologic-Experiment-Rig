@@ -42,9 +42,22 @@ This repository contains all files needed to reproduce a experimental rig of thi
     #### Building an Executable for a New Version of the Program
     For those that create new versions of the program to better suit their needs or to fix bugs that will undoubdedly arise through the usage of this program, a [Github Gist](https://gist.github.com/blakehourigan/5e176f2600446a793547babff372299c) has been put together detailing the steps you can take to create a new executable file and installer that will make installation/distribution of the program much simpler. 
     
-3. **Arduino Code Installation/Upload**
+3. **Arduino Code**
     #### Prerequisites / Dependencies
     To upload this code, you will need either the arduino-cli or the Arduino IDE. The Arduino IDE will be easiest to work with and can be found [here](https://www.arduino.cc/en/software).
+
+    On Windows machines, the Arduino IDE is an optional package in the control software Exe installer discussed above.
+
+    If you choose to use the Arduino IDE, you must follow these steps to ensure smooth upload of this code to the Arduino, and proper communication between the Arduino and the control software.
+    #### IDE Configuration and Code Upload
+    1. Once the Arduino IDE is installed, open the IDE with the Arduino Mega 2560 board connected to your PC. Your PC will recognize the board and the packages that it needs to install to communicate with it. There will be multiple pop-up windows asking if you would like to install drivers for this board. You **must** click install on all of these pop-ups. If you do not see these pop-ups and have used your Arduino board previously, you may have these packages already installed, try moving to the next step. 
+    2. The code used for the Arduino in this project has one external dependency that must be fulfilled. This external dependency is the **AccelStepper** library by Mike McCauley. The version in use at the time of writing is version 1.64. You will need to install this version in the IDE. To do this, look for the library icon on the left hand side of the Arduino IDE window. It is the third button down. Once clicked, a slide-out window with the heading 'library manager' will open with a search box at the top. Click inside of the search bar and enter 'AccelStepper'. The first result should be the one you are looking for. Click the box filled with the version number (something like 1.64), and look for version 1.64. Click on this version, then click install, it should install rather quickly. Now you can now exit the library manager.
+    3. Now, the Arduino code may be uploaded to the board. In the top left hand corner, click 'File', then 'Open', and search for the ArduinoCode directory in the Photologic-Experiment-Rig structure. The file you are looking for will be found at `Photologic-Experiment-Rig/Code/ArduinoCode/ArduinoCode.ino`. Locate this .ino file and double click on it to select it.
+    4. Once this file is open in the IDE, ensure that your board is recognized and selected in the IDE by clicking the dropdown menu just below the 'help' section of the top bar. Here you will see any Arduino boards recognized by the PC. Select your Arduino Mega 2560 board.
+    5. With the file open and your board selected, press the green upload button. It is the arrow that looks like this: '-->', the second button of three in the top left hand side of your screen. This will just take a moment, and you will see a 'Done Uploading' message in the bottom right of your screen if it completes successfully.
+
+       **NOTE** - If you see lots of red messages and this code does not upload successfully, please make absolutely sure you installed the 'ArduinoStepper' library and that the board is connected **and** selected. You might try the board selection dropdown again to make sure of this. If this does not work, try disconnecting and reconnecting the board, and restarting your PC. 
+    7. At this point your Arduino board and your PC are ready to communicate with each other for your experiments. 
  
 5. **3D Printing:**   3d print instruc
 6. **Machining:**   machining parts 
