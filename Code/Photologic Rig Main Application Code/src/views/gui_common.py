@@ -112,7 +112,6 @@ class GUIUtils:
         # we need to get to the assets folder at photologic exp rig/assets and are currently in
         # photologic exp rig/src/views. need to go up twice then down to assets, which is what we do here
         base_path = system_config.get_assets_path()
-        
 
         # Determine the operating system
         os_name = platform.system()
@@ -161,13 +160,17 @@ class GUIUtils:
             screen_width = window.winfo_screenwidth()
             screen_height = window.winfo_screenheight()
 
+            max_width = screen_width * 80
+            max_height = screen_height * 80
+
             # Calculate the x and y coordinates to center the window
-            x = (screen_width // 2) - (window_width // 2)
-            y = (screen_height // 2) - (window_height // 2)
+            x = (screen_width - max_width) // 2
+            y = (screen_height - max_height) // 2
 
             # Set the window's position
             window.geometry(f"{window_width}x{window_height}+{x}+{y}")
-            logger.info("Experiment control window centered.")
+
+            logger.info("Experiment control window re-sized centered.")
         except Exception as e:
             logger.error(f"Error centering experiment control window: {e}")
             raise
