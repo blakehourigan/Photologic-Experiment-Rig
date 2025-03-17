@@ -3,6 +3,11 @@
 #define REPORTING_H
 
 #include <Arduino.h>
+#include <stdint.h>
+
+// amount of microseconds that a valve duration cannot exceed. If it is
+// exceeded, the lick will be thrown out.
+const uint32_t MAXIMUM_SAMPLE_VALVE_DURATION = 100000;
 
 struct lickTimeDetails {
   unsigned long lick_begin_time;

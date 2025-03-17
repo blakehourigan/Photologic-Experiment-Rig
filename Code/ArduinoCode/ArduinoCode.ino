@@ -140,7 +140,6 @@ void loop() {
           handling_lick = true;
 
           if (open_valves){
-            
             open_valve(side_data, current_trial);
             valve_time.valve_open_time = micros();
           }
@@ -149,9 +148,17 @@ void loop() {
     else if(handling_lick){
       // check for lick end / valve end and record data
       if (!open_valves) {
+        // insert a close_all call here, because when we tell the arduino to stop opening valves 
+        // (make open_valves false), we also cease closing them. This can stick a valve open. Closing all here should 
+        // resolve this.
+        // we also set lick_market and valve_marked to false to reset the slate for when we return to open_valves state.
+        close_all();
+        lick_marked = false;
+        valve_marked = false;
+        
         if (lick_ended(side_data)){ 
           lick_time.lick_end_time= millis();
-
+          // in the case that we WERE in open valves, but moved out of a sample time without
           handling_lick = false;
           report_ttc_lick(side_data->SIDE, lick_time, program_start_time, trial_start_time);
 
@@ -214,9 +221,9 @@ void loop() {
     }
     else if (command.equals("UP")) {
       // tell door motor to move up
-      //noInterrupts();
+      noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
-      //interrupts();
+      interrupts();
       
       motor_time.movement_start = millis();
       motor_time.movement_type = "UP"; 

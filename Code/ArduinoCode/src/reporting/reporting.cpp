@@ -83,6 +83,11 @@ void report_sample_lick(uint8_t side, lickTimeDetails lick_time,
   if (lick_time.lick_duration < LICK_THRESHOLD) {
     return;
   }
+  // fix for issue #26 on github, where a state switch after a lick has already
+  // been initiated results in a sample lick without a valve actuation.
+  if (valve_time.valve_duration > MAXIMUM_SAMPLE_VALVE_DURATION) {
+    valve_time.valve_duration = 0;
+  }
 
   Serial.print(side);
   Serial.print("|");
