@@ -40,8 +40,6 @@ class ExperimentProcessData:
         # passing it through to each state every time a state change occurs
         self.current_trial_number = 1
 
-        self.experiment_executed = False
-
         self.event_data = EventData()
         self.stimuli_data = StimuliData()
         self.arduino_data = ArduinoData(self)

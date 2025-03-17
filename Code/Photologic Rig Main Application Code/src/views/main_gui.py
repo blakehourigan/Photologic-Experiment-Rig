@@ -102,6 +102,14 @@ class MainGUI(tk.Tk):
             for instance in self.windows[window]:
                 instance.deiconify()
         else:
+            df = self.exp_data.program_schedule_df
+            if window == "Valve Testing" and not df.empty:
+                GUIUtils.display_error(
+                    "CANNOT DISPLAY WINDOW",
+                    "Since the schedule has been generated, valve testing has been disabled for this experiment. Reset the application to test again.",
+                )
+                return
+
             self.windows[window].show()
 
     def hide_secondary_window(self, window):

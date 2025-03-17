@@ -214,9 +214,9 @@ void loop() {
     }
     else if (command.equals("UP")) {
       // tell door motor to move up
-      noInterrupts();
+      //noInterrupts();
       stepper.moveTo(STEPPER_UP_POSITION);
-      interrupts();
+      //interrupts();
       
       motor_time.movement_start = millis();
       motor_time.movement_type = "UP"; 

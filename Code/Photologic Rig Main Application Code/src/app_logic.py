@@ -124,7 +124,7 @@ class StateMachine(TkinterApp):
                         self.trigger,
                     )
             case "RESET PROGRAM":
-                ResetProgram(self.main_gui, self.app_result)
+                ResetProgram(self.main_gui, self.app_result, self.arduino_controller)
             case "STOP PROGRAM":
                 StopProgram(self.main_gui, self.arduino_controller, self.trigger)
             case "GENERATE SCHEDULE":
@@ -308,14 +308,11 @@ class StopProgram:
                 if desc != "PROCESS QUEUE":
                     self.main_gui.after_cancel(sched_task)
 
-            # stop the arduino listener so that the program can shut down
-            # and not be blocked
-            self.arduino_controller.stop_listener_thread()
-
             # finalize the program after 5 seconds because the door has not gone down yet. we still want the arduino
             # to record the time that the door goes up last
-            self.main_gui.after(5000, lambda: self.finalize_program())
-
+            self.main_gui.scheduled_tasks["FINALIZE"] = self.main_gui.after(
+                5000, lambda: self.finalize_program()
+            )
             logging.info("Program stopped... waiting to finalize...")
         except Exception as e:
             logging.error(f"Error stopping program: {e}")
@@ -327,6 +324,10 @@ class StopProgram:
         offer to save the .
         """
         try:
+            # stop the arduino listener so that the program can shut down
+            # and not be blocked
+            self.arduino_controller.stop_listener_thread()
+
             queue_id = self.main_gui.scheduled_tasks["PROCESS QUEUE"]
             self.main_gui.after_cancel(queue_id)
 
@@ -345,11 +346,17 @@ class ResetProgram:
     Handle resetting the program on click of the reset button.
     """
 
-    def __init__(self, main_gui, app_result) -> None:
+    def __init__(self, main_gui, app_result, arduino_controller) -> None:
         try:
             # these two calls will stop the gui, halting the programs mainloop.
+
             main_gui.quit()
             main_gui.destroy()
+
+            for desc, sched_task in main_gui.scheduled_tasks.items():
+                main_gui.after_cancel(sched_task)
+
+            arduino_controller.stop_listener_thread()
 
             # tell main.py to restart
             app_result[0] = 1

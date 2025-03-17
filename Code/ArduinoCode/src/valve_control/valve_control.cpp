@@ -17,9 +17,7 @@ bool close_valve(valveTimeDetails valve_time, SideData *side_data,
 
   if ((current_time - valve_time.valve_open_time) > allotted_duration) {
     // reset all valve pins to zero to turn them off
-    PORTA = 0;
-    PORTC = 0;
-
+    close_all();
     return true;
   }
   return false;
