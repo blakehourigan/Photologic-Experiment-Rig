@@ -27,16 +27,19 @@ class GUIUtils:
         try:
             frame = tk.Frame(parent)
             frame.grid(row=row, column=column, padx=5, sticky="nsew")
+            frame.grid_columnconfigure(0, weight=1)
+            frame.grid_rowconfigure(0, weight=1)
+            frame.grid_rowconfigure(1, weight=1)
 
             label = tk.Label(
                 frame,
                 text=label_text,
                 bg="light blue",
-                font=("Helvetica", 24),
+                font=("Helvetica", 20),
                 highlightthickness=1,
                 highlightbackground="dark blue",
             )
-            label.grid(row=0, pady=10)
+            label.grid(row=0, pady=5)
 
             entry = tk.Entry(
                 frame,
@@ -45,10 +48,8 @@ class GUIUtils:
                 highlightthickness=1,
                 highlightbackground="black",
             )
-            entry.grid(row=1, sticky="nsew", pady=10)
+            entry.grid(row=1, sticky="nsew", pady=5)
 
-            frame.grid_columnconfigure(0, weight=1)
-            frame.grid_rowconfigure(1, weight=1)
             logger.info(f"Labeled entry '{label_text}' created.")
             return frame, label, entry
         except Exception as e:
@@ -67,6 +68,7 @@ class GUIUtils:
             button.grid(row=0, sticky="nsew", ipadx=10, ipady=10)
 
             frame.grid_columnconfigure(0, weight=1)
+            frame.grid_rowconfigure(0, weight=1)
             logger.info(f"Button '{button_text}' created.")
             return frame, button
         except Exception as e:
@@ -160,15 +162,15 @@ class GUIUtils:
             screen_width = window.winfo_screenwidth()
             screen_height = window.winfo_screenheight()
 
-            max_width = screen_width * 80
-            max_height = screen_height * 80
+            max_width = int(window_width * 0.80)
+            max_height = int(window_height * 0.80)
 
             # Calculate the x and y coordinates to center the window
             x = (screen_width - max_width) // 2
             y = (screen_height - max_height) // 2
 
             # Set the window's position
-            window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+            window.geometry(f"{max_width}x{max_height}+{x}+{y}")
 
             logger.info("Experiment control window re-sized centered.")
         except Exception as e:

@@ -39,7 +39,11 @@ class ValveTestWindow(tk.Toplevel):
         self.bind("<Control-w>", lambda event: self.withdraw())
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
 
-        self.resizable(False, False)
+        self.grid_columnconfigure(0, weight=1)
+
+        for i in range(5):
+            self.grid_rowconfigure(i, weight=1)
+        self.grid_rowconfigure(0, weight=0)
 
         window_icon_path = GUIUtils.get_window_icon_path()
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)
@@ -169,22 +173,64 @@ class ValveTestWindow(tk.Toplevel):
             column=0,
         )[1]
 
-        # return the frame so we can remove the element on mode switch
-        self.dispensed_vol_frame = GUIUtils.create_labeled_entry(
-            self,
-            "Desired Dispensed Volume in Microliters (ul)",
-            self.desired_volume,
-            1,
-            0,
-        )[0]
+        # create a new frame to contain the desired dispensed volume label and frame
+        self.dispensed_vol_frame = tk.Frame(self)
+        self.dispensed_vol_frame.grid(row=1, column=0, padx=5, sticky="nsew")
 
-        GUIUtils.create_labeled_entry(
-            self,
-            "How Many Times Should the Valve Actuate?",
-            self.actuations,
-            2,
-            0,
+        self.dispensed_vol_frame.grid_columnconfigure(0, weight=1)
+        self.dispensed_vol_frame.grid_rowconfigure(0, weight=1)
+        self.dispensed_vol_frame.grid_rowconfigure(1, weight=1)
+
+        label = tk.Label(
+            self.dispensed_vol_frame,
+            text="Desired Dispensed Volume in Microliters (ul)",
+            bg="light blue",
+            font=("Helvetica", 20),
+            highlightthickness=1,
+            highlightbackground="dark blue",
+            height=2,
+            width=50,
         )
+        label.grid(row=0, pady=5)
+
+        entry = tk.Entry(
+            self.dispensed_vol_frame,
+            textvariable=self.desired_volume,
+            font=("Helvetica", 24),
+            highlightthickness=1,
+            highlightbackground="black",
+        )
+        entry.grid(row=1, sticky="nsew", pady=5, ipady=14)
+
+        # create another new frame to contain the amount of times each
+        # valve should actuate label and frame
+        frame = tk.Frame(self)
+        frame.grid(row=2, column=0, padx=5, sticky="nsew")
+
+        frame.grid_columnconfigure(0, weight=1)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=1)
+
+        label = tk.Label(
+            frame,
+            text="How Many Times Should the Valve Actuate?",
+            bg="light blue",
+            font=("Helvetica", 20),
+            highlightthickness=1,
+            highlightbackground="dark blue",
+            height=2,
+            width=50,
+        )
+        label.grid(row=0, pady=5)
+
+        entry = tk.Entry(
+            frame,
+            textvariable=self.actuations,
+            font=("Helvetica", 24),
+            highlightthickness=1,
+            highlightbackground="black",
+        )
+        entry.grid(row=1, sticky="nsew", pady=5, ipady=12)
 
         ### ROW 3 ###
         self.create_valve_test_table()
@@ -193,20 +239,26 @@ class ValveTestWindow(tk.Toplevel):
         self.valve_buttons_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
         )
-
         ### ROW 4 ###
         self.valve_buttons_frame.grid(row=4, column=0, pady=10, padx=10, sticky="nsew")
         self.valve_buttons_frame.grid_columnconfigure(0, weight=1)
+        self.valve_buttons_frame.grid_rowconfigure(0, weight=1)
 
         self.side_one_valves_frame = tk.Frame(
             self.valve_buttons_frame, highlightbackground="black", highlightthickness=1
         )
         self.side_one_valves_frame.grid(row=0, column=0, pady=10, padx=10, sticky="w")
+        self.side_one_valves_frame.grid_columnconfigure(0, weight=1)
+        for i in range(4):
+            self.side_one_valves_frame.grid_rowconfigure(i, weight=1)
 
         self.side_two_valves_frame = tk.Frame(
             self.valve_buttons_frame, highlightbackground="black", highlightthickness=1
         )
         self.side_two_valves_frame.grid(row=0, column=1, pady=10, padx=10, sticky="e")
+        self.side_two_valves_frame.grid_columnconfigure(0, weight=1)
+        for i in range(4):
+            self.side_two_valves_frame.grid_rowconfigure(i, weight=1)
 
         ### ROW 5 ###
         self.create_buttons()
@@ -261,8 +313,7 @@ class ValveTestWindow(tk.Toplevel):
         self.valve_table_frame.grid_columnconfigure(0, weight=1)
 
         self.valve_table = ttk.Treeview(
-            self.valve_table_frame,
-            show="headings",
+            self.valve_table_frame, show="headings", height=12
         )
 
         headings = [
