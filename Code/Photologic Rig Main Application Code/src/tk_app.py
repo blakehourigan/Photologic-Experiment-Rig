@@ -42,17 +42,18 @@ logger.addHandler(file_handler)
 
 
 class TkinterApp:
+    """
+    init views (gui windows), passing the reference to the data it will need, along with the 'trigger' function,
+    which is used to transition the program from one state to another. Trigger is needed to manipulate state via
+    the start and reset buttons
+    """
+
     def __init__(self) -> None:
         try:
             # init exp_data, which initializes event_data, stimuli_data, arduino_data
             self.exp_data = ExperimentProcessData()
 
-            """
-            init views (gui windows), passing the reference to the data it will need, along with the 'trigger' function,
-            which is used to transition the program from one state to another. Trigger is needed to manipulate state via
-            the start and reset buttons
-            """
-            self.arduino_controller = ArduinoManager(self.exp_data, self.process_queue)
+            self.arduino_controller = ArduinoManager(self.exp_data)
 
             self.main_gui = MainGUI(
                 self.exp_data, self.trigger, self.arduino_controller

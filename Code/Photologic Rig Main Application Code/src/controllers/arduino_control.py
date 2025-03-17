@@ -14,14 +14,12 @@ logger = logging.getLogger(__name__)
 
 
 class ArduinoManager:
-    def __init__(self, exp_data, process_queue_callback) -> None:
+    def __init__(self, exp_data) -> None:
         self.BAUD_RATE = 115200
         self.arduino = None
 
         self.exp_data = exp_data
         self.arduino_data = exp_data.arduino_data
-
-        self.process_queue_callback = process_queue_callback
 
         self.data_queue: queue.Queue[Any] = queue.Queue()
         self.stop_event = threading.Event()
@@ -39,19 +37,20 @@ class ArduinoManager:
             if p.manufacturer is not None and "Arduino" in p.manufacturer:
                 arduino_port = p
 
-        port = arduino_port.device
-        self.arduino = serial.Serial(port, self.BAUD_RATE)
-        logger.info(f"Arduino connected on port {port}")
-
-        if self.arduino is None:
+        if arduino_port is None:
             error_message = (
                 "Arduino not connected. Reconnect Arduino and relaunch the program."
             )
-            self.close_connections()
             GUIUtils.display_error("Arduino Not Found", error_message)
             logger.error(error_message)
+            return
         else:
             logger.info("Connected to Arduino boards successfully.")
+
+        port = arduino_port.device
+
+        self.arduino = serial.Serial(port, self.BAUD_RATE)
+        logger.info(f"Arduino connected on port {port}")
 
     def listen_for_serial(self):
         while 1:
@@ -239,11 +238,19 @@ class ArduinoManager:
         except Exception as e:
             logger.error(f"error verifying arduino durations -> {e}")
 
-    def send_command(self, command) -> None:
+    def send_command(self, command):
         """
         Send a specific command to the Arduino. Command must be converted to raw bytes object
         before being passed into this method
         """
+        if self.arduino is None:
+            error_message = "Arduino connection was not established. Please reconnect the Arduino board and restart the program."
+            GUIUtils.display_error(
+                "====ARDUINO COMMUNICATION ERROR====:", error_message
+            )
+            logger.error(error_message)
+            return
+
         try:
             self.arduino.write(command)
             logger.info(f"Sent {command} to arduino on -> {self.arduino.port}: ")
