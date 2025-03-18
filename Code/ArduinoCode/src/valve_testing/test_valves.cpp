@@ -43,7 +43,7 @@ TestParams receive_test_params() {
   return test_params;
 }
 
-void schedule_verification(TestParams test_params) {
+void test_schedule_verification(TestParams test_params) {
   ExpScheduleArray side_one_arr = test_params.side_one_sched;
   ExpScheduleArray side_two_arr = test_params.side_two_sched;
 
@@ -96,7 +96,7 @@ TestParams receive_test_schedules() {
   test_params.side_one_sched = side_one_arr;
   test_params.side_two_sched = side_two_arr;
 
-  schedule_verification(test_params);
+  test_schedule_verification(test_params);
 
   return test_params;
 

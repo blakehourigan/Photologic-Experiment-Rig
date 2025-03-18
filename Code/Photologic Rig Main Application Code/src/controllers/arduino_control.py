@@ -26,6 +26,10 @@ class ArduinoManager:
         self.listener_thread = None
 
         self.connect_to_arduino()
+        # reset the board fully to avoid improper communication on program 'reset'
+
+        reset_arduino = "RESET\n".encode("utf-8")
+        self.send_command(command=reset_arduino)
 
     def connect_to_arduino(self) -> None:
         """Connect to the Arduino boards and return status."""

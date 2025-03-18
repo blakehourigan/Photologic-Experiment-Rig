@@ -9,6 +9,7 @@ from pathlib import Path
 from models.stimuli_data import StimuliData
 from models.event_data import EventData
 from models.arduino_data import ArduinoData
+from views.gui_common import GUIUtils
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ class ExperimentProcessData:
             # update other var types here
             return self.exp_var_entries[variable_name]
 
-    def generate_schedule(self) -> None:
+    def generate_schedule(self) -> bool:
         """
         This is a primary function of the program. This function generates the pseudo random schedule for what stimuli will be presented in which
         trials. It generates the intervals for ITI, TTC, and sample time using base time plus generated random +/- variations as given by user
@@ -101,6 +102,14 @@ class ExperimentProcessData:
         try:
             # set number of trials based on number of stimuli, and number of trial blocks set by user
             num_stimuli = self.exp_var_entries["Num Stimuli"]
+
+            if num_stimuli > 8 or num_stimuli < 2 or num_stimuli % 2 != 0:
+                GUIUtils.display_error(
+                    "NUMBER OF STIMULI EXCEEDS CURRENT MAXIMUM",
+                    "Program is currently configured for a minumim of 2 and maximum of 8 TOTAL vavles. You must have an even number of valves. If more are desired, program configuration must be modified.",
+                )
+                return False
+
             num_trial_blocks = self.exp_var_entries["Num Trial Blocks"]
 
             self.exp_var_entries["Num Trials"] = (num_stimuli // 2) * num_trial_blocks
@@ -118,6 +127,7 @@ class ExperimentProcessData:
                 stimuli_side_one,
                 stimuli_side_two,
             )
+            return True
 
         except Exception as e:
             logger.error(f"Error generating program schedule {e}.")

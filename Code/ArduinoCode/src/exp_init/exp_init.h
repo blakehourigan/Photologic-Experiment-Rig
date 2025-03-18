@@ -66,8 +66,8 @@ ValveSchedules receive_schedules();
 
 ValveDurations receive_durations();
 
-void schedule_verification(ValveSchedules schedules);
+void schedule_verification(ValveSchedules &schedules);
 
-void durations_verification(ValveDurations durations);
+void durations_verification(ValveDurations &durations);
 
 #endif // EXP_INIT_H!

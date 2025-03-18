@@ -3,7 +3,7 @@ import datetime
 import copy
 import toml
 import numpy as np
-import system_config 
+import system_config
 
 # Get the logger in use for the app
 logger = logging.getLogger()
@@ -112,7 +112,7 @@ class ArduinoData:
         the user can reset all these values to default values of 24125ms if the reset_durations
         parameter flag is set to true.
         """
-        valve_durations_toml= system_config.get_valve_durations() 
+        valve_durations_toml = system_config.get_valve_durations()
 
         with open(valve_durations_toml, "r") as f:
             toml_file = toml.load(f)
@@ -181,6 +181,7 @@ class ArduinoData:
             case "TTC":
                 # split_data will have the below form for ttc
                 # 0(side)|67(duration)|6541(stamp_rel_to_start)|6541(stamp_rel_to_trial)
+                # 1|16|0|496570|41 from arduino
                 side = np.int8(split_data[0])
                 self.increment_licks(side, event_data)
 
@@ -219,7 +220,7 @@ class ArduinoData:
                     )
 
                 except Exception as e:
-                    logging.error("IMPROPER DATA.... IGNORING.....")
+                    logging.error(f"IMPROPER DATA.... IGNORING.....{e}")
 
     def record_event(
         self,

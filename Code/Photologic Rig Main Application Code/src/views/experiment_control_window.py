@@ -84,7 +84,8 @@ class ExperimentCtlWindow(tk.Toplevel):
 
     def generate_button_method(self):
         # generate the program schedule df and fill it with stimuli that will be used
-        self.exp_process_data.generate_schedule()
+        if not self.exp_process_data.generate_schedule():
+            return
 
         self.withdraw()
         self.trigger("GENERATE SCHEDULE")

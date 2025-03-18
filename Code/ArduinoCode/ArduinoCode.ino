@@ -56,6 +56,8 @@ void loop() {
   static bool open_valves = false;
 
   static bool motor_running = false; 
+
+  static bool accept_licks = false;
   // since we support up to 320 trials, 
   // we need more than 2^8 = 255 we use 
   // 16 bit int which provides vals up to 2^16 -1 = 65535
@@ -114,6 +116,7 @@ void loop() {
     }
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
+      accept_licks = true;
     }
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
@@ -182,7 +185,7 @@ void loop() {
       Serial.println(command);
     }
   }
-  
+
   // check if motor_running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
     // at this stage we have filled movement_start, movement_type, and now movement_end
@@ -191,6 +194,7 @@ void loop() {
 
     if(previous_command.equals("UP")){
       current_trial++;
+      accept_licks = false;
     }
     motor_running = false;
   }
@@ -208,7 +212,11 @@ void loop() {
     static bool lick_marked = false;
     static bool valve_marked = false;
 
-    if (!handling_lick){
+    // this is used to 'lock' a mode in so that if a lick begins in ttc it is 
+    // guaranteed to finish there. same applies to 'sample' (open_valves)
+    static bool ttc_lick = true;
+    
+    if (accept_licks && (!handling_lick)){
       // if no previous lick or valve movement is being handled
       bool lick_start_one = lick_started(side_one_data);
       bool lick_start_two = lick_started(side_two_data);
@@ -225,7 +233,10 @@ void loop() {
         lick_time.lick_begin_time = millis();
         handling_lick = true;
 
+        ttc_lick=true;
+
         if (open_valves){
+          ttc_lick =false;
           open_valve(side_data, current_trial);
           valve_time.valve_open_time = micros();
         }
@@ -233,7 +244,7 @@ void loop() {
     }
     else if(handling_lick){
       // check for lick end / valve end and record data
-      if (!open_valves) {
+      if (ttc_lick) {
         // insert a close_all call here, because when we tell the arduino to stop opening valves 
         // (make open_valves false), we also cease closing them. This can stick a valve open. Closing all here should 
         // resolve this.
@@ -250,7 +261,7 @@ void loop() {
 
           lick_time = {};
         }
-      }else if(open_valves){
+      }else if(!(ttc_lick)){
         // if open_valves is set, open valve and wait for it to close
         // to move on
         if (!lick_marked){ 

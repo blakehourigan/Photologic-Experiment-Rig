@@ -59,7 +59,9 @@ class EventWindow(tk.Toplevel):
 
         # Create a Treeview widget
         # show='headings' ensures we only see columns with headings defined
-        self.timestamped_licks = ttk.Treeview(self.licks_frame, show="headings")
+        self.timestamped_licks = ttk.Treeview(
+            self.licks_frame, show="headings", height=25
+        )
 
         self.timestamped_licks["columns"] = list(
             self.event_data.event_dataframe.columns

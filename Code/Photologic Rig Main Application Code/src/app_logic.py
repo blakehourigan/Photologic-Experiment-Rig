@@ -355,8 +355,8 @@ class ResetProgram:
 
             for desc, sched_task in main_gui.scheduled_tasks.items():
                 main_gui.after_cancel(sched_task)
-
-            arduino_controller.stop_listener_thread()
+            if arduino_controller.listener_thread is not None:
+                arduino_controller.stop_listener_thread()
 
             # tell main.py to restart
             app_result[0] = 1
@@ -573,8 +573,8 @@ class SampleTime:
         # so we didn't take all the allocated time. update program schedule window with actual time taken
         ttc_time = (time.time() - self.exp_data.state_start_time) * 1000
 
-        self.exp_data.program_schedule_df.loc[self.logical_trial, "TTC Actual"] = (
-            ttc_time
+        self.exp_data.program_schedule_df.loc[self.logical_trial, "TTC Actual"] = round(
+            ttc_time, 3
         )
 
 

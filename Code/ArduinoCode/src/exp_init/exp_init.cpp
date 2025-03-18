@@ -61,7 +61,6 @@ ValveSchedules receive_schedules() {
   }
   schedules.side_one = side_one_arr;
   schedules.side_two = side_two_arr;
-  schedules.schedules_recieved = true;
   return schedules;
 }
 
@@ -118,11 +117,10 @@ ValveDurations receive_durations() {
 
   durations.side_one = side_one;
   durations.side_two = side_two;
-  durations.durations_recieved = true;
   return durations;
 }
 
-void schedule_verification(ValveSchedules schedules) {
+void schedule_verification(ValveSchedules &schedules) {
   ExpScheduleArray side_one = schedules.side_one;
   ExpScheduleArray side_two = schedules.side_two;
 
@@ -138,10 +136,11 @@ void schedule_verification(ValveSchedules schedules) {
   // force all the data out
   Serial.flush();
 
+  schedules.schedules_recieved = true;
   // Serial.println("Schedule sent back for verification.");
 }
 
-void durations_verification(ValveDurations durations) {
+void durations_verification(ValveDurations &durations) {
   DurationsArray side_one = durations.side_one;
   DurationsArray side_two = durations.side_two;
   // echo recieved schedules to python controller, so that it can verify that
@@ -159,4 +158,5 @@ void durations_verification(ValveDurations durations) {
   }
   // force all the data out
   Serial.flush();
+  durations.durations_recieved = true;
 }
