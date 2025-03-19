@@ -52,15 +52,15 @@ class ExperimentProcessData:
         self.TTC_lick_threshold = 3
 
         self.interval_vars = {
-            "ITI_var": 5000,
-            "TTC_var": 5000,
-            "sample_var": 5000,
+            "ITI_var": 30000,
+            "TTC_var": 20000,
+            "sample_var": 15000,
             "ITI_random_entry": 0,
-            "TTC_random_entry": 0,
-            "sample_random_entry": 0,
+            "TTC_random_entry": 5000,
+            "sample_random_entry": 5000,
         }
         self.exp_var_entries = {
-            "Num Trial Blocks": 4,
+            "Num Trial Blocks": 10,
             "Num Stimuli": 4,
             "Num Trials": 0,
         }
