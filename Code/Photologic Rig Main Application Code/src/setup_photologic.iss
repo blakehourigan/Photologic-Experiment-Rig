@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Photologic Experiment Rig Control Software"
-#define MyAppVersion "0.2.1"
+#define MyAppVersion "1.0"
 #define MyAppPublisher "Chad Samuelsen Research Laboratory"
 #define MyAppURL "https://www.samuelsenlab.org"
 #define MyAppExeName "main.exe"
@@ -40,7 +40,7 @@ SolidCompression=yes
 WizardStyle=modern
 
 ; specify path of the ico file to be used on all program shortcuts (taskbar, start menu, etc)
-SetupIconFile="C:\Users\blake\Documents\Photologic-Experiment-Rig-Files\assets\rat.ico"
+SetupIconFile="C:\Users\blake\Documents\Photologic-Experiment-Rig\Code\Photologic Rig Main Application Code\src\Photologic-Experiment-Rig-Files\assets\rat.ico"
 
 ; specify paths for source files to build the installer. this will need to be the /src directory for the photologic rig controller code that contains the main.dist build directory 
 SourceDir="C:\Users\blake\Documents\Photologic-Experiment-Rig\Code\Photologic Rig Main Application Code\src\"
