@@ -14,8 +14,8 @@ class EventWindow(tk.Toplevel):
         self.title("Experiment Event Data")
         self.bind("<Control-w>", lambda event: self.withdraw())
 
-        # Bind closing the window to self.withdraw()
-        self.protocol("WM_DELETE_WINDOW", self.withdraw())
+        # Bind closing the window to self.withdraw() to hide the window but not destroy it
+        self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
 
         window_icon_path = GUIUtils.get_window_icon_path()
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)

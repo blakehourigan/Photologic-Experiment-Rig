@@ -22,6 +22,7 @@ class ProgramScheduleWindow(tk.Toplevel):
 
         # bind control + w shortcut to hiding the window
         self.bind("<Control-w>", lambda event: self.withdraw())
+        self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
 
         # Setup the canvas and scrollbar
         self.canvas_frame = tk.Frame(self)
