@@ -357,6 +357,8 @@ class ResetProgram:
                 main_gui.after_cancel(sched_task)
             if arduino_controller.listener_thread is not None:
                 arduino_controller.stop_listener_thread()
+            if arduino_controller.arduino is not None:
+                arduino_controller.close_connection()
 
             # tell main.py to restart
             app_result[0] = 1
