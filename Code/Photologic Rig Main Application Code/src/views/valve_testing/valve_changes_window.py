@@ -1,6 +1,5 @@
 import tkinter as tk
 import toml
-from pathlib import Path
 import system_config
 
 from views.gui_common import GUIUtils
@@ -22,13 +21,19 @@ class ValveChanges(tk.Toplevel):
         super().__init__()
         self.title("CONFIRM VALVE DURATION CHANGES")
         self.bind("<Control-w>", lambda event: self.withdraw())
+
         self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.grid_rowconfigure(0, weight=1)
+
         self.resizable(False, False)
 
         self.valve_changes = valve_changes
         self.confirm_callback = confirm_callback
 
         self.create_interface()
+
         self.update_idletasks()
         GUIUtils.center_window(self)
 
@@ -41,42 +46,59 @@ class ValveChanges(tk.Toplevel):
         )
 
         self.valve_frame.grid(row=0, column=0, pady=10, padx=10, sticky="nsew")
+
         self.valve_frame.grid_columnconfigure(0, weight=1)
-        self.valve_frame.grid_rowconfigure(1, weight=1)
+        self.valve_frame.grid_columnconfigure(1, weight=1)
+
+        self.valve_frame.grid_rowconfigure(0, weight=1)
 
         self.side_one_valves_frame = tk.Frame(
             self.valve_frame, highlightbackground="black", highlightthickness=1
         )
-        self.side_one_valves_frame.grid(row=0, column=0, pady=10, padx=10, sticky="w")
-        self.valve_frame.grid_columnconfigure(0, weight=1)
-        self.valve_frame.grid_rowconfigure(1, weight=1)
+        self.side_one_valves_frame.grid(row=0, column=0, pady=10, padx=10, sticky="ew")
 
         self.side_two_valves_frame = tk.Frame(
             self.valve_frame, highlightbackground="black", highlightthickness=1
         )
-        self.side_two_valves_frame.grid(row=0, column=1, pady=10, padx=10, sticky="e")
-        self.valve_frame.grid_columnconfigure(0, weight=1)
-        self.valve_frame.grid_rowconfigure(1, weight=1)
+        self.side_two_valves_frame.grid(row=0, column=1, pady=10, padx=10, sticky="ew")
+
+        for i in range(2):
+            self.side_one_valves_frame.grid_columnconfigure(i, weight=1)
+            self.side_two_valves_frame.grid_columnconfigure(i, weight=1)
+
+        for i in range(8):
+            self.side_one_valves_frame.grid_rowconfigure(i, weight=1)
+            self.side_two_valves_frame.grid_rowconfigure(i, weight=1)
 
         self.create_valve_change_labels()
 
+        self.buttons_frame = tk.Frame(
+            self, highlightbackground="black", highlightthickness=1
+        )
+        self.buttons_frame.grid(row=1, column=0, pady=10, padx=10, sticky="ew")
+        self.buttons_frame.grid_rowconfigure(0, weight=1)
+        self.buttons_frame.grid_columnconfigure(0, weight=1)
+        self.buttons_frame.grid_columnconfigure(1, weight=1)
+
         confirm = tk.Button(
-            self,
+            self.buttons_frame,
             text="Confirm Changes",
             command=lambda: self.confirmation(),
             bg="green",
-            font=("Helvetica", 24),
+            font=("Helvetica", 20),
+            width=20,
         )
-        confirm.grid(row=1, column=0, sticky="w", ipadx=10, ipady=10)
+        confirm.grid(row=0, column=0, sticky="w", padx=5, ipadx=10, ipady=10)
 
         abort = tk.Button(
-            self,
+            self.buttons_frame,
             text="ABORT CHANGES",
             command=lambda: self.destroy(),
             bg="tomato",
-            font=("Helvetica", 24),
+            font=("Helvetica", 20),
+            width=20,
         )
-        abort.grid(row=1, column=0, sticky="e", ipadx=10, ipady=10)
+        abort.grid(row=0, column=1, sticky="e", padx=5, ipadx=10, ipady=10)
 
     def confirmation(self):
         self.confirm_callback()
@@ -110,6 +132,8 @@ class ValveChanges(tk.Toplevel):
                 font=("Helvetica", 24),
                 highlightthickness=1,
                 highlightbackground="dark blue",
+                height=3,
+                width=26,
             )
             label.grid(row=row, column=column, padx=10, pady=10, sticky="nsew")
 
@@ -120,6 +144,8 @@ class ValveChanges(tk.Toplevel):
                 font=("Helvetica", 24),
                 highlightthickness=1,
                 highlightbackground="dark blue",
+                height=3,
+                width=26,
             )
             label.grid(row=row + 1, column=column, padx=10, pady=10, sticky="nsew")
 

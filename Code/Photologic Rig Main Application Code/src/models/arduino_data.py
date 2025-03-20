@@ -39,10 +39,9 @@ class ArduinoData:
         Can be either "selected" to set new primary durations, or "archive" to archive previous
         "selected" durations.
         """
-        toml_dir = Path(__file__).parent.parent.parent.resolve()
-        toml_path = toml_dir / "assets" / "valve_durations.toml"
+        dur_path = system_config.get_valve_durations()
 
-        with open(toml_path, "r") as f:
+        with open(dur_path, "r") as f:
             toml_file = toml.load(f)
 
         if type_durations == "selected":
@@ -55,7 +54,7 @@ class ArduinoData:
             selected_durations["side_two_durations"] = side_two.tolist()
 
             # save the file with the updated content
-            with open(toml_path, "w") as f:
+            with open(dur_path, "w") as f:
                 toml.dump(toml_file, f)
         elif type_durations == "archive":
             # find first archive not filled
@@ -70,7 +69,7 @@ class ArduinoData:
                     archive["side_one_durations"] = side_one.tolist()
                     archive["side_two_durations"] = side_two.tolist()
 
-                    with open(toml_path, "w") as f:
+                    with open(dur_path, "w") as f:
                         toml.dump(toml_file, f)
                 case 2:
                     # move 1-> 2, insert 1
@@ -83,9 +82,8 @@ class ArduinoData:
                     archive_1["side_one_durations"] = side_one.tolist()
                     archive_1["side_two_durations"] = side_two.tolist()
 
-                    with open(toml_path, "w") as f:
+                    with open(dur_path, "w") as f:
                         toml.dump(toml_file, f)
-                    pass
 
                 case 3 | 0:
                     # case 3) 2 -> 3, 1-> 2, insert 1
@@ -100,7 +98,7 @@ class ArduinoData:
                     archive_1["side_one_durations"] = side_one.tolist()
                     archive_1["side_two_durations"] = side_two.tolist()
 
-                    with open(toml_path, "w") as f:
+                    with open(dur_path, "w") as f:
                         toml.dump(toml_file, f)
 
     def load_durations(
