@@ -31,7 +31,7 @@ This repository contains all files needed to reproduce a experimental rig of thi
     #### Windows Installation 
     To install the program on windows, there are two options. 
     
-    1. **Exe Installer File** - To simplify this portion of the rig assembly / installation, a simple .exe installer has been provided. It can be found [here]().
+    1. **Exe Installer File** - To simplify this portion of the rig assembly / installation, a simple .exe installer has been provided. It can be found [here](https://github.com/blakehourigan/Photologic-Experiment-Rig/releases/tag/v1.0).
     
     2. **Running the Source Code** - For those that would rather run the program via source code, the process for getting the source code up and running can be found below.
         1. **Install Python 3.12** - This program was developed with Python version 3.12. This program is NOT guaranteed to work with any versions other than Python3.12. It can be installed [here](https://www.python.org/downloads/release/python-3120/).
