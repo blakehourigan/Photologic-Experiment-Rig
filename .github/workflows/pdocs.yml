@@ -30,7 +30,7 @@ jobs:
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
 
       - run: mkdir tmp_docs/ && PY_FILES=$(find 'Code/Photologic Rig Main Application Code/src/' -type f -name "*.py")
-            echo "PY_FILES=$PY_FILES" >> $GITHUB_ENV && pdoc -o tmp_docs/ $PY_FILES
+            && pdoc -o tmp_docs/ $PY_FILES
 
 
 
