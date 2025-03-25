@@ -28,8 +28,9 @@ jobs:
       
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: find 'Code/Photologic Rig Main Application Code/src/' -type f -name "*.py" | while read -r file; do 
-             pdoc -o docs/ "$file"
+      - run: |
+             find 'Code/Photologic Rig Main Application Code/src/' -type f -name "*.py" | while read -r file; do 
+               pdoc -o docs/ "$file"
              done
 
       - uses: actions/upload-pages-artifact@v3
