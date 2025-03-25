@@ -36,6 +36,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
+          name: docs
           path: docs/
 
   # Deploy the artifact to GitHub pages.
@@ -51,4 +52,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
+        uses: actions/download-artifact@v3
+        with:
+          name: docs  
+
+      - id: deploy
         uses: actions/deploy-pages@v4
+        with:
+          folder: docs  
