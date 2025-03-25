@@ -1,3 +1,14 @@
+"""
+'app_logic' is the primary module in the Photologic-Experiment-Rig codebase. It contains the
+StateMachine class which holds the logic for each 'state' an experiment can be in.
+
+Before performing any actions, the StateMachine class initializes the 'TkinterApp' class, which launches
+a tkinter root and allows for a GUI to be created for the program.
+
+This module is launched from main to make restarting the program easier, which is done by destroying the
+instance of state machine and launcing a new one.
+"""
+
 from tk_app import TkinterApp
 import time
 import threading
@@ -8,12 +19,13 @@ import toml
 from views.gui_common import GUIUtils
 import system_config
 
-
 logger = logging.getLogger(__name__)
+"""Created in TkinterApp, this is used to log warnings and errors in the program"""
 
 
-rig_config = system_config.get_rig_config()
-with open(rig_config, "r") as f:
+RIG_CONFIG = system_config.get_rig_config()
+"""This utilizes `system_config` module """
+with open(RIG_CONFIG, "r") as f:
     DOOR_CONFIG = toml.load(f)["door_motor_config"]
 
 # pull total valves constant from toml config
@@ -64,22 +76,20 @@ class StateMachine(TkinterApp):
         self.main_gui.mainloop()
 
     def trigger(self, event):
-        """
-        This function
-        """
+        """This function takes a requested state and decides if the transition from this state is allowed."""
         transition = (self.state, event)
         self.prev_state = self.state
         new_state = None
 
         logger.info(f"state transition -> {transition}")
+
         # checking if the attemped transition is valid according to the table
         if transition in self.transitions:
             new_state = self.transitions[transition]
-        # if the key is not in the transition table and we requested a reset, don't do that yet
         else:
+            # if the key is not in the transition table, handle rejection based on desired state
             self.reject_actions(event)
 
-        response = None
         # if the key was in the transition table, and the new state wants to reset the program, that means this is a valid action at this time. MAKE SURE the
         # user REALLY wants to do that
         if new_state == "RESET PROGRAM":
@@ -100,23 +110,24 @@ class StateMachine(TkinterApp):
                 )
                 new_state = self.prev_state
 
-        # if we have a new state, do the thing associated with that state
+        # if we have a new state, perform the associated action for that state
         if new_state:
             logger.info(f"new state -> {new_state}")
             self.execute_state(new_state)
 
-    def execute_state(self, new_state):
+    def execute_state(self, new_state: str):
         """
         takes the key for the transition table (from_state, to_state) and resulting_state, and executes
         the action corresponding to new_state, based upon key. if the action is defined under state_target,
         that action will be taken in a new thread to avoid overloading the main tkinter thread. otherwise
         it is executed immediately in the main thread.
         """
-        state_target = None
+        thread_target = None
+
         match new_state:
             case "START PROGRAM":
 
-                def state_target():
+                def thread_target():
                     StartProgram(
                         self.exp_data,
                         self.main_gui,
@@ -128,17 +139,19 @@ class StateMachine(TkinterApp):
             case "STOP PROGRAM":
                 StopProgram(self.main_gui, self.arduino_controller, self.trigger)
             case "GENERATE SCHEDULE":
-
-                def state_target():
-                    GenerateSchedule(
-                        self.main_gui,
-                        self.arduino_controller,
-                        self.process_queue,
-                        self.trigger,
-                    )
+                # because this will run in main thread, we need to return early to avoid self.state
+                # assignment confusion
+                self.state = new_state
+                GenerateSchedule(
+                    self.main_gui,
+                    self.arduino_controller,
+                    self.process_queue,
+                    self.trigger,
+                )
+                return
             case "ITI":
 
-                def state_target():
+                def thread_target():
                     InitialTimeInterval(
                         self.exp_data,
                         self.main_gui,
@@ -149,7 +162,7 @@ class StateMachine(TkinterApp):
                     )
             case "OPENING DOOR":
 
-                def state_target():
+                def thread_target():
                     OpeningDoor(
                         self.exp_data,
                         self.main_gui,
@@ -159,7 +172,7 @@ class StateMachine(TkinterApp):
                     )
             case "TTC":
 
-                def state_target():
+                def thread_target():
                     TimeToContact(
                         self.exp_data,
                         self.arduino_controller,
@@ -169,7 +182,7 @@ class StateMachine(TkinterApp):
                     )
             case "SAMPLE":
 
-                def state_target():
+                def thread_target():
                     SampleTime(
                         self.exp_data,
                         self.main_gui,
@@ -179,7 +192,7 @@ class StateMachine(TkinterApp):
                     )
             case "TRIAL END":
 
-                def state_target():
+                def thread_target():
                     TrialEnd(
                         self.exp_data,
                         self.main_gui,
@@ -191,8 +204,8 @@ class StateMachine(TkinterApp):
         self.prev_state = self.state
         self.state = new_state
 
-        if state_target:
-            threading.Thread(target=state_target).start()
+        if thread_target:
+            threading.Thread(target=thread_target).start()
 
     def process_queue(self, data_queue):
         """
@@ -241,6 +254,9 @@ class GenerateSchedule:
         # show the program sched window via the callback passed into the class at initialization
         self.main_gui.show_secondary_window("Program Schedule")
 
+        for window in self.main_gui.windows["Raster Plot"]:
+            window.create_plot()
+
         # send valve open durations stored in arduino_data.toml to the arduino
         self.arduino_controller.send_experiment_variables()
         self.arduino_controller.send_experiment_schedule()
@@ -252,6 +268,7 @@ class GenerateSchedule:
         self.arduino_controller.listener_thread = threading.Thread(
             target=self.arduino_controller.listen_for_serial
         )
+
         self.arduino_controller.listener_thread.start()
 
         logger.info("Started listening thread for Arduino serial input.")
@@ -581,123 +598,107 @@ class SampleTime:
 
 
 class TrialEnd:
-    def __init__(self, exp_data, main_gui, arduino_controller, prev_state, trigger):
-        self.exp_data = exp_data
-        self.event_data = self.exp_data.event_data
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
+    def __init__(
+        self, exp_data, main_gui, arduino_controller, prev_state, trigger
+    ) -> None:
+        # use the same logical trial for all functions current_trial_number - 1
+        # to account for 1 indexing
+        logical_trial = exp_data.current_trial_number - 1
 
-        self.trigger_state_change = trigger
+        self.arduino_trial_end(arduino_controller)
 
-        logical_trial = self.exp_data.current_trial_number - 1
-        program_schedule = self.main_gui.windows["Program Schedule"]
-
-        up_command = "UP\n".encode("utf-8")
-        self.arduino_controller.send_command(command=up_command)
-
-        stop_command = "STOP OPEN VALVES\n".encode("utf-8")
-        self.arduino_controller.send_command(command=stop_command)
-
-        #######TRIAL NUMBER IS INCREMENTED HERE#######
-        if self.end_trial():
+        #######TRIAL NUMBER IS INCREMENTED INSIDE OF END_TRIAL#######
+        if self.end_trial(exp_data):
+            program_schedule = main_gui.windows["Program Schedule"]
             # if the experiment is over update the licks for the final trial
-            self.update_schedule_licks(logical_trial)
+            self.update_schedule_licks(logical_trial, exp_data)
             program_schedule.refresh_end_trial(logical_trial)
 
-            self.trigger_state_change("STOP")
+            trigger("STOP")
             # return from the call / kill the working thread
             return
 
         match prev_state:
             case "TTC":
-                self.handle_from_ttc(logical_trial)
-                self.main_gui.windows["Program Schedule"].refresh_end_trial(
-                    logical_trial
-                )
+                self.handle_from_ttc(logical_trial, trigger, exp_data)
             case "SAMPLE":
-                self.handle_from_sample(logical_trial)
-                self.main_gui.windows["Program Schedule"].refresh_end_trial(
-                    logical_trial
-                )
+                self.handle_from_sample(logical_trial, main_gui, exp_data, trigger)
             case _:
                 # cases not explicitly defined go here
                 logger.error("UNDEFINED PREVIOUS TRANSITION IN TRIAL END STATE")
 
-    def handle_from_sample(self, logical_trial):
+        main_gui.windows["Program Schedule"].refresh_end_trial(logical_trial)
+
+    def arduino_trial_end(self, arduino_controller):
+        up_command = "UP\n".encode("utf-8")
+        arduino_controller.send_command(command=up_command)
+
+        stop_command = "STOP OPEN VALVES\n".encode("utf-8")
+        arduino_controller.send_command(command=stop_command)
+
+    def end_trial(self, exp_data) -> bool:
+        """
+        This method checks if current trial is the last trial. If it is, we return true to the calling code.
+        If false, we increment current_trial_number, return false, and proceed to next trial.
+        """
+        current_trial = exp_data.current_trial_number
+        max_trials = exp_data.exp_var_entries["Num Trials"]
+
+        if current_trial >= max_trials:
+            return True
+
+        exp_data.current_trial_number += 1
+        return False
+
+    def handle_from_ttc(self, logical_trial: int, trigger, exp_data) -> None:
+        """
+        Handle the case that we are ending a trial after a TTC state. Rat did not engage in this trial.
+        """
+        self.update_ttc_actual(logical_trial, exp_data)
+        self.update_schedule_licks(logical_trial, exp_data)
+
+        trigger("ITI")
+
+    def handle_from_sample(self, logical_trial: int, main_gui, exp_data, trigger):
         """
         Handle the case that we are ending a trial after a Sample state. Rat engaged in this trial.
         TTC time is not handled here because it would be impossible to grab that time at this point.
         Differs in TTC becuase actual ttc == allocated time can be grabbed at any later time in the program.
         """
 
-        self.update_schedule_licks(logical_trial)
+        self.update_schedule_licks(logical_trial, exp_data)
 
-        lick_stamps_sd_one, lick_stamps_sd_two = self.update_model(logical_trial)
+        self.update_raster_plots(exp_data, logical_trial, main_gui)
 
-        self.update_raster(lick_stamps_sd_one, lick_stamps_sd_two, logical_trial)
+        trigger("ITI")
 
-        self.trigger_state_change("ITI")
-
-    def handle_from_ttc(self, logical_trial):
+    def update_ttc_actual(self, logical_trial: int, exp_data) -> None:
         """
-        Handle the case that we are ending a trial after a TTC state. Rat did not engage in this trial.
+        Update the actual ttc time take in the program schedule with the max time value,
+        since we reached trial end we know we took the max time allowed
         """
-        self.update_ttc_actual(logical_trial)
-        self.update_schedule_licks(logical_trial)
+        program_df = exp_data.program_schedule_df
 
-        self.trigger_state_change("ITI")
+        ttc_column_value = program_df.loc[logical_trial, "TTC"]
+        program_df.loc[logical_trial, "TTC Actual"] = ttc_column_value
 
-    def end_trial(self) -> bool:
-        """
-        This method checks if current trial is the last trial. If it is, we return true to the calling code.
-        If false, we increment current_trial_number, return false, and proceed to next trial.
-        """
+    def update_schedule_licks(self, logical_trial: int, exp_data) -> None:
+        """Update the licks for each side in the program schedule df for this trial"""
+        program_df = exp_data.program_schedule_df
+        event_data = exp_data.event_data
 
-        cur_trial = self.exp_data.current_trial_number
-        max_trials = self.exp_data.exp_var_entries["Num Trials"]
-
-        if cur_trial >= max_trials:
-            return True
-
-        self.exp_data.current_trial_number += 1
-        return False
-
-    def update_ttc_actual(self, logical_trial):
-        # if we just came from ttc, then update actual ttc time taken
-        program_df = self.exp_data.program_schedule_df
-
-        cur_value = program_df.loc[logical_trial, "TTC"]
-        program_df.loc[logical_trial, "TTC Actual"] = cur_value
-
-    def update_schedule_licks(self, logical_trial):
-        program_df = self.exp_data.program_schedule_df
-
-        licks_sd_one = self.event_data.side_one_licks
-        licks_sd_two = self.event_data.side_two_licks
+        licks_sd_one = event_data.side_one_licks
+        licks_sd_two = event_data.side_two_licks
 
         program_df.loc[logical_trial, "Port 1 Licks"] = licks_sd_one
 
         program_df.loc[logical_trial, "Port 2 Licks"] = licks_sd_two
 
-    def update_model(self, logical_trial) -> (list, list):
-        # end-of-trial call that just updates the gui
-        # based on trial model changes
+    def update_raster_plots(self, exp_data, logical_trial, main_gui) -> None:
+        """instruct raster windows to update with new lick timestamps"""
+        # gather lick timestamp data from the event data model
+        lick_stamps = exp_data.event_data.get_lick_timestamps(logical_trial)
 
-        # if we just finished a trial, and we're moving back around to the ITI, update
-        # lick model,
-        lick_stamps_side_one, lick_stamps_side_two = (
-            self.event_data.get_lick_timestamps(logical_trial)
-        )
-
-        self.event_data.side_one_trial_licks.append(lick_stamps_side_one)
-        self.event_data.side_two_trial_licks.append(lick_stamps_side_two)
-        return lick_stamps_side_one, lick_stamps_side_two
-
-    def update_raster(self, lick_stamps_side_one, lick_stamps_side_two, logical_trial):
-        """
-        update raster with lick events using the timestamps for each lick
-        """
-        lick_stamps = [lick_stamps_side_one, lick_stamps_side_two]
-
-        for i, window in enumerate(self.main_gui.windows["Raster Plot"]):
-            window.update_plot(window, lick_stamps[i], logical_trial)
+        # send it to raster windows
+        for i, window in enumerate(main_gui.windows["Raster Plot"]):
+            window.update_plot(lick_stamps[i], logical_trial)

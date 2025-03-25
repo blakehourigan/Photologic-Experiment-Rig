@@ -93,6 +93,9 @@ class ExperimentProcessData:
             # update other var types here
             return self.exp_var_entries[variable_name]
 
+        # couldn't find the value, return -1 as error code
+        return -1
+
     def generate_schedule(self) -> bool:
         """
         This is a primary function of the program. This function generates the pseudo random schedule for what stimuli will be presented in which
@@ -131,6 +134,7 @@ class ExperimentProcessData:
 
         except Exception as e:
             logger.error(f"Error generating program schedule {e}.")
+            return False
 
     def create_random_intervals(self) -> None:
         try:

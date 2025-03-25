@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import logging
 
@@ -7,19 +6,14 @@ logger = logging.getLogger(__name__)
 
 class EventData:
     def __init__(self):
-        # list of lists where each list inside the overall list is a trial full of lick timestamp data
-        self.side_one_trial_licks: list[list[float]] = []
-        self.side_two_trial_licks: list[list[float]] = []
-
-        self.side_one_licks = 0
-        self.side_two_licks = 0
-
         """
         setup the licks data frame that will hold the timestamps for the licks and which port was licked
         and create an empty first row to avoid a blank table when the program is first run
         """
-        # add in trial relative stamp
-        # add in lick duration
+
+        self.side_one_licks = 0
+        self.side_two_licks = 0
+
         self.event_dataframe = pd.DataFrame(
             {
                 "Trial Number": pd.Series(dtype="float64"),
@@ -31,6 +25,7 @@ class EventData:
                 "State": pd.Series(dtype="str"),
             }
         )
+
         logger.info("Licks dataframe initialized.")
 
     def insert_row_into_df(
@@ -62,12 +57,12 @@ class EventData:
         event_df.loc[cur_len, "Trial Relative Stamp"] = state_rel_stamp
         event_df.loc[cur_len, "State"] = state
 
-    def get_lick_timestamps(self, logical_trial) -> (list, list):
+    def get_lick_timestamps(self, logical_trial: int) -> tuple[list, list]:
         """
-        Returns a list of timestamps for the given trial number and licked port.
+        Returns a tuple of two lists. First list contains timestamps for port one,
+        second list contains timestamps for port two.
         """
-        # get the ACTUAL trial number, not logical_trial because that is how
-        # trials are stored in licks df. 1-indexed, not 0-indexed
+        # find the 1-indexed trial number, this is how they are stored in the df
         trial_number = logical_trial + 1
 
         try:
@@ -85,6 +80,7 @@ class EventData:
             timestamps_side_two = filtered_df_side_two["Time Stamp"].tolist()
 
             logger.info(f"Lick timestamps retrieved for trial {trial_number}.")
+
             return timestamps_side_one, timestamps_side_two
         except Exception as e:
             logger.error(f"Error getting lick timestamps for trial {trial_number}: {e}")
