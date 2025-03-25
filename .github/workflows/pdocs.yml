@@ -33,12 +33,12 @@ jobs:
             echo "PY_FILES=$PY_FILES" >> $GITHUB_ENV
 
       - run: echo $PY_FILES  
-          pdoc -o tmp_docs/ $PY_FILES
+          pdoc -o docs/ $PY_FILES
 
       - uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: tmp_docs/
+          path: docs/
 
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
