@@ -1,4 +1,4 @@
-name: website
+name: Photologic-Experiment-Rig-API-Docs
 
 # build the documentation whenever there are new commits on main
 on:
@@ -24,10 +24,11 @@ jobs:
           python-version: '3.12'
 
       # ADJUST THIS: install all dependencies (including pdoc)
-      - run: pip install -e .
+      - run: pip install -r /Code/Photologic Rig Main Application Code/requirements.txt .
+      
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: python docs/make.py
+      - run: pdoc -o /Code/Photologic Rig Main Application Code/docs/ /Code/Photologic Rig Main Application Code/src/*
 
       - uses: actions/upload-pages-artifact@v3
         with:
