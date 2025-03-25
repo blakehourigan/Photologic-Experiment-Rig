@@ -36,7 +36,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          name: artifact
+          name: github-pages
           path: docs/
 
   # Deploy the artifact to GitHub pages.
