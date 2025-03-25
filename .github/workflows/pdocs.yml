@@ -28,7 +28,7 @@ jobs:
       
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: PY_FILES=$(find src/ -type f -name "*.py")
+      - run: PY_FILES=$(find 'Code/Photologic Rig Main Application Code/src/ -type f -name "*.py")
 
       - run: pdoc -o 'Code/Photologic Rig Main Application Code/docs/' $PY_FILES
 
