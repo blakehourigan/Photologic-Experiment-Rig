@@ -267,15 +267,15 @@ instance of state machine and launcing a new one.</p>
 </span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>
 </span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">    Methods</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">    -------</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">    - `trigger(event)`</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">    - `trigger`(event)</span>
 </span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        passes state to `execute_state` method.</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">    - `execute_state(new_state: str)`</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">    - `execute_state`(new_state: str)</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">        Takes the state passed from trigger event and decides appropriate action.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">    - `process_queue(data_queue)`</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">    - `process_queue`(data_queue)</span>
 </span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        Processes incoming data from the Arduino board. Reads from queue that is added to by `controllers.arduino_control` module</span>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        `listen_for_serial` method.</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">    - `reject_actions(event)`</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">    - `reject_actions`(event)</span>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        A static method that handles the rejection of actions that cannot be performed given a certain state transition.</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
@@ -628,7 +628,7 @@ instance of state machine and launcing a new one.</p>
 </span><span id="L-420"><a href="#L-420"><span class="linenos">420</span></a>
 </span><span id="L-421"><a href="#L-421"><span class="linenos">421</span></a><span class="sd">    Methods</span>
 </span><span id="L-422"><a href="#L-422"><span class="linenos">422</span></a><span class="sd">    -------</span>
-</span><span id="L-423"><a href="#L-423"><span class="linenos">423</span></a><span class="sd">    - `finalize_program(main_gui, arduino_controller)`</span>
+</span><span id="L-423"><a href="#L-423"><span class="linenos">423</span></a><span class="sd">    - `finalize_program`(main_gui, arduino_controller)</span>
 </span><span id="L-424"><a href="#L-424"><span class="linenos">424</span></a><span class="sd">        This method waits until the door closes for the last time, then cancels the last scheduled task, stops the listener thread, closes Arduino connections, and</span>
 </span><span id="L-425"><a href="#L-425"><span class="linenos">425</span></a><span class="sd">        instructs the user to save their data.</span>
 </span><span id="L-426"><a href="#L-426"><span class="linenos">426</span></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -935,7 +935,7 @@ instance of state machine and launcing a new one.</p>
 </span><span id="L-727"><a href="#L-727"><span class="linenos">727</span></a>
 </span><span id="L-728"><a href="#L-728"><span class="linenos">728</span></a><span class="sd">        Methods</span>
 </span><span id="L-729"><a href="#L-729"><span class="linenos">729</span></a><span class="sd">        -------</span>
-</span><span id="L-730"><a href="#L-730"><span class="linenos">730</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="L-730"><a href="#L-730"><span class="linenos">730</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="L-731"><a href="#L-731"><span class="linenos">731</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="L-732"><a href="#L-732"><span class="linenos">732</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-733"><a href="#L-733"><span class="linenos">733</span></a>        <span class="k">try</span><span class="p">:</span>
@@ -1034,7 +1034,7 @@ instance of state machine and launcing a new one.</p>
 </span><span id="L-826"><a href="#L-826"><span class="linenos">826</span></a>
 </span><span id="L-827"><a href="#L-827"><span class="linenos">827</span></a><span class="sd">        Methods</span>
 </span><span id="L-828"><a href="#L-828"><span class="linenos">828</span></a><span class="sd">        -------</span>
-</span><span id="L-829"><a href="#L-829"><span class="linenos">829</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="L-829"><a href="#L-829"><span class="linenos">829</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="L-830"><a href="#L-830"><span class="linenos">830</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="L-831"><a href="#L-831"><span class="linenos">831</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-832"><a href="#L-832"><span class="linenos">832</span></a>
@@ -1204,15 +1204,15 @@ at the current users documents folder.</p>
 </span><span id="StateMachine-60"><a href="#StateMachine-60"><span class="linenos"> 60</span></a>
 </span><span id="StateMachine-61"><a href="#StateMachine-61"><span class="linenos"> 61</span></a><span class="sd">    Methods</span>
 </span><span id="StateMachine-62"><a href="#StateMachine-62"><span class="linenos"> 62</span></a><span class="sd">    -------</span>
-</span><span id="StateMachine-63"><a href="#StateMachine-63"><span class="linenos"> 63</span></a><span class="sd">    - `trigger(event)`</span>
+</span><span id="StateMachine-63"><a href="#StateMachine-63"><span class="linenos"> 63</span></a><span class="sd">    - `trigger`(event)</span>
 </span><span id="StateMachine-64"><a href="#StateMachine-64"><span class="linenos"> 64</span></a><span class="sd">        Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,</span>
 </span><span id="StateMachine-65"><a href="#StateMachine-65"><span class="linenos"> 65</span></a><span class="sd">        passes state to `execute_state` method.</span>
-</span><span id="StateMachine-66"><a href="#StateMachine-66"><span class="linenos"> 66</span></a><span class="sd">    - `execute_state(new_state: str)`</span>
+</span><span id="StateMachine-66"><a href="#StateMachine-66"><span class="linenos"> 66</span></a><span class="sd">    - `execute_state`(new_state: str)</span>
 </span><span id="StateMachine-67"><a href="#StateMachine-67"><span class="linenos"> 67</span></a><span class="sd">        Takes the state passed from trigger event and decides appropriate action.</span>
-</span><span id="StateMachine-68"><a href="#StateMachine-68"><span class="linenos"> 68</span></a><span class="sd">    - `process_queue(data_queue)`</span>
+</span><span id="StateMachine-68"><a href="#StateMachine-68"><span class="linenos"> 68</span></a><span class="sd">    - `process_queue`(data_queue)</span>
 </span><span id="StateMachine-69"><a href="#StateMachine-69"><span class="linenos"> 69</span></a><span class="sd">        Processes incoming data from the Arduino board. Reads from queue that is added to by `controllers.arduino_control` module</span>
 </span><span id="StateMachine-70"><a href="#StateMachine-70"><span class="linenos"> 70</span></a><span class="sd">        `listen_for_serial` method.</span>
-</span><span id="StateMachine-71"><a href="#StateMachine-71"><span class="linenos"> 71</span></a><span class="sd">    - `reject_actions(event)`</span>
+</span><span id="StateMachine-71"><a href="#StateMachine-71"><span class="linenos"> 71</span></a><span class="sd">    - `reject_actions`(event)</span>
 </span><span id="StateMachine-72"><a href="#StateMachine-72"><span class="linenos"> 72</span></a><span class="sd">        A static method that handles the rejection of actions that cannot be performed given a certain state transition.</span>
 </span><span id="StateMachine-73"><a href="#StateMachine-73"><span class="linenos"> 73</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="StateMachine-74"><a href="#StateMachine-74"><span class="linenos"> 74</span></a>
@@ -1470,15 +1470,15 @@ It coordinates co-operation between view (gui) and models (data).</p>
 <h2 id="methods">Methods</h2>
 
 <ul>
-<li><code>trigger(event)</code>
+<li><code><a href="#StateMachine.trigger">trigger</a></code>(event)
 Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,
 passes state to <code><a href="#StateMachine.execute_state">execute_state</a></code> method.</li>
-<li><code>execute_state(new_state: str)</code>
+<li><code><a href="#StateMachine.execute_state">execute_state</a></code>(new_state: str)
 Takes the state passed from trigger event and decides appropriate action.</li>
-<li><code>process_queue(data_queue)</code>
+<li><code><a href="#StateMachine.process_queue">process_queue</a></code>(data_queue)
 Processes incoming data from the Arduino board. Reads from queue that is added to by <code>controllers.arduino_control</code> module
 <code>listen_for_serial</code> method.</li>
-<li><code>reject_actions(event)</code>
+<li><code><a href="#StateMachine.reject_actions">reject_actions</a></code>(event)
 A static method that handles the rejection of actions that cannot be performed given a certain state transition.</li>
 </ul>
 </div>
@@ -2201,7 +2201,7 @@ with in the program. Used to tell Arduino that program begins now.</li>
 </span><span id="StopProgram-421"><a href="#StopProgram-421"><span class="linenos">421</span></a>
 </span><span id="StopProgram-422"><a href="#StopProgram-422"><span class="linenos">422</span></a><span class="sd">    Methods</span>
 </span><span id="StopProgram-423"><a href="#StopProgram-423"><span class="linenos">423</span></a><span class="sd">    -------</span>
-</span><span id="StopProgram-424"><a href="#StopProgram-424"><span class="linenos">424</span></a><span class="sd">    - `finalize_program(main_gui, arduino_controller)`</span>
+</span><span id="StopProgram-424"><a href="#StopProgram-424"><span class="linenos">424</span></a><span class="sd">    - `finalize_program`(main_gui, arduino_controller)</span>
 </span><span id="StopProgram-425"><a href="#StopProgram-425"><span class="linenos">425</span></a><span class="sd">        This method waits until the door closes for the last time, then cancels the last scheduled task, stops the listener thread, closes Arduino connections, and</span>
 </span><span id="StopProgram-426"><a href="#StopProgram-426"><span class="linenos">426</span></a><span class="sd">        instructs the user to save their data.</span>
 </span><span id="StopProgram-427"><a href="#StopProgram-427"><span class="linenos">427</span></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -2281,7 +2281,7 @@ with in the program. Used to tell Arduino that program begins now.</li>
 <h2 id="methods">Methods</h2>
 
 <ul>
-<li><code>finalize_program(main_gui, arduino_controller)</code>
+<li><code><a href="#StopProgram.finalize_program">finalize_program</a></code>(main_gui, arduino_controller)
 This method waits until the door closes for the last time, then cancels the last scheduled task, stops the listener thread, closes Arduino connections, and
 instructs the user to save their data.</li>
 </ul>
@@ -2992,7 +2992,7 @@ update GUI with new state time.</li>
 </span><span id="SampleTime-728"><a href="#SampleTime-728"><span class="linenos">728</span></a>
 </span><span id="SampleTime-729"><a href="#SampleTime-729"><span class="linenos">729</span></a><span class="sd">        Methods</span>
 </span><span id="SampleTime-730"><a href="#SampleTime-730"><span class="linenos">730</span></a><span class="sd">        -------</span>
-</span><span id="SampleTime-731"><a href="#SampleTime-731"><span class="linenos">731</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="SampleTime-731"><a href="#SampleTime-731"><span class="linenos">731</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="SampleTime-732"><a href="#SampleTime-732"><span class="linenos">732</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="SampleTime-733"><a href="#SampleTime-733"><span class="linenos">733</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SampleTime-734"><a href="#SampleTime-734"><span class="linenos">734</span></a>        <span class="k">try</span><span class="p">:</span>
@@ -3093,7 +3093,7 @@ update GUI with new state time.</li>
 </span><span id="SampleTime.__init__-728"><a href="#SampleTime.__init__-728"><span class="linenos">728</span></a>
 </span><span id="SampleTime.__init__-729"><a href="#SampleTime.__init__-729"><span class="linenos">729</span></a><span class="sd">        Methods</span>
 </span><span id="SampleTime.__init__-730"><a href="#SampleTime.__init__-730"><span class="linenos">730</span></a><span class="sd">        -------</span>
-</span><span id="SampleTime.__init__-731"><a href="#SampleTime.__init__-731"><span class="linenos">731</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="SampleTime.__init__-731"><a href="#SampleTime.__init__-731"><span class="linenos">731</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="SampleTime.__init__-732"><a href="#SampleTime.__init__-732"><span class="linenos">732</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="SampleTime.__init__-733"><a href="#SampleTime.__init__-733"><span class="linenos">733</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="SampleTime.__init__-734"><a href="#SampleTime.__init__-734"><span class="linenos">734</span></a>        <span class="k">try</span><span class="p">:</span>
@@ -3161,7 +3161,7 @@ with in the program. Used here to tell Arduino to begin opening valves when lick
 <h2 id="methods">Methods</h2>
 
 <ul>
-<li><code>update_ttc_time(exp_data, logical_trial)</code>
+<li><code><a href="#SampleTime.update_ttc_time">update_ttc_time</a></code>(exp_data, logical_trial)
 Updates program schedule dataframe with actual time used in the <code>TTC</code> state.</li>
 </ul>
 </div>
@@ -3252,7 +3252,7 @@ so we didn't take all the allocated time. update program schedule window with ac
 </span><span id="TrialEnd-827"><a href="#TrialEnd-827"><span class="linenos">827</span></a>
 </span><span id="TrialEnd-828"><a href="#TrialEnd-828"><span class="linenos">828</span></a><span class="sd">        Methods</span>
 </span><span id="TrialEnd-829"><a href="#TrialEnd-829"><span class="linenos">829</span></a><span class="sd">        -------</span>
-</span><span id="TrialEnd-830"><a href="#TrialEnd-830"><span class="linenos">830</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="TrialEnd-830"><a href="#TrialEnd-830"><span class="linenos">830</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="TrialEnd-831"><a href="#TrialEnd-831"><span class="linenos">831</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="TrialEnd-832"><a href="#TrialEnd-832"><span class="linenos">832</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="TrialEnd-833"><a href="#TrialEnd-833"><span class="linenos">833</span></a>
@@ -3403,7 +3403,7 @@ so we didn't take all the allocated time. update program schedule window with ac
 </span><span id="TrialEnd.__init__-827"><a href="#TrialEnd.__init__-827"><span class="linenos">827</span></a>
 </span><span id="TrialEnd.__init__-828"><a href="#TrialEnd.__init__-828"><span class="linenos">828</span></a><span class="sd">        Methods</span>
 </span><span id="TrialEnd.__init__-829"><a href="#TrialEnd.__init__-829"><span class="linenos">829</span></a><span class="sd">        -------</span>
-</span><span id="TrialEnd.__init__-830"><a href="#TrialEnd.__init__-830"><span class="linenos">830</span></a><span class="sd">        - `update_ttc_time(exp_data, logical_trial)`</span>
+</span><span id="TrialEnd.__init__-830"><a href="#TrialEnd.__init__-830"><span class="linenos">830</span></a><span class="sd">        - `update_ttc_time`(exp_data, logical_trial)</span>
 </span><span id="TrialEnd.__init__-831"><a href="#TrialEnd.__init__-831"><span class="linenos">831</span></a><span class="sd">        Updates program schedule dataframe with actual time used in the `TTC` state.</span>
 </span><span id="TrialEnd.__init__-832"><a href="#TrialEnd.__init__-832"><span class="linenos">832</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="TrialEnd.__init__-833"><a href="#TrialEnd.__init__-833"><span class="linenos">833</span></a>
@@ -3463,7 +3463,7 @@ with in the program. Used here to tell Arduino to stop opening valves when licks
 <h2 id="methods">Methods</h2>
 
 <ul>
-<li><code>update_ttc_time(exp_data, logical_trial)</code>
+<li><code>update_ttc_time</code>(exp_data, logical_trial)
 Updates program schedule dataframe with actual time used in the <code>TTC</code> state.</li>
 </ul>
 </div>

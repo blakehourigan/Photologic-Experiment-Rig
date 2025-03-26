@@ -59,15 +59,15 @@ class StateMachine(TkinterApp):
 
     Methods
     -------
-    - `trigger(event)`
+    - `trigger`(event)
         Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,
         passes state to `execute_state` method.
-    - `execute_state(new_state: str)`
+    - `execute_state`(new_state: str)
         Takes the state passed from trigger event and decides appropriate action.
-    - `process_queue(data_queue)`
+    - `process_queue`(data_queue)
         Processes incoming data from the Arduino board. Reads from queue that is added to by `controllers.arduino_control` module
         `listen_for_serial` method.
-    - `reject_actions(event)`
+    - `reject_actions`(event)
         A static method that handles the rejection of actions that cannot be performed given a certain state transition.
     """
 
@@ -420,7 +420,7 @@ class StopProgram:
 
     Methods
     -------
-    - `finalize_program(main_gui, arduino_controller)`
+    - `finalize_program`(main_gui, arduino_controller)
         This method waits until the door closes for the last time, then cancels the last scheduled task, stops the listener thread, closes Arduino connections, and
         instructs the user to save their data.
     """
@@ -727,7 +727,7 @@ class SampleTime:
 
         Methods
         -------
-        - `update_ttc_time(exp_data, logical_trial)`
+        - `update_ttc_time`(exp_data, logical_trial)
         Updates program schedule dataframe with actual time used in the `TTC` state.
         """
         try:
@@ -826,7 +826,7 @@ class TrialEnd:
 
         Methods
         -------
-        - `update_ttc_time(exp_data, logical_trial)`
+        - `update_ttc_time`(exp_data, logical_trial)
         Updates program schedule dataframe with actual time used in the `TTC` state.
         """
 
