@@ -2,7 +2,7 @@
 'app_logic' is the primary module in the Photologic-Experiment-Rig codebase. It contains the
 StateMachine class which holds the logic for each 'state' an experiment can be in.
 
-Before performing any actions, the StateMachine class initializes the 'TkinterApp' class, which launches
+Before performing any actions, the StateMachine class initializes the `src.TkinterApp` class, which launches
 a tkinter root and allows for a GUI to be created for the program.
 
 This module is launched from main to make restarting the program easier, which is done by destroying the
