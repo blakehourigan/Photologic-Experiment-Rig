@@ -32,9 +32,10 @@ jobs:
       - run: PY_FILES=$(find 'Code/Photologic Rig Main Application Code/src/' -type f -name "*.py")
             echo "PY_FILES=$PY_FILES" >> $GITHUB_ENV
 
-      - run: echo $PY_FILES  
+      - run: echo $PY_FILES  &&
           pdoc -o tmp_docs/ $PY_FILES
-          ls -R tmp_docs
+          
+      - run: ls -R tmp_docs
       
       
       - name: Upload static files as artifact
