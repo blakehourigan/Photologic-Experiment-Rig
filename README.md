@@ -25,6 +25,8 @@ This repository contains all files needed to reproduce a experimental rig of thi
  
 ### Assembly Instructions / Requirements for a Functioning Rig
 1. **Rig Controller Code**
+
+   **Documentation for the Rig Controller Code can be found [at this link.](https://blakehourigan.github.io/Photologic-Experiment-Rig/)**
     #### Prerequisites / Dependencies
     To use this program with the Arduino board controlling the rig peripherals (motors, optical sensors, etc) on a Windows machine, you **must** have the Arduino IDE installed. Failing to meet this dependency will result in the Arduino boards failure to connect to the controlling computer. 
     
@@ -50,7 +52,7 @@ This repository contains all files needed to reproduce a experimental rig of thi
     #### Building an Executable for a New Version of the Program
     For those that create new versions of the program to better suit their needs or to fix bugs that will undoubdedly arise through the usage of this program, a [Github Gist](https://gist.github.com/blakehourigan/5e176f2600446a793547babff372299c) has been put together detailing the steps you can take to create a new executable file and installer that will make installation/distribution of the program much simpler. 
     
-2. **Arduino Code**
+3. **Arduino Code**
     #### Prerequisites / Dependencies
     To upload this code, you will need either the arduino-cli or the Arduino IDE. The Arduino IDE will be easiest to work with and can be found [here](https://www.arduino.cc/en/software).
 
@@ -67,23 +69,23 @@ This repository contains all files needed to reproduce a experimental rig of thi
        **NOTE** - If you see lots of red messages and this code does not upload successfully, please make absolutely sure you installed the 'ArduinoStepper' library and that the board is connected **and** selected. You might try the board selection dropdown again to make sure of this. If this does not work, try disconnecting and reconnecting the board, and restarting your PC. 
     7. At this point your Arduino board and your PC are ready to communicate with each other for your experiments. 
  
-3. **3D Printing:**
+4. **3D Printing:**
 
    Under contruction
 
-4. **Machining:**   
+5. **Machining:**   
 
    Under Contruction 
 
-5. **Assembly:** 
+6. **Assembly:** 
 
    Under contruction
 
-6. **Optical Fiber Setup:**   
+7. **Optical Fiber Setup:**   
 
    Under contruction
 
-7. **Circuitry:** 
+8. **Circuitry:** 
 
    Under contruction 
 
