@@ -2,6 +2,12 @@ from tkinter import ttk
 import tkinter as tk
 import time
 import logging
+from typing import Callable
+
+# used for type hinting
+from controllers.arduino_control import ArduinoManager
+from models.experiment_process_data import ExperimentProcessData
+
 
 from views.gui_common import GUIUtils
 
@@ -22,7 +28,12 @@ logger = logging.getLogger()
 # using tk.Tk here says that this class is going to be a tkinter app. when we call super().__init__() this actuall creates the tkinter main window
 # then we can use it as if it were root - e.g self.title("title") sets the root window title
 class MainGUI(tk.Tk):
-    def __init__(self, exp_data, trigger_state_change, arduino_controller) -> None:
+    def __init__(
+        self,
+        exp_data: ExperimentProcessData,
+        trigger_state_change: Callable[[str], None],
+        arduino_controller: ArduinoManager,
+    ) -> None:
         # init the Tk instance to create a GUI
         super().__init__()
         # self.scheduled_tasks is a dict where keys are short task descriptions (e.g ttc_to_iti) and the values are
@@ -97,7 +108,7 @@ class MainGUI(tk.Tk):
             "Valve Control": ValveControlWindow(self.arduino_controller),
         }
 
-    def show_secondary_window(self, window):
+    def show_secondary_window(self, window: str):
         if isinstance(self.windows[window], tuple):
             for instance in self.windows[window]:
                 instance.deiconify()
@@ -581,7 +592,7 @@ class MainGUI(tk.Tk):
     def clear_state_time(self) -> None:
         try:
             self.full_state_time_text.configure(text="/ {:.1f}s".format(0))
-            logger.debug("State time cleared.")
+            logger.info("State time cleared.")
         except Exception as e:
             logger.error(f"Error clearing state time: {e}")
             raise
@@ -621,6 +632,7 @@ class MainGUI(tk.Tk):
             self.trials_completed_label.configure(text="0 / 0 Trials Completed")
             self.stimuli_label.configure(text="Side One | VS | Side Two")
             self.trial_number_label.configure(text="Trial Number: 0")
+
             self.update_progress_bar(True)
 
             self.update_on_state_change(0, "Idle")

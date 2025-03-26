@@ -362,7 +362,7 @@ arduino_control    </h1>
 </span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;error verifying arduino durations -&gt; </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
 </span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a><span class="sd">        Send a specific command to the Arduino. Command must be converted to raw bytes object</span>
 </span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a><span class="sd">        before being passed into this method</span>
@@ -638,7 +638,7 @@ arduino_control    </h1>
 </span><span id="ArduinoManager-242"><a href="#ArduinoManager-242"><span class="linenos">242</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="ArduinoManager-243"><a href="#ArduinoManager-243"><span class="linenos">243</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;error verifying arduino durations -&gt; </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="ArduinoManager-244"><a href="#ArduinoManager-244"><span class="linenos">244</span></a>
-</span><span id="ArduinoManager-245"><a href="#ArduinoManager-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+</span><span id="ArduinoManager-245"><a href="#ArduinoManager-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
 </span><span id="ArduinoManager-246"><a href="#ArduinoManager-246"><span class="linenos">246</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="ArduinoManager-247"><a href="#ArduinoManager-247"><span class="linenos">247</span></a><span class="sd">        Send a specific command to the Arduino. Command must be converted to raw bytes object</span>
 </span><span id="ArduinoManager-248"><a href="#ArduinoManager-248"><span class="linenos">248</span></a><span class="sd">        before being passed into this method</span>
@@ -1178,13 +1178,13 @@ if successful we continue execution and log success message.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">send_command</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">command</span></span><span class="return-annotation">):</span></span>
+        <span class="name">send_command</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">command</span><span class="p">:</span> <span class="nb">bytes</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="ArduinoManager.send_command-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#ArduinoManager.send_command"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduinoManager.send_command-245"><a href="#ArduinoManager.send_command-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduinoManager.send_command-245"><a href="#ArduinoManager.send_command-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
 </span><span id="ArduinoManager.send_command-246"><a href="#ArduinoManager.send_command-246"><span class="linenos">246</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="ArduinoManager.send_command-247"><a href="#ArduinoManager.send_command-247"><span class="linenos">247</span></a><span class="sd">        Send a specific command to the Arduino. Command must be converted to raw bytes object</span>
 </span><span id="ArduinoManager.send_command-248"><a href="#ArduinoManager.send_command-248"><span class="linenos">248</span></a><span class="sd">        before being passed into this method</span>

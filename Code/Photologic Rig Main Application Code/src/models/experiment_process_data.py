@@ -33,13 +33,13 @@ class ExperimentProcessData:
     """
 
     def __init__(self):
-        self.start_time = 0.0
-        self.trial_start_time = 0.0
-        self.state_start_time = 0.0
+        self.start_time: float = 0.0
+        self.trial_start_time: float = 0.0
+        self.state_start_time: float = 0.0
 
         # this number is centralized here so that all state classes can access and update it easily without
         # passing it through to each state every time a state change occurs
-        self.current_trial_number = 1
+        self.current_trial_number: int = 1
 
         self.event_data = EventData()
         self.stimuli_data = StimuliData()
@@ -49,9 +49,10 @@ class ExperimentProcessData:
         self.TTC_intervals_final = None
         self.sample_intervals_final = None
 
-        self.TTC_lick_threshold = 3
+        # this constant should be used in arduino_data to say how many licks moves to sample
+        self.TTC_LICK_THRESHOLD: int = 3
 
-        self.interval_vars = {
+        self.interval_vars: dict[str, int] = {
             "ITI_var": 30000,
             "TTC_var": 20000,
             "sample_var": 15000,
@@ -59,11 +60,14 @@ class ExperimentProcessData:
             "TTC_random_entry": 5000,
             "sample_random_entry": 5000,
         }
-        self.exp_var_entries = {
+        self.exp_var_entries: dict[str, int] = {
             "Num Trial Blocks": 10,
             "Num Stimuli": 4,
             "Num Trials": 0,
         }
+
+        # include an initial definition of program_schedule_df here as a blank df to avoid type errors and to
+        # make it clear that this is a class attriute
         self.program_schedule_df = pd.DataFrame()
 
     def update_model(self, variable_name, value) -> None:

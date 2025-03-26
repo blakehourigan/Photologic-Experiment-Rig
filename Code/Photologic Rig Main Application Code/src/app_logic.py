@@ -13,7 +13,6 @@ instance of state machine and launcing a new one.
 import time
 import threading
 import logging
-from numpy import exp
 import toml
 import queue
 from typing import Callable
@@ -547,7 +546,7 @@ class InitialTimeInterval:
         - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
         update GUI with new trial information and configure the state timer.
         - **state** (*str*): State is used to update GUI with current state and grab the state duration time from the program schedule df.
-        - **trigger** (*Callback method*): This callback is passed in so the `TTC` state can be triggered after the `ITI` time has passed.
+        - **trigger** (*Callback method*): This callback is passed in so the `OPENING DOOR` state can be triggered after the `ITI` time has passed.
         """
         try:
             # get a reference to the event_data from exp_data.
@@ -577,7 +576,7 @@ class InitialTimeInterval:
 
             main_gui.update_on_state_change(initial_time_interval, state)
 
-            # tell tkinter main loop that we want to call trigger with TTC parameter after initial_time_interval milliseconds
+            # tell tkinter main loop that we want to trigger DOOR OPEN state after initial_time_interval milliseconds
             iti_ttc_transition = main_gui.after(
                 int(initial_time_interval),
                 lambda: trigger("DOOR OPEN"),
@@ -595,28 +594,35 @@ class InitialTimeInterval:
 
 
 class OpeningDoor:
+    """
+    Intermediate state between `ITI` and `TTC`.
+    """
+
     # we are going to need to pass in the arduino controller as well
-    def __init__(self, exp_data, main_gui, arduino_controller, state, trigger):
-        self.exp_data = exp_data
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
-
-        self.state = state
-        self.trigger_state_change = trigger
-
+    def __init__(
+        self,
+        exp_data: ExperimentProcessData,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        state: str,
+        trigger: Callable[[str], None],
+    ):
+        """
+        In the initialization steps for this state we command the door down, then wait `DOOR_MOVE_TIME` to move to the `TTC` state.
+        """
         # send comment to arduino to move the door down
         down_command = "DOWN\n".encode("utf-8")
-        self.arduino_controller.send_command(command=down_command)
+        arduino_controller.send_command(command=down_command)
 
         # after the door is down, then we will begin the ttc state logic, found in run_ttc
-        self.main_gui.after(DOOR_MOVE_TIME, lambda: self.trigger_state_change("TTC"))
+        main_gui.after(DOOR_MOVE_TIME, lambda: trigger("TTC"))
 
         # state start time begins
-        self.exp_data.state_start_time = time.time()
-        self.main_gui.clear_state_time()
+        exp_data.state_start_time = time.time()
+        main_gui.clear_state_time()
 
         # show current_time / door close time to avoid confusion
-        self.main_gui.update_on_state_change(DOOR_MOVE_TIME, self.state)
+        main_gui.update_on_state_change(DOOR_MOVE_TIME, state)
 
 
 class TimeToContact:
@@ -624,131 +630,206 @@ class TimeToContact:
     State class for time to contact experiment state
     """
 
-    def __init__(self, exp_data, arduino_controller, main_gui, state, trigger):
+    def __init__(
+        self,
+        exp_data: ExperimentProcessData,
+        arduino_controller: ArduinoManager,
+        main_gui: MainGUI,
+        state: str,
+        trigger: Callable[[str], None],
+    ):
         """
-        this is the initial transition state that occurs every single time we transition to TTC
+        This function transitions the program into the `TTC` state. We can only reach this state from `OPENING DOOR`.
+
+        We transition into `TTC` by resetting the state timer, instructing the Arduino that the trial has started, and scheduling a transition into
+        `TRIAL END` if the rat does not engage in this trial. This is cancelled in sample time if 3 licks or more from `TTC` are detected in the `models.arduino_data`
+        module's `handle_licks` method.
+
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): Reference to the `models.experiment_process_data`. Here we use it to get a reference to event_data to reset state time
+        and find `TTC` state time.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used here to tell Arduino board trial has begun.
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update GUI with new state time.
+        - **state** (*str*): State is used to update GUI with current state and grab the state duration time from the program schedule df.
+        - **trigger** (*Callback method*): This callback is passed in so the `TRIAL END` state can be triggered if trial is not engaged.
         """
-        self.exp_data = exp_data
-        self.arduino_controller = arduino_controller
-        self.main_gui = main_gui
-        self.state = state
-        self.trigger_state_change = trigger
-
-        self.logical_trial = self.exp_data.current_trial_number - 1
-
-        self.run_ttc()
-
         try:
             logging.info(
-                f"STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> {self.exp_data.current_trial_number}."
+                f"STATE CHANGE: DOOR OPEN -> TTC NOW for trial -> {exp_data.current_trial_number}."
             )
-        except Exception as e:
-            logging.error(f"Error in ITI to TTC transition: {e}")
-            raise
 
-    def run_ttc(self):
-        try:
+            logical_trial = exp_data.current_trial_number - 1
+
             # tell the arduino that the trial begins now, becuase the rats are able to licks beginning now
             command = "TRIAL START\n".encode("utf-8")
-            self.arduino_controller.send_command(command)
+            arduino_controller.send_command(command)
 
-            self.main_gui.state_timer_text.configure(text=(self.state + " Time:"))
+            main_gui.state_timer_text.configure(text=(state + " Time:"))
 
             # state time starts now, as does trial because lick availabilty starts now
-            self.exp_data.state_start_time = time.time()
-            self.exp_data.trial_start_time = time.time()
+            exp_data.state_start_time = time.time()
+            exp_data.trial_start_time = time.time()
 
             # find the amount of time available for TTC for this trial
-            time_to_contact = self.exp_data.program_schedule_df.loc[
-                self.logical_trial, self.state
-            ]
+            time_to_contact = exp_data.program_schedule_df.loc[logical_trial, state]
 
-            self.main_gui.update_on_state_change(time_to_contact, self.state)
+            main_gui.update_on_state_change(time_to_contact, state)
 
             # set a state change to occur after the time_to_contact time, this will be cancelled if the laser arduino
             # sends 3 licks befote the TTC_time
-            ttc_iti_transition = self.main_gui.after(
-                int(time_to_contact), lambda: self.trigger_state_change("TRIAL END")
+            ttc_iti_transition = main_gui.after(
+                int(time_to_contact), lambda: trigger("TRIAL END")
             )
 
             # store this task id so that it can be cancelled if the sample time transition is taken.
-            self.main_gui.scheduled_tasks["TTC TO TRIAL END"] = ttc_iti_transition
+            main_gui.scheduled_tasks["TTC TO TRIAL END"] = ttc_iti_transition
 
             logging.info(
-                f"STATE CHANGE: TTC BEGINS NOW for trial -> {self.exp_data.current_trial_number}, completes in {time_to_contact}."
+                f"STATE CHANGE: TTC BEGINS NOW for trial -> {exp_data.current_trial_number}, completes in {time_to_contact}."
             )
         except Exception as e:
-            logging.error(f"Error in time to contact: {e}")
+            logging.error(f"Error in TTC state start: {e}")
             raise
 
 
 class SampleTime:
     """
-    Sample time state. Sample time will be setup and executed every time an inststance of the class is created.
+    Sample state class to handle setup of `Sample` state.
     """
 
-    def __init__(self, exp_data, main_gui, arduino_controller, state, trigger):
-        self.exp_data = exp_data
-        self.event_data = self.exp_data.event_data
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
+    def __init__(
+        self,
+        exp_data: ExperimentProcessData,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        state: str,
+        trigger: Callable[[str], None],
+    ):
+        """
+        This function transitions the program into the `SAMPLE` state. We can only reach this state from `TTC` if 3 licks or more are detected in `TTC`.
 
-        self.state = state
-        self.logical_trial = self.exp_data.current_trial_number - 1
+        We transition into `SAMPLE` by resetting licks to zero to count only sample time licks for trial, updating the actual `TTC` time taken before engaging in the
+        trial, cancelling the scheduled `TTC` to `TRIAL END` transition, instructing Arduino to begin opening valves when licks occur, and updating state start time.
 
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): Reference to the `models.experiment_process_data`. Here we use it to get a reference to event_data to reset state time
+        and find `SAMPLE` state time, reset trial lick data.
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update GUI with new state info and cancel `TTC` to `TRIAL END` transition.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used here to tell Arduino to begin opening valves when licks are detected.
+        - **state** (*str*): State is used to update GUI with current state and grab the state duration time from the program schedule df.
+        - **trigger** (*Callback method*): This callback is passed in so the `TRIAL END` state can be triggered after `SAMPLE` time.
+
+        Methods
+        -------
+        - `update_ttc_time(exp_data, logical_trial)`
+        Updates program schedule dataframe with actual time used in the `TTC` state.
+        """
         try:
-            self.update_ttc_time()
+            logical_trial = exp_data.current_trial_number - 1
+
+            event_data = exp_data.event_data
+
+            # reset trial licks to count only sample licks
+            event_data.side_one_licks = 0
+            event_data.side_two_licks = 0
+
+            self.update_ttc_time(exp_data, logical_trial)
 
             # since the trial was engaged, cancel the planned transition from ttc to trial end. program has branched to new state
-            self.main_gui.after_cancel(
-                self.main_gui.scheduled_tasks["TTC TO TRIAL END"]
-            )
+            main_gui.after_cancel(main_gui.scheduled_tasks["TTC TO TRIAL END"])
 
             # Tell the laser arduino to begin accepting licks and opening valves
             # resetting the lick counters for both spouts
             # tell the laser to begin opening valves on licks
             open_command = "BEGIN OPEN VALVES\n".encode("utf-8")
-            self.arduino_controller.send_command(command=open_command)
+            arduino_controller.send_command(command=open_command)
 
-            self.event_data.side_one_licks = 0
-            self.event_data.side_two_licks = 0
+            exp_data.state_start_time = time.time()
 
-            self.exp_data.state_start_time = time.time()
-
-            sample_interval_value = self.exp_data.program_schedule_df.loc[
-                self.logical_trial, self.state
+            sample_interval_value = exp_data.program_schedule_df.loc[
+                logical_trial, state
             ]
 
-            self.main_gui.update_on_state_change(sample_interval_value, self.state)
+            main_gui.update_on_state_change(sample_interval_value, state)
 
-            self.main_gui.after(
+            main_gui.after(
                 int(sample_interval_value),
                 lambda: trigger("TRIAL END"),
             )
 
             logging.info(
-                f"STATE CHANGE: SAMPLE BEGINS NOW for trial-> {self.exp_data.current_trial_number}, completes in {sample_interval_value}."
+                f"STATE CHANGE: SAMPLE BEGINS NOW for trial-> {exp_data.current_trial_number}, completes in {sample_interval_value}."
             )
         except Exception as e:
             logging.error(
-                f"Error in sample time trial no. {self.exp_data.current_trial_number}: {e}"
+                f"Error in sample time trial no. {exp_data.current_trial_number}: {e}"
             )
             raise
 
-    def update_ttc_time(self):
-        # if we are coming from ttc that means the rat licked at least 3 times in ttc
-        # so we didn't take all the allocated time. update program schedule window with actual time taken
-        ttc_time = (time.time() - self.exp_data.state_start_time) * 1000
+    def update_ttc_time(
+        self, exp_data: ExperimentProcessData, logical_trial: int
+    ) -> None:
+        """
+        If we reach this code that means the rat licked at least 3 times in `TTC` state
+        so we didn't take all the allocated time. update program schedule window with actual time taken
+        """
+        ttc_time = (time.time() - exp_data.state_start_time) * 1000
 
-        self.exp_data.program_schedule_df.loc[self.logical_trial, "TTC Actual"] = round(
+        exp_data.program_schedule_df.loc[logical_trial, "TTC Actual"] = round(
             ttc_time, 3
         )
 
 
 class TrialEnd:
+    """
+    Handle end of trial operations such as data storage and GUI updates with gathered trial data.
+
+    Methods
+    -------
+    - `arduino_trial_end`(arduino_controller): Handle Arduino end of trial, send door up, stop accepting licks.
+    - `end_trial`(exp_data: ExperimentProcessData): Determine if this trial is the last, if not increment trial number in `models.experiment_process_data`.
+    - `handle_from_ttc`(logical_trial, trigger), exp_data): Call `update_ttc_actual` to update TTC time. Trigger transition to `ITI`.
+    - `update_schedule_licks`(logical_trial, exp_data) -> None: Update program schedule df with licks for this trial on each port.
+    - `update_raster_plots`(exp_data, logical_trial, main_gui) -> None: Update raster plot with licks from this trial.
+    """
+
     def __init__(
-        self, exp_data, main_gui, arduino_controller, prev_state, trigger
+        self,
+        exp_data: ExperimentProcessData,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        prev_state: str,
+        trigger: Callable[[str], None],
     ) -> None:
+        """
+        This function transitions the program into the `SAMPLE` state. We can only reach this state from `TTC` if 3 licks or more are detected in `TTC`.
+
+        We transition into `SAMPLE` by resetting licks to zero to count only sample time licks for trial, updating the actual `TTC` time taken before engaging in the
+        trial, cancelling the scheduled `TTC` to `TRIAL END` transition, instructing Arduino to begin opening valves when licks occur, and updating state start time.
+
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): Reference to the `models.experiment_process_data`. Here we use it to update program df with trial licks, increment trial,
+        check if current trial is the final trial, and other data operations.
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update program schedule and populate raster plots with trial licks.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used here to tell Arduino to stop opening valves when licks are detected.
+        - **prev_state** (*str*): prev_state is used to decide which end of trial operations should be executed.
+        - **trigger** (*Callback method*): This callback is passed in so the `ITI` state can be triggered after `TRIAL END` logic is complete.
+
+        Methods
+        -------
+        - `update_ttc_time(exp_data, logical_trial)`
+        Updates program schedule dataframe with actual time used in the `TTC` state.
+        """
+
         # use the same logical trial for all functions current_trial_number - 1
         # to account for 1 indexing
         logical_trial = exp_data.current_trial_number - 1
@@ -766,25 +847,33 @@ class TrialEnd:
             # return from the call / kill the working thread
             return
 
+        # update licks for this trial
+        self.update_schedule_licks(logical_trial, exp_data)
+
         match prev_state:
             case "TTC":
-                self.handle_from_ttc(logical_trial, trigger, exp_data)
+                self.update_ttc_actual(logical_trial, exp_data)
+                trigger("ITI")
             case "SAMPLE":
-                self.handle_from_sample(logical_trial, main_gui, exp_data, trigger)
+                self.update_raster_plots(exp_data, logical_trial, main_gui)
+                trigger("ITI")
             case _:
                 # cases not explicitly defined go here
                 logger.error("UNDEFINED PREVIOUS TRANSITION IN TRIAL END STATE")
 
         main_gui.windows["Program Schedule"].refresh_end_trial(logical_trial)
 
-    def arduino_trial_end(self, arduino_controller):
+    def arduino_trial_end(self, arduino_controller: ArduinoManager) -> None:
+        """
+        Send rig door up and tell Arduino to stop accepting licks.
+        """
         up_command = "UP\n".encode("utf-8")
         arduino_controller.send_command(command=up_command)
 
         stop_command = "STOP OPEN VALVES\n".encode("utf-8")
         arduino_controller.send_command(command=stop_command)
 
-    def end_trial(self, exp_data) -> bool:
+    def end_trial(self, exp_data: ExperimentProcessData) -> bool:
         """
         This method checks if current trial is the last trial. If it is, we return true to the calling code.
         If false, we increment current_trial_number, return false, and proceed to next trial.
@@ -798,29 +887,9 @@ class TrialEnd:
         exp_data.current_trial_number += 1
         return False
 
-    def handle_from_ttc(self, logical_trial: int, trigger, exp_data) -> None:
-        """
-        Handle the case that we are ending a trial after a TTC state. Rat did not engage in this trial.
-        """
-        self.update_ttc_actual(logical_trial, exp_data)
-        self.update_schedule_licks(logical_trial, exp_data)
-
-        trigger("ITI")
-
-    def handle_from_sample(self, logical_trial: int, main_gui, exp_data, trigger):
-        """
-        Handle the case that we are ending a trial after a Sample state. Rat engaged in this trial.
-        TTC time is not handled here because it would be impossible to grab that time at this point.
-        Differs in TTC becuase actual ttc == allocated time can be grabbed at any later time in the program.
-        """
-
-        self.update_schedule_licks(logical_trial, exp_data)
-
-        self.update_raster_plots(exp_data, logical_trial, main_gui)
-
-        trigger("ITI")
-
-    def update_ttc_actual(self, logical_trial: int, exp_data) -> None:
+    def update_ttc_actual(
+        self, logical_trial: int, exp_data: ExperimentProcessData
+    ) -> None:
         """
         Update the actual ttc time take in the program schedule with the max time value,
         since we reached trial end we know we took the max time allowed
@@ -830,7 +899,9 @@ class TrialEnd:
         ttc_column_value = program_df.loc[logical_trial, "TTC"]
         program_df.loc[logical_trial, "TTC Actual"] = ttc_column_value
 
-    def update_schedule_licks(self, logical_trial: int, exp_data) -> None:
+    def update_schedule_licks(
+        self, logical_trial: int, exp_data: ExperimentProcessData
+    ) -> None:
         """Update the licks for each side in the program schedule df for this trial"""
         program_df = exp_data.program_schedule_df
         event_data = exp_data.event_data
@@ -842,8 +913,10 @@ class TrialEnd:
 
         program_df.loc[logical_trial, "Port 2 Licks"] = licks_sd_two
 
-    def update_raster_plots(self, exp_data, logical_trial, main_gui) -> None:
-        """instruct raster windows to update with new lick timestamps"""
+    def update_raster_plots(
+        self, exp_data: ExperimentProcessData, logical_trial: int, main_gui: MainGUI
+    ) -> None:
+        """Instruct raster windows to update with new lick timestamps"""
         # gather lick timestamp data from the event data model
         lick_stamps = exp_data.event_data.get_lick_timestamps(logical_trial)
 

@@ -241,7 +241,7 @@ class ArduinoManager:
         except Exception as e:
             logger.error(f"error verifying arduino durations -> {e}")
 
-    def send_command(self, command):
+    def send_command(self, command: bytes):
         """
         Send a specific command to the Arduino. Command must be converted to raw bytes object
         before being passed into this method
