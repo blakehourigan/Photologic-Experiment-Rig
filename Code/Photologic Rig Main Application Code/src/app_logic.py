@@ -43,26 +43,22 @@ class StateMachine(TkinterApp):
     Attributes
     ----------
 
-    state : str
-        Contains the current state the program is in.
-    prev_state : str
-        Contains the state the program was previously in. Useful to restore state in case of erroneous transitions.
-    app_result : list
-        Mutable list with one element. Is a reference to list defined in `main`.
-    transitions : dict
-        Program state transition table.
+    - **state** (*str*): Contains the current state the program is in.
+    - **prev_state** (*str*): Contains the state the program was previously in. Useful to restore state in case of erroneous transitions.
+    - **app_result** (*list*): Mutable list with one element. Is a reference to list defined in `main`.
+    - **transitions**  (*dict*): Program state transition table.
 
     Methods
     -------
-    trigger(event)
+    - `trigger(event)`
         Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,
         passes state to `execute_state` method.
-     execute_state(new_state: str)
+    - `execute_state(new_state: str)`
         Takes the state passed from trigger event and decides appropriate action.
-    process_queue(data_queue)
+    - `process_queue(data_queue)`
         Processes incoming data from the Arduino board. Reads from queue that is added to by `controllers.arduino_control` module
         `listen_for_serial` method.
-    reject_actions(event)
+    - `reject_actions(event)`
         A static method that handles the rejection of actions that cannot be performed given a certain state transition.
     """
 
