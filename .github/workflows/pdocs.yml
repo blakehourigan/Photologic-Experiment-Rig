@@ -34,6 +34,7 @@ jobs:
 
       - run: echo $PY_FILES  
           pdoc -o tmp_docs/ $PY_FILES
+          ls -R tmp_docs
       
       
       - name: Upload static files as artifact
