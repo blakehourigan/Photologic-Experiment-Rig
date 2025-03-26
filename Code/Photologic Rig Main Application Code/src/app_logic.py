@@ -2,7 +2,7 @@
 'app_logic' is the primary module in the Photologic-Experiment-Rig codebase. It contains the
 StateMachine class which holds the logic for each 'state' an experiment can be in.
 
-Before performing any actions, the StateMachine class initializes the `src.TkinterApp` class, which launches
+Before performing any actions, the StateMachine class initializes the `tk_app` class, which launches
 a tkinter root and allows for a GUI to be created for the program.
 
 This module is launched from main to make restarting the program easier, which is done by destroying the
@@ -19,34 +19,68 @@ from views.gui_common import GUIUtils
 import system_config
 
 logger = logging.getLogger(__name__)
-"""Created in TkinterApp, this is used to log warnings and errors in the program"""
+"""Configured further in `TkinterApp`, this is used to log warnings and errors in the program into files."""
 
 
 RIG_CONFIG = system_config.get_rig_config()
-"""This utilizes `system_config` module """
+"""
+This utilizes `system_config` module to obtain a constant path for this machine regardless of OS to the Rig Files foler 
+at the current users documents folder.
+"""
+
 with open(RIG_CONFIG, "r") as f:
     DOOR_CONFIG = toml.load(f)["door_motor_config"]
 
-# pull total valves constant from toml config
 DOOR_MOVE_TIME = DOOR_CONFIG["DOOR_MOVE_TIME"]
+"""Constant value stored in the door_motor_config section of `RIG CONFIG` config"""
 
 
 class StateMachine(TkinterApp):
     """
-    This class is the heart of the program. It inherits TkinterApp to create a gui, instantiate model (data) classes, and the arduino controller,
-    then defines and handles program state transitions. It coordinates co-operation between view (gui) and models (data). State transitions are
-    handled by the 'trigger' function.
+    This class is the heart of the program. Defines and handles program state transitions.
+    It coordinates co-operation between view (gui) and models (data).
+
+    Attributes
+    ----------
+
+    state : str
+        Contains the current state the program is in.
+    prev_state : str
+        Contains the state the program was previously in. Useful to restore state in case of erroneous transitions.
+    app_result : list
+        Mutable list with one element. Is a reference to list defined in `main`.
+    transitions : dict
+        Program state transition table.
+
+    Methods
+    -------
+    trigger(event)
+        Handles state transition events. Decides if a transition is valid and warns user of destructive transitions. If valid,
+        passes state to `execute_state` method.
+     execute_state(new_state: str)
+        Takes the state passed from trigger event and decides appropriate action.
+    process_queue(data_queue)
+        Processes incoming data from the Arduino board. Reads from queue that is added to by `controllers.arduino_control` module
+        `listen_for_serial` method.
+    reject_actions(event)
+        A static method that handles the rejection of actions that cannot be performed given a certain state transition.
     """
 
     def __init__(self, result_container):
-        # init the 'super' parent class which is the gui
+        """init method for `StateMachine`. Takes `main` module `result_container`.
+        the 'super' parent class which is the gui"""
         super().__init__()
-        # default state is idle
         self.state = "IDLE"
+        """Default state for program is set at IDLE"""
+
         self.prev_state = None
-        # used to make decision of whether to restart the program or just terminate
+
         self.app_result = result_container
-        # define state transitions that the program can possibly take
+        """
+        Here we store a reference to `main` module `result_container` to store decision of whether to restart the 
+        program or just terminate the current instance.
+        """
+
         self.transitions = {
             ("IDLE", "GENERATE SCHEDULE"): "GENERATE SCHEDULE",
             (
@@ -69,6 +103,7 @@ class StateMachine(TkinterApp):
             ("SAMPLE", "STOP"): "STOP PROGRAM",
             ("TRIAL END", "STOP"): "STOP PROGRAM",
         }
+        """State transition table defines all transitions that the program can possibly take"""
 
         # don't start the mainloop until AFTER the gui is setup so that the app_result property
         # is available if reset is desired
