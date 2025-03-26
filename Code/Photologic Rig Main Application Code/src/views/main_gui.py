@@ -27,7 +27,7 @@ class MainGUI(tk.Tk):
         super().__init__()
         # self.scheduled_tasks is a dict where keys are short task descriptions (e.g ttc_to_iti) and the values are
         # the ids for that tkinter .after call, so we know exactly how to cancel a scheduled task
-        self.scheduled_tasks = {}
+        self.scheduled_tasks: dict[str, str] = {}
 
         self.exp_data = exp_data
         self.arduino_controller = arduino_controller
@@ -526,7 +526,6 @@ class MainGUI(tk.Tk):
         """
         updates the program schedule window highlighting and updates
         the main_gui window with current trial number and updates progress bar
-
         """
         try:
             trial_number = self.exp_data.current_trial_number

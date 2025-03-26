@@ -2,7 +2,6 @@ import serial
 import serial.tools.list_ports
 import time
 import threading
-from typing import Any
 import queue
 import logging
 import numpy as np
@@ -21,9 +20,9 @@ class ArduinoManager:
         self.exp_data = exp_data
         self.arduino_data = exp_data.arduino_data
 
-        self.data_queue: queue.Queue[Any] = queue.Queue()
+        self.data_queue: queue.Queue[tuple[str, str]] = queue.Queue()
         self.stop_event = threading.Event()
-        self.listener_thread = None
+        self.listener_thread: threading.Thread | None = None
 
         self.connect_to_arduino()
         # reset the board fully to avoid improper communication on program 'reset'

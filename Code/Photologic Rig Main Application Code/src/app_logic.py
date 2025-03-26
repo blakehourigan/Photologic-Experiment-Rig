@@ -9,14 +9,24 @@ This module is launched from main to make restarting the program easier, which i
 instance of state machine and launcing a new one.
 """
 
-from tk_app import TkinterApp
+# external imports
 import time
 import threading
 import logging
+from numpy import exp
 import toml
+import queue
+from typing import Callable
 
+# imports for locally used modules and classes
+from models.experiment_process_data import ExperimentProcessData
 from views.gui_common import GUIUtils
 import system_config
+from views.main_gui import MainGUI
+
+# these are just use for type hinting here
+from controllers.arduino_control import ArduinoManager
+from tk_app import TkinterApp
 
 logger = logging.getLogger(__name__)
 """Configured further in `TkinterApp`, this is used to log warnings and errors in the program into files."""
@@ -70,6 +80,7 @@ class StateMachine(TkinterApp):
         """Default state for program is set at IDLE"""
 
         self.prev_state = None
+        """Default previous state for program is set to None. Utilized in `trigger`."""
 
         self.app_result = result_container
         """
@@ -106,7 +117,14 @@ class StateMachine(TkinterApp):
         self.main_gui.mainloop()
 
     def trigger(self, event):
-        """This function takes a requested state and decides if the transition from this state is allowed."""
+        """
+        This function takes a requested state and decides if the transition from this state is allowed.
+
+        Parameters
+        ----------
+        - **event** (*str*): Contains the desired state to move to.
+        """
+
         transition = (self.state, event)
         self.prev_state = self.state
         new_state = None
@@ -145,13 +163,17 @@ class StateMachine(TkinterApp):
             logger.info(f"new state -> {new_state}")
             self.execute_state(new_state)
 
-    def execute_state(self, new_state: str):
+    def execute_state(self, new_state: str) -> None:
         """
-        takes the key for the transition table (from_state, to_state) and resulting_state, and executes
-        the action corresponding to new_state, based upon key. if the action is defined under state_target,
+        Executes the action corresponding to new_state. if the action is defined under state_target,
         that action will be taken in a new thread to avoid overloading the main tkinter thread. otherwise
         it is executed immediately in the main thread.
+
+        Parameters
+        ----------
+        - **new_state** (*str*): Contains the desired state to move to. Used to locate the desired action.
         """
+
         thread_target = None
 
         match new_state:
@@ -185,8 +207,6 @@ class StateMachine(TkinterApp):
                     InitialTimeInterval(
                         self.exp_data,
                         self.main_gui,
-                        self.arduino_controller,
-                        self.prev_state,
                         new_state,
                         self.trigger,
                     )
@@ -237,11 +257,18 @@ class StateMachine(TkinterApp):
         if thread_target:
             threading.Thread(target=thread_target).start()
 
-    def process_queue(self, data_queue):
+    def process_queue(self, data_queue: queue.Queue[tuple[str, str]]) -> None:
         """
         Process the data queue. Pulls in data from the thread that is reading data from the arduinos constantly. if there is anything
         in the queue at time of function call, we will stay here until its all been dealt with.
+
+        Parameters
+        ----------
+        - **data_queue** (*tuple[str, str]*): This is a shared queue between a thread initiated in the `controllers.arduino_control` module's
+        `listen_for_serial` method. That thread constantly reads info from Arduino so it is not missed, and the main thread calls this process method
+        to process accumulated data to avoid overloading the thread.
         """
+
         arduino_data = self.exp_data.arduino_data
         try:
             while not data_queue.empty():
@@ -259,6 +286,14 @@ class StateMachine(TkinterApp):
 
     @staticmethod
     def reject_actions(event):
+        """
+        This method handles the rejection of the 'START' and 'RESET' actions. These are rejected when there is no state transition for their current state.
+        This is usually during program runtime for reset or before schedule generation for start.
+
+        Parameters
+        ----------
+        - **event** (*str*): This is the desired state being rejected here.
+        """
         match event:
             case "RESET":
                 GUIUtils.display_error(
@@ -276,59 +311,104 @@ class StateMachine(TkinterApp):
 
 
 class GenerateSchedule:
-    def __init__(self, main_gui, arduino_controller, process_queue, trigger):
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
-        self.trigger_state_change = trigger
+    """
+    This class handles the schedule generation state. It is called once the user has input the amount of simuli for this experiment, the
+    number of trial blocks, changed the names of the stimuli in each cylinder/valve in the 'Valve / Stimuli' window, and pressed generate schedule.
+
+    The main things handled here are the updating of gui objects that needed the previously discussed info to be created (e.g raster plots need
+    total trials, program schedule window needed the experiment data, etc.)
+    """
+
+    def __init__(
+        self,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        process_queue: Callable[[queue.Queue[tuple[str, str]]], None],
+        trigger: Callable[[str], None],
+    ):
+        """
+        Initialize and handle the GenerateSchedule class state.
+
+        Parameters
+        ----------
+        - **main_gui** (*MainGUI*): A reference to the `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update show the program schedule and create raster plots.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` Arduino controller instance, this is the method by which the Arduino is communicated
+        with in the program. Used to send schedules, variables, and valve durations here.
+        - **process_queue** (*Callback method*): This callback method is passed here so that the Arduino listener process thread can be started once the listener thread
+        is running. It does NOT run prior to this so that sending individual bytes (send schedule, etc.) is performed without having data stolen away by the constantly running
+        listener thread.
+        - **trigger** (*Callback method*): This callback is passed in so that this state can trigger a transition back to `IDLE` when it is finished with its work.
+        """
 
         # show the program sched window via the callback passed into the class at initialization
-        self.main_gui.show_secondary_window("Program Schedule")
+        main_gui.show_secondary_window("Program Schedule")
 
-        for window in self.main_gui.windows["Raster Plot"]:
+        # create plots using generated number of trials as max Y values
+        for window in main_gui.windows["Raster Plot"]:
             window.create_plot()
 
-        # send valve open durations stored in arduino_data.toml to the arduino
-        self.arduino_controller.send_experiment_variables()
-        self.arduino_controller.send_experiment_schedule()
+        # send exp variables, schedule, and valve open durations stored in arduino_data.toml to the arduino
+        arduino_controller.send_experiment_variables()
+        arduino_controller.send_experiment_schedule()
+        arduino_controller.send_valve_durations()
 
-        self.arduino_controller.send_valve_durations()
+        # start Arduino process queue and listener thread so we know when Arduino tries to tell us something
+        process_queue(arduino_controller.data_queue)
 
-        process_queue(self.arduino_controller.data_queue)
-
-        self.arduino_controller.listener_thread = threading.Thread(
-            target=self.arduino_controller.listen_for_serial
+        arduino_controller.listener_thread = threading.Thread(
+            target=arduino_controller.listen_for_serial
         )
 
-        self.arduino_controller.listener_thread.start()
+        arduino_controller.listener_thread.start()
 
         logger.info("Started listening thread for Arduino serial input.")
-        self.trigger_state_change("IDLE")
+
+        # transition back to idle
+        trigger("IDLE")
 
 
 class StartProgram:
-    def __init__(self, exp_data, main_gui, arduino_controller, trigger):
+    """
+    This class handles the remaining set-up steps to prepare for experiment runtime. It then triggers the experiment.
+    """
+
+    def __init__(
+        self,
+        exp_data: ExperimentProcessData,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        trigger: Callable[[str], None],
+    ):
+        """
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): Reference to the `models.experiment_process_data`. Here we use it to mark experiment and state start times.
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update clock labels and max program runtime.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used to tell Arduino that program begins now.
+        - **trigger** (*Callback method*): This callback is passed in so that this state can trigger a transition to `ITI` when it is finished with its work.
+        """
         try:
-            self.exp_data = exp_data
-            self.exp_data.start_time = time.time()
-            self.exp_data.state_start_time = time.time()
+            # update experiment data model program start time and state start time variables with current time
+            exp_data.start_time = time.time()
+            exp_data.state_start_time = time.time()
 
-            self.main_gui = main_gui
-            self.arduino_controller = arduino_controller
-
+            # tell Arduino that experiment starts now so it knows how to calculate timestamps
             start_command = "T=0\n".encode("utf-8")
-            self.arduino_controller.send_command(command=start_command)
+            arduino_controller.send_command(command=start_command)
 
-            self.main_gui.update_clock_label()
-
-            # update main_guis max experiment runtime
-            self.main_gui.update_max_time()
+            main_gui.update_clock_label()
+            main_gui.update_max_time()
 
             # change the green start button into a red stop button, update the associated command
-            self.main_gui.start_button.configure(
+            main_gui.start_button.configure(
                 text="Stop", bg="red", command=lambda: trigger("STOP")
             )
 
             logging.info("==========EXPERIMENT BEGINS NOW==========")
+
             trigger("ITI")
         except Exception as e:
             logging.error(f"Error starting program: {e}")
@@ -337,50 +417,77 @@ class StartProgram:
 
 class StopProgram:
     """
-    Updates GUI to reflect IDLE state,
+    Stops and updates program to reflect `IDLE` state.
+
+    Methods
+    -------
+    - `finalize_program(main_gui, arduino_controller)`
+        This method waits until the door closes for the last time, then cancels the last scheduled task, stops the listener thread, closes Arduino connections, and
+        instructs the user to save their data.
     """
 
-    def __init__(self, main_gui, arduino_controller, trigger) -> None:
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
+    def __init__(
+        self,
+        main_gui: MainGUI,
+        arduino_controller: ArduinoManager,
+        trigger: Callable[[str], None],
+    ) -> None:
+        """
+        Parameters
+        ----------
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        call update_on_stop, configure the start/stop button back to start, and cancel tkinter scheduled tasks.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used to reset Arduino and clear all left-over experiment data.
+        - **trigger** (*Callback method*): This callback is passed in so the start button can be configured to command a `START` state.
+        """
         try:
-            self.main_gui.update_on_stop()
+            main_gui.update_on_stop()
             # change the command back to start for the start button. (STOP PROGRAM, START) is not a defined transition, so the
             # trigger function will call reject_actions to let the user know the program has already ran and they need to reset the app.
-            self.main_gui.start_button.configure(
+            main_gui.start_button.configure(
                 text="Start", bg="green", command=lambda: trigger("START")
             )
 
-            for desc, sched_task in self.main_gui.scheduled_tasks.items():
+            # stop all scheduled tasks EXCEPT for the process queue, we are still waiting for the last door close timestamp
+            for desc, sched_task in main_gui.scheduled_tasks.items():
                 if desc != "PROCESS QUEUE":
-                    self.main_gui.after_cancel(sched_task)
+                    main_gui.after_cancel(sched_task)
 
-            # finalize the program after 5 seconds because the door has not gone down yet. we still want the arduino
-            # to record the time that the door goes up last
-            self.main_gui.scheduled_tasks["FINALIZE"] = self.main_gui.after(
-                5000, lambda: self.finalize_program()
+            # schedule finalization after door will be down
+            main_gui.scheduled_tasks["FINALIZE"] = main_gui.after(
+                5000, lambda: self.finalize_program(main_gui, arduino_controller)
             )
+
             logging.info("Program stopped... waiting to finalize...")
         except Exception as e:
             logging.error(f"Error stopping program: {e}")
             raise
 
-    def finalize_program(self) -> None:
+    def finalize_program(
+        self, main_gui: MainGUI, arduino_controller: ArduinoManager
+    ) -> None:
         """
-        Finalize the program by telling arduino to send the door up/down timestamps that it has, reset both Arduino boards,
-        offer to save the .
+        Finalize the program by resetting the Arduino board, offer to save the data frames into xlsx files.
+
+        Parameters
+        ----------
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        cancel the last tkinter.after call.
+        - **arduino_controller** (*ArduinoManager*): A reference to the `controllers.arduino_control` instance, this is the method by which the Arduino is communicated
+        with in the program. Used to reset Arduino board and close the connection to it.
         """
         try:
             # stop the arduino listener so that the program can shut down
             # and not be blocked
-            self.arduino_controller.stop_listener_thread()
+            arduino_controller.stop_listener_thread()
 
-            queue_id = self.main_gui.scheduled_tasks["PROCESS QUEUE"]
-            self.main_gui.after_cancel(queue_id)
+            queue_id = main_gui.scheduled_tasks["PROCESS QUEUE"]
+            main_gui.after_cancel(queue_id)
 
-            self.arduino_controller.close_connection()
+            arduino_controller.close_connection()
 
-            self.main_gui.save_button_handler()
+            main_gui.save_button_handler()
 
             logging.info("Program finalized, arduino boards reset.")
         except Exception as e:
@@ -390,24 +497,27 @@ class StopProgram:
 
 class ResetProgram:
     """
-    Handle resetting the program on click of the reset button.
+    Handle resetting the program on click of the reset button. This class has no instance variable or methods.
     """
 
-    def __init__(self, main_gui, app_result, arduino_controller) -> None:
+    def __init__(
+        self, main_gui: MainGUI, app_result: list, arduino_controller: ArduinoManager
+    ) -> None:
         try:
             # these two calls will stop the gui, halting the programs mainloop.
-
             main_gui.quit()
             main_gui.destroy()
 
-            for desc, sched_task in main_gui.scheduled_tasks.items():
+            # cancel all scheduled tasks
+            for sched_task in main_gui.scheduled_tasks.values():
                 main_gui.after_cancel(sched_task)
+            # if we have an listener thread and arduino connected, stop the thread and close the connection.
             if arduino_controller.listener_thread is not None:
                 arduino_controller.stop_listener_thread()
             if arduino_controller.arduino is not None:
                 arduino_controller.close_connection()
 
-            # tell main.py to restart
+            # set first bit in app_result list to 1 to instruct main to restart.
             app_result[0] = 1
 
         except Exception as e:
@@ -416,60 +526,68 @@ class ResetProgram:
 
 class InitialTimeInterval:
     """
-    State class for initial time interval experiment state. Updates program schedule window with new trial highighting and info.
+    State class for initial time interval experiment state.
     """
 
     def __init__(
-        self, exp_data, main_gui, arduino_controller, prev_state, state, trigger
+        self,
+        exp_data: ExperimentProcessData,
+        main_gui: MainGUI,
+        state: str,
+        trigger: Callable[[str], None],
     ) -> None:
-        self.prev_state = prev_state
-        self.exp_data = exp_data
-        self.event_data = self.exp_data.event_data
-        self.main_gui = main_gui
-        self.arduino_controller = arduino_controller
-
-        # logical df rows will always be 1 behind the current trial because of zero based indexing in dataframes vs
-        # 1 based for trials
-        self.logical_trial = self.exp_data.current_trial_number - 1
-
-        # updates prog_sched highlihgting, main gui trial stimuli, progress bar
-        self.main_gui.update_on_new_trial(
-            self.exp_data.program_schedule_df.loc[self.logical_trial, "Port 1"],
-            self.exp_data.program_schedule_df.loc[self.logical_trial, "Port 2"],
-        )
-
-        self.trigger_state_change = trigger
-        self.state = state
-        self.execute_iti()
-
-    def execute_iti(self):
         """
-        This function transitions the program into the iti state. it does this by resetting lick counts, setting new state time,
+        This function transitions the program into the `ITI` state. It does this by resetting lick counts, setting new state time,
         updating the models, and setting the .after call to transition to TTC.
+
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): Reference to the `models.experiment_process_data`. Here we use it to get a reference to event_data to set trial
+        licks to 0, get logical trial number, and get state duration time.
+        - **main_gui** (*MainGUI*): A reference to `views.main_gui` MainGUI instance, this is used to update elements inside the GUI window(s). Here we use it to
+        update GUI with new trial information and configure the state timer.
+        - **state** (*str*): State is used to update GUI with current state and grab the state duration time from the program schedule df.
+        - **trigger** (*Callback method*): This callback is passed in so the `TTC` state can be triggered after the `ITI` time has passed.
         """
         try:
-            self.event_data.side_one_licks = 0
-            self.event_data.side_two_licks = 0
+            # get a reference to the event_data from exp_data.
+            event_data = exp_data.event_data
 
-            self.main_gui.state_timer_text.configure(text=(self.state + "Time:"))
-            self.exp_data.state_start_time = time.time()
+            # set trial licks to 0 for both sides
+            event_data.side_one_licks = 0
+            event_data.side_two_licks = 0
 
-            initial_time_interval = self.exp_data.program_schedule_df.loc[
-                self.logical_trial, self.state
-            ]
+            # logical df rows will always be 1 behind the current trial because of zero based indexing in dataframes vs
+            # 1 based for trials
+            logical_trial = exp_data.current_trial_number - 1
 
-            self.main_gui.update_on_state_change(initial_time_interval, self.state)
-
-            # tell tkinter main loop that we want to call trigger with TTC parameter after initial_time_interval milliseconds
-            iti_ttc_transition = self.main_gui.after(
-                int(initial_time_interval),
-                lambda: self.trigger_state_change("DOOR OPEN"),
+            # Call gui updates needed every trial (e.g program schedule window highlighting, progress bar, trial stimuli, etc)
+            main_gui.update_on_new_trial(
+                exp_data.program_schedule_df.loc[logical_trial, "Port 1"],
+                exp_data.program_schedule_df.loc[logical_trial, "Port 2"],
             )
 
-            self.main_gui.scheduled_tasks["ITI TO DOOR OPEN"] = iti_ttc_transition
+            # clear state timer and reset the state start time
+            main_gui.state_timer_text.configure(text=(state + "Time:"))
+            exp_data.state_start_time = time.time()
+
+            initial_time_interval = exp_data.program_schedule_df.loc[
+                logical_trial, state
+            ]
+
+            main_gui.update_on_state_change(initial_time_interval, state)
+
+            # tell tkinter main loop that we want to call trigger with TTC parameter after initial_time_interval milliseconds
+            iti_ttc_transition = main_gui.after(
+                int(initial_time_interval),
+                lambda: trigger("DOOR OPEN"),
+            )
+
+            # add the transition to scheduled tasks dict so that
+            main_gui.scheduled_tasks["ITI TO DOOR OPEN"] = iti_ttc_transition
 
             logging.info(
-                f"STATE CHANGE: ITI BEGINS NOW for trial -> {self.exp_data.current_trial_number}, completes in {initial_time_interval}."
+                f"STATE CHANGE: ITI BEGINS NOW for trial -> {exp_data.current_trial_number}, completes in {initial_time_interval}."
             )
         except Exception as e:
             logging.error(f"Error in initial time interval: {e}")
