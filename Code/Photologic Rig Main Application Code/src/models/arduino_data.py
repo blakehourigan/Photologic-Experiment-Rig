@@ -3,6 +3,7 @@ import datetime
 import copy
 import toml
 import numpy as np
+import numpy.typing as npt
 import system_config
 
 # Get the logger in use for the app
@@ -102,8 +103,8 @@ class ArduinoData:
                         toml.dump(toml_file, f)
 
     def load_durations(
-        self, type_durations="selected_durations", reset_durations=False
-    ):
+        self, type_durations="selected_durations"
+    ) -> tuple[npt.NDArray[np.int32], npt.NDArray[np.int32], datetime.datetime]:
         """
         This method loads data in from the valve_durations.toml file located in assets. By default,
         it will load the last used durations becuase this is what is most often utilized. Optionally,
@@ -136,7 +137,9 @@ class ArduinoData:
 
         return dur_side_one, dur_side_two, date_used
 
-    def load_schedule_indices(self):
+    def load_schedule_indices(
+        self,
+    ) -> tuple[npt.NDArray[np.int8], npt.NDArray[np.int8]]:
         stimuli_data = self.exp_data.stimuli_data
         schedule_df = self.exp_data.program_schedule_df
 

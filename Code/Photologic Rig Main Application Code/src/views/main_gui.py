@@ -27,16 +27,14 @@ from views.program_schedule_window import ProgramScheduleWindow
 from views.valve_control_window import ValveControlWindow
 
 
-# Get the logger in use for the app
 logger = logging.getLogger()
+"""Get the logger in use for the app."""
 
 
-# using tk.Tk here says that this class is going to be a tkinter app. when we call super().__init__() this actuall creates the tkinter main window
-# then we can use it as if it were root - e.g self.title("title") sets the root window title
 class MainGUI(tk.Tk):
     """
-    The creator and controller of all GUI related items and actions for the program. Inherits from tk.Tk to create a tk.root() from which tk.TopLevel windows can be sprouted
-    and tk.after scheduling calls can be made.
+    The creator and controller of all GUI related items and actions for the program. Inherits from tk.Tk to create a tk.root()
+    from which tk.TopLevel windows can be sprouted and tk.after scheduling calls can be made.
 
     Attributes
     ----------

@@ -1,20 +1,28 @@
 import tkinter as tk
 from tkinter import simpledialog
-import numpy as np
-import logging
-import threading
 from tkinter import ttk
-import toml
-from enum import Enum
-import system_config
 
+
+import numpy as np
+
+### USED FOR TYPE HINTING ###
+import numpy.typing as npt
+
+from enum import Enum
+import threading
+import logging
+import toml
+
+from controllers.arduino_control import ArduinoManager
+from models.arduino_data import ArduinoData
 from views.gui_common import GUIUtils
 from views.valve_testing.manual_time_adjustment_window import ManualTimeAdjustment
 from views.valve_testing.valve_changes_window import ValveChanges
+import system_config
 
 
-# Get the logger in use for the app
 logger = logging.getLogger()
+"""Get the logger in use for the app."""
 
 rig_config = system_config.get_rig_config()
 
@@ -33,8 +41,73 @@ class WindowMode(Enum):
 
 
 class ValveTestWindow(tk.Toplevel):
-    def __init__(self, arduino_controller):
+    def __init__(self, arduino_controller: ArduinoManager):
         super().__init__()
+        self.arduino_controller: ArduinoManager = arduino_controller
+        self.arduino_data: ArduinoData = arduino_controller.arduino_data
+
+        self.setup_basic_window_attr()
+
+        self.window_mode: WindowMode = WindowMode.TESTING
+        """An instance of WindowMode Enum, this variable holds the current state of the window (Testing/Priming) and is used to determine which
+        state to switch to when the state change button is pressed.
+        """
+
+        self.test_running: bool = False
+        self.prime_running: bool = False
+
+        self.desired_volume: tk.DoubleVar = tk.DoubleVar(value=5)
+        """tkinter variable describing user desired volume to dispense in microliters. This is used in automatic duration calculations."""
+        self.actuations: tk.IntVar = tk.IntVar(value=1000)
+        """tkinter variable describing how many times the user would like to actuate valves per test."""
+
+        self.ml_dispensed: list = []
+        """Holds ml dispensed during each test"""
+
+        self.valve_buttons: list = [None] * TOTAL_VALVES
+        """list holding 8 None values initially, used later to hold button objects and read and manipulate their states."""
+
+        self.valve_test_button: None | tk.Button = None
+        # holds valve detail entries, so they can be 'removed' but still
+        # available to place back
+        self.table_entries: list = [None] * TOTAL_VALVES
+
+        self.valve_selections: npt.NDArray[np.int8] = np.zeros(
+            (TOTAL_VALVES,), dtype=np.int8
+        )
+        """
+        np array of np.int8 objects that hold the state of each valve button. Used to determine which valves are selected for a 
+        test or a prime procedure.
+        """
+
+        self.side_one_tests: None | npt.NDArray[np.int8] = None
+        """
+        holds side one valves to be tested.
+        """
+        self.side_two_tests: None | npt.NDArray[np.int8] = None
+        """
+        side two tests holds side two valves to be tested.
+        """
+
+        self.stop_event: threading.Event = threading.Event()
+        """
+        Used to halt valve test arduino listener thread if test is aborted
+        """
+
+        self.create_interface()
+
+        # hide main window for now until we deliberately enter this window.
+        self.withdraw()
+
+        self.manual_adjust_window = ManualTimeAdjustment(
+            self.arduino_controller.arduino_data, self.valve_selections
+        )
+        # hide the adjustment window until we need it.
+        self.manual_adjust_window.withdraw()
+
+        logging.info("Valve Test Window initialized.")
+
+    def setup_basic_window_attr(self):
         self.title("Valve Testing")
         self.bind("<Control-w>", lambda event: self.withdraw())
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
@@ -47,57 +120,6 @@ class ValveTestWindow(tk.Toplevel):
 
         window_icon_path = GUIUtils.get_window_icon_path()
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)
-
-        self.arduino_controller = arduino_controller
-        self.arduino_data = arduino_controller.arduino_data
-
-        self.window_mode = WindowMode.TESTING
-
-        self.test_running = False
-        self.prime_running = False
-
-        # desired volume to dispense in ul
-        self.desired_volume = tk.DoubleVar(value=5)
-        # how many times the valves should actuate per test
-        self.actuations = tk.IntVar(value=1000)
-
-        # will hold ml dispensed during each test
-        self.ml_dispensed = None
-
-        # list holding 8 None values
-        self.valve_buttons = [None] * TOTAL_VALVES
-        self.valve_test_button = None
-        # holds valve detail entries, so they can be 'removed' but still
-        # available to place back
-        self.table_entries = [None] * TOTAL_VALVES
-
-        self.valve_selections = np.zeros((TOTAL_VALVES,), dtype=np.int8)
-        # the following are used to track side-specific tests
-        # side one holds side one valves to be tested and vice versa for side two
-        self.side_one_tests = None
-        self.side_two_tests = None
-
-        # will be used to halt valve test arduino listener thread if test is
-        # aborted
-        self.stop_event = threading.Event()
-
-        self.create_interface()
-
-        self.update_idletasks()
-        GUIUtils.center_window(self)
-
-        # we don't want to show this window until the user decides to click the corresponding button,
-        # withdraw (hide) it for now
-        self.withdraw()
-
-        # create and hide manual timing adjustment window
-        # so that we don't have to generate it later
-        self.manual_adjust_window = ManualTimeAdjustment(
-            self.arduino_controller.arduino_data, self.valve_selections
-        )
-        self.manual_adjust_window.withdraw()
-
-        logging.info("Valve Test Window initialized.")
 
     def show(self):
         self.deiconify()
@@ -123,11 +145,13 @@ class ValveTestWindow(tk.Toplevel):
             self.valve_table_frame.grid_forget()
 
             # start testing button -> start priming button / command
-            self.valve_test_button.configure(
-                text="Start Priming",
-                bg="coral",
-                command=lambda: self.send_schedules(),
-            )
+
+            if isinstance(self.valve_test_button, tk.Button):
+                self.valve_test_button.configure(
+                    text="Start Priming",
+                    bg="coral",
+                    command=lambda: self.send_schedules(),
+                )
 
         else:
             if self.prime_running:
@@ -149,11 +173,12 @@ class ValveTestWindow(tk.Toplevel):
             )
             self.dispensed_vol_frame.grid(row=1, column=0, padx=5, sticky="nsew")
 
-            self.valve_test_button.configure(
-                text="Start Testing",
-                bg="green",
-                command=lambda: self.start_testing_toggle(),
-            )
+            if isinstance(self.valve_test_button, tk.Button):
+                self.valve_test_button.configure(
+                    text="Start Testing",
+                    bg="green",
+                    command=lambda: self.start_testing_toggle(),
+                )
 
         # resize the window to fit current content
         self.update_idletasks()
@@ -263,9 +288,13 @@ class ValveTestWindow(tk.Toplevel):
         ### ROW 5 ###
         self.create_buttons()
 
+        self.update_idletasks()
+        GUIUtils.center_window(self)
+
     def start_testing_toggle(self):
         if self.test_running:
-            self.valve_test_button.configure(text="Start Testing", bg="green")
+            if isinstance(self.valve_test_button, tk.Button):
+                self.valve_test_button.configure(text="Start Testing", bg="green")
             self.abort_test()
         else:
             self.send_schedules()
@@ -538,7 +567,6 @@ class ValveTestWindow(tk.Toplevel):
                 f"Valves {valves}, will be tested. Review the test table to confirm schedule and timings. Each valve will be actuated {valve_acuations} times. Ok to begin?",
             )
 
-            self.ml_dispensed = []
             ### include section to manually modify timings
             if test_confirmed:
                 self.bind("<<event0>>", self.testing_complete)
@@ -557,20 +585,22 @@ class ValveTestWindow(tk.Toplevel):
                 start = np.int8(0).tobytes()
                 self.arduino_controller.send_command(command=start)
 
-                self.valve_test_button.configure(
-                    text="STOP Priming",
-                    bg="gold",
-                    command=lambda: self.stop_priming(),
-                )
+                if isinstance(self.valve_test_button, tk.Button):
+                    self.valve_test_button.configure(
+                        text="STOP Priming",
+                        bg="gold",
+                        command=lambda: self.stop_priming(),
+                    )
 
     def stop_priming(self):
         self.prime_running = False
 
-        self.valve_test_button.configure(
-            text="Start Priming",
-            bg="coral",
-            command=lambda: self.send_schedules(),
-        )
+        if isinstance(self.valve_test_button, tk.Button):
+            self.valve_test_button.configure(
+                text="Start Priming",
+                bg="coral",
+                command=lambda: self.send_schedules(),
+            )
 
         stop = np.int8(1).tobytes()
         self.arduino_controller.send_command(command=stop)
@@ -624,7 +654,8 @@ class ValveTestWindow(tk.Toplevel):
         if self.stop_event.is_set():
             self.stop_event.clear()
 
-        self.valve_test_button.configure(text="ABORT TESTING", bg="red")
+        if isinstance(self.valve_test_button, tk.Button):
+            self.valve_test_button.configure(text="ABORT TESTING", bg="red")
 
         self.test_running = True
         ###====SENDING BEGIN TEST COMMAND====###
@@ -650,7 +681,9 @@ class ValveTestWindow(tk.Toplevel):
 
     def abort_test(self):
         # if test is aborted, stop the test listener thread
-        self.valve_test_button.configure(text="Start Testing", bg="green")
+        if isinstance(self.valve_test_button, tk.Button):
+            self.valve_test_button.configure(text="Start Testing", bg="green")
+
         self.stop_event.set()
         self.test_running = False
         ###====SENDING ABORT TEST COMMAND====###
@@ -661,7 +694,9 @@ class ValveTestWindow(tk.Toplevel):
         # take input from last pair/valve
         self.take_input(event=None, pair_num_override=event.state)
         # reconfigure the testing button and testing state
-        self.valve_test_button.configure(text="Start Testing", bg="green")
+        if isinstance(self.valve_test_button, tk.Button):
+            self.valve_test_button.configure(text="Start Testing", bg="green")
+
         self.test_running = False
         # stop the arduino testing listener thread
         self.stop_event.set()

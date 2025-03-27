@@ -1,12 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
 
+#### USED FOR TYPE HINTS ####
+from models.event_data import EventData
+#### USED FOR TYPE HINTS ####
+
 from views.gui_common import GUIUtils
 
 
 class EventWindow(tk.Toplevel):
     # inject the event dataframe when we create the class so we have access to that data
-    def __init__(self, event_data) -> None:
+    def __init__(self, event_data: EventData) -> None:
         super().__init__()
         # reference to event model
         self.event_data = event_data

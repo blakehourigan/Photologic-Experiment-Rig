@@ -2,8 +2,9 @@
 'app_logic' is the primary module in the Photologic-Experiment-Rig codebase. It contains the
 StateMachine class which holds the logic for each 'state' an experiment can be in.
 
-Before performing any actions, the StateMachine class initializes the `tk_app` class, which launches
-a tkinter root and allows for a GUI to be created for the program.
+Before performing any actions, the StateMachine class initializes the instances of `models.experiment_process_data`,
+`controllers.arduino_control`, and `views.main_gui` classes.
+Launching main_gui initializes a tkinter root and allows for a GUI to be created for the program.
 
 This module is launched from main to make restarting the program easier, which is done by destroying the
 instance of state machine and launcing a new one.
@@ -384,7 +385,7 @@ class GenerateSchedule:
 
         # send exp variables, schedule, and valve open durations stored in arduino_data.toml to the arduino
         arduino_controller.send_experiment_variables()
-        arduino_controller.send_experiment_schedule()
+        arduino_controller.send_schedule_data()
         arduino_controller.send_valve_durations()
 
         # start Arduino process queue and listener thread so we know when Arduino tries to tell us something
