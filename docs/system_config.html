@@ -99,7 +99,7 @@ system_config    </h1>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="k">return</span> <span class="n">toml_config_path</span>
 </span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
 </span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_log_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_log_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 </span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="n">documents_dir</span> <span class="o">=</span> <span class="n">get_documents_dir</span><span class="p">()</span>
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">documents_dir</span><span class="p">,</span> <span class="s2">&quot;Photologic-Experiment-Rig-Files&quot;</span><span class="p">,</span> <span class="s2">&quot;logfiles&quot;</span><span class="p">)</span>
@@ -198,13 +198,13 @@ system_config    </h1>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">get_log_path</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">file_name</span></span><span class="return-annotation">):</span></span>
+        <span class="name">get_log_path</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">):</span></span>
 
                 <label class="view-source-button" for="get_log_path-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#get_log_path"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_log_path-33"><a href="#get_log_path-33"><span class="linenos">33</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_log_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_log_path-33"><a href="#get_log_path-33"><span class="linenos">33</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_log_path</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 </span><span id="get_log_path-34"><a href="#get_log_path-34"><span class="linenos">34</span></a>    <span class="n">documents_dir</span> <span class="o">=</span> <span class="n">get_documents_dir</span><span class="p">()</span>
 </span><span id="get_log_path-35"><a href="#get_log_path-35"><span class="linenos">35</span></a>
 </span><span id="get_log_path-36"><a href="#get_log_path-36"><span class="linenos">36</span></a>    <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">documents_dir</span><span class="p">,</span> <span class="s2">&quot;Photologic-Experiment-Rig-Files&quot;</span><span class="p">,</span> <span class="s2">&quot;logfiles&quot;</span><span class="p">)</span>

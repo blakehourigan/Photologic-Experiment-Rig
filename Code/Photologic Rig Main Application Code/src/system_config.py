@@ -29,7 +29,7 @@ def get_rig_config():
     return toml_config_path
 
 
-def get_log_path(file_name):
+def get_log_path(file_name: str):
     documents_dir = get_documents_dir()
 
     log_dir = os.path.join(documents_dir, "Photologic-Experiment-Rig-Files", "logfiles")
@@ -47,4 +47,3 @@ def get_valve_durations():
     durations_path = os.path.join(log_dir, "valve_durations.toml")
 
     return durations_path
-

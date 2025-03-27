@@ -16,6 +16,8 @@ import logging
 import toml
 import queue
 from typing import Callable
+import datetime
+from logging import FileHandler
 
 # imports for locally used modules and classes
 from models.experiment_process_data import ExperimentProcessData
@@ -25,11 +27,18 @@ from views.main_gui import MainGUI
 
 # these are just use for type hinting here
 from controllers.arduino_control import ArduinoManager
-from tk_app import TkinterApp
 
-logger = logging.getLogger(__name__)
-"""Configured further in `TkinterApp`, this is used to log warnings and errors in the program into files."""
+logger = logging.getLogger()
+"""Logger used to log program runtime details for debugging"""
+logger.setLevel(logging.INFO)
 
+console_handler = logging.StreamHandler()
+"""The console handler is used to print errors to the console"""
+console_handler.setLevel(logging.ERROR)
+console_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+)
+logger.addHandler(console_handler)
 
 RIG_CONFIG = system_config.get_rig_config()
 """
@@ -44,14 +53,33 @@ DOOR_MOVE_TIME = DOOR_CONFIG["DOOR_MOVE_TIME"]
 """Constant value stored in the door_motor_config section of `RIG CONFIG` config"""
 
 
-class StateMachine(TkinterApp):
+now = datetime.datetime.now()
+# configure logfile details such as name and the level at which information should be added to the log (INFO here)
+logfile_name = f"{now.hour}_{now.minute}_{now.second} - {now.date()} experiment log"
+logfile_path = system_config.get_log_path(logfile_name)
+
+file_handler = FileHandler(logfile_path)
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+)
+logger.addHandler(file_handler)
+
+
+class StateMachine:
     """
     This class is the heart of the program. Defines and handles program state transitions.
-    It coordinates co-operation between view (gui) and models (data).
+    It coordinates co-operation between view (gui) and models (data). We inherit a TkinterApp class to include
+    attributes of a tkinter app such as gui, arduino controller, etc.
 
     Attributes
     ----------
-
+    - **exp_data** (*ExperimentProcessData*): An instance of `models.experiment_process_data` ExperimentProcessData, this attribute allows for access and
+    modification of experiment variables, and access for to more specific models like `models.event_data` and `models.arduino_data`.
+    - **arduino_controller** (*ArduinoManager*): An instance of `controllers.arduino_control` ArduinoManager, this allows for communication between this program and the
+    Arduino board.
+    - **main_gui** (*MainGUI*): An instance of `views.main_gui` MainGUI, this allows for the creation and modification of all GUI attributes in the program. All GUI windows
+    are created and managed here.
     - **state** (*str*): Contains the current state the program is in.
     - **prev_state** (*str*): Contains the state the program was previously in. Useful to restore state in case of erroneous transitions.
     - **app_result** (*list*): Mutable list with one element. Is a reference to list defined in `main`.
@@ -74,7 +102,14 @@ class StateMachine(TkinterApp):
     def __init__(self, result_container):
         """init method for `StateMachine`. Takes `main` module `result_container`.
         the 'super' parent class which is the gui"""
-        super().__init__()
+
+        self.exp_data = ExperimentProcessData()
+
+        self.arduino_controller = ArduinoManager(self.exp_data)
+
+        self.main_gui = MainGUI(self.exp_data, self.trigger, self.arduino_controller)
+        logging.info("GUI started successfully.")
+
         self.state = "IDLE"
         """Default state for program is set at IDLE"""
 
@@ -561,9 +596,10 @@ class InitialTimeInterval:
             logical_trial = exp_data.current_trial_number - 1
 
             # Call gui updates needed every trial (e.g program schedule window highlighting, progress bar, trial stimuli, etc)
+            # make sure we convert received vals to str to avoid type errors
             main_gui.update_on_new_trial(
-                exp_data.program_schedule_df.loc[logical_trial, "Port 1"],
-                exp_data.program_schedule_df.loc[logical_trial, "Port 2"],
+                str(exp_data.program_schedule_df.loc[logical_trial, "Port 1"]),
+                str(exp_data.program_schedule_df.loc[logical_trial, "Port 2"]),
             )
 
             # clear state timer and reset the state start time
@@ -619,7 +655,6 @@ class OpeningDoor:
 
         # state start time begins
         exp_data.state_start_time = time.time()
-        main_gui.clear_state_time()
 
         # show current_time / door close time to avoid confusion
         main_gui.update_on_state_change(DOOR_MOVE_TIME, state)

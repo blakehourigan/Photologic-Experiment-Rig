@@ -327,7 +327,7 @@ experiment_process_data    </h1>
 </span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error creating random intervals: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>            <span class="k">raise</span>
 </span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>        <span class="n">max_time</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>            <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ITI_intervals_final</span><span class="p">)</span>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>            <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TTC_intervals_final</span><span class="p">)</span>
@@ -494,41 +494,6 @@ experiment_process_data    </h1>
 </span><span id="L-352"><a href="#L-352"><span class="linenos">352</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="L-353"><a href="#L-353"><span class="linenos">353</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting seconds to minutes and seconds: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="L-354"><a href="#L-354"><span class="linenos">354</span></a>            <span class="k">raise</span>
-</span><span id="L-355"><a href="#L-355"><span class="linenos">355</span></a>
-</span><span id="L-356"><a href="#L-356"><span class="linenos">356</span></a>            <span class="c1"># def calculate_randomness():</span>
-</span><span id="L-357"><a href="#L-357"><span class="linenos">357</span></a>            <span class="c1">#    consecutive_streaks: dict[int, int] = defaultdict(int)</span>
-</span><span id="L-358"><a href="#L-358"><span class="linenos">358</span></a>            <span class="c1">#    current_streak = 0</span>
-</span><span id="L-359"><a href="#L-359"><span class="linenos">359</span></a>
-</span><span id="L-360"><a href="#L-360"><span class="linenos">360</span></a>            <span class="c1"># first_pair_counts: dict[tuple, int] = defaultdict(int)</span>
-</span><span id="L-361"><a href="#L-361"><span class="linenos">361</span></a>            <span class="c1"># last_first_pair = None</span>
-</span><span id="L-362"><a href="#L-362"><span class="linenos">362</span></a>        <span class="c1">#    if first_pair_strings == last_first_pair:</span>
-</span><span id="L-363"><a href="#L-363"><span class="linenos">363</span></a>        <span class="c1">#        current_streak += 1</span>
-</span><span id="L-364"><a href="#L-364"><span class="linenos">364</span></a>        <span class="c1">#    else:</span>
-</span><span id="L-365"><a href="#L-365"><span class="linenos">365</span></a>        <span class="c1">#        if current_streak &gt; 0:</span>
-</span><span id="L-366"><a href="#L-366"><span class="linenos">366</span></a>        <span class="c1">#            consecutive_streaks[current_streak] += 1</span>
-</span><span id="L-367"><a href="#L-367"><span class="linenos">367</span></a>        <span class="c1">#        current_streak = 1</span>
-</span><span id="L-368"><a href="#L-368"><span class="linenos">368</span></a>        <span class="c1">#        last_first_pair = first_pair_strings</span>
-</span><span id="L-369"><a href="#L-369"><span class="linenos">369</span></a>
-</span><span id="L-370"><a href="#L-370"><span class="linenos">370</span></a>        <span class="c1">#    if current_streak &gt; 0:</span>
-</span><span id="L-371"><a href="#L-371"><span class="linenos">371</span></a>        <span class="c1">#        consecutive_streaks[current_streak] += 1</span>
-</span><span id="L-372"><a href="#L-372"><span class="linenos">372</span></a>
-</span><span id="L-373"><a href="#L-373"><span class="linenos">373</span></a>        <span class="c1">#    first_pair_percentages = {</span>
-</span><span id="L-374"><a href="#L-374"><span class="linenos">374</span></a>        <span class="c1">#        pair: count / self.num_trial_blocks * 100</span>
-</span><span id="L-375"><a href="#L-375"><span class="linenos">375</span></a>        <span class="c1">#        for pair, count in first_pair_counts.items()</span>
-</span><span id="L-376"><a href="#L-376"><span class="linenos">376</span></a>        <span class="c1">#    }</span>
-</span><span id="L-377"><a href="#L-377"><span class="linenos">377</span></a>
-</span><span id="L-378"><a href="#L-378"><span class="linenos">378</span></a>        <span class="c1"># first_pair_strings = tuple(var.get() for var in pairs_copy[0])</span>
-</span><span id="L-379"><a href="#L-379"><span class="linenos">379</span></a>        <span class="c1"># first_pair_counts[first_pair_strings] += 1</span>
-</span><span id="L-380"><a href="#L-380"><span class="linenos">380</span></a>
-</span><span id="L-381"><a href="#L-381"><span class="linenos">381</span></a>        <span class="c1">#    logger.info(&quot;Percentages of each pair appearing first:&quot;)</span>
-</span><span id="L-382"><a href="#L-382"><span class="linenos">382</span></a>        <span class="c1">#    for pair, percentage in first_pair_percentages.items():</span>
-</span><span id="L-383"><a href="#L-383"><span class="linenos">383</span></a>        <span class="c1">#        logger.info(f&quot;{pair}: {percentage:.2f}%&quot;)</span>
-</span><span id="L-384"><a href="#L-384"><span class="linenos">384</span></a>
-</span><span id="L-385"><a href="#L-385"><span class="linenos">385</span></a>        <span class="c1">#    logger.info(&quot;\nConsecutive streaks of first pairs:&quot;)</span>
-</span><span id="L-386"><a href="#L-386"><span class="linenos">386</span></a>        <span class="c1">#    for streak_length, count in consecutive_streaks.items():</span>
-</span><span id="L-387"><a href="#L-387"><span class="linenos">387</span></a>        <span class="c1">#        logger.info(f&quot;Streak of {streak_length}: {count} times&quot;)</span>
-</span><span id="L-388"><a href="#L-388"><span class="linenos">388</span></a>
-</span><span id="L-389"><a href="#L-389"><span class="linenos">389</span></a>        <span class="c1">#    logger.info(&quot;Pairs generated.&quot;)</span>
 </span></pre></div>
 
 
@@ -727,7 +692,7 @@ experiment_process_data    </h1>
 </span><span id="ExperimentProcessData-186"><a href="#ExperimentProcessData-186"><span class="linenos">186</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error creating random intervals: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="ExperimentProcessData-187"><a href="#ExperimentProcessData-187"><span class="linenos">187</span></a>            <span class="k">raise</span>
 </span><span id="ExperimentProcessData-188"><a href="#ExperimentProcessData-188"><span class="linenos">188</span></a>
-</span><span id="ExperimentProcessData-189"><a href="#ExperimentProcessData-189"><span class="linenos">189</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="ExperimentProcessData-189"><a href="#ExperimentProcessData-189"><span class="linenos">189</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 </span><span id="ExperimentProcessData-190"><a href="#ExperimentProcessData-190"><span class="linenos">190</span></a>        <span class="n">max_time</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="ExperimentProcessData-191"><a href="#ExperimentProcessData-191"><span class="linenos">191</span></a>            <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ITI_intervals_final</span><span class="p">)</span>
 </span><span id="ExperimentProcessData-192"><a href="#ExperimentProcessData-192"><span class="linenos">192</span></a>            <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TTC_intervals_final</span><span class="p">)</span>
@@ -894,41 +859,6 @@ experiment_process_data    </h1>
 </span><span id="ExperimentProcessData-353"><a href="#ExperimentProcessData-353"><span class="linenos">353</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="ExperimentProcessData-354"><a href="#ExperimentProcessData-354"><span class="linenos">354</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting seconds to minutes and seconds: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="ExperimentProcessData-355"><a href="#ExperimentProcessData-355"><span class="linenos">355</span></a>            <span class="k">raise</span>
-</span><span id="ExperimentProcessData-356"><a href="#ExperimentProcessData-356"><span class="linenos">356</span></a>
-</span><span id="ExperimentProcessData-357"><a href="#ExperimentProcessData-357"><span class="linenos">357</span></a>            <span class="c1"># def calculate_randomness():</span>
-</span><span id="ExperimentProcessData-358"><a href="#ExperimentProcessData-358"><span class="linenos">358</span></a>            <span class="c1">#    consecutive_streaks: dict[int, int] = defaultdict(int)</span>
-</span><span id="ExperimentProcessData-359"><a href="#ExperimentProcessData-359"><span class="linenos">359</span></a>            <span class="c1">#    current_streak = 0</span>
-</span><span id="ExperimentProcessData-360"><a href="#ExperimentProcessData-360"><span class="linenos">360</span></a>
-</span><span id="ExperimentProcessData-361"><a href="#ExperimentProcessData-361"><span class="linenos">361</span></a>            <span class="c1"># first_pair_counts: dict[tuple, int] = defaultdict(int)</span>
-</span><span id="ExperimentProcessData-362"><a href="#ExperimentProcessData-362"><span class="linenos">362</span></a>            <span class="c1"># last_first_pair = None</span>
-</span><span id="ExperimentProcessData-363"><a href="#ExperimentProcessData-363"><span class="linenos">363</span></a>        <span class="c1">#    if first_pair_strings == last_first_pair:</span>
-</span><span id="ExperimentProcessData-364"><a href="#ExperimentProcessData-364"><span class="linenos">364</span></a>        <span class="c1">#        current_streak += 1</span>
-</span><span id="ExperimentProcessData-365"><a href="#ExperimentProcessData-365"><span class="linenos">365</span></a>        <span class="c1">#    else:</span>
-</span><span id="ExperimentProcessData-366"><a href="#ExperimentProcessData-366"><span class="linenos">366</span></a>        <span class="c1">#        if current_streak &gt; 0:</span>
-</span><span id="ExperimentProcessData-367"><a href="#ExperimentProcessData-367"><span class="linenos">367</span></a>        <span class="c1">#            consecutive_streaks[current_streak] += 1</span>
-</span><span id="ExperimentProcessData-368"><a href="#ExperimentProcessData-368"><span class="linenos">368</span></a>        <span class="c1">#        current_streak = 1</span>
-</span><span id="ExperimentProcessData-369"><a href="#ExperimentProcessData-369"><span class="linenos">369</span></a>        <span class="c1">#        last_first_pair = first_pair_strings</span>
-</span><span id="ExperimentProcessData-370"><a href="#ExperimentProcessData-370"><span class="linenos">370</span></a>
-</span><span id="ExperimentProcessData-371"><a href="#ExperimentProcessData-371"><span class="linenos">371</span></a>        <span class="c1">#    if current_streak &gt; 0:</span>
-</span><span id="ExperimentProcessData-372"><a href="#ExperimentProcessData-372"><span class="linenos">372</span></a>        <span class="c1">#        consecutive_streaks[current_streak] += 1</span>
-</span><span id="ExperimentProcessData-373"><a href="#ExperimentProcessData-373"><span class="linenos">373</span></a>
-</span><span id="ExperimentProcessData-374"><a href="#ExperimentProcessData-374"><span class="linenos">374</span></a>        <span class="c1">#    first_pair_percentages = {</span>
-</span><span id="ExperimentProcessData-375"><a href="#ExperimentProcessData-375"><span class="linenos">375</span></a>        <span class="c1">#        pair: count / self.num_trial_blocks * 100</span>
-</span><span id="ExperimentProcessData-376"><a href="#ExperimentProcessData-376"><span class="linenos">376</span></a>        <span class="c1">#        for pair, count in first_pair_counts.items()</span>
-</span><span id="ExperimentProcessData-377"><a href="#ExperimentProcessData-377"><span class="linenos">377</span></a>        <span class="c1">#    }</span>
-</span><span id="ExperimentProcessData-378"><a href="#ExperimentProcessData-378"><span class="linenos">378</span></a>
-</span><span id="ExperimentProcessData-379"><a href="#ExperimentProcessData-379"><span class="linenos">379</span></a>        <span class="c1"># first_pair_strings = tuple(var.get() for var in pairs_copy[0])</span>
-</span><span id="ExperimentProcessData-380"><a href="#ExperimentProcessData-380"><span class="linenos">380</span></a>        <span class="c1"># first_pair_counts[first_pair_strings] += 1</span>
-</span><span id="ExperimentProcessData-381"><a href="#ExperimentProcessData-381"><span class="linenos">381</span></a>
-</span><span id="ExperimentProcessData-382"><a href="#ExperimentProcessData-382"><span class="linenos">382</span></a>        <span class="c1">#    logger.info(&quot;Percentages of each pair appearing first:&quot;)</span>
-</span><span id="ExperimentProcessData-383"><a href="#ExperimentProcessData-383"><span class="linenos">383</span></a>        <span class="c1">#    for pair, percentage in first_pair_percentages.items():</span>
-</span><span id="ExperimentProcessData-384"><a href="#ExperimentProcessData-384"><span class="linenos">384</span></a>        <span class="c1">#        logger.info(f&quot;{pair}: {percentage:.2f}%&quot;)</span>
-</span><span id="ExperimentProcessData-385"><a href="#ExperimentProcessData-385"><span class="linenos">385</span></a>
-</span><span id="ExperimentProcessData-386"><a href="#ExperimentProcessData-386"><span class="linenos">386</span></a>        <span class="c1">#    logger.info(&quot;\nConsecutive streaks of first pairs:&quot;)</span>
-</span><span id="ExperimentProcessData-387"><a href="#ExperimentProcessData-387"><span class="linenos">387</span></a>        <span class="c1">#    for streak_length, count in consecutive_streaks.items():</span>
-</span><span id="ExperimentProcessData-388"><a href="#ExperimentProcessData-388"><span class="linenos">388</span></a>        <span class="c1">#        logger.info(f&quot;Streak of {streak_length}: {count} times&quot;)</span>
-</span><span id="ExperimentProcessData-389"><a href="#ExperimentProcessData-389"><span class="linenos">389</span></a>
-</span><span id="ExperimentProcessData-390"><a href="#ExperimentProcessData-390"><span class="linenos">390</span></a>        <span class="c1">#    logger.info(&quot;Pairs generated.&quot;)</span>
 </span></pre></div>
 
 
@@ -1298,13 +1228,13 @@ in interface.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">calculate_max_runtime</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> (&lt;class &#x27;int&#x27;&gt;, &lt;class &#x27;int&#x27;&gt;):</span></span>
+        <span class="name">calculate_max_runtime</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>:</span></span>
 
                 <label class="view-source-button" for="ExperimentProcessData.calculate_max_runtime-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#ExperimentProcessData.calculate_max_runtime"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ExperimentProcessData.calculate_max_runtime-189"><a href="#ExperimentProcessData.calculate_max_runtime-189"><span class="linenos">189</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ExperimentProcessData.calculate_max_runtime-189"><a href="#ExperimentProcessData.calculate_max_runtime-189"><span class="linenos">189</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_max_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 </span><span id="ExperimentProcessData.calculate_max_runtime-190"><a href="#ExperimentProcessData.calculate_max_runtime-190"><span class="linenos">190</span></a>        <span class="n">max_time</span> <span class="o">=</span> <span class="p">(</span>
 </span><span id="ExperimentProcessData.calculate_max_runtime-191"><a href="#ExperimentProcessData.calculate_max_runtime-191"><span class="linenos">191</span></a>            <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ITI_intervals_final</span><span class="p">)</span>
 </span><span id="ExperimentProcessData.calculate_max_runtime-192"><a href="#ExperimentProcessData.calculate_max_runtime-192"><span class="linenos">192</span></a>            <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TTC_intervals_final</span><span class="p">)</span>
@@ -1599,41 +1529,6 @@ ensure pseudo randomness, we utilize np.random.shuffle on each pairing.</p>
 </span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-353"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-353"><span class="linenos">353</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-354"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-354"><span class="linenos">354</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error converting seconds to minutes and seconds: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-355"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-355"><span class="linenos">355</span></a>            <span class="k">raise</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-356"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-356"><span class="linenos">356</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-357"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-357"><span class="linenos">357</span></a>            <span class="c1"># def calculate_randomness():</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-358"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-358"><span class="linenos">358</span></a>            <span class="c1">#    consecutive_streaks: dict[int, int] = defaultdict(int)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-359"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-359"><span class="linenos">359</span></a>            <span class="c1">#    current_streak = 0</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-360"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-360"><span class="linenos">360</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-361"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-361"><span class="linenos">361</span></a>            <span class="c1"># first_pair_counts: dict[tuple, int] = defaultdict(int)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-362"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-362"><span class="linenos">362</span></a>            <span class="c1"># last_first_pair = None</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-363"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-363"><span class="linenos">363</span></a>        <span class="c1">#    if first_pair_strings == last_first_pair:</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-364"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-364"><span class="linenos">364</span></a>        <span class="c1">#        current_streak += 1</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-365"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-365"><span class="linenos">365</span></a>        <span class="c1">#    else:</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-366"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-366"><span class="linenos">366</span></a>        <span class="c1">#        if current_streak &gt; 0:</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-367"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-367"><span class="linenos">367</span></a>        <span class="c1">#            consecutive_streaks[current_streak] += 1</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-368"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-368"><span class="linenos">368</span></a>        <span class="c1">#        current_streak = 1</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-369"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-369"><span class="linenos">369</span></a>        <span class="c1">#        last_first_pair = first_pair_strings</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-370"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-370"><span class="linenos">370</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-371"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-371"><span class="linenos">371</span></a>        <span class="c1">#    if current_streak &gt; 0:</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-372"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-372"><span class="linenos">372</span></a>        <span class="c1">#        consecutive_streaks[current_streak] += 1</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-373"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-373"><span class="linenos">373</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-374"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-374"><span class="linenos">374</span></a>        <span class="c1">#    first_pair_percentages = {</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-375"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-375"><span class="linenos">375</span></a>        <span class="c1">#        pair: count / self.num_trial_blocks * 100</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-376"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-376"><span class="linenos">376</span></a>        <span class="c1">#        for pair, count in first_pair_counts.items()</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-377"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-377"><span class="linenos">377</span></a>        <span class="c1">#    }</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-378"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-378"><span class="linenos">378</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-379"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-379"><span class="linenos">379</span></a>        <span class="c1"># first_pair_strings = tuple(var.get() for var in pairs_copy[0])</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-380"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-380"><span class="linenos">380</span></a>        <span class="c1"># first_pair_counts[first_pair_strings] += 1</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-381"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-381"><span class="linenos">381</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-382"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-382"><span class="linenos">382</span></a>        <span class="c1">#    logger.info(&quot;Percentages of each pair appearing first:&quot;)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-383"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-383"><span class="linenos">383</span></a>        <span class="c1">#    for pair, percentage in first_pair_percentages.items():</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-384"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-384"><span class="linenos">384</span></a>        <span class="c1">#        logger.info(f&quot;{pair}: {percentage:.2f}%&quot;)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-385"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-385"><span class="linenos">385</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-386"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-386"><span class="linenos">386</span></a>        <span class="c1">#    logger.info(&quot;\nConsecutive streaks of first pairs:&quot;)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-387"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-387"><span class="linenos">387</span></a>        <span class="c1">#    for streak_length, count in consecutive_streaks.items():</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-388"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-388"><span class="linenos">388</span></a>        <span class="c1">#        logger.info(f&quot;Streak of {streak_length}: {count} times&quot;)</span>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-389"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-389"><span class="linenos">389</span></a>
-</span><span id="ExperimentProcessData.convert_seconds_to_minutes_seconds-390"><a href="#ExperimentProcessData.convert_seconds_to_minutes_seconds-390"><span class="linenos">390</span></a>        <span class="c1">#    logger.info(&quot;Pairs generated.&quot;)</span>
 </span></pre></div>
 
 

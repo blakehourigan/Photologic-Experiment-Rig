@@ -58,6 +58,23 @@ class GUIUtils:
             raise
 
     @staticmethod
+    def create_basic_frame(
+        parent: tk.Frame | tk.Tk, row: int, column: int, rows: int, cols: int
+    ) -> tk.Frame:
+        try:
+            frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
+            frame.grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
+            for i in range(rows):
+                frame.grid_rowconfigure(i, weight=1)
+            for i in range(cols):
+                frame.grid_columnconfigure(i, weight=1)
+
+            return frame
+        except Exception as e:
+            logger.error(f"Error creating status frame: {e}")
+            raise
+
+    @staticmethod
     def create_button(parent, button_text, command, bg, row, column):
         try:
             frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
@@ -77,7 +94,7 @@ class GUIUtils:
             raise
 
     @staticmethod
-    def display_error(error, message):
+    def display_error(error: str, message: str):
         try:
             messagebox.showinfo(error, message)
             logger.error(f"Error displayed: {error} - {message}")
@@ -179,8 +196,8 @@ class GUIUtils:
             raise
 
     @staticmethod
-    def askyesno(window_title, message) -> bool:
+    def askyesno(window_title: str, message: str) -> bool:
         """
         asks the user a question in a popup window. returns true if yes, false if no
         """
-        return tk.messagebox.askyesno(title=window_title, message=message)
+        return messagebox.askyesno(title=window_title, message=message)

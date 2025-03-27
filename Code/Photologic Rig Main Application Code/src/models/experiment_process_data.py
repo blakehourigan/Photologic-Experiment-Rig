@@ -185,7 +185,7 @@ class ExperimentProcessData:
             logger.error(f"Error creating random intervals: {e}")
             raise
 
-    def calculate_max_runtime(self) -> (int, int):
+    def calculate_max_runtime(self) -> tuple[int, int]:
         max_time = (
             sum(self.ITI_intervals_final)
             + sum(self.TTC_intervals_final)
@@ -352,38 +352,3 @@ class ExperimentProcessData:
         except Exception as e:
             logger.error(f"Error converting seconds to minutes and seconds: {e}")
             raise
-
-            # def calculate_randomness():
-            #    consecutive_streaks: dict[int, int] = defaultdict(int)
-            #    current_streak = 0
-
-            # first_pair_counts: dict[tuple, int] = defaultdict(int)
-            # last_first_pair = None
-        #    if first_pair_strings == last_first_pair:
-        #        current_streak += 1
-        #    else:
-        #        if current_streak > 0:
-        #            consecutive_streaks[current_streak] += 1
-        #        current_streak = 1
-        #        last_first_pair = first_pair_strings
-
-        #    if current_streak > 0:
-        #        consecutive_streaks[current_streak] += 1
-
-        #    first_pair_percentages = {
-        #        pair: count / self.num_trial_blocks * 100
-        #        for pair, count in first_pair_counts.items()
-        #    }
-
-        # first_pair_strings = tuple(var.get() for var in pairs_copy[0])
-        # first_pair_counts[first_pair_strings] += 1
-
-        #    logger.info("Percentages of each pair appearing first:")
-        #    for pair, percentage in first_pair_percentages.items():
-        #        logger.info(f"{pair}: {percentage:.2f}%")
-
-        #    logger.info("\nConsecutive streaks of first pairs:")
-        #    for streak_length, count in consecutive_streaks.items():
-        #        logger.info(f"Streak of {streak_length}: {count} times")
-
-        #    logger.info("Pairs generated.")
