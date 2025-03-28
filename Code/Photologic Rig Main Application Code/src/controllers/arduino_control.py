@@ -21,6 +21,9 @@ from views.gui_common import GUIUtils
 
 logger = logging.getLogger(__name__)
 
+# each side has 8 valves, therefore 8 durations in each array
+VALVES_PER_SIDE = 8
+
 
 class ArduinoManager:
     """
@@ -71,6 +74,15 @@ class ArduinoManager:
     """
 
     def __init__(self, exp_data: ExperimentProcessData) -> None:
+        """
+        Initialize and handle the ArduinoManager class. Here we establish the Arduino connection and reset the board to clear any
+        residual data left on the Arduino board from previous experimental runs.
+
+        Parameters
+        ----------
+        - **exp_data** (*ExperimentProcessData*): An instance of `models.experiment_process_data` ExperimentProcessData. Used to access
+        experiment variables and send them to the Arduino board.
+        """
         self.BAUD_RATE: int = 115200
         self.arduino: None | serial.Serial = None
 
@@ -89,7 +101,8 @@ class ArduinoManager:
         self.send_command(command=reset_arduino)
 
     def connect_to_arduino(self) -> None:
-        """Connect to the Arduino board."""
+        """Connect to the Arduino board by searching all serial ports for a device with a manufacturer name 'Arduino'. If
+        found, establish serial.Serial connection. If not notify user."""
         ports = serial.tools.list_ports.comports()
         arduino_port = None
 
@@ -113,6 +126,9 @@ class ArduinoManager:
             logger.info(f"Arduino connected on port {port}")
 
     def listen_for_serial(self) -> None:
+        """
+        Method to constantly scan for Arduino input. If received place in thread-save `data_queue` to process it later.
+        """
         # if we do not have an arduino to listen to return and don't try to listen to it!
         if self.arduino is None:
             logger.error(
@@ -139,7 +155,7 @@ class ArduinoManager:
     def stop_listener_thread(self) -> None:
         """
         Method to set the stop event for the listener thread and
-        join it back to the main program thread
+        join it back to the main program thread.
         """
         self.stop_event.set()
 
@@ -151,7 +167,7 @@ class ArduinoManager:
 
     def reset_arduino(self) -> None:
         """
-        Send a reset command to both Arduino boards.
+        Send a reset command to the Arduino board.
         """
         try:
             command = "RESET\n".encode("utf-8")
@@ -165,7 +181,7 @@ class ArduinoManager:
             logger.error(error_msg)
 
     def close_connection(self) -> None:
-        """Close the serial connections to the Arduino boards."""
+        """Close the serial connection to the Arduino board."""
         if self.arduino is not None:
             self.arduino.close()
         logger.info("Closed connections to Arduino.")
@@ -173,7 +189,7 @@ class ArduinoManager:
     def send_experiment_variables(self):
         """
         This method is defined to send program variables num_stimuli and num_trials to
-        the arduino. This is useful because it allows the arduino to understand how long schedules should be (num_trials),
+        the Arduino. This is useful because it allows the Arduino to understand how long schedules should be (num_trials),
         and what valve should be selected for side 2 (num_stimuli).
         """
         num_stimuli = self.exp_data.exp_var_entries["Num Stimuli"]
@@ -209,9 +225,10 @@ class ArduinoManager:
         self.verify_schedule(side_one, side_two)
 
     def send_valve_durations(self) -> None:
-        # get side_one and side_two durations from the arduino data model
-        # will load from arduino_data.toml from the last_used class by default
-        # durations can be reset by passing reset_durations=True
+        """
+        Get side_one and side_two durations from `models.arduino_data` Arduino data model
+        will load from arduino_data.toml from the last_used 'profile'.
+        """
         side_one, side_two, _ = self.arduino_data.load_durations()
 
         side_one_durs = side_one.tobytes()
@@ -295,11 +312,8 @@ class ArduinoManager:
             ver_dur_command = "VER DURATIONS\n".encode("utf-8")
             self.send_command(ver_dur_command)
 
-            # each side has 8 valves, therefore 8 durations in each array
-            valves_per_side = 8
-
-            ver1 = np.zeros((valves_per_side,), dtype=np.int32)
-            ver2 = np.zeros((valves_per_side,), dtype=np.int32)
+            ver1 = np.zeros((VALVES_PER_SIDE,), dtype=np.int32)
+            ver2 = np.zeros((VALVES_PER_SIDE,), dtype=np.int32)
 
             if self.arduino is None:
                 msg = "ARDUINO IS NOT CONNECTED! Try reconnecting and restart the program."
@@ -311,12 +325,12 @@ class ArduinoManager:
             # wait for the data to arrive
             while self.arduino.in_waiting < 4 * 8:
                 pass
-            for i in range(valves_per_side):
+            for i in range(VALVES_PER_SIDE):
                 duration = int.from_bytes(
                     self.arduino.read(4), byteorder="little", signed=False
                 )
                 ver1[i] = duration
-            for i in range(valves_per_side):
+            for i in range(VALVES_PER_SIDE):
                 duration = int.from_bytes(
                     self.arduino.read(4), byteorder="little", signed=False
                 )
