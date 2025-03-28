@@ -1,3 +1,13 @@
+"""
+This module defines the GUIUtils class, a collection of static helper methods
+designed to simplify the creation and management of common Tkinter GUI elements
+used across the application's views.
+
+It provides standardized ways to build widgets like labeled entries, buttons,
+and frames, as well as utility functions for error display, icon handling,
+safe variable access, and window positioning.
+"""
+
 import tkinter as tk
 
 from tkinter import PhotoImage
@@ -5,6 +15,7 @@ import platform
 import os
 from tkinter import messagebox
 import logging
+from typing import Callable
 
 import system_config
 
@@ -13,8 +24,39 @@ logger = logging.getLogger()
 
 class GUIUtils:
     """
-    This class contains helper methods that do not require an instance of self to function. They assist in the creation of
-    GUI elements in various GUI (view) classes
+    Provides static utility methods for common GUI-related tasks in Tkinter.
+
+    This class bundles functions frequently needed when building Tkinter interfaces.
+    Designed to aid in code reuse and consistency across different view (GUI) components. Since all
+    methods are static, this class is not intended to be instantiated; its methods
+    should be called directly using the class name (e.g., `GUIUtils.create_button(...)`).
+
+    Attributes
+    ----------
+    None (all methods are static).
+
+    Methods
+    -------
+    - `create_labeled_entry(...)`
+        Creates a standard Lable/Entry combination component packed in a shared Frame.
+    - `create_basic_frame(...)`
+        Creates a basic Frame widget with grid expansion configuration.
+    - `create_button(...)`
+        Creates a standard Button widget within a Frame.
+    - `display_error(...)`
+        Shows a error message box to the user.
+    - `create_timer(...)`
+        Creates a timer label wiget.
+    - `get_window_icon_path()` -> *could be moved to `system_config` module later.*
+        Determines and returns the OS-specific path for the application icon.
+    - `set_program_icon(...)`
+        Sets the icon for a given Tkinter window based on the OS.
+    - `safe_tkinter_get(...)`
+        Safely retrieves the value from a Tkinter variable, handling potential errors when stored value is "" or nothing.
+    - `center_window(...)`
+        Positions a Tkinter window in the center of the screen.
+    - `askyesno(...)`
+        Displays a standard yes/no confirmation dialog box.
     """
 
     @staticmethod
@@ -25,6 +67,26 @@ class GUIUtils:
         row: int,
         column: int,
     ) -> tuple[tk.Frame, tk.Label, tk.Entry]:
+        """
+        Creates a standard UI component consisting of a Frame containing a Label
+        positioned above an Entry widget. Configures grid weighting for resizing.
+
+        Parameters
+        ----------
+        - **parent** (*tk.Frame*): The parent widget where this component will be placed.
+        - **label_text** (*str*): The text to display in the Label widget.
+        - **text_var** (*tk.IntVar OR tk.StringVar*): The Tkinter variable linked to the Entry widget's content.
+        - **row** (*int*): The grid row within the parent widget for this component's frame.
+        - **column** (*int*): The grid column within the parent widget for this component's frame.
+
+        Returns
+        -------
+        - *tuple[tk.Frame, tk.Label, tk.Entry]*: A tuple containing the created created Frame, Label, and Entry widgets.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions that occur during widget creation, after logging the error.
+        """
         try:
             frame = tk.Frame(parent)
             frame.grid(row=row, column=column, padx=5, sticky="nsew")
@@ -61,6 +123,25 @@ class GUIUtils:
     def create_basic_frame(
         parent: tk.Frame | tk.Tk, row: int, column: int, rows: int, cols: int
     ) -> tk.Frame:
+        """
+        Creates a basic tk.Frame widget with optional highlighting and grid configuration.
+
+        Parameters
+        ----------
+        - **parent** (*tk.Frame OR tk.Tk, tk.Toplevel]*): The parent widget.
+        - **row** (*int*): The grid row for the frame in the parent.
+        - **column** (*int*): The grid column for the frame in the parent.
+        - **rows** (*int, optional*): Number of internal rows to configure with weight=1 / expansion.
+        - **cols** (*int, optional*): Number of internal columns to configure with weight=1 / expansion.
+
+        Returns
+        -------
+        - *tk.Frame*: The created and configured Frame widget.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions during frame creation, after logging.
+        """
         try:
             frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
             frame.grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
@@ -75,7 +156,36 @@ class GUIUtils:
             raise
 
     @staticmethod
-    def create_button(parent, button_text, command, bg, row, column):
+    def create_button(
+        parent: tk.Frame,
+        button_text: str,
+        command: Callable,
+        bg: str,
+        row: int,
+        column: int,
+    ) -> tuple[tk.Frame, tk.Button]:
+        """
+        Creates a tk.Button widget housed within its own tk.Frame for layout control.
+
+        The Frame allows the button to expand/contract cleanly within its grid cell.
+
+        Parameters
+        ----------
+        - **parent** (*Union[tk.Frame, tk.Tk, tk.Toplevel]*): The parent widget.
+        - **button_text** (*str*): The text displayed on the button.
+        - **command** (*Callable / Function*): The function or method to call when the button is clicked.
+        - **bg** (*str*): The background color of the button (Tkinter colors e.g., "green", "light grey").
+        - **row** (*int*): The grid row for the button's frame in the parent.
+        - **column** (*int*): The grid column for the button's frame in the parent.
+
+        Returns
+        -------
+        - *tuple[tk.Frame, tk.Button]*: A tuple containing the created Frame and Button widgets.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions during widget creation, after logging.
+        """
         try:
             frame = tk.Frame(parent, highlightthickness=1, highlightbackground="black")
             frame.grid(row=row, column=column, padx=5, pady=5, sticky="nsew")
@@ -94,7 +204,19 @@ class GUIUtils:
             raise
 
     @staticmethod
-    def display_error(error: str, message: str):
+    def display_error(error: str, message: str) -> None:
+        """
+        Displays an error message box to the user.
+
+        Parameters
+        ----------
+        - **error_title** (*str*): The title for the error message box window.
+        - **message** (*str*): The error message content to display.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions from messagebox, after logging.
+        """
         try:
             messagebox.showinfo(error, message)
             logger.error(f"Error displayed: {error} - {message}")
@@ -103,7 +225,34 @@ class GUIUtils:
             raise
 
     @staticmethod
-    def create_timer(parent, timer_name, default_text, row, column):
+    def create_timer(
+        parent: tk.Frame | tk.Tk | tk.Toplevel,
+        timer_name: str,
+        initial_text: str,
+        row: int,
+        column: int,
+    ):
+        """
+        Creates a UI component for displaying a tkinter Label component serving as timer, consists of a Frame
+        containing a timer name Label and a time display Label.
+
+        Parameters
+        ----------
+        - **parent** (*tk.Frame OR tk.Tk OR tk.Toplevel]*): The parent widget.
+        - **timer_name** (*str*): The descriptive name for the timer (e.g., "Session Time").
+        - **initial_text** (*str*): The initial text to display in the time label (e.g., "00:00:00").
+        - **row** (*int*): The grid row for the timer's frame in the parent.
+        - **column** (*int*): The grid column for the timer's frame in the parent.
+
+        Returns
+        -------
+        - *Tuple[tk.Frame, tk.Label, tk.Label]*: A tuple containing the Frame, the name Label,
+          and the time display Label.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions during widget creation, after logging.
+        """
         try:
             frame = tk.Frame(
                 parent, highlightthickness=1, highlightbackground="dark blue"
@@ -116,7 +265,7 @@ class GUIUtils:
             label.grid(row=0, column=0)
 
             time_label = tk.Label(
-                frame, text=default_text, bg="light blue", font=("Helvetica", 24)
+                frame, text=initial_text, bg="light blue", font=("Helvetica", 24)
             )
             time_label.grid(row=0, column=1)
 
@@ -128,9 +277,22 @@ class GUIUtils:
 
     @staticmethod
     def get_window_icon_path() -> str:
-        # get the absolute path of two directories above the file from which this file is called
-        # we need to get to the assets folder at photologic exp rig/assets and are currently in
-        # photologic exp rig/src/views. need to go up twice then down to assets, which is what we do here
+        """
+        Determines the correct application icon file path based on the operating system.
+
+        Relies on `system_config.get_assets_path()` to find the assets directory.
+        Uses '.ico' for Windows and '.png' for other systems (Linux, macOS).
+
+        Returns
+        -------
+        - *str*: The absolute path to the appropriate icon file.
+
+        Raises
+        ------
+        - *FileNotFoundError*: If the determined icon file does not exist.
+        - *Exception*: Propagates exceptions from `system_config` or `os.path`.
+        """
+        # get the absolute path of the assets directory
         base_path = system_config.get_assets_path()
 
         # Determine the operating system
@@ -147,8 +309,22 @@ class GUIUtils:
         return os.path.join(base_path, icon_filename)
 
     @staticmethod
-    def set_program_icon(window, icon_path):
-        """Set the program icon for a Tkinter window."""
+    def set_program_icon(window: tk.Tk | tk.Toplevel, icon_path: str) -> None:
+        """
+        Sets the program icon for a given Tkinter window (Tk or Toplevel).
+
+        Uses the appropriate method based on the operating system (`iconbitmap` for
+        Windows, `iconphoto` for others).
+
+        Parameters
+        ----------
+        - **window** (*tk.Tk OR tk.Toplevel*): The Tkinter window object whose icon should be set.
+        - **icon_path** (*str*): The absolute path to the icon file ('.ico' for Windows, '.png'/''.gif' otherwise).
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions during icon setting, after logging.
+        """
         os_name = platform.system()
         if os_name == "Windows":
             window.iconbitmap(icon_path)
@@ -158,12 +334,24 @@ class GUIUtils:
             window.tk.call("wm", "iconphoto", window._w, photo)  # type: ignore
 
     @staticmethod
-    def safe_tkinter_get(var):
+    def safe_tkinter_get(var: tk.StringVar | tk.IntVar) -> str | int | None:
         """
-        static helper method that allows for safe access of tkinter
-        variable values via the .get() method. This method fails on tk int values
+        Safely retrieves the value from a Tkinter variable using .get().
+        .get() method fails on tk int values
         when the value is "" or empty (when emptying a entries contents and filling it
-        with something else), this avoids that by returning none instead if the val is == ""
+        with something else), this avoids that by returning none instead if the val is == "".
+
+        Specifically handles the `tk.TclError` that occurs when trying to `.get()` an
+        empty `tk.IntVar` or `tk.DoubleVar` (often happens when an Entry linked
+        to it is cleared by the user). Returns `None` in case of this error.
+
+        Parameters
+        ----------
+        - **var** (*str OR int or None*): The Tkinter variable to get the value from.
+
+        Raises
+        ------
+        - *Exception*: Propagates any non-TclError exceptions during the `.get()` call.
         """
         try:
             return var.get()
@@ -171,7 +359,23 @@ class GUIUtils:
             return None
 
     @staticmethod
-    def center_window(window):
+    def center_window(window: tk.Tk | tk.Toplevel) -> None:
+        """
+        Centers a Tkinter window on the screen based on screen dimensions. Specifically, window has maximum of 80 percent of screen
+        width and height.
+
+        Forces an update of the window's pending tasks (`update_idletasks`) to ensure
+        its requested size (`winfo_reqwidth`, `winfo_reqheight`) is accurate before calculating
+        the centering position. Sets the window's geometry string.
+
+        Parameters
+        ----------
+        - **window** (*tk.Tk OR tk.Toplevel*): The window object to center.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions during geometry calculation or setting, after logging.
+        """
         try:
             # Get the screen dimensions
             window_width = window.winfo_reqwidth()
@@ -198,6 +402,21 @@ class GUIUtils:
     @staticmethod
     def askyesno(window_title: str, message: str) -> bool:
         """
-        asks the user a question in a popup window. returns true if yes, false if no
+        Displays a standard modal confirmation dialog box with 'Yes' and 'No' buttons.
+
+        Wraps `tkinter.messagebox.askyesno`.
+
+        Parameters
+        ----------
+        - **window_title** (*str*): The title for the confirmation dialog window.
+        - **message** (*str*): The question or message to display to the user.
+
+        Returns
+        -------
+        - *bool*: `True` if the user clicks 'Yes', `False` if the user clicks 'No' or closes the dialog.
+
+        Raises
+        ------
+        - *Exception*: Propagates any exceptions from messagebox, after logging.
         """
         return messagebox.askyesno(title=window_title, message=message)
