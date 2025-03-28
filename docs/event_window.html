@@ -72,91 +72,150 @@
                     <h1 class="modulename">
 event_window    </h1>
 
-                
+                        <div class="docstring"><p>This module defines the EventWindow class, a tkinter Toplevel window used to display timestamps
+and other details for experiment event data (licks, motor movments) in a table format using a ttk.Treeview element.</p>
+</div>
+
                         <input id="mod-event_window-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-event_window-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ttk</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="c1">#### USED FOR TYPE HINTS ####</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">models.event_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventData</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="c1">#### USED FOR TYPE HINTS ####</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">views.gui_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">GUIUtils</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EventWindow</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">):</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>    <span class="c1"># inject the event dataframe when we create the class so we have access to that data</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="c1"># reference to event model</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>        <span class="c1"># num rows in that df currently</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>            <span class="p">)</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>
-</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a>        <span class="c1"># Create a Treeview widget</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>        <span class="p">)</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>        <span class="p">)</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>
-</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>
-</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="sd">This module defines the EventWindow class, a tkinter Toplevel window used to display timestamps</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="sd">and other details for experiment event data (licks, motor movments) in a table format using a ttk.Treeview element.</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tk</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">tkinter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ttk</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="c1">#### USED FOR TYPE HINTS ####</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">models.event_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventData</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="c1">#### USED FOR TYPE HINTS ####</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">views.gui_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">GUIUtils</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EventWindow</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">):</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="sd">    This class represents a Toplevel window that displays experiment event data using a ttk.Treeview widget.</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="sd">    It pulls in data from an `models.event_data` `EventData` instance and is updated as new events occur.</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">    After creation, window is hidden and can be shown using the `show`() method.</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">    Attributes</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">    ----------</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">    - **event_data** (*EventData*): A reference to the data model instance (`models.event_data.EventData`)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">      that holds the event DataFrame containing the data to be displayed.</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">    - **last_item** (*int*): Tracks the index of the last row added from the DataFrame to the Treeview.</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">      This is used to efficiently update the table by only adding new rows.</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">    - **licks_frame** (*tk.Frame*): The main tkinter Frame widget within the window that contains the Treeview table.</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">    - **timestamped_events** (*ttk.Treeview*): The Treeview widget used to display the event data in a table format.</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="sd">    Methods</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">    -------</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a><span class="sd">    - `show`()</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        Updates the table with the latest data from the `event_data` model and makes the window visible (deiconifies it).</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">    - `update_table`()</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        Efficiently adds new rows from the event DataFrame (held by `event_data`) to the Treeview display. It only adds rows</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">        that haven&#39;t been added previously, based on the `last_item` attribute.</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="sd">    - `build_table`()</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Creates the main frame (`licks_frame`) and the `ttk.Treeview` widget (`timestamped_events`). Configures the Treeview columns</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        and headings based on the columns present in the `event_data.event_dataframe`.</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>    <span class="c1"># inject the event dataframe when we create the class so we have access to that data</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        Initialize the EventWindow. Sets up the window title, icon, key bindings (Ctrl+W to hide),</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        and the close protocol (also hides the window). It builds the table structure and initially</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        hides the window using `withdraw()`.</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        Parameters</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        ----------</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">        - **event_data** (*EventData*): An instance of the `models.event_data.EventData` model containing the</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">          event DataFrame to be displayed.</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="c1"># reference to event model</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        Updates the table with the latest event data and makes the window visible.</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        Calls `update_table()` first, then `deiconify()` to show the window.</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        Updates the Treeview widget by adding only the new rows from the event DataFrame</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        since the last update. It uses `self.last_item` to determine the starting index</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        for adding new rows, ensuring efficient updates without reprocessing existing entries.</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>        <span class="c1"># num rows in that df currently</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>            <span class="p">)</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">        Creates the main frame (`licks_frame`) and the `ttk.Treeview` widget (`timestamped_events`)</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">        used to display the event data. Configures the Treeview columns and headings based on the</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">        columns present in the `event_data.event_dataframe`. Calls `update_table()` to initially</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        populate the table.</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="c1"># Create a Treeview widget</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="p">)</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>        <span class="p">)</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -172,80 +231,157 @@ event_window    </h1>
 
     </div>
     <a class="headerlink" href="#EventWindow"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow-12"><a href="#EventWindow-12"><span class="linenos">12</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EventWindow</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">):</span>
-</span><span id="EventWindow-13"><a href="#EventWindow-13"><span class="linenos">13</span></a>    <span class="c1"># inject the event dataframe when we create the class so we have access to that data</span>
-</span><span id="EventWindow-14"><a href="#EventWindow-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EventWindow-15"><a href="#EventWindow-15"><span class="linenos">15</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-</span><span id="EventWindow-16"><a href="#EventWindow-16"><span class="linenos">16</span></a>        <span class="c1"># reference to event model</span>
-</span><span id="EventWindow-17"><a href="#EventWindow-17"><span class="linenos">17</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
-</span><span id="EventWindow-18"><a href="#EventWindow-18"><span class="linenos">18</span></a>
-</span><span id="EventWindow-19"><a href="#EventWindow-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
-</span><span id="EventWindow-20"><a href="#EventWindow-20"><span class="linenos">20</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="EventWindow-21"><a href="#EventWindow-21"><span class="linenos">21</span></a>
-</span><span id="EventWindow-22"><a href="#EventWindow-22"><span class="linenos">22</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
-</span><span id="EventWindow-23"><a href="#EventWindow-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="EventWindow-24"><a href="#EventWindow-24"><span class="linenos">24</span></a>
-</span><span id="EventWindow-25"><a href="#EventWindow-25"><span class="linenos">25</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
-</span><span id="EventWindow-26"><a href="#EventWindow-26"><span class="linenos">26</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
-</span><span id="EventWindow-27"><a href="#EventWindow-27"><span class="linenos">27</span></a>
-</span><span id="EventWindow-28"><a href="#EventWindow-28"><span class="linenos">28</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
-</span><span id="EventWindow-29"><a href="#EventWindow-29"><span class="linenos">29</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
-</span><span id="EventWindow-30"><a href="#EventWindow-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="EventWindow-31"><a href="#EventWindow-31"><span class="linenos">31</span></a>
-</span><span id="EventWindow-32"><a href="#EventWindow-32"><span class="linenos">32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
-</span><span id="EventWindow-33"><a href="#EventWindow-33"><span class="linenos">33</span></a>
-</span><span id="EventWindow-34"><a href="#EventWindow-34"><span class="linenos">34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
-</span><span id="EventWindow-35"><a href="#EventWindow-35"><span class="linenos">35</span></a>
-</span><span id="EventWindow-36"><a href="#EventWindow-36"><span class="linenos">36</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="EventWindow-37"><a href="#EventWindow-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="EventWindow-38"><a href="#EventWindow-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
-</span><span id="EventWindow-39"><a href="#EventWindow-39"><span class="linenos">39</span></a>
-</span><span id="EventWindow-40"><a href="#EventWindow-40"><span class="linenos">40</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="EventWindow-41"><a href="#EventWindow-41"><span class="linenos">41</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
-</span><span id="EventWindow-42"><a href="#EventWindow-42"><span class="linenos">42</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
-</span><span id="EventWindow-43"><a href="#EventWindow-43"><span class="linenos">43</span></a>        <span class="c1"># num rows in that df currently</span>
-</span><span id="EventWindow-44"><a href="#EventWindow-44"><span class="linenos">44</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="EventWindow-45"><a href="#EventWindow-45"><span class="linenos">45</span></a>
-</span><span id="EventWindow-46"><a href="#EventWindow-46"><span class="linenos">46</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
-</span><span id="EventWindow-47"><a href="#EventWindow-47"><span class="linenos">47</span></a>
-</span><span id="EventWindow-48"><a href="#EventWindow-48"><span class="linenos">48</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
-</span><span id="EventWindow-49"><a href="#EventWindow-49"><span class="linenos">49</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
-</span><span id="EventWindow-50"><a href="#EventWindow-50"><span class="linenos">50</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="EventWindow-51"><a href="#EventWindow-51"><span class="linenos">51</span></a>
-</span><span id="EventWindow-52"><a href="#EventWindow-52"><span class="linenos">52</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="EventWindow-53"><a href="#EventWindow-53"><span class="linenos">53</span></a>
-</span><span id="EventWindow-54"><a href="#EventWindow-54"><span class="linenos">54</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-</span><span id="EventWindow-55"><a href="#EventWindow-55"><span class="linenos">55</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
-</span><span id="EventWindow-56"><a href="#EventWindow-56"><span class="linenos">56</span></a>            <span class="p">)</span>
-</span><span id="EventWindow-57"><a href="#EventWindow-57"><span class="linenos">57</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
-</span><span id="EventWindow-58"><a href="#EventWindow-58"><span class="linenos">58</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
-</span><span id="EventWindow-59"><a href="#EventWindow-59"><span class="linenos">59</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="EventWindow-60"><a href="#EventWindow-60"><span class="linenos">60</span></a>
-</span><span id="EventWindow-61"><a href="#EventWindow-61"><span class="linenos">61</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EventWindow-62"><a href="#EventWindow-62"><span class="linenos">62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span id="EventWindow-63"><a href="#EventWindow-63"><span class="linenos">63</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
-</span><span id="EventWindow-64"><a href="#EventWindow-64"><span class="linenos">64</span></a>
-</span><span id="EventWindow-65"><a href="#EventWindow-65"><span class="linenos">65</span></a>        <span class="c1"># Create a Treeview widget</span>
-</span><span id="EventWindow-66"><a href="#EventWindow-66"><span class="linenos">66</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
-</span><span id="EventWindow-67"><a href="#EventWindow-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
-</span><span id="EventWindow-68"><a href="#EventWindow-68"><span class="linenos">68</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
-</span><span id="EventWindow-69"><a href="#EventWindow-69"><span class="linenos">69</span></a>        <span class="p">)</span>
-</span><span id="EventWindow-70"><a href="#EventWindow-70"><span class="linenos">70</span></a>
-</span><span id="EventWindow-71"><a href="#EventWindow-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-</span><span id="EventWindow-72"><a href="#EventWindow-72"><span class="linenos">72</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
-</span><span id="EventWindow-73"><a href="#EventWindow-73"><span class="linenos">73</span></a>        <span class="p">)</span>
-</span><span id="EventWindow-74"><a href="#EventWindow-74"><span class="linenos">74</span></a>
-</span><span id="EventWindow-75"><a href="#EventWindow-75"><span class="linenos">75</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
-</span><span id="EventWindow-76"><a href="#EventWindow-76"><span class="linenos">76</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
-</span><span id="EventWindow-77"><a href="#EventWindow-77"><span class="linenos">77</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-</span><span id="EventWindow-78"><a href="#EventWindow-78"><span class="linenos">78</span></a>
-</span><span id="EventWindow-79"><a href="#EventWindow-79"><span class="linenos">79</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="EventWindow-80"><a href="#EventWindow-80"><span class="linenos">80</span></a>
-</span><span id="EventWindow-81"><a href="#EventWindow-81"><span class="linenos">81</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow-17"><a href="#EventWindow-17"><span class="linenos"> 17</span></a><span class="k">class</span><span class="w"> </span><span class="nc">EventWindow</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">):</span>
+</span><span id="EventWindow-18"><a href="#EventWindow-18"><span class="linenos"> 18</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow-19"><a href="#EventWindow-19"><span class="linenos"> 19</span></a><span class="sd">    This class represents a Toplevel window that displays experiment event data using a ttk.Treeview widget.</span>
+</span><span id="EventWindow-20"><a href="#EventWindow-20"><span class="linenos"> 20</span></a><span class="sd">    It pulls in data from an `models.event_data` `EventData` instance and is updated as new events occur.</span>
+</span><span id="EventWindow-21"><a href="#EventWindow-21"><span class="linenos"> 21</span></a><span class="sd">    After creation, window is hidden and can be shown using the `show`() method.</span>
+</span><span id="EventWindow-22"><a href="#EventWindow-22"><span class="linenos"> 22</span></a>
+</span><span id="EventWindow-23"><a href="#EventWindow-23"><span class="linenos"> 23</span></a><span class="sd">    Attributes</span>
+</span><span id="EventWindow-24"><a href="#EventWindow-24"><span class="linenos"> 24</span></a><span class="sd">    ----------</span>
+</span><span id="EventWindow-25"><a href="#EventWindow-25"><span class="linenos"> 25</span></a><span class="sd">    - **event_data** (*EventData*): A reference to the data model instance (`models.event_data.EventData`)</span>
+</span><span id="EventWindow-26"><a href="#EventWindow-26"><span class="linenos"> 26</span></a><span class="sd">      that holds the event DataFrame containing the data to be displayed.</span>
+</span><span id="EventWindow-27"><a href="#EventWindow-27"><span class="linenos"> 27</span></a><span class="sd">    - **last_item** (*int*): Tracks the index of the last row added from the DataFrame to the Treeview.</span>
+</span><span id="EventWindow-28"><a href="#EventWindow-28"><span class="linenos"> 28</span></a><span class="sd">      This is used to efficiently update the table by only adding new rows.</span>
+</span><span id="EventWindow-29"><a href="#EventWindow-29"><span class="linenos"> 29</span></a><span class="sd">    - **licks_frame** (*tk.Frame*): The main tkinter Frame widget within the window that contains the Treeview table.</span>
+</span><span id="EventWindow-30"><a href="#EventWindow-30"><span class="linenos"> 30</span></a><span class="sd">    - **timestamped_events** (*ttk.Treeview*): The Treeview widget used to display the event data in a table format.</span>
+</span><span id="EventWindow-31"><a href="#EventWindow-31"><span class="linenos"> 31</span></a>
+</span><span id="EventWindow-32"><a href="#EventWindow-32"><span class="linenos"> 32</span></a><span class="sd">    Methods</span>
+</span><span id="EventWindow-33"><a href="#EventWindow-33"><span class="linenos"> 33</span></a><span class="sd">    -------</span>
+</span><span id="EventWindow-34"><a href="#EventWindow-34"><span class="linenos"> 34</span></a><span class="sd">    - `show`()</span>
+</span><span id="EventWindow-35"><a href="#EventWindow-35"><span class="linenos"> 35</span></a><span class="sd">        Updates the table with the latest data from the `event_data` model and makes the window visible (deiconifies it).</span>
+</span><span id="EventWindow-36"><a href="#EventWindow-36"><span class="linenos"> 36</span></a><span class="sd">    - `update_table`()</span>
+</span><span id="EventWindow-37"><a href="#EventWindow-37"><span class="linenos"> 37</span></a><span class="sd">        Efficiently adds new rows from the event DataFrame (held by `event_data`) to the Treeview display. It only adds rows</span>
+</span><span id="EventWindow-38"><a href="#EventWindow-38"><span class="linenos"> 38</span></a><span class="sd">        that haven&#39;t been added previously, based on the `last_item` attribute.</span>
+</span><span id="EventWindow-39"><a href="#EventWindow-39"><span class="linenos"> 39</span></a><span class="sd">    - `build_table`()</span>
+</span><span id="EventWindow-40"><a href="#EventWindow-40"><span class="linenos"> 40</span></a><span class="sd">        Creates the main frame (`licks_frame`) and the `ttk.Treeview` widget (`timestamped_events`). Configures the Treeview columns</span>
+</span><span id="EventWindow-41"><a href="#EventWindow-41"><span class="linenos"> 41</span></a><span class="sd">        and headings based on the columns present in the `event_data.event_dataframe`.</span>
+</span><span id="EventWindow-42"><a href="#EventWindow-42"><span class="linenos"> 42</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="EventWindow-43"><a href="#EventWindow-43"><span class="linenos"> 43</span></a>
+</span><span id="EventWindow-44"><a href="#EventWindow-44"><span class="linenos"> 44</span></a>    <span class="c1"># inject the event dataframe when we create the class so we have access to that data</span>
+</span><span id="EventWindow-45"><a href="#EventWindow-45"><span class="linenos"> 45</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EventWindow-46"><a href="#EventWindow-46"><span class="linenos"> 46</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow-47"><a href="#EventWindow-47"><span class="linenos"> 47</span></a><span class="sd">        Initialize the EventWindow. Sets up the window title, icon, key bindings (Ctrl+W to hide),</span>
+</span><span id="EventWindow-48"><a href="#EventWindow-48"><span class="linenos"> 48</span></a><span class="sd">        and the close protocol (also hides the window). It builds the table structure and initially</span>
+</span><span id="EventWindow-49"><a href="#EventWindow-49"><span class="linenos"> 49</span></a><span class="sd">        hides the window using `withdraw()`.</span>
+</span><span id="EventWindow-50"><a href="#EventWindow-50"><span class="linenos"> 50</span></a>
+</span><span id="EventWindow-51"><a href="#EventWindow-51"><span class="linenos"> 51</span></a><span class="sd">        Parameters</span>
+</span><span id="EventWindow-52"><a href="#EventWindow-52"><span class="linenos"> 52</span></a><span class="sd">        ----------</span>
+</span><span id="EventWindow-53"><a href="#EventWindow-53"><span class="linenos"> 53</span></a><span class="sd">        - **event_data** (*EventData*): An instance of the `models.event_data.EventData` model containing the</span>
+</span><span id="EventWindow-54"><a href="#EventWindow-54"><span class="linenos"> 54</span></a><span class="sd">          event DataFrame to be displayed.</span>
+</span><span id="EventWindow-55"><a href="#EventWindow-55"><span class="linenos"> 55</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow-56"><a href="#EventWindow-56"><span class="linenos"> 56</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span id="EventWindow-57"><a href="#EventWindow-57"><span class="linenos"> 57</span></a>        <span class="c1"># reference to event model</span>
+</span><span id="EventWindow-58"><a href="#EventWindow-58"><span class="linenos"> 58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
+</span><span id="EventWindow-59"><a href="#EventWindow-59"><span class="linenos"> 59</span></a>
+</span><span id="EventWindow-60"><a href="#EventWindow-60"><span class="linenos"> 60</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
+</span><span id="EventWindow-61"><a href="#EventWindow-61"><span class="linenos"> 61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="EventWindow-62"><a href="#EventWindow-62"><span class="linenos"> 62</span></a>
+</span><span id="EventWindow-63"><a href="#EventWindow-63"><span class="linenos"> 63</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
+</span><span id="EventWindow-64"><a href="#EventWindow-64"><span class="linenos"> 64</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="EventWindow-65"><a href="#EventWindow-65"><span class="linenos"> 65</span></a>
+</span><span id="EventWindow-66"><a href="#EventWindow-66"><span class="linenos"> 66</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
+</span><span id="EventWindow-67"><a href="#EventWindow-67"><span class="linenos"> 67</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
+</span><span id="EventWindow-68"><a href="#EventWindow-68"><span class="linenos"> 68</span></a>
+</span><span id="EventWindow-69"><a href="#EventWindow-69"><span class="linenos"> 69</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
+</span><span id="EventWindow-70"><a href="#EventWindow-70"><span class="linenos"> 70</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
+</span><span id="EventWindow-71"><a href="#EventWindow-71"><span class="linenos"> 71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="EventWindow-72"><a href="#EventWindow-72"><span class="linenos"> 72</span></a>
+</span><span id="EventWindow-73"><a href="#EventWindow-73"><span class="linenos"> 73</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
+</span><span id="EventWindow-74"><a href="#EventWindow-74"><span class="linenos"> 74</span></a>
+</span><span id="EventWindow-75"><a href="#EventWindow-75"><span class="linenos"> 75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+</span><span id="EventWindow-76"><a href="#EventWindow-76"><span class="linenos"> 76</span></a>
+</span><span id="EventWindow-77"><a href="#EventWindow-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="EventWindow-78"><a href="#EventWindow-78"><span class="linenos"> 78</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow-79"><a href="#EventWindow-79"><span class="linenos"> 79</span></a><span class="sd">        Updates the table with the latest event data and makes the window visible.</span>
+</span><span id="EventWindow-80"><a href="#EventWindow-80"><span class="linenos"> 80</span></a><span class="sd">        Calls `update_table()` first, then `deiconify()` to show the window.</span>
+</span><span id="EventWindow-81"><a href="#EventWindow-81"><span class="linenos"> 81</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow-82"><a href="#EventWindow-82"><span class="linenos"> 82</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="EventWindow-83"><a href="#EventWindow-83"><span class="linenos"> 83</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+</span><span id="EventWindow-84"><a href="#EventWindow-84"><span class="linenos"> 84</span></a>
+</span><span id="EventWindow-85"><a href="#EventWindow-85"><span class="linenos"> 85</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="EventWindow-86"><a href="#EventWindow-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow-87"><a href="#EventWindow-87"><span class="linenos"> 87</span></a><span class="sd">        Updates the Treeview widget by adding only the new rows from the event DataFrame</span>
+</span><span id="EventWindow-88"><a href="#EventWindow-88"><span class="linenos"> 88</span></a><span class="sd">        since the last update. It uses `self.last_item` to determine the starting index</span>
+</span><span id="EventWindow-89"><a href="#EventWindow-89"><span class="linenos"> 89</span></a><span class="sd">        for adding new rows, ensuring efficient updates without reprocessing existing entries.</span>
+</span><span id="EventWindow-90"><a href="#EventWindow-90"><span class="linenos"> 90</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow-91"><a href="#EventWindow-91"><span class="linenos"> 91</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
+</span><span id="EventWindow-92"><a href="#EventWindow-92"><span class="linenos"> 92</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
+</span><span id="EventWindow-93"><a href="#EventWindow-93"><span class="linenos"> 93</span></a>        <span class="c1"># num rows in that df currently</span>
+</span><span id="EventWindow-94"><a href="#EventWindow-94"><span class="linenos"> 94</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span id="EventWindow-95"><a href="#EventWindow-95"><span class="linenos"> 95</span></a>
+</span><span id="EventWindow-96"><a href="#EventWindow-96"><span class="linenos"> 96</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
+</span><span id="EventWindow-97"><a href="#EventWindow-97"><span class="linenos"> 97</span></a>
+</span><span id="EventWindow-98"><a href="#EventWindow-98"><span class="linenos"> 98</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
+</span><span id="EventWindow-99"><a href="#EventWindow-99"><span class="linenos"> 99</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
+</span><span id="EventWindow-100"><a href="#EventWindow-100"><span class="linenos">100</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="EventWindow-101"><a href="#EventWindow-101"><span class="linenos">101</span></a>
+</span><span id="EventWindow-102"><a href="#EventWindow-102"><span class="linenos">102</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="EventWindow-103"><a href="#EventWindow-103"><span class="linenos">103</span></a>
+</span><span id="EventWindow-104"><a href="#EventWindow-104"><span class="linenos">104</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+</span><span id="EventWindow-105"><a href="#EventWindow-105"><span class="linenos">105</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
+</span><span id="EventWindow-106"><a href="#EventWindow-106"><span class="linenos">106</span></a>            <span class="p">)</span>
+</span><span id="EventWindow-107"><a href="#EventWindow-107"><span class="linenos">107</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
+</span><span id="EventWindow-108"><a href="#EventWindow-108"><span class="linenos">108</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
+</span><span id="EventWindow-109"><a href="#EventWindow-109"><span class="linenos">109</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span id="EventWindow-110"><a href="#EventWindow-110"><span class="linenos">110</span></a>
+</span><span id="EventWindow-111"><a href="#EventWindow-111"><span class="linenos">111</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EventWindow-112"><a href="#EventWindow-112"><span class="linenos">112</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow-113"><a href="#EventWindow-113"><span class="linenos">113</span></a><span class="sd">        Creates the main frame (`licks_frame`) and the `ttk.Treeview` widget (`timestamped_events`)</span>
+</span><span id="EventWindow-114"><a href="#EventWindow-114"><span class="linenos">114</span></a><span class="sd">        used to display the event data. Configures the Treeview columns and headings based on the</span>
+</span><span id="EventWindow-115"><a href="#EventWindow-115"><span class="linenos">115</span></a><span class="sd">        columns present in the `event_data.event_dataframe`. Calls `update_table()` to initially</span>
+</span><span id="EventWindow-116"><a href="#EventWindow-116"><span class="linenos">116</span></a><span class="sd">        populate the table.</span>
+</span><span id="EventWindow-117"><a href="#EventWindow-117"><span class="linenos">117</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow-118"><a href="#EventWindow-118"><span class="linenos">118</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span id="EventWindow-119"><a href="#EventWindow-119"><span class="linenos">119</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
+</span><span id="EventWindow-120"><a href="#EventWindow-120"><span class="linenos">120</span></a>
+</span><span id="EventWindow-121"><a href="#EventWindow-121"><span class="linenos">121</span></a>        <span class="c1"># Create a Treeview widget</span>
+</span><span id="EventWindow-122"><a href="#EventWindow-122"><span class="linenos">122</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
+</span><span id="EventWindow-123"><a href="#EventWindow-123"><span class="linenos">123</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+</span><span id="EventWindow-124"><a href="#EventWindow-124"><span class="linenos">124</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
+</span><span id="EventWindow-125"><a href="#EventWindow-125"><span class="linenos">125</span></a>        <span class="p">)</span>
+</span><span id="EventWindow-126"><a href="#EventWindow-126"><span class="linenos">126</span></a>
+</span><span id="EventWindow-127"><a href="#EventWindow-127"><span class="linenos">127</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+</span><span id="EventWindow-128"><a href="#EventWindow-128"><span class="linenos">128</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
+</span><span id="EventWindow-129"><a href="#EventWindow-129"><span class="linenos">129</span></a>        <span class="p">)</span>
+</span><span id="EventWindow-130"><a href="#EventWindow-130"><span class="linenos">130</span></a>
+</span><span id="EventWindow-131"><a href="#EventWindow-131"><span class="linenos">131</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
+</span><span id="EventWindow-132"><a href="#EventWindow-132"><span class="linenos">132</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
+</span><span id="EventWindow-133"><a href="#EventWindow-133"><span class="linenos">133</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+</span><span id="EventWindow-134"><a href="#EventWindow-134"><span class="linenos">134</span></a>
+</span><span id="EventWindow-135"><a href="#EventWindow-135"><span class="linenos">135</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="EventWindow-136"><a href="#EventWindow-136"><span class="linenos">136</span></a>
+</span><span id="EventWindow-137"><a href="#EventWindow-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Toplevel widget, e.g. for dialogs.</p>
+            <div class="docstring"><p>This class represents a Toplevel window that displays experiment event data using a ttk.Treeview widget.
+It pulls in data from an <code>models.event_data</code> <code>EventData</code> instance and is updated as new events occur.
+After creation, window is hidden and can be shown using the <code><a href="#EventWindow.show">show</a></code>() method.</p>
+
+<h2 id="attributes">Attributes</h2>
+
+<ul>
+<li><strong>event_data</strong> (<em>EventData</em>): A reference to the data model instance (<code>models.event_data.EventData</code>)
+that holds the event DataFrame containing the data to be displayed.</li>
+<li><strong>last_item</strong> (<em>int</em>): Tracks the index of the last row added from the DataFrame to the Treeview.
+This is used to efficiently update the table by only adding new rows.</li>
+<li><strong>licks_frame</strong> (<em>tk.Frame</em>): The main tkinter Frame widget within the window that contains the Treeview table.</li>
+<li><strong>timestamped_events</strong> (<em>ttk.Treeview</em>): The Treeview widget used to display the event data in a table format.</li>
+</ul>
+
+<h2 id="methods">Methods</h2>
+
+<ul>
+<li><code><a href="#EventWindow.show">show</a></code>()
+Updates the table with the latest data from the <code><a href="#EventWindow.event_data">event_data</a></code> model and makes the window visible (deiconifies it).</li>
+<li><code><a href="#EventWindow.update_table">update_table</a></code>()
+Efficiently adds new rows from the event DataFrame (held by <code><a href="#EventWindow.event_data">event_data</a></code>) to the Treeview display. It only adds rows
+that haven't been added previously, based on the <code><a href="#EventWindow.last_item">last_item</a></code> attribute.</li>
+<li><code><a href="#EventWindow.build_table">build_table</a></code>()
+Creates the main frame (<code>licks_frame</code>) and the <code>ttk.Treeview</code> widget (<code>timestamped_events</code>). Configures the Treeview columns
+and headings based on the columns present in the <code>event_data.event_dataframe</code>.</li>
+</ul>
 </div>
 
 
@@ -259,36 +395,50 @@ event_window    </h1>
 
     </div>
     <a class="headerlink" href="#EventWindow.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.__init__-14"><a href="#EventWindow.__init__-14"><span class="linenos">14</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EventWindow.__init__-15"><a href="#EventWindow.__init__-15"><span class="linenos">15</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-</span><span id="EventWindow.__init__-16"><a href="#EventWindow.__init__-16"><span class="linenos">16</span></a>        <span class="c1"># reference to event model</span>
-</span><span id="EventWindow.__init__-17"><a href="#EventWindow.__init__-17"><span class="linenos">17</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
-</span><span id="EventWindow.__init__-18"><a href="#EventWindow.__init__-18"><span class="linenos">18</span></a>
-</span><span id="EventWindow.__init__-19"><a href="#EventWindow.__init__-19"><span class="linenos">19</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
-</span><span id="EventWindow.__init__-20"><a href="#EventWindow.__init__-20"><span class="linenos">20</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="EventWindow.__init__-21"><a href="#EventWindow.__init__-21"><span class="linenos">21</span></a>
-</span><span id="EventWindow.__init__-22"><a href="#EventWindow.__init__-22"><span class="linenos">22</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
-</span><span id="EventWindow.__init__-23"><a href="#EventWindow.__init__-23"><span class="linenos">23</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
-</span><span id="EventWindow.__init__-24"><a href="#EventWindow.__init__-24"><span class="linenos">24</span></a>
-</span><span id="EventWindow.__init__-25"><a href="#EventWindow.__init__-25"><span class="linenos">25</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
-</span><span id="EventWindow.__init__-26"><a href="#EventWindow.__init__-26"><span class="linenos">26</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
-</span><span id="EventWindow.__init__-27"><a href="#EventWindow.__init__-27"><span class="linenos">27</span></a>
-</span><span id="EventWindow.__init__-28"><a href="#EventWindow.__init__-28"><span class="linenos">28</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
-</span><span id="EventWindow.__init__-29"><a href="#EventWindow.__init__-29"><span class="linenos">29</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
-</span><span id="EventWindow.__init__-30"><a href="#EventWindow.__init__-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="EventWindow.__init__-31"><a href="#EventWindow.__init__-31"><span class="linenos">31</span></a>
-</span><span id="EventWindow.__init__-32"><a href="#EventWindow.__init__-32"><span class="linenos">32</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
-</span><span id="EventWindow.__init__-33"><a href="#EventWindow.__init__-33"><span class="linenos">33</span></a>
-</span><span id="EventWindow.__init__-34"><a href="#EventWindow.__init__-34"><span class="linenos">34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.__init__-45"><a href="#EventWindow.__init__-45"><span class="linenos">45</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_data</span><span class="p">:</span> <span class="n">EventData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EventWindow.__init__-46"><a href="#EventWindow.__init__-46"><span class="linenos">46</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow.__init__-47"><a href="#EventWindow.__init__-47"><span class="linenos">47</span></a><span class="sd">        Initialize the EventWindow. Sets up the window title, icon, key bindings (Ctrl+W to hide),</span>
+</span><span id="EventWindow.__init__-48"><a href="#EventWindow.__init__-48"><span class="linenos">48</span></a><span class="sd">        and the close protocol (also hides the window). It builds the table structure and initially</span>
+</span><span id="EventWindow.__init__-49"><a href="#EventWindow.__init__-49"><span class="linenos">49</span></a><span class="sd">        hides the window using `withdraw()`.</span>
+</span><span id="EventWindow.__init__-50"><a href="#EventWindow.__init__-50"><span class="linenos">50</span></a>
+</span><span id="EventWindow.__init__-51"><a href="#EventWindow.__init__-51"><span class="linenos">51</span></a><span class="sd">        Parameters</span>
+</span><span id="EventWindow.__init__-52"><a href="#EventWindow.__init__-52"><span class="linenos">52</span></a><span class="sd">        ----------</span>
+</span><span id="EventWindow.__init__-53"><a href="#EventWindow.__init__-53"><span class="linenos">53</span></a><span class="sd">        - **event_data** (*EventData*): An instance of the `models.event_data.EventData` model containing the</span>
+</span><span id="EventWindow.__init__-54"><a href="#EventWindow.__init__-54"><span class="linenos">54</span></a><span class="sd">          event DataFrame to be displayed.</span>
+</span><span id="EventWindow.__init__-55"><a href="#EventWindow.__init__-55"><span class="linenos">55</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow.__init__-56"><a href="#EventWindow.__init__-56"><span class="linenos">56</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span id="EventWindow.__init__-57"><a href="#EventWindow.__init__-57"><span class="linenos">57</span></a>        <span class="c1"># reference to event model</span>
+</span><span id="EventWindow.__init__-58"><a href="#EventWindow.__init__-58"><span class="linenos">58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span> <span class="o">=</span> <span class="n">event_data</span>
+</span><span id="EventWindow.__init__-59"><a href="#EventWindow.__init__-59"><span class="linenos">59</span></a>
+</span><span id="EventWindow.__init__-60"><a href="#EventWindow.__init__-60"><span class="linenos">60</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Experiment Event Data&quot;</span><span class="p">)</span>
+</span><span id="EventWindow.__init__-61"><a href="#EventWindow.__init__-61"><span class="linenos">61</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Control-w&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="EventWindow.__init__-62"><a href="#EventWindow.__init__-62"><span class="linenos">62</span></a>
+</span><span id="EventWindow.__init__-63"><a href="#EventWindow.__init__-63"><span class="linenos">63</span></a>        <span class="c1"># Bind closing the window to self.withdraw() to hide the window but not destroy it</span>
+</span><span id="EventWindow.__init__-64"><a href="#EventWindow.__init__-64"><span class="linenos">64</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">())</span>
+</span><span id="EventWindow.__init__-65"><a href="#EventWindow.__init__-65"><span class="linenos">65</span></a>
+</span><span id="EventWindow.__init__-66"><a href="#EventWindow.__init__-66"><span class="linenos">66</span></a>        <span class="n">window_icon_path</span> <span class="o">=</span> <span class="n">GUIUtils</span><span class="o">.</span><span class="n">get_window_icon_path</span><span class="p">()</span>
+</span><span id="EventWindow.__init__-67"><a href="#EventWindow.__init__-67"><span class="linenos">67</span></a>        <span class="n">GUIUtils</span><span class="o">.</span><span class="n">set_program_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon_path</span><span class="o">=</span><span class="n">window_icon_path</span><span class="p">)</span>
+</span><span id="EventWindow.__init__-68"><a href="#EventWindow.__init__-68"><span class="linenos">68</span></a>
+</span><span id="EventWindow.__init__-69"><a href="#EventWindow.__init__-69"><span class="linenos">69</span></a>        <span class="c1"># init last_item in the table to zero we haven&#39;t added anything into the table</span>
+</span><span id="EventWindow.__init__-70"><a href="#EventWindow.__init__-70"><span class="linenos">70</span></a>        <span class="c1"># this is used to efficiently update the table when program is running</span>
+</span><span id="EventWindow.__init__-71"><a href="#EventWindow.__init__-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="EventWindow.__init__-72"><a href="#EventWindow.__init__-72"><span class="linenos">72</span></a>
+</span><span id="EventWindow.__init__-73"><a href="#EventWindow.__init__-73"><span class="linenos">73</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">build_table</span><span class="p">()</span>
+</span><span id="EventWindow.__init__-74"><a href="#EventWindow.__init__-74"><span class="linenos">74</span></a>
+</span><span id="EventWindow.__init__-75"><a href="#EventWindow.__init__-75"><span class="linenos">75</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Construct a toplevel widget with the parent MASTER.</p>
+            <div class="docstring"><p>Initialize the EventWindow. Sets up the window title, icon, key bindings (Ctrl+W to hide),
+and the close protocol (also hides the window). It builds the table structure and initially
+hides the window using <code><a href="#EventWindow.withdraw">withdraw()</a></code>.</p>
 
-<p>Valid resource names: background, bd, bg, borderwidth, class,
-colormap, container, cursor, height, highlightbackground,
-highlightcolor, highlightthickness, menu, relief, screen, takefocus,
-use, visual, width.</p>
+<h2 id="parameters">Parameters</h2>
+
+<ul>
+<li><strong>event_data</strong> (<em>EventData</em>): An instance of the <code>models.event_data.EventData</code> model containing the
+event DataFrame to be displayed.</li>
+</ul>
 </div>
 
 
@@ -326,13 +476,20 @@ use, visual, width.</p>
 
     </div>
     <a class="headerlink" href="#EventWindow.show"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.show-36"><a href="#EventWindow.show-36"><span class="linenos">36</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="EventWindow.show-37"><a href="#EventWindow.show-37"><span class="linenos">37</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="EventWindow.show-38"><a href="#EventWindow.show-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.show-77"><a href="#EventWindow.show-77"><span class="linenos">77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="EventWindow.show-78"><a href="#EventWindow.show-78"><span class="linenos">78</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow.show-79"><a href="#EventWindow.show-79"><span class="linenos">79</span></a><span class="sd">        Updates the table with the latest event data and makes the window visible.</span>
+</span><span id="EventWindow.show-80"><a href="#EventWindow.show-80"><span class="linenos">80</span></a><span class="sd">        Calls `update_table()` first, then `deiconify()` to show the window.</span>
+</span><span id="EventWindow.show-81"><a href="#EventWindow.show-81"><span class="linenos">81</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow.show-82"><a href="#EventWindow.show-82"><span class="linenos">82</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="EventWindow.show-83"><a href="#EventWindow.show-83"><span class="linenos">83</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Updates the table with the latest event data and makes the window visible.
+Calls <code><a href="#EventWindow.update_table">update_table()</a></code> first, then <code><a href="#EventWindow.deiconify">deiconify()</a></code> to show the window.</p>
+</div>
+
 
                             </div>
                             <div id="EventWindow.update_table" class="classattr">
@@ -346,30 +503,39 @@ use, visual, width.</p>
 
     </div>
     <a class="headerlink" href="#EventWindow.update_table"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.update_table-40"><a href="#EventWindow.update_table-40"><span class="linenos">40</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="EventWindow.update_table-41"><a href="#EventWindow.update_table-41"><span class="linenos">41</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
-</span><span id="EventWindow.update_table-42"><a href="#EventWindow.update_table-42"><span class="linenos">42</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
-</span><span id="EventWindow.update_table-43"><a href="#EventWindow.update_table-43"><span class="linenos">43</span></a>        <span class="c1"># num rows in that df currently</span>
-</span><span id="EventWindow.update_table-44"><a href="#EventWindow.update_table-44"><span class="linenos">44</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</span><span id="EventWindow.update_table-45"><a href="#EventWindow.update_table-45"><span class="linenos">45</span></a>
-</span><span id="EventWindow.update_table-46"><a href="#EventWindow.update_table-46"><span class="linenos">46</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
-</span><span id="EventWindow.update_table-47"><a href="#EventWindow.update_table-47"><span class="linenos">47</span></a>
-</span><span id="EventWindow.update_table-48"><a href="#EventWindow.update_table-48"><span class="linenos">48</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
-</span><span id="EventWindow.update_table-49"><a href="#EventWindow.update_table-49"><span class="linenos">49</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
-</span><span id="EventWindow.update_table-50"><a href="#EventWindow.update_table-50"><span class="linenos">50</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="EventWindow.update_table-51"><a href="#EventWindow.update_table-51"><span class="linenos">51</span></a>
-</span><span id="EventWindow.update_table-52"><a href="#EventWindow.update_table-52"><span class="linenos">52</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="EventWindow.update_table-53"><a href="#EventWindow.update_table-53"><span class="linenos">53</span></a>
-</span><span id="EventWindow.update_table-54"><a href="#EventWindow.update_table-54"><span class="linenos">54</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-</span><span id="EventWindow.update_table-55"><a href="#EventWindow.update_table-55"><span class="linenos">55</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
-</span><span id="EventWindow.update_table-56"><a href="#EventWindow.update_table-56"><span class="linenos">56</span></a>            <span class="p">)</span>
-</span><span id="EventWindow.update_table-57"><a href="#EventWindow.update_table-57"><span class="linenos">57</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
-</span><span id="EventWindow.update_table-58"><a href="#EventWindow.update_table-58"><span class="linenos">58</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
-</span><span id="EventWindow.update_table-59"><a href="#EventWindow.update_table-59"><span class="linenos">59</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.update_table-85"><a href="#EventWindow.update_table-85"><span class="linenos"> 85</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="EventWindow.update_table-86"><a href="#EventWindow.update_table-86"><span class="linenos"> 86</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow.update_table-87"><a href="#EventWindow.update_table-87"><span class="linenos"> 87</span></a><span class="sd">        Updates the Treeview widget by adding only the new rows from the event DataFrame</span>
+</span><span id="EventWindow.update_table-88"><a href="#EventWindow.update_table-88"><span class="linenos"> 88</span></a><span class="sd">        since the last update. It uses `self.last_item` to determine the starting index</span>
+</span><span id="EventWindow.update_table-89"><a href="#EventWindow.update_table-89"><span class="linenos"> 89</span></a><span class="sd">        for adding new rows, ensuring efficient updates without reprocessing existing entries.</span>
+</span><span id="EventWindow.update_table-90"><a href="#EventWindow.update_table-90"><span class="linenos"> 90</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow.update_table-91"><a href="#EventWindow.update_table-91"><span class="linenos"> 91</span></a>        <span class="c1"># df we are working with is self.event_data.event_dataframe, get rid of self prefix and such to save room</span>
+</span><span id="EventWindow.update_table-92"><a href="#EventWindow.update_table-92"><span class="linenos"> 92</span></a>        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span>
+</span><span id="EventWindow.update_table-93"><a href="#EventWindow.update_table-93"><span class="linenos"> 93</span></a>        <span class="c1"># num rows in that df currently</span>
+</span><span id="EventWindow.update_table-94"><a href="#EventWindow.update_table-94"><span class="linenos"> 94</span></a>        <span class="n">len_event_df</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</span><span id="EventWindow.update_table-95"><a href="#EventWindow.update_table-95"><span class="linenos"> 95</span></a>
+</span><span id="EventWindow.update_table-96"><a href="#EventWindow.update_table-96"><span class="linenos"> 96</span></a>        <span class="n">last_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span>
+</span><span id="EventWindow.update_table-97"><a href="#EventWindow.update_table-97"><span class="linenos"> 97</span></a>
+</span><span id="EventWindow.update_table-98"><a href="#EventWindow.update_table-98"><span class="linenos"> 98</span></a>        <span class="c1"># Insert data from the DataFrame. iterrows() returns an iterator over the rows of a df of form (index, series (of data))</span>
+</span><span id="EventWindow.update_table-99"><a href="#EventWindow.update_table-99"><span class="linenos"> 99</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_item</span><span class="p">,</span> <span class="n">len_event_df</span><span class="p">):</span>
+</span><span id="EventWindow.update_table-100"><a href="#EventWindow.update_table-100"><span class="linenos">100</span></a>            <span class="n">row_content</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="EventWindow.update_table-101"><a href="#EventWindow.update_table-101"><span class="linenos">101</span></a>
+</span><span id="EventWindow.update_table-102"><a href="#EventWindow.update_table-102"><span class="linenos">102</span></a>            <span class="n">item_iid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="EventWindow.update_table-103"><a href="#EventWindow.update_table-103"><span class="linenos">103</span></a>
+</span><span id="EventWindow.update_table-104"><a href="#EventWindow.update_table-104"><span class="linenos">104</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+</span><span id="EventWindow.update_table-105"><a href="#EventWindow.update_table-105"><span class="linenos">105</span></a>                <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">iid</span><span class="o">=</span><span class="n">item_iid</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">row_content</span><span class="p">)</span>
+</span><span id="EventWindow.update_table-106"><a href="#EventWindow.update_table-106"><span class="linenos">106</span></a>            <span class="p">)</span>
+</span><span id="EventWindow.update_table-107"><a href="#EventWindow.update_table-107"><span class="linenos">107</span></a>        <span class="c1"># update the last item with the LAST item that was added on this iteration, next time we will start</span>
+</span><span id="EventWindow.update_table-108"><a href="#EventWindow.update_table-108"><span class="linenos">108</span></a>        <span class="c1"># the loop with this, so that we don&#39;t unneccesarily update entries already there</span>
+</span><span id="EventWindow.update_table-109"><a href="#EventWindow.update_table-109"><span class="linenos">109</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">last_item</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Updates the Treeview widget by adding only the new rows from the event DataFrame
+since the last update. It uses <code>self.last_item</code> to determine the starting index
+for adding new rows, ensuring efficient updates without reprocessing existing entries.</p>
+</div>
+
 
                             </div>
                             <div id="EventWindow.build_table" class="classattr">
@@ -383,31 +549,42 @@ use, visual, width.</p>
 
     </div>
     <a class="headerlink" href="#EventWindow.build_table"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.build_table-61"><a href="#EventWindow.build_table-61"><span class="linenos">61</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="EventWindow.build_table-62"><a href="#EventWindow.build_table-62"><span class="linenos">62</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</span><span id="EventWindow.build_table-63"><a href="#EventWindow.build_table-63"><span class="linenos">63</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
-</span><span id="EventWindow.build_table-64"><a href="#EventWindow.build_table-64"><span class="linenos">64</span></a>
-</span><span id="EventWindow.build_table-65"><a href="#EventWindow.build_table-65"><span class="linenos">65</span></a>        <span class="c1"># Create a Treeview widget</span>
-</span><span id="EventWindow.build_table-66"><a href="#EventWindow.build_table-66"><span class="linenos">66</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
-</span><span id="EventWindow.build_table-67"><a href="#EventWindow.build_table-67"><span class="linenos">67</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
-</span><span id="EventWindow.build_table-68"><a href="#EventWindow.build_table-68"><span class="linenos">68</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
-</span><span id="EventWindow.build_table-69"><a href="#EventWindow.build_table-69"><span class="linenos">69</span></a>        <span class="p">)</span>
-</span><span id="EventWindow.build_table-70"><a href="#EventWindow.build_table-70"><span class="linenos">70</span></a>
-</span><span id="EventWindow.build_table-71"><a href="#EventWindow.build_table-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-</span><span id="EventWindow.build_table-72"><a href="#EventWindow.build_table-72"><span class="linenos">72</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
-</span><span id="EventWindow.build_table-73"><a href="#EventWindow.build_table-73"><span class="linenos">73</span></a>        <span class="p">)</span>
-</span><span id="EventWindow.build_table-74"><a href="#EventWindow.build_table-74"><span class="linenos">74</span></a>
-</span><span id="EventWindow.build_table-75"><a href="#EventWindow.build_table-75"><span class="linenos">75</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
-</span><span id="EventWindow.build_table-76"><a href="#EventWindow.build_table-76"><span class="linenos">76</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
-</span><span id="EventWindow.build_table-77"><a href="#EventWindow.build_table-77"><span class="linenos">77</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-</span><span id="EventWindow.build_table-78"><a href="#EventWindow.build_table-78"><span class="linenos">78</span></a>
-</span><span id="EventWindow.build_table-79"><a href="#EventWindow.build_table-79"><span class="linenos">79</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
-</span><span id="EventWindow.build_table-80"><a href="#EventWindow.build_table-80"><span class="linenos">80</span></a>
-</span><span id="EventWindow.build_table-81"><a href="#EventWindow.build_table-81"><span class="linenos">81</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_licks</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="EventWindow.build_table-111"><a href="#EventWindow.build_table-111"><span class="linenos">111</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">build_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="EventWindow.build_table-112"><a href="#EventWindow.build_table-112"><span class="linenos">112</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="EventWindow.build_table-113"><a href="#EventWindow.build_table-113"><span class="linenos">113</span></a><span class="sd">        Creates the main frame (`licks_frame`) and the `ttk.Treeview` widget (`timestamped_events`)</span>
+</span><span id="EventWindow.build_table-114"><a href="#EventWindow.build_table-114"><span class="linenos">114</span></a><span class="sd">        used to display the event data. Configures the Treeview columns and headings based on the</span>
+</span><span id="EventWindow.build_table-115"><a href="#EventWindow.build_table-115"><span class="linenos">115</span></a><span class="sd">        columns present in the `event_data.event_dataframe`. Calls `update_table()` to initially</span>
+</span><span id="EventWindow.build_table-116"><a href="#EventWindow.build_table-116"><span class="linenos">116</span></a><span class="sd">        populate the table.</span>
+</span><span id="EventWindow.build_table-117"><a href="#EventWindow.build_table-117"><span class="linenos">117</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="EventWindow.build_table-118"><a href="#EventWindow.build_table-118"><span class="linenos">118</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span id="EventWindow.build_table-119"><a href="#EventWindow.build_table-119"><span class="linenos">119</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
+</span><span id="EventWindow.build_table-120"><a href="#EventWindow.build_table-120"><span class="linenos">120</span></a>
+</span><span id="EventWindow.build_table-121"><a href="#EventWindow.build_table-121"><span class="linenos">121</span></a>        <span class="c1"># Create a Treeview widget</span>
+</span><span id="EventWindow.build_table-122"><a href="#EventWindow.build_table-122"><span class="linenos">122</span></a>        <span class="c1"># show=&#39;headings&#39; ensures we only see columns with headings defined</span>
+</span><span id="EventWindow.build_table-123"><a href="#EventWindow.build_table-123"><span class="linenos">123</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span>
+</span><span id="EventWindow.build_table-124"><a href="#EventWindow.build_table-124"><span class="linenos">124</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">licks_frame</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s2">&quot;headings&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span>
+</span><span id="EventWindow.build_table-125"><a href="#EventWindow.build_table-125"><span class="linenos">125</span></a>        <span class="p">)</span>
+</span><span id="EventWindow.build_table-126"><a href="#EventWindow.build_table-126"><span class="linenos">126</span></a>
+</span><span id="EventWindow.build_table-127"><a href="#EventWindow.build_table-127"><span class="linenos">127</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+</span><span id="EventWindow.build_table-128"><a href="#EventWindow.build_table-128"><span class="linenos">128</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">event_data</span><span class="o">.</span><span class="n">event_dataframe</span><span class="o">.</span><span class="n">columns</span>
+</span><span id="EventWindow.build_table-129"><a href="#EventWindow.build_table-129"><span class="linenos">129</span></a>        <span class="p">)</span>
+</span><span id="EventWindow.build_table-130"><a href="#EventWindow.build_table-130"><span class="linenos">130</span></a>
+</span><span id="EventWindow.build_table-131"><a href="#EventWindow.build_table-131"><span class="linenos">131</span></a>        <span class="c1"># Configure the names of the colums to reflect the heaader labels</span>
+</span><span id="EventWindow.build_table-132"><a href="#EventWindow.build_table-132"><span class="linenos">132</span></a>        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]:</span>
+</span><span id="EventWindow.build_table-133"><a href="#EventWindow.build_table-133"><span class="linenos">133</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+</span><span id="EventWindow.build_table-134"><a href="#EventWindow.build_table-134"><span class="linenos">134</span></a>
+</span><span id="EventWindow.build_table-135"><a href="#EventWindow.build_table-135"><span class="linenos">135</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">update_table</span><span class="p">()</span>
+</span><span id="EventWindow.build_table-136"><a href="#EventWindow.build_table-136"><span class="linenos">136</span></a>
+</span><span id="EventWindow.build_table-137"><a href="#EventWindow.build_table-137"><span class="linenos">137</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">timestamped_events</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Creates the main frame (<code>licks_frame</code>) and the <code>ttk.Treeview</code> widget (<code>timestamped_events</code>)
+used to display the event data. Configures the Treeview columns and headings based on the
+columns present in the <code>event_data.event_dataframe</code>. Calls <code><a href="#EventWindow.update_table">update_table()</a></code> to initially
+populate the table.</p>
+</div>
+
 
                             </div>
                 </section>
