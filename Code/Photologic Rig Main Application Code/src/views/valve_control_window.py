@@ -1,6 +1,17 @@
+"""
+This module defines the ValveControlWindow class, a Toplevel window in the GUI
+designed for direct manual control of individual valves and the door motor
+on the experimental rig.
+
+It reads valve configuration (number of valves) from a TOML file, creates buttons for each valve,
+allows toggling their state (Open/Closed), and provides a button to move the motor
+(Up/Down). Valve state changes and motor commands are sent to Arduino via `controllers.arduino_control.ArduinoManager`.
+"""
+
 import tkinter as tk
 import toml
 import numpy as np
+from controllers.arduino_control import ArduinoManager
 import system_config
 
 from views.gui_common import GUIUtils
@@ -16,7 +27,46 @@ VALVES_PER_SIDE = TOTAL_CURRENT_VALVES // 2
 
 
 class ValveControlWindow(tk.Toplevel):
-    def __init__(self, arduino_controller) -> None:
+    """
+    A Toplevel window providing manual control over individual valves and the main motor.
+
+    This window displays buttons for each configured valve, allowing users to toggle them
+    between 'Open' and 'Closed' states. It also includes a button to command the
+    main motor to move 'Up' or 'Down'. State changes and commands are sent to the
+    connected Arduino controller.
+
+    Attributes
+    ----------
+    - **arduino_controller** (*ArduinoManager*): An instance of the controller class
+      responsible for communicating with the Arduino board.
+    - **valve_selections** (*np.ndarray*): A NumPy array storing the current state (0 for Closed, 1 for Open)
+      of each valve. The index corresponds to the valve number (0-indexed).
+    - **buttons** (*List[tk.Button OR None]*): A list holding references to the `tk.Button` widgets
+      for each valve, allowing individual access for state updates.
+    - **motor_button** (*tk.Button*): The `tk.Button` widget used to control the motor's position.
+    - **motor_down** (*bool*): A flag indicating the current assumed state of the motor
+      (True if commanded Down, False if commanded Up).
+    - **valves_frame** (*tk.Frame*): The main container frame within the Toplevel window holding the control buttons.
+
+    Methods
+    -------
+    - `show()`
+        Makes the Valve Control window visible (`deiconify`).
+    - `create_interface()`
+        Sets up the main frame (`valves_frame`) and calls `create_buttons` to populate it.
+    - `toggle_motor()`
+        Callback for the motor control button. Toggles the `motor_down` state, updates the button
+        text/color, and sends the corresponding "UP" or "DOWN" command to the Arduino.
+    - `create_buttons()`
+        Creates and arranges the `tk.Button` widgets for each valve based on
+        `TOTAL_CURRENT_VALVES` and `VALVES_PER_SIDE`. Creates the motor control button.
+    - `toggle_valve_button(valve_num)`
+        Callback for individual valve buttons. Toggles the state of the specified valve
+        in `valve_selections`, updates the button's text/color, and sends the "OPEN SPECIFIC"
+        command followed by the current state of all valves (`valve_selections`) to the Arduino.
+    """
+
+    def __init__(self, arduino_controller: ArduinoManager) -> None:
         super().__init__()
         self.title("Valve Control")
         self.protocol("WM_DELETE_WINDOW", lambda: self.withdraw())
@@ -44,9 +94,11 @@ class ValveControlWindow(tk.Toplevel):
         self.withdraw()
 
     def show(self):
+        """Makes the window visible by calling `deiconify`."""
         self.deiconify()
 
     def create_interface(self):
+        """Creates the main frame for holding the valve and motor buttons."""
         self.valves_frame = tk.Frame(self)
 
         self.valves_frame.grid(row=0, column=0, pady=10, sticky="nsew")
@@ -56,6 +108,13 @@ class ValveControlWindow(tk.Toplevel):
         self.create_buttons()
 
     def toggle_motor(self):
+        """
+        Toggles the motor's position between 'Up' and 'Down'.
+
+        Updates the motor control button's appearance (text and color) to reflect the
+        new target state and sends the appropriate command ("UP\n" or "DOWN\n")
+        to the Arduino controller. Also updates the internal `motor_down` flag.
+        """
         # if motor is not down, command it down
         if self.motor_down is False:
             self.motor_button.configure(text="Move Motor Up", bg="blue", fg="white")
@@ -71,6 +130,13 @@ class ValveControlWindow(tk.Toplevel):
         self.arduino_controller.send_command(command=motor_command)
 
     def create_buttons(self):
+        """
+        Creates and arranges the buttons for valve and motor control.
+
+        Populates the `self.buttons` list with `tk.Button` widgets for each valve,
+        placing them in two columns ("Side One" and "Side Two"). Creates the
+        motor control button and places it in the center column.
+        """
         # Create list of buttons to be able to access each one easily later
         self.buttons = [None] * TOTAL_CURRENT_VALVES
 
@@ -108,11 +174,16 @@ class ValveControlWindow(tk.Toplevel):
             column=1,
         )[1]
 
-    def toggle_valve_button(self, valve_num):
+    def toggle_valve_button(self, valve_num: int):
         """
-        Every time that a valve button is toggled, we will send a np array TOTAL_CURRENT_VALVES bits wide
-        to the arduino. a 1 represents a on valve, while 0 means off. arduino will iterate through half of this
-        array for side one valves, and hald for side two.
+        Updates the state of the clicked valve (`valve_num`) in the `valve_selections` array.
+        Changes the button's text and background color to reflect the new state (Open/Green or Closed/Red).
+        Sends an "OPEN SPECIFIC" command to the Arduino, followed by the byte representation
+        of the entire `valve_selections` array, instructing the Arduino which valves should be open or closed.
+
+        Parameters
+        ----------
+        - **valve_num** (*int*): The 0-based index of the valve whose button was clicked.
         """
         # if a valve is currently a zero (off), make it a 1, and turn the button green
         if self.valve_selections[valve_num] == 0:
