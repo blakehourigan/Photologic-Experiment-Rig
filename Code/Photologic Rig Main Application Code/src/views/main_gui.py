@@ -233,7 +233,7 @@ class MainGUI(tk.Tk):
 
         self.windows = {
             "Experiment Control": ExperimentCtlWindow(
-                self.exp_data, stimuli_data, event_data, self.trigger
+                self.exp_data, stimuli_data, self.trigger
             ),
             "Program Schedule": ProgramScheduleWindow(
                 self.exp_data,

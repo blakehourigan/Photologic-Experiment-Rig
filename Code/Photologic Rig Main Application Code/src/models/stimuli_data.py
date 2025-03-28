@@ -30,7 +30,7 @@ class StimuliData:
             if variable_name in self.stimuli_vars.keys():
                 self.stimuli_vars[variable_name] = value
 
-    def get_default_value(self, variable_name) -> int:
+    def get_default_value(self, variable_name: str) -> str:
         """
         this function is very similar to update_model, but as name implies it only
         retrieves from the model and does no updating. called only once for each tkinter variable
@@ -38,6 +38,8 @@ class StimuliData:
         """
         if variable_name in self.stimuli_vars.keys():
             return self.stimuli_vars[variable_name]
+        else:
+            return ""
 
     def pair_stimuli(self, stimulus_1, stimulus_2):
         """Preparing to send the data to the motor arduino"""

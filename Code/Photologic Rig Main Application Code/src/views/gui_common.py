@@ -21,7 +21,7 @@ class GUIUtils:
     def create_labeled_entry(
         parent: tk.Frame,
         label_text: str,
-        text_var: tk.IntVar,
+        text_var: tk.IntVar | tk.StringVar,
         row: int,
         column: int,
     ) -> tuple[tk.Frame, tk.Label, tk.Entry]:
