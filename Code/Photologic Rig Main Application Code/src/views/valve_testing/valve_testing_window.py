@@ -20,7 +20,7 @@ It uses `views.gui_common.GUIUtils` for common UI elements and window management
 """
 
 import tkinter as tk
-from tkinter import N, simpledialog
+from tkinter import simpledialog
 from tkinter import ttk
 
 

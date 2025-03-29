@@ -50,9 +50,6 @@
                         <li>
                                 <a class="function" href="#StimuliData.get_default_value">get_default_value</a>
                         </li>
-                        <li>
-                                <a class="function" href="#StimuliData.pair_stimuli">pair_stimuli</a>
-                        </li>
                 </ul>
 
             </li>
@@ -72,63 +69,107 @@
                     <h1 class="modulename">
 stimuli_data    </h1>
 
-                
+                        <div class="docstring"><p>This module defines the StimuliData class, responsible for managing the names
+or identifiers assigned to the substances associated with each valve.</p>
+
+<p>It provides a simple dictionary-based storage for these names and methods to
+update them based on GUI input and retrieve their current values. It also
+includes a helper method for pairing stimuli names.</p>
+</div>
+
                         <input id="mod-stimuli_data-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-stimuli_data-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StimuliData</span><span class="p">:</span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;filling the dataframe with the values that we have at this time&quot;&quot;&quot;</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>        <span class="p">}</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">        This function will be called when a tkiner entry is updated in the gui</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">        to update the standard variables held in the model classes there</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>        <span class="c1"># if the variable name for the tkinter entry item that we are updating is</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="c1"># in the exp_data interval variables dictionary, update that entry</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>        <span class="c1"># with the value in the tkinter variable</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        this function is very similar to update_model, but as name implies it only</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        retrieves from the model and does no updating. called only once for each tkinter variable</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">        in main gui</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">pair_stimuli</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">):</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Preparing to send the data to the motor arduino&quot;&quot;&quot;</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>            <span class="n">paired_stimuli</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">))</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stimuli paired.&quot;</span><span class="p">)</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>            <span class="k">return</span> <span class="n">paired_stimuli</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error pairing stimuli: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>            <span class="k">raise</span>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="sd">This module defines the StimuliData class, responsible for managing the names</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="sd">or identifiers assigned to the substances associated with each valve.</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="sd">It provides a simple dictionary-based storage for these names and methods to</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="sd">update them based on GUI input and retrieve their current values. It also</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="sd">includes a helper method for pairing stimuli names.</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StimuliData</span><span class="p">:</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">    Manages the names or identifiers associated with stimuli delivered by each valve.</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">    This class holds a dictionary mapping a standardized key (e.g., &quot;Valve 1 Substance&quot;)</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">    to the user-defined name for the substance in that valve (e.g., &quot;Quinine&quot;, &quot;Water&quot;).</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">    It facilitates updating these names from the GUI and retrieving them when needed,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">    for example, during schedule generation or data logging.</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="sd">    Attributes</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">    ----------</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="sd">    - **`stimuli_vars`** (*dict[str, str]*): Dictionary storing the substance name for each valve.</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">        Keys are formatted like &quot;Valve X Substance&quot;, and values are the user-defined names.</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">    Methods</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">    -------</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">    - `update_model`(...)</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="sd">        Updates the substance name in `stimuli_vars` for a given valve based on GUI input.</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">    - `get_default_value`(...)</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">        Retrieves the current substance name for a given valve key.</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        Initializes the StimuliData object.</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        Creates the `stimuli_vars` dictionary and populates it with default</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        placeholder names for each of the 8 possible valves currently supported (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>        <span class="p">}</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a><span class="sd">        Updates the stored substance name for a specific valve.</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="sd">        Checks if the provided `variable_name` exists as a key in the</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a><span class="sd">        `stimuli_vars` dictionary. If it exists and the `value` is not None,</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a><span class="sd">        it updates the dictionary entry with the new name.</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">        Parameters</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">        ----------</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is being updated (e.g., &quot;Valve 3 Substance&quot;).</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a><span class="sd">        - **value** (*str | None*): The new substance name (string) provided by the user, or None if the input was empty/invalid.</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a><span class="sd">        Retrieves the current substance name associated with a valve key.</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a><span class="sd">        Used primarily to populate GUI fields with their initial/current values.</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a><span class="sd">        Parameters</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a><span class="sd">        ----------</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is requested (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a><span class="sd">        Returns</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">        -------</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="sd">        - *str*: The current substance name associated with the key, or an empty string (&quot;&quot;) if the key is not found in `stimuli_vars`.</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos">89</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </span></pre></div>
 
 
@@ -156,56 +197,108 @@ stimuli_data    </h1>
 
     </div>
     <a class="headerlink" href="#StimuliData"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData-8"><a href="#StimuliData-8"><span class="linenos"> 8</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StimuliData</span><span class="p">:</span>
-</span><span id="StimuliData-9"><a href="#StimuliData-9"><span class="linenos"> 9</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData-10"><a href="#StimuliData-10"><span class="linenos">10</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;filling the dataframe with the values that we have at this time&quot;&quot;&quot;</span>
-</span><span id="StimuliData-11"><a href="#StimuliData-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="StimuliData-12"><a href="#StimuliData-12"><span class="linenos">12</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-13"><a href="#StimuliData-13"><span class="linenos">13</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-14"><a href="#StimuliData-14"><span class="linenos">14</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-15"><a href="#StimuliData-15"><span class="linenos">15</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-16"><a href="#StimuliData-16"><span class="linenos">16</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-17"><a href="#StimuliData-17"><span class="linenos">17</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-18"><a href="#StimuliData-18"><span class="linenos">18</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-19"><a href="#StimuliData-19"><span class="linenos">19</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData-20"><a href="#StimuliData-20"><span class="linenos">20</span></a>        <span class="p">}</span>
-</span><span id="StimuliData-21"><a href="#StimuliData-21"><span class="linenos">21</span></a>
-</span><span id="StimuliData-22"><a href="#StimuliData-22"><span class="linenos">22</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData-23"><a href="#StimuliData-23"><span class="linenos">23</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="StimuliData-24"><a href="#StimuliData-24"><span class="linenos">24</span></a><span class="sd">        This function will be called when a tkiner entry is updated in the gui</span>
-</span><span id="StimuliData-25"><a href="#StimuliData-25"><span class="linenos">25</span></a><span class="sd">        to update the standard variables held in the model classes there</span>
-</span><span id="StimuliData-26"><a href="#StimuliData-26"><span class="linenos">26</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="StimuliData-27"><a href="#StimuliData-27"><span class="linenos">27</span></a>        <span class="c1"># if the variable name for the tkinter entry item that we are updating is</span>
-</span><span id="StimuliData-28"><a href="#StimuliData-28"><span class="linenos">28</span></a>        <span class="c1"># in the exp_data interval variables dictionary, update that entry</span>
-</span><span id="StimuliData-29"><a href="#StimuliData-29"><span class="linenos">29</span></a>        <span class="c1"># with the value in the tkinter variable</span>
-</span><span id="StimuliData-30"><a href="#StimuliData-30"><span class="linenos">30</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData-31"><a href="#StimuliData-31"><span class="linenos">31</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="StimuliData-32"><a href="#StimuliData-32"><span class="linenos">32</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-</span><span id="StimuliData-33"><a href="#StimuliData-33"><span class="linenos">33</span></a>
-</span><span id="StimuliData-34"><a href="#StimuliData-34"><span class="linenos">34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="StimuliData-35"><a href="#StimuliData-35"><span class="linenos">35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="StimuliData-36"><a href="#StimuliData-36"><span class="linenos">36</span></a><span class="sd">        this function is very similar to update_model, but as name implies it only</span>
-</span><span id="StimuliData-37"><a href="#StimuliData-37"><span class="linenos">37</span></a><span class="sd">        retrieves from the model and does no updating. called only once for each tkinter variable</span>
-</span><span id="StimuliData-38"><a href="#StimuliData-38"><span class="linenos">38</span></a><span class="sd">        in main gui</span>
-</span><span id="StimuliData-39"><a href="#StimuliData-39"><span class="linenos">39</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="StimuliData-40"><a href="#StimuliData-40"><span class="linenos">40</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="StimuliData-41"><a href="#StimuliData-41"><span class="linenos">41</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
-</span><span id="StimuliData-42"><a href="#StimuliData-42"><span class="linenos">42</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="StimuliData-43"><a href="#StimuliData-43"><span class="linenos">43</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
-</span><span id="StimuliData-44"><a href="#StimuliData-44"><span class="linenos">44</span></a>
-</span><span id="StimuliData-45"><a href="#StimuliData-45"><span class="linenos">45</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">pair_stimuli</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">):</span>
-</span><span id="StimuliData-46"><a href="#StimuliData-46"><span class="linenos">46</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Preparing to send the data to the motor arduino&quot;&quot;&quot;</span>
-</span><span id="StimuliData-47"><a href="#StimuliData-47"><span class="linenos">47</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="StimuliData-48"><a href="#StimuliData-48"><span class="linenos">48</span></a>            <span class="n">paired_stimuli</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">))</span>
-</span><span id="StimuliData-49"><a href="#StimuliData-49"><span class="linenos">49</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stimuli paired.&quot;</span><span class="p">)</span>
-</span><span id="StimuliData-50"><a href="#StimuliData-50"><span class="linenos">50</span></a>            <span class="k">return</span> <span class="n">paired_stimuli</span>
-</span><span id="StimuliData-51"><a href="#StimuliData-51"><span class="linenos">51</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="StimuliData-52"><a href="#StimuliData-52"><span class="linenos">52</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error pairing stimuli: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="StimuliData-53"><a href="#StimuliData-53"><span class="linenos">53</span></a>            <span class="k">raise</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData-16"><a href="#StimuliData-16"><span class="linenos">16</span></a><span class="k">class</span><span class="w"> </span><span class="nc">StimuliData</span><span class="p">:</span>
+</span><span id="StimuliData-17"><a href="#StimuliData-17"><span class="linenos">17</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData-18"><a href="#StimuliData-18"><span class="linenos">18</span></a><span class="sd">    Manages the names or identifiers associated with stimuli delivered by each valve.</span>
+</span><span id="StimuliData-19"><a href="#StimuliData-19"><span class="linenos">19</span></a>
+</span><span id="StimuliData-20"><a href="#StimuliData-20"><span class="linenos">20</span></a><span class="sd">    This class holds a dictionary mapping a standardized key (e.g., &quot;Valve 1 Substance&quot;)</span>
+</span><span id="StimuliData-21"><a href="#StimuliData-21"><span class="linenos">21</span></a><span class="sd">    to the user-defined name for the substance in that valve (e.g., &quot;Quinine&quot;, &quot;Water&quot;).</span>
+</span><span id="StimuliData-22"><a href="#StimuliData-22"><span class="linenos">22</span></a><span class="sd">    It facilitates updating these names from the GUI and retrieving them when needed,</span>
+</span><span id="StimuliData-23"><a href="#StimuliData-23"><span class="linenos">23</span></a><span class="sd">    for example, during schedule generation or data logging.</span>
+</span><span id="StimuliData-24"><a href="#StimuliData-24"><span class="linenos">24</span></a>
+</span><span id="StimuliData-25"><a href="#StimuliData-25"><span class="linenos">25</span></a><span class="sd">    Attributes</span>
+</span><span id="StimuliData-26"><a href="#StimuliData-26"><span class="linenos">26</span></a><span class="sd">    ----------</span>
+</span><span id="StimuliData-27"><a href="#StimuliData-27"><span class="linenos">27</span></a><span class="sd">    - **`stimuli_vars`** (*dict[str, str]*): Dictionary storing the substance name for each valve.</span>
+</span><span id="StimuliData-28"><a href="#StimuliData-28"><span class="linenos">28</span></a><span class="sd">        Keys are formatted like &quot;Valve X Substance&quot;, and values are the user-defined names.</span>
+</span><span id="StimuliData-29"><a href="#StimuliData-29"><span class="linenos">29</span></a>
+</span><span id="StimuliData-30"><a href="#StimuliData-30"><span class="linenos">30</span></a><span class="sd">    Methods</span>
+</span><span id="StimuliData-31"><a href="#StimuliData-31"><span class="linenos">31</span></a><span class="sd">    -------</span>
+</span><span id="StimuliData-32"><a href="#StimuliData-32"><span class="linenos">32</span></a><span class="sd">    - `update_model`(...)</span>
+</span><span id="StimuliData-33"><a href="#StimuliData-33"><span class="linenos">33</span></a><span class="sd">        Updates the substance name in `stimuli_vars` for a given valve based on GUI input.</span>
+</span><span id="StimuliData-34"><a href="#StimuliData-34"><span class="linenos">34</span></a><span class="sd">    - `get_default_value`(...)</span>
+</span><span id="StimuliData-35"><a href="#StimuliData-35"><span class="linenos">35</span></a><span class="sd">        Retrieves the current substance name for a given valve key.</span>
+</span><span id="StimuliData-36"><a href="#StimuliData-36"><span class="linenos">36</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="StimuliData-37"><a href="#StimuliData-37"><span class="linenos">37</span></a>
+</span><span id="StimuliData-38"><a href="#StimuliData-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData-39"><a href="#StimuliData-39"><span class="linenos">39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData-40"><a href="#StimuliData-40"><span class="linenos">40</span></a><span class="sd">        Initializes the StimuliData object.</span>
+</span><span id="StimuliData-41"><a href="#StimuliData-41"><span class="linenos">41</span></a>
+</span><span id="StimuliData-42"><a href="#StimuliData-42"><span class="linenos">42</span></a><span class="sd">        Creates the `stimuli_vars` dictionary and populates it with default</span>
+</span><span id="StimuliData-43"><a href="#StimuliData-43"><span class="linenos">43</span></a><span class="sd">        placeholder names for each of the 8 possible valves currently supported (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="StimuliData-44"><a href="#StimuliData-44"><span class="linenos">44</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData-45"><a href="#StimuliData-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="StimuliData-46"><a href="#StimuliData-46"><span class="linenos">46</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-47"><a href="#StimuliData-47"><span class="linenos">47</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-48"><a href="#StimuliData-48"><span class="linenos">48</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-49"><a href="#StimuliData-49"><span class="linenos">49</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-50"><a href="#StimuliData-50"><span class="linenos">50</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-51"><a href="#StimuliData-51"><span class="linenos">51</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-52"><a href="#StimuliData-52"><span class="linenos">52</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-53"><a href="#StimuliData-53"><span class="linenos">53</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData-54"><a href="#StimuliData-54"><span class="linenos">54</span></a>        <span class="p">}</span>
+</span><span id="StimuliData-55"><a href="#StimuliData-55"><span class="linenos">55</span></a>
+</span><span id="StimuliData-56"><a href="#StimuliData-56"><span class="linenos">56</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData-57"><a href="#StimuliData-57"><span class="linenos">57</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData-58"><a href="#StimuliData-58"><span class="linenos">58</span></a><span class="sd">        Updates the stored substance name for a specific valve.</span>
+</span><span id="StimuliData-59"><a href="#StimuliData-59"><span class="linenos">59</span></a>
+</span><span id="StimuliData-60"><a href="#StimuliData-60"><span class="linenos">60</span></a><span class="sd">        Checks if the provided `variable_name` exists as a key in the</span>
+</span><span id="StimuliData-61"><a href="#StimuliData-61"><span class="linenos">61</span></a><span class="sd">        `stimuli_vars` dictionary. If it exists and the `value` is not None,</span>
+</span><span id="StimuliData-62"><a href="#StimuliData-62"><span class="linenos">62</span></a><span class="sd">        it updates the dictionary entry with the new name.</span>
+</span><span id="StimuliData-63"><a href="#StimuliData-63"><span class="linenos">63</span></a>
+</span><span id="StimuliData-64"><a href="#StimuliData-64"><span class="linenos">64</span></a><span class="sd">        Parameters</span>
+</span><span id="StimuliData-65"><a href="#StimuliData-65"><span class="linenos">65</span></a><span class="sd">        ----------</span>
+</span><span id="StimuliData-66"><a href="#StimuliData-66"><span class="linenos">66</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is being updated (e.g., &quot;Valve 3 Substance&quot;).</span>
+</span><span id="StimuliData-67"><a href="#StimuliData-67"><span class="linenos">67</span></a><span class="sd">        - **value** (*str | None*): The new substance name (string) provided by the user, or None if the input was empty/invalid.</span>
+</span><span id="StimuliData-68"><a href="#StimuliData-68"><span class="linenos">68</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData-69"><a href="#StimuliData-69"><span class="linenos">69</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData-70"><a href="#StimuliData-70"><span class="linenos">70</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="StimuliData-71"><a href="#StimuliData-71"><span class="linenos">71</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span id="StimuliData-72"><a href="#StimuliData-72"><span class="linenos">72</span></a>
+</span><span id="StimuliData-73"><a href="#StimuliData-73"><span class="linenos">73</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="StimuliData-74"><a href="#StimuliData-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData-75"><a href="#StimuliData-75"><span class="linenos">75</span></a><span class="sd">        Retrieves the current substance name associated with a valve key.</span>
+</span><span id="StimuliData-76"><a href="#StimuliData-76"><span class="linenos">76</span></a>
+</span><span id="StimuliData-77"><a href="#StimuliData-77"><span class="linenos">77</span></a><span class="sd">        Used primarily to populate GUI fields with their initial/current values.</span>
+</span><span id="StimuliData-78"><a href="#StimuliData-78"><span class="linenos">78</span></a>
+</span><span id="StimuliData-79"><a href="#StimuliData-79"><span class="linenos">79</span></a><span class="sd">        Parameters</span>
+</span><span id="StimuliData-80"><a href="#StimuliData-80"><span class="linenos">80</span></a><span class="sd">        ----------</span>
+</span><span id="StimuliData-81"><a href="#StimuliData-81"><span class="linenos">81</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is requested (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="StimuliData-82"><a href="#StimuliData-82"><span class="linenos">82</span></a>
+</span><span id="StimuliData-83"><a href="#StimuliData-83"><span class="linenos">83</span></a><span class="sd">        Returns</span>
+</span><span id="StimuliData-84"><a href="#StimuliData-84"><span class="linenos">84</span></a><span class="sd">        -------</span>
+</span><span id="StimuliData-85"><a href="#StimuliData-85"><span class="linenos">85</span></a><span class="sd">        - *str*: The current substance name associated with the key, or an empty string (&quot;&quot;) if the key is not found in `stimuli_vars`.</span>
+</span><span id="StimuliData-86"><a href="#StimuliData-86"><span class="linenos">86</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData-87"><a href="#StimuliData-87"><span class="linenos">87</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="StimuliData-88"><a href="#StimuliData-88"><span class="linenos">88</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
+</span><span id="StimuliData-89"><a href="#StimuliData-89"><span class="linenos">89</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="StimuliData-90"><a href="#StimuliData-90"><span class="linenos">90</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Manages the names or identifiers associated with stimuli delivered by each valve.</p>
+
+<p>This class holds a dictionary mapping a standardized key (e.g., "Valve 1 Substance")
+to the user-defined name for the substance in that valve (e.g., "Quinine", "Water").
+It facilitates updating these names from the GUI and retrieving them when needed,
+for example, during schedule generation or data logging.</p>
+
+<h2 id="attributes">Attributes</h2>
+
+<ul>
+<li><strong><code><a href="#StimuliData.stimuli_vars">stimuli_vars</a></code></strong> (<em>dict[str, str]</em>): Dictionary storing the substance name for each valve.
+Keys are formatted like "Valve X Substance", and values are the user-defined names.</li>
+</ul>
+
+<h2 id="methods">Methods</h2>
+
+<ul>
+<li><code><a href="#StimuliData.update_model">update_model</a></code>(...)
+Updates the substance name in <code><a href="#StimuliData.stimuli_vars">stimuli_vars</a></code> for a given valve based on GUI input.</li>
+<li><code><a href="#StimuliData.get_default_value">get_default_value</a></code>(...)
+Retrieves the current substance name for a given valve key.</li>
+</ul>
+</div>
+
 
                             <div id="StimuliData.__init__" class="classattr">
                                         <input id="StimuliData.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
@@ -217,22 +310,30 @@ stimuli_data    </h1>
 
     </div>
     <a class="headerlink" href="#StimuliData.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.__init__-9"><a href="#StimuliData.__init__-9"><span class="linenos"> 9</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData.__init__-10"><a href="#StimuliData.__init__-10"><span class="linenos">10</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;filling the dataframe with the values that we have at this time&quot;&quot;&quot;</span>
-</span><span id="StimuliData.__init__-11"><a href="#StimuliData.__init__-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="StimuliData.__init__-12"><a href="#StimuliData.__init__-12"><span class="linenos">12</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-13"><a href="#StimuliData.__init__-13"><span class="linenos">13</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-14"><a href="#StimuliData.__init__-14"><span class="linenos">14</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-15"><a href="#StimuliData.__init__-15"><span class="linenos">15</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-16"><a href="#StimuliData.__init__-16"><span class="linenos">16</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-17"><a href="#StimuliData.__init__-17"><span class="linenos">17</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-18"><a href="#StimuliData.__init__-18"><span class="linenos">18</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-19"><a href="#StimuliData.__init__-19"><span class="linenos">19</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
-</span><span id="StimuliData.__init__-20"><a href="#StimuliData.__init__-20"><span class="linenos">20</span></a>        <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.__init__-38"><a href="#StimuliData.__init__-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData.__init__-39"><a href="#StimuliData.__init__-39"><span class="linenos">39</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData.__init__-40"><a href="#StimuliData.__init__-40"><span class="linenos">40</span></a><span class="sd">        Initializes the StimuliData object.</span>
+</span><span id="StimuliData.__init__-41"><a href="#StimuliData.__init__-41"><span class="linenos">41</span></a>
+</span><span id="StimuliData.__init__-42"><a href="#StimuliData.__init__-42"><span class="linenos">42</span></a><span class="sd">        Creates the `stimuli_vars` dictionary and populates it with default</span>
+</span><span id="StimuliData.__init__-43"><a href="#StimuliData.__init__-43"><span class="linenos">43</span></a><span class="sd">        placeholder names for each of the 8 possible valves currently supported (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="StimuliData.__init__-44"><a href="#StimuliData.__init__-44"><span class="linenos">44</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData.__init__-45"><a href="#StimuliData.__init__-45"><span class="linenos">45</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="StimuliData.__init__-46"><a href="#StimuliData.__init__-46"><span class="linenos">46</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">1</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 1 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-47"><a href="#StimuliData.__init__-47"><span class="linenos">47</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 2 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-48"><a href="#StimuliData.__init__-48"><span class="linenos">48</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">3</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 3 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-49"><a href="#StimuliData.__init__-49"><span class="linenos">49</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">4</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 4 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-50"><a href="#StimuliData.__init__-50"><span class="linenos">50</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">5</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 5 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-51"><a href="#StimuliData.__init__-51"><span class="linenos">51</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">6</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 6 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-52"><a href="#StimuliData.__init__-52"><span class="linenos">52</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">7</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 7 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-53"><a href="#StimuliData.__init__-53"><span class="linenos">53</span></a>            <span class="sa">f</span><span class="s2">&quot;Valve </span><span class="si">{</span><span class="mi">8</span><span class="si">}</span><span class="s2"> Substance&quot;</span><span class="p">:</span> <span class="s2">&quot;Valve 8 Substance&quot;</span><span class="p">,</span>
+</span><span id="StimuliData.__init__-54"><a href="#StimuliData.__init__-54"><span class="linenos">54</span></a>        <span class="p">}</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>filling the dataframe with the values that we have at this time</p>
+            <div class="docstring"><p>Initializes the StimuliData object.</p>
+
+<p>Creates the <code><a href="#StimuliData.stimuli_vars">stimuli_vars</a></code> dictionary and populates it with default
+placeholder names for each of the 8 possible valves currently supported (e.g., "Valve 1 Substance").</p>
 </div>
 
 
@@ -253,28 +354,43 @@ stimuli_data    </h1>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">update_model</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">variable_name</span>, </span><span class="param"><span class="n">value</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">update_model</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="StimuliData.update_model-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#StimuliData.update_model"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.update_model-22"><a href="#StimuliData.update_model-22"><span class="linenos">22</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData.update_model-23"><a href="#StimuliData.update_model-23"><span class="linenos">23</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="StimuliData.update_model-24"><a href="#StimuliData.update_model-24"><span class="linenos">24</span></a><span class="sd">        This function will be called when a tkiner entry is updated in the gui</span>
-</span><span id="StimuliData.update_model-25"><a href="#StimuliData.update_model-25"><span class="linenos">25</span></a><span class="sd">        to update the standard variables held in the model classes there</span>
-</span><span id="StimuliData.update_model-26"><a href="#StimuliData.update_model-26"><span class="linenos">26</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="StimuliData.update_model-27"><a href="#StimuliData.update_model-27"><span class="linenos">27</span></a>        <span class="c1"># if the variable name for the tkinter entry item that we are updating is</span>
-</span><span id="StimuliData.update_model-28"><a href="#StimuliData.update_model-28"><span class="linenos">28</span></a>        <span class="c1"># in the exp_data interval variables dictionary, update that entry</span>
-</span><span id="StimuliData.update_model-29"><a href="#StimuliData.update_model-29"><span class="linenos">29</span></a>        <span class="c1"># with the value in the tkinter variable</span>
-</span><span id="StimuliData.update_model-30"><a href="#StimuliData.update_model-30"><span class="linenos">30</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="StimuliData.update_model-31"><a href="#StimuliData.update_model-31"><span class="linenos">31</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="StimuliData.update_model-32"><a href="#StimuliData.update_model-32"><span class="linenos">32</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.update_model-56"><a href="#StimuliData.update_model-56"><span class="linenos">56</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData.update_model-57"><a href="#StimuliData.update_model-57"><span class="linenos">57</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData.update_model-58"><a href="#StimuliData.update_model-58"><span class="linenos">58</span></a><span class="sd">        Updates the stored substance name for a specific valve.</span>
+</span><span id="StimuliData.update_model-59"><a href="#StimuliData.update_model-59"><span class="linenos">59</span></a>
+</span><span id="StimuliData.update_model-60"><a href="#StimuliData.update_model-60"><span class="linenos">60</span></a><span class="sd">        Checks if the provided `variable_name` exists as a key in the</span>
+</span><span id="StimuliData.update_model-61"><a href="#StimuliData.update_model-61"><span class="linenos">61</span></a><span class="sd">        `stimuli_vars` dictionary. If it exists and the `value` is not None,</span>
+</span><span id="StimuliData.update_model-62"><a href="#StimuliData.update_model-62"><span class="linenos">62</span></a><span class="sd">        it updates the dictionary entry with the new name.</span>
+</span><span id="StimuliData.update_model-63"><a href="#StimuliData.update_model-63"><span class="linenos">63</span></a>
+</span><span id="StimuliData.update_model-64"><a href="#StimuliData.update_model-64"><span class="linenos">64</span></a><span class="sd">        Parameters</span>
+</span><span id="StimuliData.update_model-65"><a href="#StimuliData.update_model-65"><span class="linenos">65</span></a><span class="sd">        ----------</span>
+</span><span id="StimuliData.update_model-66"><a href="#StimuliData.update_model-66"><span class="linenos">66</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is being updated (e.g., &quot;Valve 3 Substance&quot;).</span>
+</span><span id="StimuliData.update_model-67"><a href="#StimuliData.update_model-67"><span class="linenos">67</span></a><span class="sd">        - **value** (*str | None*): The new substance name (string) provided by the user, or None if the input was empty/invalid.</span>
+</span><span id="StimuliData.update_model-68"><a href="#StimuliData.update_model-68"><span class="linenos">68</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData.update_model-69"><a href="#StimuliData.update_model-69"><span class="linenos">69</span></a>        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="StimuliData.update_model-70"><a href="#StimuliData.update_model-70"><span class="linenos">70</span></a>            <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="StimuliData.update_model-71"><a href="#StimuliData.update_model-71"><span class="linenos">71</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>This function will be called when a tkiner entry is updated in the gui
-to update the standard variables held in the model classes there</p>
+            <div class="docstring"><p>Updates the stored substance name for a specific valve.</p>
+
+<p>Checks if the provided <code>variable_name</code> exists as a key in the
+<code><a href="#StimuliData.stimuli_vars">stimuli_vars</a></code> dictionary. If it exists and the <code>value</code> is not None,
+it updates the dictionary entry with the new name.</p>
+
+<h2 id="parameters">Parameters</h2>
+
+<ul>
+<li><strong>variable_name</strong> (<em>str</em>): The key identifying the valve whose substance name is being updated (e.g., "Valve 3 Substance").</li>
+<li><strong>value</strong> (<em>str | None</em>): The new substance name (string) provided by the user, or None if the input was empty/invalid.</li>
+</ul>
 </div>
 
 
@@ -290,50 +406,42 @@ to update the standard variables held in the model classes there</p>
 
     </div>
     <a class="headerlink" href="#StimuliData.get_default_value"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.get_default_value-34"><a href="#StimuliData.get_default_value-34"><span class="linenos">34</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span id="StimuliData.get_default_value-35"><a href="#StimuliData.get_default_value-35"><span class="linenos">35</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="StimuliData.get_default_value-36"><a href="#StimuliData.get_default_value-36"><span class="linenos">36</span></a><span class="sd">        this function is very similar to update_model, but as name implies it only</span>
-</span><span id="StimuliData.get_default_value-37"><a href="#StimuliData.get_default_value-37"><span class="linenos">37</span></a><span class="sd">        retrieves from the model and does no updating. called only once for each tkinter variable</span>
-</span><span id="StimuliData.get_default_value-38"><a href="#StimuliData.get_default_value-38"><span class="linenos">38</span></a><span class="sd">        in main gui</span>
-</span><span id="StimuliData.get_default_value-39"><a href="#StimuliData.get_default_value-39"><span class="linenos">39</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="StimuliData.get_default_value-40"><a href="#StimuliData.get_default_value-40"><span class="linenos">40</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-</span><span id="StimuliData.get_default_value-41"><a href="#StimuliData.get_default_value-41"><span class="linenos">41</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
-</span><span id="StimuliData.get_default_value-42"><a href="#StimuliData.get_default_value-42"><span class="linenos">42</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="StimuliData.get_default_value-43"><a href="#StimuliData.get_default_value-43"><span class="linenos">43</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.get_default_value-73"><a href="#StimuliData.get_default_value-73"><span class="linenos">73</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="StimuliData.get_default_value-74"><a href="#StimuliData.get_default_value-74"><span class="linenos">74</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="StimuliData.get_default_value-75"><a href="#StimuliData.get_default_value-75"><span class="linenos">75</span></a><span class="sd">        Retrieves the current substance name associated with a valve key.</span>
+</span><span id="StimuliData.get_default_value-76"><a href="#StimuliData.get_default_value-76"><span class="linenos">76</span></a>
+</span><span id="StimuliData.get_default_value-77"><a href="#StimuliData.get_default_value-77"><span class="linenos">77</span></a><span class="sd">        Used primarily to populate GUI fields with their initial/current values.</span>
+</span><span id="StimuliData.get_default_value-78"><a href="#StimuliData.get_default_value-78"><span class="linenos">78</span></a>
+</span><span id="StimuliData.get_default_value-79"><a href="#StimuliData.get_default_value-79"><span class="linenos">79</span></a><span class="sd">        Parameters</span>
+</span><span id="StimuliData.get_default_value-80"><a href="#StimuliData.get_default_value-80"><span class="linenos">80</span></a><span class="sd">        ----------</span>
+</span><span id="StimuliData.get_default_value-81"><a href="#StimuliData.get_default_value-81"><span class="linenos">81</span></a><span class="sd">        - **variable_name** (*str*): The key identifying the valve whose substance name is requested (e.g., &quot;Valve 1 Substance&quot;).</span>
+</span><span id="StimuliData.get_default_value-82"><a href="#StimuliData.get_default_value-82"><span class="linenos">82</span></a>
+</span><span id="StimuliData.get_default_value-83"><a href="#StimuliData.get_default_value-83"><span class="linenos">83</span></a><span class="sd">        Returns</span>
+</span><span id="StimuliData.get_default_value-84"><a href="#StimuliData.get_default_value-84"><span class="linenos">84</span></a><span class="sd">        -------</span>
+</span><span id="StimuliData.get_default_value-85"><a href="#StimuliData.get_default_value-85"><span class="linenos">85</span></a><span class="sd">        - *str*: The current substance name associated with the key, or an empty string (&quot;&quot;) if the key is not found in `stimuli_vars`.</span>
+</span><span id="StimuliData.get_default_value-86"><a href="#StimuliData.get_default_value-86"><span class="linenos">86</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="StimuliData.get_default_value-87"><a href="#StimuliData.get_default_value-87"><span class="linenos">87</span></a>        <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+</span><span id="StimuliData.get_default_value-88"><a href="#StimuliData.get_default_value-88"><span class="linenos">88</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stimuli_vars</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span>
+</span><span id="StimuliData.get_default_value-89"><a href="#StimuliData.get_default_value-89"><span class="linenos">89</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="StimuliData.get_default_value-90"><a href="#StimuliData.get_default_value-90"><span class="linenos">90</span></a>            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>this function is very similar to update_model, but as name implies it only
-retrieves from the model and does no updating. called only once for each tkinter variable
-in main gui</p>
-</div>
+            <div class="docstring"><p>Retrieves the current substance name associated with a valve key.</p>
 
+<p>Used primarily to populate GUI fields with their initial/current values.</p>
 
-                            </div>
-                            <div id="StimuliData.pair_stimuli" class="classattr">
-                                        <input id="StimuliData.pair_stimuli-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">pair_stimuli</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">stimulus_1</span>, </span><span class="param"><span class="n">stimulus_2</span></span><span class="return-annotation">):</span></span>
+<h2 id="parameters">Parameters</h2>
 
-                <label class="view-source-button" for="StimuliData.pair_stimuli-view-source"><span>View Source</span></label>
+<ul>
+<li><strong>variable_name</strong> (<em>str</em>): The key identifying the valve whose substance name is requested (e.g., "Valve 1 Substance").</li>
+</ul>
 
-    </div>
-    <a class="headerlink" href="#StimuliData.pair_stimuli"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="StimuliData.pair_stimuli-45"><a href="#StimuliData.pair_stimuli-45"><span class="linenos">45</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">pair_stimuli</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">):</span>
-</span><span id="StimuliData.pair_stimuli-46"><a href="#StimuliData.pair_stimuli-46"><span class="linenos">46</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Preparing to send the data to the motor arduino&quot;&quot;&quot;</span>
-</span><span id="StimuliData.pair_stimuli-47"><a href="#StimuliData.pair_stimuli-47"><span class="linenos">47</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="StimuliData.pair_stimuli-48"><a href="#StimuliData.pair_stimuli-48"><span class="linenos">48</span></a>            <span class="n">paired_stimuli</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stimulus_1</span><span class="p">,</span> <span class="n">stimulus_2</span><span class="p">))</span>
-</span><span id="StimuliData.pair_stimuli-49"><a href="#StimuliData.pair_stimuli-49"><span class="linenos">49</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Stimuli paired.&quot;</span><span class="p">)</span>
-</span><span id="StimuliData.pair_stimuli-50"><a href="#StimuliData.pair_stimuli-50"><span class="linenos">50</span></a>            <span class="k">return</span> <span class="n">paired_stimuli</span>
-</span><span id="StimuliData.pair_stimuli-51"><a href="#StimuliData.pair_stimuli-51"><span class="linenos">51</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="StimuliData.pair_stimuli-52"><a href="#StimuliData.pair_stimuli-52"><span class="linenos">52</span></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error pairing stimuli: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="StimuliData.pair_stimuli-53"><a href="#StimuliData.pair_stimuli-53"><span class="linenos">53</span></a>            <span class="k">raise</span>
-</span></pre></div>
+<h2 id="returns">Returns</h2>
 
-
-            <div class="docstring"><p>Preparing to send the data to the motor arduino</p>
+<ul>
+<li><em>str</em>: The current substance name associated with the key, or an empty string ("") if the key is not found in <code><a href="#StimuliData.stimuli_vars">stimuli_vars</a></code>.</li>
+</ul>
 </div>
 
 

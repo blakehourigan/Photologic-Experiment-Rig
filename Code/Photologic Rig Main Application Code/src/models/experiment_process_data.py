@@ -1,3 +1,14 @@
+"""
+This module defines the ExperimentProcessData class, which serves as the central
+data management hub for the Photologic-Experiment-Rig application.
+
+It aggregates references to other data-holding classes (`StimuliData`, `EventData`,
+`ArduinoData`) and manages core experimental parameters like current trial,
+state time durations, and the overall experiment schedule DataFrame. It provides
+methods for generating the experimental schedule, updating parameters from the GUI,
+calculating runtime, and saving collected data.
+"""
+
 import logging
 from tkinter import filedialog
 import numpy as np
@@ -16,23 +27,77 @@ logger = logging.getLogger(__name__)
 
 class ExperimentProcessData:
     """
-    Summary line.
+    Central data management class for the behavioral experiment.
 
-    This class is the central data hub of the program. It holds program runtime variabes
-    such as program state and time interval lists, as well as references to
-    other data classes containing stimuli, lick, and arduino related data.
-    The class was structured this way to provide clarity on what files and classes
-    contain the information being searched for.
+    This class acts as the primary container and manager for all data related
+    to an ongoing experiment. It holds references to specialized data classes
+    (`EventData`, `StimuliData`, `ArduinoData`) and maintains experiment-wide
+    state variables, timing intervals, parameter entries (num_stimuli for example), and the generated
+    program schedule (`program_schedule_df`). It performs the generation
+    of the trial schedule and state intervals based on user inputs.
 
-    Attributes:
-        attr1 (int): Description of `attr1`.
-        attr2 (str): Description of `attr2`.
+    Attributes
+    ----------
+    - **`start_time`** (*float*): Timestamp marking the absolute start of the program run.
+    - **`trial_start_time`** (*float*): Timestamp marking the start of the current trial.
+    - **`state_start_time`** (*float*): Timestamp marking the entry into the current FSM state.
+    - **`current_trial_number`** (*int*): The 1-indexed number of the trial currently in progress or about to start.
+    - **`event_data`** (*EventData*): Instance managing the DataFrame of recorded lick/motor events.
+    - **`stimuli_data`** (*StimuliData*): Instance managing stimuli names and related information.
+    - **`arduino_data`** (*ArduinoData*): Instance managing Arduino communication data (durations, schedule indices) and processing incoming Arduino messages.
+    - **`ITI_intervals_final`** (*npt.NDArray[np.int64] | None*): Numpy array holding the calculated Inter-Trial Interval duration (ms) for each trial.
+    None until schedule generated.
+    - **`TTC_intervals_final`** (*npt.NDArray[np.int64] | None*): Numpy array holding the calculated Time-To-Contact duration (ms) for each trial.
+    None until schedule generated.
+    - **`sample_intervals_final`** (*npt.NDArray[np.int64] | None*): Numpy array holding the calculated Sample period duration (ms) for each trial.
+    None until schedule generated.
+    - **`TTC_LICK_THRESHOLD`** (*int*): The number of licks required during the TTC state to trigger an early transition to the SAMPLE state.
+    - **`interval_vars`** (*dict[str, int]*): Dictionary storing base and random variation values (ms) for timing intervals (ITI, TTC, Sample), sourced from GUI entries.
+    - **`exp_var_entries`** (*dict[str, int]*): Dictionary storing core experiment parameters (Num Trial Blocks, Num Stimuli), sourced from GUI entries.
+    `Num Trials` is calculated based on these other values.
+    - **`program_schedule_df`** (*pd.DataFrame*): Pandas DataFrame holding the generated trial-by-trial schedule, including stimuli presentation, calculated intervals,
+    and placeholders for results. Initialized empty.
 
-    Methods:
-        method1(param1): Description of method1.
+    Methods
+    -------
+    - `update_model`(...)
+        Updates internal parameter dictionaries (`interval_vars`, `exp_var_entries`) based on changes from GUI input fields (tkinter vars).
+    - `get_default_value`(...)
+        Retrieves the default or current value for a given parameter name from internal dictionaries, used to populate GUI fields initially.
+    - `generate_schedule`()
+        Performs the creation of the entire experimental schedule, including intervals and stimuli pairings. Returns status.
+    - `create_random_intervals`()
+        Calculates the final ITI, TTC, and Sample intervals for each trial based on base values and randomization ranges.
+    - `calculate_max_runtime`()
+        Estimates the maximum possible runtime based on the sum of all generated intervals.
+    - `create_trial_blocks`()
+        Determines the unique pairs of stimuli presented within a single block based on the number of stimuli.
+    - `generate_pairs`(...)
+        Generates the pseudo-randomized sequence of stimuli pairs across all trials and blocks.
+    - `build_frame`(...)
+        Constructs the `program_schedule_df` DataFrame using the generated stimuli sequences and intervals.
+    - `save_all_data`()
+        Initiates the process of saving the schedule and event log DataFrames to Excel files.
+    - `get_paired_index`(...)
+        Static method to determine the 0-indexed valve number on the opposite side corresponding to a given valve index on side one.
+    - `save_df_to_xlsx`(...)
+        Static method to handle saving a pandas DataFrame to an .xlsx file using a file dialog.
+    - `convert_seconds_to_minutes_seconds`(...)
+        Static method to convert a total number of seconds into minutes and remaining seconds.
     """
 
     def __init__(self):
+        """
+        Initializes the ExperimentProcessData central data hub.
+
+        Sets initial timestamps to 0.0, starts `current_trial_number` at 1.
+        Instantiates `EventData`, `StimuliData`, and `ArduinoData` (passing self reference).
+        Initializes interval arrays (`ITI_intervals_final`, etc.) to None.
+        Sets the `TTC_LICK_THRESHOLD`.
+        Defines default values for `interval_vars` and `exp_var_entries`.
+        Initializes `program_schedule_df` as an empty DataFrame.
+        """
+
         self.start_time: float = 0.0
         self.trial_start_time: float = 0.0
         self.state_start_time: float = 0.0
@@ -70,11 +135,20 @@ class ExperimentProcessData:
         # make it clear that this is a class attriute
         self.program_schedule_df = pd.DataFrame()
 
-    def update_model(self, variable_name, value) -> None:
+    def update_model(self, variable_name: str, value: int | None) -> None:
         """
-        This function will be called when a tkiner entry is updated in the gui
-        to update the standard variables held in the model classes there
+        Updates internal parameter dictionaries from GUI inputs.
+
+        Checks if the `variable_name` corresponds to a key in `interval_vars` or
+        `exp_var_entries` and updates the dictionary value if the provided `value`
+        is not None.
+
+        Parameters
+        ----------
+        - **variable_name** (*str*): The name identifier of the variable being updated (should match a dictionary key).
+        - **value** (*int | None*): The new integer value for the variable, or None if the input was invalid/empty.
         """
+
         # if the variable name for the tkinter entry item that we are updating is
         # in the exp_data interval variables dictionary, update that entry
         # with the value in the tkinter variable
@@ -85,11 +159,20 @@ class ExperimentProcessData:
                 # update other var types here
                 self.exp_var_entries[variable_name] = value
 
-    def get_default_value(self, variable_name) -> int:
+    def get_default_value(self, variable_name: str) -> int:
         """
-        this function is very similar to update_model, but as name implies it only
-        retrieves from the model and does no updating. called only once for each tkinter variable
-        in main gui
+        Retrieves the current value associated with a parameter name.
+
+        Searches `interval_vars` and `exp_var_entries` for the `variable_name`.
+        Used primarily to populate GUI fields with their initial/default values.
+
+        Parameters
+        ----------
+        - **variable_name** (*str*): The name identifier of the parameter whose value is requested.
+
+        Returns
+        -------
+        - *int*: The integer value associated with `variable_name` in the dictionaries, or -1 if the name is not found.
         """
         if variable_name in self.interval_vars.keys():
             return self.interval_vars[variable_name]
@@ -102,9 +185,18 @@ class ExperimentProcessData:
 
     def generate_schedule(self) -> bool:
         """
-        This is a primary function of the program. This function generates the pseudo random schedule for what stimuli will be presented in which
-        trials. It generates the intervals for ITI, TTC, and sample time using base time plus generated random +/- variations as given by user
-        in interface.
+        Generates the complete pseudo-randomized experimental schedule.
+
+        Calculates the total number of trials based on stimuli count and block count.
+        Validates the number of stimuli. Calls helper methods:
+        - `create_random_intervals`() to determine ITI, TTC, Sample times per trial.
+        - `create_trial_blocks`() to define unique stimuli pairs that must occur per block.
+        - `generate_pairs`() to create the trial-by-trial stimuli sequence.
+        - `build_frame`() to assemble the final `program_schedule_df`.
+
+        Returns
+        -------
+        - *bool*: `True` if schedule generation was successful, `False` if an error occurred (e.g., invalid number of stimuli).
         """
         try:
             # set number of trials based on number of stimuli, and number of trial blocks set by user
@@ -141,6 +233,21 @@ class ExperimentProcessData:
             return False
 
     def create_random_intervals(self) -> None:
+        """
+        Calculates randomized ITI, TTC, and Sample intervals for all trials.
+
+        For each interval type (ITI, TTC, Sample):
+        - Retrieves the base duration and random variation range from `interval_vars`.
+        - Creates a base array repeating the base duration for the total number of trials.
+        - If random variation is specified, generates an array of random integers within the +/- range.
+        - Adds the random variation array to the base array.
+        - Stores the resulting final interval array in the corresponding class attribute (`ITI_intervals_final`, etc.).
+
+        Raises
+        ------
+        - Propagates NumPy errors (e.g., during random number generation or array addition).
+        - *KeyError*: If expected keys are missing from `interval_vars`.
+        """
         try:
             num_trials = self.exp_var_entries["Num Trials"]
 
@@ -186,6 +293,16 @@ class ExperimentProcessData:
             raise
 
     def calculate_max_runtime(self) -> tuple[int, int]:
+        """
+        Estimates the maximum possible experiment runtime in minutes and seconds.
+
+        Sums all generated interval durations (ITI, TTC, Sample) across all trials.
+        Converts the total milliseconds to seconds, then uses `convert_seconds_to_minutes_seconds`.
+
+        Returns
+        -------
+        - *tuple[int, int]*: A tuple containing (estimated_max_minutes, estimated_max_seconds).
+        """
         max_time = (
             sum(self.ITI_intervals_final)
             + sum(self.TTC_intervals_final)
@@ -194,14 +311,24 @@ class ExperimentProcessData:
         minutes, seconds = self.convert_seconds_to_minutes_seconds(max_time / 1000)
         return (minutes, seconds)
 
-    def create_trial_blocks(self) -> List:
+    def create_trial_blocks(self) -> List[tuple[str, str]]:
         """
-        This function generates all possible pairings that can occur in ONE TRIAL BLOCK given the input
-        valve stimuli. For example, if we have valves 1 and 5 containing substance 1, and valves 2 and 6
-        containing substance 2, this method will generate a list of two pairings that can occur in one trial block.
-        We need each pairing to complete a block, so we generate [(substance 1, substance 2), (substance 2, substance 1)]
-        as our output. This covers each possible pairing.          (valve 1),   (valve 6)      (valve 2),    (valve 5)
-                                                0 indexing ---->     (0)          (5)             (1)         (4)
+        Determines the unique stimuli pairings within a single trial block.
+
+        Calculates the number of pairs per block (`block_sz = num_stimuli / 2`).
+        Iterates from `i = 0` to `block_sz - 1`. For each `i`, finds the
+        corresponding paired valve index using `get_paired_index`. Appends the
+        tuple of (stimulus_name_at_i, stimulus_name_at_paired_index) to a list.
+
+        Returns
+        -------
+        - *List[tuple]*: A list of tuples, where each tuple represents a unique stimuli pairing (e.g., `[('Odor A', 'Odor B'), ('Odor C', 'Odor D')]`).
+
+        Raises
+        ------
+        - Propagates errors from `get_paired_index`.
+        - *KeyError*: If expected keys are missing from `exp_var_entries`.
+        - *IndexError*: If calculated indices are out of bounds for `stimuli_data.stimuli_vars`.
         """
         try:
             # creating pairs list which stores all possible pairs
@@ -220,11 +347,30 @@ class ExperimentProcessData:
             logger.error(f"Error creating trial blocks: {e}")
             raise
 
-    def generate_pairs(self, pairs) -> Tuple[list, list]:
+    def generate_pairs(self, pairs: list[tuple[str, str]]) -> Tuple[list, list]:
         """
-        This method takes the possible pairings given by create trial blocks and generates
-        which substance will be on a given port for each trial of the experiment. To
-        ensure pseudo randomness, we utilize np.random.shuffle on each pairing.
+        Generates the full, pseudo-randomized sequence of stimuli pairs for all trials.
+
+        Repeats the following for the number of trial blocks specified:
+        - Takes the list of unique `pairs` generated by `create_trial_blocks` that must be included in each block.
+        - Shuffles this list randomly (`np.random.shuffle`).
+        - Extends a master list `pseudo_random_lineup` (adds new list to that list) with the shuffled block.
+        After creating the full sequence, separates it into two lists: one for the
+        stimulus presented on side one each trial, and one for side two.
+
+        Parameters
+        ----------
+        - **pairs** (*List[tuple[str, str]]*): The list of unique stimuli pairings defining one block, generated by `create_trial_blocks`.
+
+        Returns
+        -------
+        - *Tuple[list, list]*: A tuple containing two lists:
+            - `stimulus_1`: List of stimuli names for Port 1 for each trial.
+            - `stimulus_2`: List of stimuli names for Port 2 for each trial.
+
+        Raises
+        ------
+        - Propagates errors from `np.random.shuffle`.
         """
         try:
             pseudo_random_lineup: List[tuple] = []
@@ -248,9 +394,28 @@ class ExperimentProcessData:
 
     def build_frame(
         self,
-        stimuli_1,
-        stimuli_2,
+        stimuli_1: list[str],
+        stimuli_2: list[str],
     ) -> None:
+        """
+        Constructs the main `program_schedule_df` pandas DataFrame.
+
+        Uses the generated stimuli sequences (`stimuli_1`, `stimuli_2`) and the
+        calculated interval arrays (`ITI_intervals_final`, etc.) to build the
+        DataFrame. Includes columns for trial block number, trial number, stimuli
+        per port, calculated intervals, and placeholders (NaN) for results columns
+        like lick counts and actual TTC duration.
+
+        Parameters
+        ----------
+        - **stimuli_1** (*list*): List of stimuli names for Port 1, one per trial.
+        - **stimuli_2** (*list*): List of stimuli names for Port 2, one per trial.
+
+        Raises
+        ------
+        - Propagates pandas errors during DataFrame creation.
+        - *ValueError*: If the lengths of input lists/arrays do not match the expected number of trials.
+        """
         num_stimuli = self.exp_var_entries["Num Stimuli"]
         num_trials = self.exp_var_entries["Num Trials"]
         num_trial_blocks = self.exp_var_entries["Num Trial Blocks"]
@@ -282,6 +447,13 @@ class ExperimentProcessData:
             raise
 
     def save_all_data(self):
+        """
+        Saves the experiment schedule and detailed event log DataFrames to Excel files.
+
+        Iterates through a dictionary mapping descriptive names to the DataFrame
+        references (`program_schedule_df`, `event_data.event_dataframe`) and calls
+        the static `save_df_to_xlsx` method for each.
+        """
         dataframes = {
             "Experiment Schedule": self.program_schedule_df,
             "Detailed Event Log Data": self.event_data.event_dataframe,
@@ -291,7 +463,22 @@ class ExperimentProcessData:
             self.save_df_to_xlsx(name, df_reference)
 
     @staticmethod
-    def get_paired_index(i, num_stimuli):
+    def get_paired_index(i: int, num_stimuli: int) -> int | None:
+        """
+        Calculates the 0-indexed valve number for the stimulus for side two based on give index (i) for side one.
+
+        Based on the total number of stimuli (`num_stimuli`), determines the index
+        of the valve paired with the valve at index `i`. Handles cases for 2, 4, or 8 total stimuli.
+
+        Parameters
+        ----------
+        - **i** (*int*): The 0-indexed number of the valve on one side.
+        - **num_stimuli** (*int*): The total number of stimuli/valves being used (must be 2, 4, or 8).
+
+        Returns
+        -------
+        - *int | None*: The 0-indexed number of the paired valve, or None if `num_stimuli` is not 2, 4, or 8.
+        """
         match num_stimuli:
             case 2:
                 # if num stim is 2, we are only running the same stimulus on both sides,
@@ -319,8 +506,24 @@ class ExperimentProcessData:
                 return None
 
     @staticmethod
-    def save_df_to_xlsx(name, dataframe) -> None:
-        """Method to bring up the windows file save dialog menu to save the two data tables to external files"""
+    def save_df_to_xlsx(name: str, dataframe: pd.DataFrame) -> None:
+        """
+        Saves a pandas DataFrame to an Excel (.xlsx) file using a file save dialog.
+
+        Prompts the user with a standard 'Save As' dialog window. Suggests a default
+        filename including the provided `name` and the current date. Sets the default
+        directory to '../data_outputs'. If the user confirms a filename, saves the
+        DataFrame; otherwise, logs that the save was cancelled.
+
+        Parameters
+        ----------
+        - **name** (*str*): A descriptive name used in the default filename (e.g., "Experiment Schedule").
+        - **dataframe** (*pd.DataFrame*): The pandas DataFrame to be saved.
+
+        Raises
+        ------
+        - Propagates errors from `filedialog.asksaveasfilename` or `dataframe.to_excel`.
+        """
         try:
             file_name = filedialog.asksaveasfilename(
                 defaultextension=".xlsx",
@@ -342,7 +545,22 @@ class ExperimentProcessData:
             raise
 
     @staticmethod
-    def convert_seconds_to_minutes_seconds(total_seconds):
+    def convert_seconds_to_minutes_seconds(total_seconds: int) -> tuple[int, int]:
+        """
+        Converts a total number of seconds into whole minutes and remaining seconds.
+
+        Parameters
+        ----------
+        - **total_seconds** (*int*): The total duration in seconds.
+
+        Returns
+        -------
+        - *tuple[int, int]*: A tuple containing (minutes, seconds).
+
+        Raises
+        ------
+        - Propagates `TypeError` if `total_seconds` is not a number.
+        """
         try:
             # Integer division to get whole minutes
             minutes = total_seconds // 60
