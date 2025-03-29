@@ -37,25 +37,25 @@ class GUIUtils:
 
     Methods
     -------
-    - `create_labeled_entry(...)`
+    - `create_labeled_entry`(...)
         Creates a standard Lable/Entry combination component packed in a shared Frame.
-    - `create_basic_frame(...)`
+    - `create_basic_frame`(...)
         Creates a basic Frame widget with grid expansion configuration.
-    - `create_button(...)`
+    - `create_button`(...)
         Creates a standard Button widget within a Frame.
-    - `display_error(...)`
+    - `display_error`(...)
         Shows a error message box to the user.
-    - `create_timer(...)`
+    - `create_timer`(...)
         Creates a timer label wiget.
-    - `get_window_icon_path()` -> *could be moved to `system_config` module later.*
+    - `get_window_icon_path`() -> *could be moved to `system_config` module later.*
         Determines and returns the OS-specific path for the application icon.
-    - `set_program_icon(...)`
+    - `set_program_icon`(...)
         Sets the icon for a given Tkinter window based on the OS.
-    - `safe_tkinter_get(...)`
+    - `safe_tkinter_get`(...)
         Safely retrieves the value from a Tkinter variable, handling potential errors when stored value is "" or nothing.
-    - `center_window(...)`
+    - `center_window`(...)
         Positions a Tkinter window in the center of the screen.
-    - `askyesno(...)`
+    - `askyesno`(...)
         Displays a standard yes/no confirmation dialog box.
     """
 
