@@ -1,6 +1,22 @@
+"""
+This module defines the ValveChanges class, a Tkinter Toplevel window designed
+to act as a confirmation dialog window for auto-generated valve timing adjustments.
+
+It presents the user with a summary of proposed changes to valve open durations
+before they are applied to the system configuration.
+The user can either confirm the changes, triggering a callback function to `views.valve_testing.valve_testing_window`, or
+abort the changes, closing the dialog without further action. It relies on
+`system_config` for valve configuration and `views.gui_common.GUIUtils` for
+standard widget creation and window management.
+"""
+
 import tkinter as tk
 import toml
 import system_config
+
+###TYPE HINTS###
+from typing import Callable
+###TYPE HINTS###
 
 from views.gui_common import GUIUtils
 
@@ -16,8 +32,56 @@ TOTAL_VALVES = VALVE_CONFIG["TOTAL_CURRENT_VALVES"]
 VALVES_PER_SIDE = TOTAL_VALVES // 2
 
 
+# lambda: self.confirm_valve_changes(side_one, side_two, side_one_old, side_two_old
 class ValveChanges(tk.Toplevel):
-    def __init__(self, valve_changes, confirm_callback):
+    """
+    Implements a Tkinter Toplevel window to display and confirm proposed valve duration changes.
+
+    This window acts as a confirmation step, showing the user which valves are
+    being changed and their old vs. new duration values (in microseconds).
+    It provides "Confirm Changes" and "ABORT CHANGES" buttons. Confirming
+    triggers a callback function passed during initialization; aborting simply
+    destroys the window. Uses `views.gui_common.GUIUtils` for window centering and icon setting.
+
+    Attributes
+    ----------
+    - **`valve_changes`** (*List[Tuple[int, Tuple[int, int]]]*): A list where each element is a tuple containing the valve number (int)
+        and another tuple with (old_duration, new_duration).
+    - **`confirm_callback`** (*Callable*): The function to execute when the "Confirm Changes" button is pressed.
+    - **`valve_frame`** (*tk.Frame*): The main container frame holding the side-by-side valve change displays.
+    - **`side_one_valves_frame`** (*tk.Frame*): Frame displaying changes for valves on the first side (e.g., 1-8).
+    - **`side_two_valves_frame`** (*tk.Frame*): Frame displaying changes for valves on the second side (e.g., 9-16).
+    - **`buttons_frame`** (*tk.Frame*): Frame containing the Confirm and Abort buttons.
+
+    Methods
+    -------
+    - `create_interface`()
+        Constructs the main GUI layout, including frames and buttons.
+    - `confirmation`()
+        Executes the stored callback function and then destroys the window.
+    - `create_valve_change_labels`()
+        Populates the side frames with labels detailing the old and new duration for each changed valve.
+    """
+
+    def __init__(
+        self,
+        valve_changes: list[tuple[int, tuple[int, int]]],
+        confirm_callback: Callable,
+    ):
+        """
+        Initializes the ValveChanges confirmation Toplevel window.
+
+        Parameters
+        ----------
+        - **valve_changes** (*List[Tuple[int, Tuple[int, int]]]*): A list containing tuples for each valve change.
+          Each inner tuple has the format `(valve_number, (old_duration_microseconds, new_duration_microseconds))`.
+        - **confirm_callback** (*Callable*): The function that should be called if the user confirms the changes.
+          This function takes no arguments.
+
+        Raises
+        ------
+        - Propagates exceptions from `GUIUtils` methods during icon setting or window centering.
+        """
         super().__init__()
         self.title("CONFIRM VALVE DURATION CHANGES")
         self.bind("<Control-w>", lambda event: self.withdraw())
@@ -41,6 +105,14 @@ class ValveChanges(tk.Toplevel):
         GUIUtils.set_program_icon(self, icon_path=window_icon_path)
 
     def create_interface(self):
+        """
+        Constructs the main GUI elements within the Toplevel window.
+
+        Creates the frames to hold the valve change information side-by-side,
+        populates them using `create_valve_change_labels`, and adds the
+        'Confirm' and 'Abort' buttons.
+        """
+
         self.valve_frame = tk.Frame(
             self, highlightbackground="black", highlightthickness=1
         )
@@ -101,10 +173,26 @@ class ValveChanges(tk.Toplevel):
         abort.grid(row=0, column=1, sticky="e", padx=5, ipadx=10, ipady=10)
 
     def confirmation(self):
+        """
+        Handles the confirmation action.
+
+        Executes the `confirm_callback` function that was provided during
+        class initialization and then closes (destroys) this confirmation window.
+        """
         self.confirm_callback()
         self.destroy()
 
     def create_valve_change_labels(self):
+        """
+        Generates and places the labels detailing each valve duration change.
+
+        Iterates through the `self.valve_changes` list. For each change, it
+        determines which side frame (left or right) the valve belongs to and
+        creates two labels: one for the valve number and one showing the
+        'From old_duration --> new_duration' information. Labels are placed
+        in sequence within the appropriate side frame.
+        """
+
         valve = None
         frame = None
         side_one_row = 0
