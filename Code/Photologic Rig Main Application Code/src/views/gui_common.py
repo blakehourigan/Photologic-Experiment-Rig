@@ -157,7 +157,7 @@ class GUIUtils:
 
     @staticmethod
     def create_button(
-        parent: tk.Frame,
+        parent: tk.Frame | tk.Toplevel,
         button_text: str,
         command: Callable,
         bg: str,
