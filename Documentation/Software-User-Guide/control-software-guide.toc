@@ -1,0 +1,36 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {section}{\numberline {2}Installing the Software}{4}{section.2}%
+\contentsline {section}{\numberline {3}The Main Control Window}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Row 1 - Start and Reset}{13}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Start and Stop (an Experiment)}{13}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Reset (Preparing for a New Experiment)}{14}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Row 2 - Program Timers}{15}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Time Elapsed}{16}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2}State Time}{16}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.3}Maximum Total Time}{16}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.3}Row 3 - Status Indicators}{17}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Row 4 - Configuring the Experiment}{18}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Changing Default Values}{19}{subsubsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.5}Row 5 - Accessing Other Control Windows}{20}{subsection.3.5}%
+\contentsline {section}{\numberline {4}`Valve Testing / Prime Valves' Window}{22}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Valve Open Duration Calibration (Running a Valve Test)}{23}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Manual Valve Duration Adjustment / Duration Profiles}{27}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Why was this Necessary?}{27}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Okay, How do I do it? (Setting Valve Duration Profiles)}{28}{subsubsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.3}Valve Priming}{30}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Why is this Useful?}{30}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Okay, How do I do it? (Priming Valves)}{30}{subsubsection.4.3.2}%
+\contentsline {section}{\numberline {5}The `Valve Control' Window}{32}{section.5}%
+\contentsline {subsection}{\numberline {5.1}What does this Window do?}{32}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Controlling the Valves}{32}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Controlling the Door Motor}{32}{subsection.5.3}%
+\contentsline {section}{\numberline {6}The `Program Schedule' Window}{34}{section.6}%
+\contentsline {subsection}{\numberline {6.1}What does this Window do?}{34}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}This Window won't Open due to Error... Why? (Experiment Schedule Error)}{35}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}What do All these Fields Mean?}{35}{subsection.6.3}%
+\contentsline {section}{\numberline {7}The `Valve / Stimuli' Window}{37}{section.7}%
+\contentsline {subsection}{\numberline {7.1}What Does this Window Do?}{37}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}How Do I Use this Window? (Generating an Experiment Schedule)}{37}{subsection.7.2}%
+\contentsline {section}{\numberline {8}The `Event Data' Window}{38}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Detailed Column Breakdown}{38}{subsection.8.1}%
+\contentsline {section}{\numberline {9}The `Rasterized Data' Window}{40}{section.9}%

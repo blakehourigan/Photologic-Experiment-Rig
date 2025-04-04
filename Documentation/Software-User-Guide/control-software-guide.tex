@@ -1,0 +1,790 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{pdfpages}
+\usepackage{xcolor}    % Required for specifying colors
+\usepackage{textcomp}  % Recommended for proper straight quotes, etc.
+\usepackage[T1]{fontenc}
+
+% --- Define colors for syntax highlighting ---
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92} % A light background color
+
+% --- Define a custom listings style for Python ---
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize, % Use typewriter font, slightly smaller
+    breakatwhitespace=false,
+    breaklines=true,                 % Automatically break long lines
+    captionpos=b,                    % Caption position: bottom
+    keepspaces=true,                 % Keep spaces, important for indentation
+    numbers=left,                    % Line numbers on the left
+    numbersep=5pt,                   % Distance of numbers from code
+    showspaces=false,                % Don't show spaces as special characters
+    showstringspaces=false,          % Don't show spaces in strings differently
+    showtabs=false,                  % Don't show tabs as special characters
+    tabsize=4,                       % Set tab width (Python standard is 4)
+    language=Python,                 % Set the language
+    morekeywords={self, dict, int},  % Add specific keywords if needed
+    frame=single,                    % Add a frame around the code
+    rulecolor=\color{black},         % Color of the frame
+    upquote=true                     % Ensure straight quotes are used correctly
+}
+\graphicspath{{"/home/blake/Pictures/software-user-guide"}}
+
+\setlength{\parskip}{1em}
+
+\title{\textbf{Photologic Experiment Rig}\\Control Software User Guide}
+\author{Blake Hourigan}
+\date{March 30, 2025}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+}
+\lstdefinelanguage{yaml}{
+    morekeywords={true,false,null,y,n},      % Add keywords here
+    sensitive=false,                        % Case insensitive
+    morecomment=[l]{\#},                    % Line comments start with #
+    morestring=[b]",                        % Double-quoted strings
+    morestring=[b]',                        % Single-quoted strings
+}
+
+\begin{document}
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
+
+
+\section{Introduction}
+This guide provides simple overviews of included features in the Photologic-Experiment-Rig control software. It also explains the specifics of these features and how to use 
+them. Some features may not have robust explanations within the software as to what \textit{type/unit} of value goes in a text box, 
+what a certain value displayed in a menu means, among other various confusions. 
+
+This guide is intended to make up for areas of the program that may lack in clarity. Each primary user interface window has its own section here that you can jump
+to using the table of contents. 
+
+\section{Installing the Software}
+\label{sec:installation}
+An installation guide for all software required to get the rig up and running has been written in another article. For convenience this is provided in the pages that follow.
+Because the guide included is a PDF in itself, the page numbers will appear out of order until the software guide is complete.
+\includepdf[pages=10-16]{"/home/blake/Documents/Photologic-Experiment-Rig/Documentation/Arduino Migration Guide/arduino_migration_guide.pdf"} 
+%\FloatBarrier
+
+\section{The Main Control Window}
+\label{sec:main-control}
+The `Main Control Window' refers to the user interface window that appears first upon application startup. This window is the heart of the program and is where much of the 
+required experiment configuration will take place. This window is shown below in Figure \ref{fig:main-screen}. 
+
+This window can be broken down into 5 primary sub-sections, and as such, this section of the guide is broken down into sub-sections that reflect this layout. 
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"main-screen.png"}
+        \caption{The `Main Control Window' is the root of all application logic and sub-windows. It allows for navigation to these sub-windows, 
+        and allows users to configure and begin experiments.}
+        \label{fig:main-screen}
+\end{figure}
+\FloatBarrier
+
+\newpage
+\subsection{Row 1 - Start and Reset}
+Row 1 contains two of the most important buttons in the application interface. Start/Stop allows a user to command the program to begin or 
+terminate an experiment depending on current state. Reset allows the user to clear \textbf{all existing experiment data} and ready the application 
+for a new experiment run. 
+
+\subsubsection{Start and Stop (an Experiment)}
+\label{sec:start-exp}
+The start button is important because it allows the user to begin or end an experiment. Before the user can begin an experiment, 
+the experiment must be fully configured. This means that all of the following steps must be completed to continue: 
+\begin{enumerate}
+    \item Base state  interval times (ITI, TTC, Sample, etc.), random interval times (+/- ITI, +/- TTC, +/- Sample, etc.) 
+        and other configuration variables (\# Trial Blocks, \# Stimuli) \textbf{must} be defined. Discussed in Section \ref{sec:basic-configuration}.
+    \item All valves must be configured with corresponding stimulus names in the `Valve / Stimuli' window. Discussed in depth in Section 
+        \ref{sec:valve-stim-window}.
+    \item The program schedule must be generated. Discussed in depth in Section 
+        \ref{sec:valve-stim-window}.
+\end{enumerate}
+
+Once all of these requirements have been fulfilled the user can begin an experiment run. If a step has been missed, or something has 
+gone wrong, the user may see a warning message such as the one in Figure \ref{fig:no-schedule}. This indicates that the program stimuli schedule has not 
+yet been generated, and that the user should re-visit the 'Valve / Stimuli' window (Section \ref{sec:valve-stim-window}) 
+to attempt a proper schedule generation.
+
+If a experiment run has been started, the `Start' button will be changed to a stop button as shown in Figure \ref{fig:stop-button}. 
+Pressing this button will terminate the experiment early. This will begin the standard termination process. This includes:
+\begin{itemize}
+    \item Halting program execution. No further experiment operations will be taken. Door will not close, program state will be 
+        switched to "IDLE".
+    \item Terminating the connection to the Arudino board .
+    \item Preparing all accumulated data to be saved. 
+    \item The user will be prompted to optionally save this data via a pop-up window in a location of their chosing.
+\end{itemize}
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"no-schedule-yet.png"}
+        \caption{Without an Experiment Schedule, the program isn't sure what to do. You must generate a schedule following the steps above to run an experiment.}
+        \label{fig:no-schedule}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"stop-button.png"}
+        \caption{Start Button is Converted to Stop Button on Experiment Start.}
+        \label{fig:stop-button}
+    \end{subfigure}
+    \caption{}
+    \label{fig:pg_admin_figs}
+\end{figure}
+\FloatBarrier
+
+\subsubsection{Reset (Preparing for a New Experiment)}
+The other primary button in this row of the main window is the `Reset' button. This button is important because it is \textbf{required} after 
+running an experiment that the user takes either of the two following actions:
+\begin{enumerate}
+    \item Presses the gray 'Reset' button in the main program window. 
+    \item Use the familiar red Windows `X' in the corner of the main application window to close the application session and manually 
+        restart by clicking the `Photologic-Experiment-Rig' control software icon on the desktop or in the taskbar. This is the icon 
+        with a cartoon rat on it. 
+\end{enumerate}
+
+Both of these actions perform the same effective operation which is to clear the data from the previous experiment and get
+the program ready for a new experiment. To reiterate, pressing `Reset' will \textbf{destroy all experiment data accumulated} if the user 
+has not saved this data by pressing the `Save Data' button in the fifth row of the main experiment window since the last experiment was run.
+This means the user should be \textbf{very careful} when pressing this button. 
+
+It is for this reason that when a user presses the Reset button, a warning will be displayed as shown in Figure \ref{fig:reset-confirm}. If the user selects `Yes' in this 
+popup window all data will be destroyed and all windows will be closed, then the main program window will re-open automatically, ready for a new experiment.
+\newline
+\newline
+\textbf{NOTE:} This action cannot be performed unless an experiment is \textit{not currently running}. Otherwise, you must stop the current experiment and then reset the 
+application.
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"reset-are-you-sure.png"}
+        \caption{User must Confirm a Reset Action before it will Execute to Prevent Accidental Loss of Data.}
+        \label{fig:reset-confirm}
+\end{figure}
+\FloatBarrier
+
+\newpage
+\subsection{Row 2 - Program Timers}
+The second row of the main program window features three timers that inform the user of the following pieces of information:
+\begin{enumerate}
+    \item \textbf{Time Elapsed}: How long the program has been running in total
+    \item \textbf{State Time}: How long the program has been in the current state (ITI, TTC, DOOR OPEN, etc.).
+    \item \textbf{Maximum Total Time}: Maximum amount of time the program can possibly run.
+\end{enumerate}
+
+These timers all begin at zero until the program schedule has been generated (discussed in Section \ref{sec:valve-stim-window}) and the user 
+presses the `Start' button in the main experiment window. Once an experiment has begun, this row will be populated to reflect the real values 
+that belong here as shown in Figure \ref{fig:timers}.
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"timers.png"}
+        \caption{}
+        \label{fig:timers}
+\end{figure}
+\FloatBarrier
+
+\newpage
+\subsubsection{Time Elapsed}
+This timer is the primary timer for the currently running experiment. This timer shows the time elapsed since the moment the user pressed the start button. It follows a format
+of `SS | MM:SS', where the `SS' before the format separator (`|') is the \textit{total seconds} elapsed since program start time. 
+
+Because this is a bit unwieldy and perhaps unhelpful, the information following the separator `|' shows the same figure converted to minutes 
+and seconds. This allows for an easier understanding at a glance of total experiment time elapsed.
+
+\subsubsection{State Time}
+The `State Time' timer keeps track not only of the amount of state time that has elapsed since the state began, but also the maximum time it could 
+possible consume. The timer follows the format of `ELAPSED TIME / TOTAL AVAILABLE TIME'. 
+
+The only time throughout an experiment when the `TOTAL TIME' figure \textit{may} not be met is during the `TTC' time. This time can be cut short if the rat chooses to engage
+in the trial. Thus the state timer may end before reaching `TOTAL TIME'.
+
+\subsubsection{Maximum Total Time}
+The `Maximum Total Time' timer is included as a convenience function that gives the user a general idea of how long an experiment could possibly take. It is almost certain to 
+be inaccurate and \textit{over-estimate} the amount of time an experiment will take, because it calculates this value by \textit{summing all base interval values and random 
+interval values together}. 
+
+This means that the program assumes that all intervals --- including TTC intervals --- will use \textbf{all} of their allocated time. This is
+very unlikely to be true, as the rat is likely to engage in at least \textit{some} trials. However, it still gives a general idea of the length of time an experiment 
+may take.
+
+\newpage
+\subsection{Row 3 - Status Indicators}
+Row 3 contains many different experiment \textit{status indicators} that inform the user of the current values of important trial variables. 
+These include:
+
+\begin{itemize}
+    \item \textbf{Status (Program State)}: This indicator informs the user of the current program state ("IDLE", "ITI", "TTC", etc.)
+    \item \textbf{Trials Completed (Current Trial/Total Trials)}: Displays the current trial and total trials for this experiment. Includes 
+        a progress indicator to show experiment progress at a glance.
+    \item \textbf{Side One: \{Stimulus\} |VS| Side Two: \{Stimulus\}}: Current Stimulus Delivery per Port (Side): Inform user which stimulus 
+        is being delivered on each port (side) for the current trial. 
+\end{itemize}
+
+Examples of what these indicators look like during an experiment run are shown in Figure \ref{fig:status-indicators}. 
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"status-indicators.png"}
+        \caption{Status Indicators Aid the User by Informing them of the Current State of Experiment Variables.}
+        \label{fig:status-indicators}
+\end{figure}
+\FloatBarrier
+
+\newpage
+\subsection{Row 4 - Configuring the Experiment}
+\label{sec:basic-configuration}
+Row 4 is one of the rows in the main window that the user will interact with the most. This row is where the user enters any desired configuration changes for an upcoming 
+experiment. This row and the contained entry widgets are shown in Figure \ref{fig:entry-widgets}. 
+
+The primary experiment variables that may change from experiment to 
+experiment are the base state intervals (ITI, TTC, Sample), random state intervals (+/- ITI, +/-, TTC, etc), `\# Trial Blocks' 
+(number of times each possible stimulus pairing should be delivered), and `\# Stimuli' (number of valves in use). 
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"entry-widgets.png"}
+        \caption{The Entry Widgets in the Main Window Allow the User to Modify Default Experiment Variables.}
+        \label{fig:entry-widgets}
+\end{figure}
+\FloatBarrier
+
+These variables should be changed \textbf{before} the schedule is generated for the experiment. 
+\newline
+\newline
+\textbf{NOTE}: All \textit{time-related values} (interval times) must be given in \textbf{milliseconds}. For example, 30 seconds should be 
+entered in as 30000 milliseconds. 
+\newline
+\newline
+Ensure that no entry boxes are left \textit{empty} before generating the schedule. Each box needs to 
+contain some \textit{positive integer} to correctly generate the experiment schedule.
+
+\newpage
+\subsubsection{Changing Default Values}
+If the default values need to be modified, this requires a change in the Python codebase. This is an involved process 
+because \href{https://gist.github.com/blakehourigan/5e176f2600446a793547babff372299c}{new versions of the program need to be compiled and 
+built into a new installer.}
+
+Default values are defined in the GitHub repository directory in the file found at subdirectory
+`/Code/Photologic Rig Main Application Code/src/models/experiment\_process\_data.py'
+under variables named self.interval\_vars, and self.exp\_var\_entries. 
+
+This code is shown in Listing \ref{lst:python_dicts}. Defaults can be changed here, but again a new program build and installer must be created and 
+installed onto the user's machine. Users may need to ask the lab tech for assistance in this process.
+
+\begin{lstlisting}[style=mystyle, caption={Default values can be seen Above. Time-Related Interval Values are Separated from Other Values like Number of Trials.}, label={lst:python_dicts}]
+self.interval_vars: dict[str, int] = {
+    "ITI_var": 30000,
+    "TTC_var": 20000,
+    "sample_var": 15000,
+    "ITI_random_entry": 0,
+    "TTC_random_entry": 5000,
+    "sample_random_entry": 5000,
+}
+self.exp_var_entries: dict[str, int] = {
+    "Num Trial Blocks": 10,
+    "Num Stimuli": 4,
+    "Num Trials": 0,
+}
+\end{lstlisting}
+
+\newpage
+\subsection{Row 5 - Accessing Other Control Windows}
+Row 5 of the main program window contains 7 gray buttons that allow for navigation to other important experiment control windows. 
+(Figure \ref{fig:window-buttons})
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"window-buttons.png"}
+        \caption{The Buttons in Row 5 Allow for Navigation to Other Experiment Windows.}
+        \label{fig:window-buttons}
+\end{figure}
+\FloatBarrier
+
+Descriptions of buttons and their functions will begin on the first row and column of this section. Each button in a row will be described, then the next
+row will be described.
+
+\begin{enumerate}
+    \item \textbf{Valve Testing / Prime Valves}: This button allows for navigation to the `Valve Testing / Prime Valves' window. A user would
+        navigate here if they desired calibrating valve opening durations via the automatic testing procedure or if they desired to 
+        `Prime' the valves prior to an experimnet run. This window is discussed in depth in Section \ref{sec:valve-testing-window}.
+    \item \textbf{Valve Control}: This button allows for navigation to the `Valve Control' window. A user would navigate here if they 
+        desired opening or closing valves for arbitrary lengths of time. This window also allows for the manual toggling of the rig's 
+        door motor to the up or down position for arbitrary lengths of time. This window is discussed in depth in 
+        Section \ref{sec:valve-control}.
+    \item \textbf{Program Schedule}: This button allows for navigation to the `Program Schedule' window. This is where the user would find 
+        most experiment data including:
+        \begin{itemize}
+            \item Trial block numbers.
+            \item Trial numbers.
+            \item Licks-per-port for a trial.
+            \item Stimulus delivered on each side for a trial.
+            \item ITI, TTC, Sample times for a trial.
+        \end{itemize}
+            This window is discussed in depth in Section \ref{sec:program-schedule}.
+    % begin row 2 
+    \item \textbf{Valve / Stimuli}: This button allows for navigation to the `Valve / Stimuli' window. This is where the user navigates to 
+        assign stimuli names to specific valves for the experiment. This is required to generate the experiment schedule. This window 
+        and associated functions are discussed in depth in Section \ref{sec:valve-stim-window}.
+    \item \textbf{Event Data}: This button allows for navigation to the `Event Data' window. This is where all data not included in the 
+        `Program Schedule' window is found. A user might navigate here to view detailed data about specific events that take place during the 
+        program like licks or door motor movements. This window is discussed in depth in Section \ref{sec:event-data-window}.
+    \item \textbf{Rasterized Data}: This button allows for navigation to the `Rasterized Data' window. A user might navigate here to view 
+        lick data per trial in a raster plot. This window is discussed in depth in Section \ref{sec:rasterized-data-window}.
+    \item \textbf{Save Data}: This button is used to save all currently held data into 2 separate excel spreadsheet files. Data in the program 
+        is split into 2 primary `DataFrames'. These DataFrames include the `Program Schedule DataFrame' and the `Event Dataframe'. The data 
+        stored in each frame is as described previously for each respective window corresponding to these DataFrames.
+\end{enumerate}
+
+\newpage
+\section{`Valve Testing / Prime Valves' Window}
+\label{sec:valve-testing-window}
+This window is where the user would navigate for valve opening duration calibration or valve `priming' before a experiment run. The 
+`Valve Testing / Prime Valves' window is shown below in Figure \ref{fig:test-prime}.
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"test-prime.png"}
+        \caption{The `Valve Testing / Prime Valves' Window opens in Testing Mode upon First Button Press.}
+        \label{fig:test-prime}
+\end{figure}
+\FloatBarrier
+
+\newpage
+
+\subsection{Valve Open Duration Calibration (Running a Valve Test)}
+\label{sec:valve-profiles-how-to}
+This window opens in `Testing' mode by default. A user can be sure that they are in test mode if the large orange `Switch to Priming Mode' 
+button is in view at the top of the window. 
+
+In this window a user will notice several interface components that are critical to a
+successful valve calibration. Calibration is important to run often to ensure that each valve is delivering the proper amount of stimulus 
+on each valve in use during an experiment. The process of running a valve test procedure is described below.
+
+\begin{enumerate}
+    \item \textbf{Enter Desired Amount of Stimulus Per Lick}: First, the user should enter how much liquid that is desired each time the valve 
+        opens in the entry box just below the label `Desired Dispensed Volume in Microliters (ul)'. The default value for this entry is 5
+        microliters.
+    \item \textbf{Enter Number of Valve Actuations}: Then, enter the number of times a valve should open and close for each test in the entry 
+        box just below the label `How Many Times Should the Valve Actuate?'. 
+
+        The default value for this entry is 1000 and is a good starting 
+        point for testing. This attribute of the procedure is \textit{variable} in the event that a user wants to change this value, and 
+        new duration calculations will adjust to the value input in this field. However, higher numbers will yield more accuration calculations.
+    \item \textbf{Select Valves to be Tested}: Next, the user should select the valves to be tested during this procedure. This is done by 
+        selecting valves via the buttons below the valve test information table. The valve test information table is the interface widget that lists all valves along
+        with `Amount Dispensed Per Lick (ul)' and `Testing Opening Time (ms)' columns. Figure \ref{fig:test-buttons} shows the difference 
+        between the interface with no buttons selected vs some selected.
+    \item \textbf{Start Testing}: From the perspective of the interface, a test can now be started. The user should ensure that the valve 
+        cylinders (vials containing stimuli for the valves) are full and all other rig specific guidelines set for the lab are now met. Once 
+        the user has ensured that the physical rig is correctly setup for a valve calibration procedure, they can press the big green 
+        `Start Testing' button at the bottom of the window.
+        \newline
+        \newline
+        \textbf{NOTE}: \textit{Some} number of valves \textit{above zero} must be selected, or bugs may occur. Ensure that some valves are 
+        selected before starting a test procedure.
+    \item \textbf{Confirm Test Settings}: Once the user has pressed the green `Start Testing' button, they will see a new pop-up window as 
+        shown in Figure \ref{fig:confirm-test}. Review the settings selected using the Valve Test Table, and the entry boxes to ensure the 
+        correct settings have been selected. If all setting look okay press `Yes' to begin the procedure. Valves should be heard actuating
+        on the rig. 
+    \item \textbf{Enter the Amount Dispensed}: In order to understand what the opening time for the valve should be, the actual amount dispensed
+        over some number of trials must be found. Find this value either by wighing the item used to collect the dispensed volume or by 
+        marking the volume line on the container. Enter this value \textbf{IN MILLILITERS} in the text box pop-up that appears after a test 
+        has completed. An example pop-up is shown in Figure \ref{fig:test-pop-up}. Do this for each of the valves that have been tested 
+        during this cycle (1 or 2).
+        \newline
+        \newline
+        \textbf{NOTE}: The test procedure has been designed to be flexible and adapt to each specific test. This means that each test may 
+        be slightly different from the last. Specifically, the user may select any number of valves to be tested between 1-8. All valves on 
+        one side can be tested and none on the other, two on each side, or any number of configurations. 
+
+        Because of this, the user must 
+        pay attention and be careful when input pop-ups appear. If there are more than zero valves remaining \textbf{on each side} to be tested,
+        there will be \textbf{2 entry boxes} that appear at the end of the test cycle. \textbf{Pay attention} to which valve the program is
+        asking the user to enter the dispensed volume for. This is \textit{incredibly easy} to mess up and the test will need to be restarted if 
+        this happens. 
+
+        Finally, if the user presses `Cancel' on \textbf{ANY} of the input pop-up windows, the test procedure will be cancelled and will need
+        to be restarted. If the red `ABORT TESTING' button is pressed \textit{at any time} during the test procedure, the test will be 
+        cancelled. Test settings can then be modified as needed and a test can be restarted. \textit{No program restart} should be necessary 
+        to run multiple test procedures.
+    \item \textbf{Confirm Duration Changes}: Once all valves selected for a test procedure have been tested, duration changes will be 
+        \textit{automatically} calculated. Then, a new pop-up window will appear that will display the change in open duration for each
+        valve that was tested. An example of this pop-up window is shown in Figure \ref{fig:results-confirm-popup}. If these changes 
+        seem legitimate (no very large jumps or reductions in opening times) confirm them by pressing the green `Confirm Changes' button. 
+        Otherwise, press the red `Abort Changes' button and retry the procedure.
+\end{enumerate}
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"unpressed.png"}
+        \caption{Default State of the Valve Test Window. Buttons not Pressed, all Valves in View in Valve Test Table.}
+        \label{fig:unpressed}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"depressed.png"}
+        \caption{Valves 1, 2, 6 Selected. Valve Test Table Shows entries \textit{only} for \textit{these} Valves, Corresponding Buttons 
+        Depressed.}
+        \label{fig:depressed}
+    \end{subfigure}
+    \caption{The User will Know a Valve has been Selected when its Corresponding Button has been Depressed (pushed in), and the Valve
+    Test Table has been Updated with a row that Includes the Selected Valve.}
+    \label{fig:test-buttons}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"confirm-test.png"}
+        \caption{The User Must Confirm Test Settings before the Procedure will Begin.}
+        \label{fig:confirm-test}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"test-pop-up.png"}
+        \caption{1 or 2 Input Pop-Up Windows will Appear Depending on Number of Valves Remaing to Test on Each Side.}
+        \label{fig:test-pop-up}
+\end{figure}
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"results-confirm-popup.png"}
+        \caption{Users can Confirm or Abort Updating the Valve Durations in the `CONFIRM VALVE DURATION CHANGES' Pop-Up Window following a
+        Successful Test Procedure.}
+        \label{fig:results-confirm-popup}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Manual Valve Duration Adjustment / Duration Profiles}
+Manual adjustment of valve timings or changing the selected valve timing `profile' is available by selecting the `Manual Valve Duration 
+Override' button just above and to the right of the valve test information table in the `Valve Testing' window. 
+
+\subsubsection{Why was this Necessary?}
+Sometimes mistakes are made in the testing procedure. One might overlook an abnormally large adjustment in the automatic calculations that 
+could cause issues with proper valve actuation during experiment runtime. Perhaps it is found that a previous duration profile seemed to
+work better than the current one for one reason or another. 
+
+Whatever the reason, it is nice to be able to restore things to working order with the press of a single button. This is the purpose of 
+valve duration profiles and the manual time adjustment window. This window is pictured below in Figure \ref{fig:manual-window}. 
+
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=10cm]{"manual-window.png"}
+        \caption{Users can Override Mistankenly Accepted Automatic Valve Duration Adjustments by Manually Entering New Times in the 
+        `Manual Valve Timing Adjustment' window.}
+        \label{fig:manual-window}
+\end{figure}
+
+\
+
+\subsubsection{Okay, How do I do it? (Setting Valve Duration Profiles)}
+Here, users can manually enter different opening times for any of the rig's currently configured 8 valves and save them as the new selected
+timings by pressing `Write Timing Changes'. However, most people likely do not have the exact timing for a given valve memorized. To 
+aid the user here are different valve timing profiles. To find previously configured or default profiles, click the dropdown menu in the 
+top right of this window as shown in Figure \ref{fig:timing-dropdown}.
+
+In this dropdown menu, users have the ability to set durations to one of the following profiles:
+\begin{itemize}
+    \item \textbf{Default}: Reset all durations back to the default value of 24125 milliseconds by writing the default profile as the new active
+        profile. This is a good starting point for calibration on fresh valves.  
+    \item \textbf{Last Used}: These timings are the most recently used timings and serve as the active timings for the program. At all times, 
+        this profile is the one used during experiments. When new timings are written, they are written into \textit{this} profile.
+    \item \textbf{Archive 1}: Archives are used as `back-ups' of older profiles. Anytime a new profile is written (automatic from a valve-test
+        or manually) the previous `profile' is set to the newest slot in the archive. The newly created profile is then set as the `Last Used' 
+        or current profile. 
+
+        Each time a new archive is added, each archive moves down a slot. For example, if a user writes a new timing 
+        profile, the oldest archive profile (`Archive 3') is destroyed. Then the contents of archive 2 move to archive 3 
+        (`Archive 2' -> `Archive 3'). Archive 1 then follows the pattern, moving to slot 2 (`Archive 1' -> `Archive 2'). This clears the way
+        for the last used profile to be moved to the most recent arhive slot (`Last Used' -> `Archive 1'). Finally, the newly created profile 
+        can be set as the active profile (`Last used'). 
+    \item \textbf{Archive 2}: Archive 2 is the next archival slot, the second oldest of the archive slots.
+    \item \textbf{Archive 3}: Archive 3 is the final archive slot, the oldest of all archives, and is the next profile that will be destroyed 
+        upon a new write.
+\end{itemize}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{"timing-dropdown.png"}
+    \caption{Users can Restore old Timings via the Timing Profile Dropdown Selection Menu in the `Manual Valve Timing Adjustment' window.}
+    \label{fig:timing-dropdown}
+\end{figure}
+\FloatBarrier
+
+\clearpage
+\subsection{Valve Priming}
+\subsubsection{Why is this Useful?}
+The final primary feature of the `Valve Testing / Prime Valves' Window is valve `priming'. This is a fancy way of saying "open and close the
+valves a bunch of times". The reason this is an included feature is that it was found that simply leaving valves open for an extended period
+of time while downstream tubes were full of \textit{only air} (in an attempt to fill them with stimulus) did \textit{not} seem to allow for 
+flow to the tip as desired. 
+
+However, it was found that rapidly opening and closing the valves repeatedly \textit{did} effectively allow for flow all the way down to the 
+tip of the tubes (albeit slowly).
+
+\subsubsection{Okay, How do I do it? (Priming Valves)}
+This process is very similar to the process described in Section \ref{sec:valve-profiles-how-to}. Follow the steps below. This guide assumes
+that you have the `Valve Testing' window already open on your display as shown in Figure \ref{fig:test-prime}
+
+\begin{enumerate}
+    \item \textbf{Switch to Priming Mode}: First, the user should click the orange button labelled `Switch to Priming Mode' as shown in 
+        Figure \ref{fig:test-prime}. This will change the interface to look like Figure \ref{fig:priming-mode}.
+            \item \textbf{Enter Valve Acutation Number}: Next, the user should enter how many times the valve should actuate (open and close) before 
+        stopping. The use should enter this value in the entry box under the label titled `How Many Times Should the Valve Actuate?'. 
+    \item \textbf{Select Valves to Prime}: Finally, the user should select the buttons corresponding to the valves to be primed. 
+        To understand what a valve button looks like when it is selected, refer to Figure \ref{fig:test-buttons}.
+    \item \textbf{Begin Prime Procedure}: The application is now ready to begin the procedure. Press the orange `Begin Priming' button to 
+        begin. 
+    \item \textbf{Confirm Prime Settings}: The application will generate a pop-up window similar to that shown in Figure \ref{fig:confirm-test}.
+        The user should review the settings in the pop-up window to confirm these are correct. If they are correct, pressing `Yes' will 
+        begin the test procedure.
+\end{enumerate}
+\textbf{Note}: The procedure can be stopped at any time by pressing the yellow `STOP PRIMING' button. The software \textit{does not} need to 
+be reset to start a new priming procedure. Once can start and stop as many times as is necessary, changing settings if desired.
+
+After the procedure is complete, check the tubes for the valves just primed. If stimulus has filled the tube to the tip (end nearest spout), 
+then the procedure was successful and the tubes are ready for an experiment. If not, repeat the process.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"priming-mode.png"}
+    \caption{Users can `Prime' Valve by Clicking `Switch to Priming Mode' in the `Valve Test' Window.}
+    \label{fig:priming-mode}
+\end{figure}
+\FloatBarrier
+
+\clearpage
+\section{The `Valve Control' Window}
+\label{sec:valve-control}
+\subsection{What does this Window do?}
+The `Valve Control' Window is where users can navigate to manually switch on or off valves for arbitrary lengths of time. They may also manually move the rig door up or
+down in this window. The `Valve Control' window is shown in Figure \ref{fig:valve-control-example}.
+
+\subsection{Controlling the Valves}
+All valves begin in the off state and can be switched on by pressing the button corresponding to the valve the user would like to open.  
+Valves will remain open until user selects this button again. 
+
+This functionality is particularly useful 
+for pressurizing valves and quickly running cleaning solution through the stimulus delivery tubes. 
+\newline
+\newline
+\textbf{NOTE}: Be aware and mindful that the valves get \textit{very hot} when left open for long periods of time. 
+
+\subsection{Controlling the Door Motor}
+The door motor can be moved down by pressing the green `Move Motor Down' button in this window. The door can be left open or closed as long as the user would like and 
+can be moved up and down as many times as necessary. 
+\newline
+\newline
+\textbf{NOTE}: The user should \textit{wait} until the motor movement is \textit{completely finished} before pressing the button again to initiate another movement. 
+\newline
+\newline
+Pressing 
+the button before the movement has completed will interfere with the Arduino board's ability to keep track of the current location of the door and will result in the door 
+moving too far out of range, potentially \textbf{damaging rig components}. Ensure movements have completed before beginning another.
+\newline
+\newline
+\textbf{IMPORTANT}: The door motor \textbf{must be} in the \textbf{UP} position before starting an experiment. The application assumes this to be the case. If the door is 
+left down, similar symptoms as described in the above note will occur. Ensure the motor is in the UP position before leaving this window and beginning an experiment run.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"valve-control-example.png"}
+    \caption{Users can Manually Control Valves as well as the Door Motor in the `Valve Control' Window.}
+    \label{fig:valve-control-example}
+\end{figure}
+\FloatBarrier
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"valve-control-2.png"}
+    \caption{Valve Buttons Turn Green on User Press Indicating Valve is Now Open. Motor Button Turns Blue upon User Press to Indicate Door is now Down.}
+    \label{fig:valve-control-2}
+\end{figure}
+\FloatBarrier
+
+\clearpage
+\section{The `Program Schedule' Window}
+\label{sec:program-schedule}
+
+\subsection{What does this Window do?}
+The `Program Schedule' Window allows the user to view one of the primary `dataframe' components where the software stores experiment data. An example of this window 
+when populated with data from an upcoming experiment is shown in Figure \ref{fig:prog-sched-ex}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"prog-sched-ex.png"}
+    \caption{The Program Schedule Window allows Users to View Basic Current Experiment Data. This Figure Shows the Window Prior to Experiment Beginning, thus the NAN Values
+    for Lick Data.}
+    \label{fig:prog-sched-ex}
+\end{figure}
+\FloatBarrier
+
+\clearpage
+\subsection{This Window won't Open due to Error... Why? (Experiment Schedule Error)}
+The user may see an error when attempting to open this window if they have not yet generated the experiment schedule for the experiment run. The error one may see is shown in
+Figure \ref{fig:prog-sched-err}. The steps to generate the schedule are outlined with references to specific sections in Section \ref{sec:start-exp}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"prog-sched-err.png"}
+    \caption{The Program Schedule window will not Open Until the Program Schedule has been Generated for the Experiment.}
+    \label{fig:prog-sched-err}
+\end{figure}
+\FloatBarrier
+
+\subsection{What do All these Fields Mean?}
+This section explains each column, its purpose, and the data/units held within the column's rows where applicable. Columns are explained from left to right as they 
+appear in the Program Schedule window.
+\begin{enumerate}
+    \item \textbf{Trial Block}: A trial \textit{block} is a group of trials that contain all possible pairings (unique stimuli pairings) of stimuli delivery during an 
+        experiment. 
+        
+        For example, for an experiment with two stimuli in use for each port, (sucrose, saccarhin Port 1 | sucrose, saccarhin Port 2), each stimulus must be 
+        delivered on each port. So there are number of valves / 2 pairings for a trial block. Here there would be 2 trials per block. For the first trial there may be
+        Port 1: Sucrose | Port 2: Saccarhin. There must also then be the opposite of this delivery for trial two: Port 1: Saccarhin | Port 2: Sucrose. This example is shown 
+        more clearly in Figure \ref{fig:prog-sched-ex}.
+    \item \textbf{Trial Number}: Trial number is simply the trial number of the current trial beginning at 1 and ending at total number of trials.
+    \item \textbf{Port 1}: Port 1 displays the stimulus to be delivered on Port 1 for the trial in the row.
+    \item \textbf{Port 2}: Port 2 displays the stimulus to be delivered on Port 2 for the trial in the row.
+    \item \textbf{Port 1 Licks}: Port 1 \textit{Licks} is updated after a trial occurs and shows the number of times Port 1 was licked for this trial.
+    \item \textbf{Port 2 Licks}: Port 2 \textit{Licks} is updated after a trial occurs and shows the number of times Port 2 was licked for this trial.
+    \item \textbf{ITI}: ITI shows the allocated time for ITI state for a given trial. This time is given in milliseconds. 
+    \item \textbf{TTC}: TTC shows the allocated time for a TTC state for a given trial. This time is given in milliseconds. 
+    \item \textbf{SAMPLE}: SAMPLE shows the allocated time for a Sample state for a given trial. This time is given in milliseconds. 
+    \item \textbf{TTC Actual}: TTC Actual shows the \textit{actual time used} for a TTC state for a given trial. This is necessary because three rat licks will transition the 
+        program into a Sample state early, and will not use all allocated TTC time. This time is given in milliseconds. 
+\end{enumerate}
+
+
+\clearpage
+\section{The `Valve / Stimuli' Window}
+\label{sec:valve-stim-window}
+\subsection{What Does this Window Do?}
+The `Valve / Stimuli' Window is where users should navigate to label the stimuli that will be delivered for a given valve. This is an important step to generating the program 
+schedule as described in Section \ref{sec:start-exp}. The `Valve / Stimuli' window as it will be found on first open is shown in Figure \ref{fig:valve-stim}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=7cm]{"valve-stim.png"}
+    \caption{The `Valve / Stimuli' Window is Initially Filled with Default Values Corresponding to the Labelled Valve Number of a Valve.}
+    \label{fig:valve-stim}
+\end{figure}
+\FloatBarrier
+
+\subsection{How Do I Use this Window? (Generating an Experiment Schedule)}
+The `Valve / Stimuli' window is where the stimuli schedule is generated for an upcoming experiment. This process will generate not only stimulus lineup for each port 
+per trial for the experiment, but also state base interval times (ITI, TTC, etc) and 
+the random times to be added to these base times. Assuming that interval times and other experiment configuration variables have been set as desired in the main 
+program window (Section \ref{sec:basic-configuration}), the remaining step prior to schedule generation is naming the stimuli for each valve. 
+
+When assigning stimuli names to valves, the user should start at valve one and continue downwards (enter only in new rows, do not enter in column two). This will simplify
+the process, as the program will automatically assign names to valves on column two based on names entered in column one. When names have been assigned, users can press the
+large green `Generate Schedule' button at the top of the `Valve / Stimuli' window.
+
+If this process is successful, the `Valve / Stimuli' window will disappear, and a new `Program Schedule' window will appear displaying the schedule to be followed for the 
+next experiment as shown in Figure \ref{fig:prog-sched-ex}.
+
+
+\clearpage
+\section{The `Event Data' Window}
+\label{sec:event-data-window}
+The `Event Data' Window shows the user more detailed information about events that occur during an experiment run. While the program schedule shows much of the desired 
+information about the experiment to the user, it lacks information like event timestamps, durations, etc. The `Event Data' window fills in these data gaps. 
+
+Details about rat licks as well as door motor movement details are contained in this window. Because two different event types are stored here, some columns may not always 
+contain a value. This is discussed in more detail below.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{"event-window-ex.png"}
+    \caption{The event data window }
+    \label{fig:event-window-ex}
+\end{figure}
+\FloatBarrier
+
+\subsection{Detailed Column Breakdown}
+Here the contents of each column is discussed in detail. This includes general details as well as units of displayed information where applicable.
+
+\begin{enumerate}
+    \item \textbf{Trial Number}: This column displays the trial that an event occurred in. 
+    \item \textbf{Licked Port}: This column will \textbf{not} always contain a value. It will only be filled if the event being recorded is a rat lick. Motor movement 
+        recordings will mark this columns value for this row as `nan'.
+    \item \textbf{Event Duration}: This column is used for \textit{both} licks and motor movements. It records the length of time the event occurred in from onset to offset. 
+        
+        For licks, this is the time difference between the moment the lick beam is broken until the moment it is restored. For door motor movements, it is the time 
+        difference between motor movement instruction until the motor reaches the target position. This time is represented in \textbf{milliseconds}.
+    \item \textbf{Valve Duration}: Valve duration is only marked for the subset of lick events that occur within the `SAMPLE' state. This is because valves are not 
+        opened during `TTC' state. Value stored as nan for licks in `TTC' state or motor movement events. This time is represented in \textbf{milliseconds}.
+    \item \textbf{Time Stamp}: This value is the time the event occurred relative to the program start time (t=0) in \textbf{seconds}.
+    \item \textbf{Trial Relative Stamp}: This value is the time the event occurred relative to the trial start time. Trial start here is defined as TTC start time, because 
+        this is the moment the rat can begin to engage in the trial. This time is represented in \textbf{seconds}.
+    \item \textbf{State}: State can hold different values depending on the \textit{type} of event that occurred. Motor movements will state the \textit{type} of motor movement 
+        that occurred (MOTOR [UP, DOWN]). Licks will show the program state at the time of the lick (TTC, SAMPLE).
+\end{enumerate}
+\textbf{NOTE}: The method by which data in this window is refreshed is pressing the `Event Data' button in the main program window. This button serves as the method to 
+access the window and update with new information that has occurred. The window will \textbf{NOT} automatically refresh. The user must manually trigger updates via this 
+method.
+
+\clearpage
+\section{The `Rasterized Data' Window}
+\label{sec:rasterized-data-window}
+Pressing the `Rasterized Data' button in  the main program window produces two identical raster plots representing the licks per trial per port. This window is useful to 
+ensure that reported licks from the Arduino board seem to match with the accepted understanding of how quickly rats can lick maximally. 
+
+In other words, it allows users to
+ensure that the data being recorded is accurate, and no `phantom licks' are being recorded due to equipment inadequacies or failures.
+
+In this window, the Y-axis represents trial number, while X-axis values represent the time stamp associated with a given lick.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"raster-1.png"}
+        \caption{Example of Data Filling the Side (Port) 1 Raster Plot.}
+        \label{fig:raster-1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=5cm]{"raster-2.png"}
+        \caption{Example of Data Filling the Side (Port) 2 Raster Plot.}
+        \label{fig:raster-2}
+    \end{subfigure}
+    \caption{Raster Plots are Seperated by Port to make Analysis more Straightforward.}
+    \label{fig:rasters}
+\end{figure}
+
+\end{document}

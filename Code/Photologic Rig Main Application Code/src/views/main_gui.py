@@ -237,7 +237,6 @@ class MainGUI(tk.Tk):
             ),
             "Program Schedule": ProgramScheduleWindow(
                 self.exp_data,
-                stimuli_data,
             ),
             "Raster Plot": (
                 RasterizedDataWindow(1, self.exp_data),
