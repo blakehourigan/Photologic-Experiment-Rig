@@ -138,10 +138,11 @@ void prime_valves() {
 
         open_single_valve(&PORTC, valve);
       }
-
-      delay(30);
+        
+      // below delay times defined in file header
+      delay(PRIME_OPEN_TIME);
       close_all();
-      delay(30);
+      delay(VALVE_TIMEOUT);
     }
   }
 }
@@ -198,7 +199,6 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
 
         close_single_valve(&PORTA, valve);
       } else {
-        delay(25);
       }
       if (sched_location < side_two_sched.len) {
         uint8_t valve = side_two_sched.schedule[sched_location] -
@@ -214,10 +214,13 @@ void run_valve_test(DurationsArray side_one, DurationsArray side_two) {
         delay(clean_delay);
         delayMicroseconds(remainder_delay);
         close_single_valve(&PORTC, valve);
+
       } else {
-        delay(25);
       }
       valve_openings++;
+      // delay VALVE_TIMEOUT ms so that valves have time to fully close before being reopened
+      // below delay times defined in file header
+      delay(VALVE_TIMEOUT);
     } else {
       valve_openings = 0;
       sched_location++;
