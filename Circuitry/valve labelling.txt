@@ -1,0 +1,4 @@
+the 32 pin valve connector is connected as follows:
+
+starting at pin 1, valves are connected in order, taking two pins. For example valve 1 uses pins 1 and two. All
+odd pins are +12v for the given valve while the even number is the ground pin for that valve. 
