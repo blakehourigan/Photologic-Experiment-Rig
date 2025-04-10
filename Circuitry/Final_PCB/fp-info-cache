@@ -1,4 +1,4 @@
-22660789164086145
+22662533384856612
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -56288,6 +56288,13 @@ SAMTEC_IPL1-102-01-L-S-RE1-K-WT
 4
 IPL1-108-01-L-D-RE1-K-WT
 SAMTEC_IPL1-108-01-L-D-RE1-K-WT
+
+
+0
+18
+18
+IPL1-109-01-L-D-RE1-K
+SAMTEC_IPL1-109-01-L-D-RE1-K
 
 
 0
