@@ -71,23 +71,72 @@ A part file is a file used for 3d modelling purposes. There are many types of fi
 and more. These are all similar in that they represent a 3d object in digital form. Most importantly for our use case, they contain information about 
 objects including the \textit{dimensions} of the part we would like to cut out in the real world. 
 
-The type of file that should interest us for the purposes of creating a C2D file are SLDPRT files, which are files created for parts inside of the 
-Solidworks 3d modelling program, OR STEP files, which can be used in Solidworks or Autodesk Fusion360.
-
 \subsection{Where do Part Files Come From?}
+The type of file that interests us for the purposes of creating a C2D file are SLDPRT files, which are files created for parts inside of the 
+Solidworks 3d modelling program, OR STEP files, which can be used in Solidworks or Autodesk Fusion360. These parts can be created by you or someone 
+else in the lab, or can be downloaded from the internet. The important part is that the file is a SLDPRT or STEP file.
 
-\subsection{Where do Part Files Come From?}
+
+\subsection{Obtaining the DXF File}
+Both Solidworks and Fusion360 have... 
+
+\subsubsection{Obtaining the DXF File from Solidworks}
+
+\subsubsection{Obtaining the DXF File from Fusion360}
 
 
 \section{Creating a Toolpath (Making a C2D File)}
 \label{sec:create-toolpath}
 
 \subsection{What is a Toolpath?}
+A toolpath, as has been referred to many times in this guide, is the path the toolhead/router/machine bit will take to cut out your part. This file 
+contains not only the path however, but also the \textit{feed rate}, which is the rate at which router will move around the material, 
+\textit{plunge rate}, which is the rate at which the tool will move vertically into the material, 
+\textit{RPM of the spindle} which is the rate at which the spindle will rotate during certain portions of the operation, etc. 
+
+All of these attributes are important to get right to get a good finish from your operation. They also change depending on what \textit{material} you 
+are cutting. Settings that have been found to work well with the two primary materials that are cut in the lab are discussed in detail in 
+Secition \ref{sec:modifying-toolpath-attr}.
 
 \subsection{What Tools will I Use?}
 
-\subsection{Verifying/Modifying Toolpaths}
+\subsection{Verifying Toolpaths}
 \label{sec:verifying-toolpath}
+
+\subsection{Modifying Aluminum Toolpath Attributes}
+\label{sec:modifying-toolpath-attr}
+
+As mentioned previously, it is important to get the \textit{attributes} of the toolpath such as selected tool, Spindle RPM, feed rate, etc in the 
+proper ranges for your material to ensure a sucessful cut and a clean finish around cutting edges. 
+
+Here, we will discuss the proper settings for operations involving \textit{Aluminum}.
+
+\subsubsection{Selecting a Tool}
+In this section we discuss which tool/bit/mill to use for an operation. This is a rather simple choice compared to the other attributes, and comes down
+to the size of cuts you are making with your part. Generally, a .25" end mill/bit works perfectly well for machining operations. However, scenarios 
+often arise where this mill will not produce successful cuts, such as when a user wants to cut a hole less than .25" in diameter. A .25" end mill simple 
+will not physically fit into this hole and therefore will not work.
+
+In other words, the .25" end mill is useful for all cuts where it physically fits in your cutting path. If this is not the case, another end mill would 
+be of use. At the time of writing this guide in April of 2025, the end mill often used as a substitute is the 1/8" end mill. 
+
+\subsubsection{Feed Rate}
+
+\subsubsection{Plunge Rate}
+
+\subsubsection{Spindle RPM}
+
+
+
+\subsection{Modifying Acryllic Toolpath Attributes}
+
+\subsubsection{Selecting a Tool}
+
+\subsubsection{Feed Rate}
+
+\subsubsection{Plunge Rate}
+
+\subsubsection{Spindle RPM}
 
 \section{Securing the Part to the Cutting Board}
 This part of the process is mostly independent of the material that you will be cutting, but one must be mindful of the material througout the 
