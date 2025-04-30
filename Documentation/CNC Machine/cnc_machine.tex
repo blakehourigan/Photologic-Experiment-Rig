@@ -1,0 +1,109 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{pdfpages}
+
+\graphicspath{{"/home/blake/Pictures/arduino migration guide"}}
+
+\setlength{\parskip}{1em}
+
+\title{Samuelsen Lab\\CNC Machine User Guide}
+\author{Blake Hourigan}
+\date{April 30, 2025}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+}
+\lstdefinelanguage{yaml}{
+    morekeywords={true,false,null,y,n},      % Add keywords here
+    sensitive=false,                        % Case insensitive
+    morecomment=[l]{\#},                    % Line comments start with #
+    morestring=[b]",                        % Double-quoted strings
+    morestring=[b]',                        % Single-quoted strings
+}
+
+\begin{document}
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
+
+
+\section{Sourcing a Part File (Finding the File to Cut a Shape)}
+\subsection{The End Goal}
+What you will eventually need to obtain to run a cutting operation on the Shapeoko Pro CNC machine is a \textit{C2D} file. You can identify these files
+by their file \textit{extension}. What this means is that CNC machine files will look something like \textit{`part\_name\_here.c2d'}.
+
+Some parts, especially those which have already been cut out before using the Shapeoko Pro CNC machine will already have a c2d file (also referred to 
+in this document as a \textit{toolpath} file). If this is the case and you have located the C2D file for your part you can move on to Section 
+\ref{sec:verifying-toolpath}, where the process of verifying and modifying existing toolpaths is detailed.
+
+For newly created parts, a C2D file will not exist. You will need to obtain or create a \textit{part file} containting the dimensions of the part 
+that you would like to cut out. Then, from this part file, you will need to generate a \textit{`dxf'} file. This `dxf' file will contain the 
+two-dimensional representation of some `face' of a part, which will allow you to create a `toolpath' that will cut this `face' out from your stock. 
+
+So, to briefly summarize, to cut a part out from a piece of stock on the Shapeoko Pro CNC Machine, you need a C2D file. This file may or may not already
+exist. If it does exist and you have located the file, you can modify this for your particular piece of stock and cut it out. If it does not exist you
+will need to create it. To create a C2D you need:
+\begin{itemize}
+    \item A part file (Solidworks SLDPRT or Fusion360 STEP). This can be created by you or sourced from online. But you need to be reasonable about 
+        what you can cut out on our machine. The simpler the better.
+    \item A \textit{dxf} file. This is a 2d representation of some side or `face' of the part that can be cut out by the CNC. 
+\end{itemize}
+
+Once you have obtained the dxf file, you can place it in a tool called \textit{Carbide Create} to define the toolpath. This is discussed further 
+in Section \ref{sec:create-toolpath}.
+
+\subsection{What is a Part File?}
+A part file is a file used for 3d modelling purposes. There are many types of files such as \textit{SLDPRT} files, \textit{STEP} files, \textit{STL} files
+and more. These are all similar in that they represent a 3d object in digital form. Most importantly for our use case, they contain information about 
+objects including the \textit{dimensions} of the part we would like to cut out in the real world. 
+
+The type of file that should interest us for the purposes of creating a C2D file are SLDPRT files, which are files created for parts inside of the 
+Solidworks 3d modelling program, OR STEP files, which can be used in Solidworks or Autodesk Fusion360.
+
+\subsection{Where do Part Files Come From?}
+
+\subsection{Where do Part Files Come From?}
+
+
+\section{Creating a Toolpath (Making a C2D File)}
+\label{sec:create-toolpath}
+
+\subsection{What is a Toolpath?}
+
+\subsection{What Tools will I Use?}
+
+\subsection{Verifying/Modifying Toolpaths}
+\label{sec:verifying-toolpath}
+
+\section{Securing the Part to the Cutting Board}
+This part of the process is mostly independent of the material that you will be cutting, but one must be mindful of the material througout the 
+process. This will be discussed in more detail when relevent below.
+
+\section{Securing the Part Using Tape}
+
+\section{Securing the Part Using Glue}
+This method is generally most useful when cutting aluminum, but can be very useful with acryllic as well. When possible, it is more efficient to avoid 
+using the glue method because one must clean the cutting board thoroughly each time a new stock piece (piece of material that you cut a part out of) is 
+placed on the cutting board. Furthermore, one must glue the piece to the cutting board and wait for the glue to \textit{cure} which takes about 30
+minutes until the part is secure enough to stay put through an entire tool path cycle.
+
+For most acryllic tool paths, the tape method described previously works fantastically well and can be much quicker and more efficient than using the 
+glue method with all its overhead. If a tool path is very complex, using much or most of the area of the stock piece, it may be useful to use the glue
+method. When using aluminum, the glue method can be incredibly useful to keep the entire sheet as level as possible, which is important to achieve 
+clean cuts on all cut edges.
+
+\end{document}
