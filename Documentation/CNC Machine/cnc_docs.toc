@@ -1,0 +1,5 @@
+\contentsline {section}{\numberline {1}Obtain a Model to Machine}{3}{section.1}%
+\contentsline {section}{\numberline {2}Obtain a Drawing File for this Model}{3}{section.2}%
+\contentsline {section}{\numberline {3}Toolhead Settings for Given Materials}{3}{section.3}%
+\contentsline {section}{\numberline {4}Fixing the Materials to the Machine}{3}{section.4}%
+\contentsline {section}{\numberline {5}Running a .C2D File on the CNC Machine}{3}{section.5}%

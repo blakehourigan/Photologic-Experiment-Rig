@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{placeins}
+\usepackage{pdfpages}
+
+\graphicspath{{"/home/blake/Pictures/arduino migration guide"}}
+
+\setlength{\parskip}{1em}
+
+\title{Samuelsen Lab \\ CNC Machine Operation}
+\author{Blake Hourigan}
+\date{April 28, 2025}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+}
+\lstdefinelanguage{yaml}{
+    morekeywords={true,false,null,y,n},      % Add keywords here
+    sensitive=false,                        % Case insensitive
+    morecomment=[l]{\#},                    % Line comments start with #
+    morestring=[b]",                        % Double-quoted strings
+    morestring=[b]',                        % Single-quoted strings
+}
+
+\begin{document}
+\maketitle
+\clearpage
+\tableofcontents
+\clearpage
+
+
+\section{Obtain a Model to Machine}
+Before telling the machine what path to take and what setting to use to cut out a certain part, the user must decide which part to cut, find the Solidworks part file or Fusion360 `step' file, 
+generate a `drawing' (dxf) file and then layout this drawing file in the 'Carbide Create' application so that machine understands what part is being cut out, how large the stock piece is, 
+and where to cut into this stock piece. 
+
+An exception to this general rule is the case where a `C2D' toolhead path file has already been generated for a given part. If this is the case for your part, skip to Section... REFERENCE 
+THE SECTION FOR CHECKING AND RUNNING AN OPERATION HERE!!!!!!!!!!!!!!!!!!!!! An example of when this will be the case includes the CNC files for all models created for the `Photologic 
+Experiment Rig' and can be found in the `Rig Assembly Files' directory of the Rig's GitHub repo found \href{https://github.com/blakehourigan/Photologic-Experiment-Rig}{here}.
+
+
+\section{Obtain a Drawing File for this Model}
+
+\section{Toolhead Settings for Given Materials}
+
+\section{Fixing the Materials to the Machine}
+\section{Running a .C2D File on the CNC Machine}
+
+
+\end{document}
