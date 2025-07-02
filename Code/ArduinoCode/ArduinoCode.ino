@@ -41,6 +41,14 @@ void setup() {
   PORTL |= (1 << LED_BIT_SIDE1);
   PORTL |= (1 << LED_BIT_SIDE2);
 
+  DDRH |= (1 << 5);
+  DDRH |= (1 << 6);
+
+
+  PORTH &= ~(1 << 5); // digital 8 | capacitive arduino lick enable set to 0 initially
+  PORTH |= (1 << 6); // digital 9 | capacitive arduino reset set to 1 initially, 0 resets
+  
+
 }
 
 void loop() {
@@ -112,14 +120,20 @@ void loop() {
       // begin opening valves from this point forward, 
       // this is called when sample time begins
       open_valves = true;
+      
+      PORTH |= (1 << 6); // digital 8 | capacitive arduino lick enable set to 0 initially
     }
     else if (command.equals("STOP OPEN VALVES")) {
       // stop opening valves
       open_valves = false;
+      PORTH &= ~(1 << 6); // digital 8 | capacitive arduino lick enable set to 0 initially
     }
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
       accept_licks = true;
+
+  
+      PORTH |= (1 << 5); // digital 8 | capacitive arduino lick enable set to 0 initially
     }
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
