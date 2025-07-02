@@ -26,23 +26,22 @@ void update_leds(bool side_1_pin_state, bool side_2_pin_state) {
   }
 }
 
-bool lick_started(SideData side_data) {
-  if (side_data.current_input_state == 0 &&
-      side_data.previous_input_state == 1) {
-    side_data.previous_input_state = 0;
+bool lick_started(SideData* side_data) {
+  if (side_data->current_input_state == 0 &&
+      side_data->previous_input_state == 1) {
+
     return true;
   }
   return false;
 }
 
-bool lick_ended(SideData *side_data) {
+bool lick_ended(SideData* side_data) {
   if (side_data->current_input_state == 1 &&
       side_data->previous_input_state == 0) {
-
     // tongue has cleared the beam, lick occurance ended
 
-    side_data->previous_input_state = 1;
     return true;
   }
   return false;
 }
+

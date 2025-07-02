@@ -65,6 +65,9 @@ void loop() {
   
   static unsigned long program_start_time = 0; 
   static unsigned long trial_start_time = 0;
+  
+  static unsigned long last_poll = 0;
+  static unsigned long last_lick_end = 0;
 
   static bool side_one_pin_state = 0;
   static bool side_one_previous_state = 1;
@@ -199,9 +202,17 @@ void loop() {
     motor_running = false;
   }
 
-  // read current optical sensor pin values
-  side_one_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
-  side_two_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+  // read current optical sensor pin values, ONLY EVERY 5 MILLISECONDS. We do this to avoid picking up 
+  // rapidly changing noise on beam break onset or offset. This was a solution to gh issue #30
+  if(millis() - last_poll > 5){
+    side_one_previous_state = side_one_pin_state;
+    side_two_previous_state = side_two_pin_state;
+
+    side_one_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+    side_two_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+    
+    last_poll = millis();
+  }
 
 
   // only if the schedule and durations have been recieved should we detect licks and open valves
@@ -218,27 +229,28 @@ void loop() {
     
     if (accept_licks && (!handling_lick)){
       // if no previous lick or valve movement is being handled
-      bool lick_start_one = lick_started(side_one_data);
-      bool lick_start_two = lick_started(side_two_data);
+      bool lick_start_one = lick_started(&side_one_data); 
+      bool lick_start_two = lick_started(&side_two_data);
+    
+      // reject licks if that start before 90 seconds after last lick has ended.
+      if(millis() - last_lick_end > 90){
+        if (lick_start_one || lick_start_two){
+          if(lick_start_one){
+            side_data = &side_one_data;
+          }else{
+            side_data = &side_two_data;
+          }
+          // record lick start time 
+          lick_time.lick_begin_time = millis();
+          handling_lick = true;
 
-      if (lick_start_one || lick_start_two){
-        if(lick_start_one){
-          side_data = &side_one_data;
-          lick_start_one= false;
-        }else{
-          side_data = &side_two_data;
-          lick_start_two = false;
-        }
-        // record lick start time 
-        lick_time.lick_begin_time = millis();
-        handling_lick = true;
+          ttc_lick=true;
 
-        ttc_lick=true;
-
-        if (open_valves){
-          ttc_lick =false;
-          open_valve(side_data, current_trial);
-          valve_time.valve_open_time = micros();
+          if (open_valves){
+            ttc_lick =false;
+            open_valve(side_data, current_trial);
+            valve_time.valve_open_time = micros();
+          }
         }
       }
     }
@@ -255,6 +267,7 @@ void loop() {
 
         if (lick_ended(side_data)){ 
           lick_time.lick_end_time= millis();
+          last_lick_end = lick_time.lick_end_time;
           // in the case that we WERE in open valves, but moved out of a sample time without
           handling_lick = false;
           report_ttc_lick(side_data->SIDE, lick_time, program_start_time, trial_start_time);
@@ -267,6 +280,7 @@ void loop() {
         if (!lick_marked){ 
           if (lick_ended(side_data)){
             lick_time.lick_end_time= millis();
+            last_lick_end = lick_time.lick_end_time;
             lick_marked = true;
           }
         }
@@ -295,4 +309,3 @@ void loop() {
 
   stepper.run();
 }
-

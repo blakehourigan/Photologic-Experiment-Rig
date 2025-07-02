@@ -80,9 +80,9 @@ void report_sample_lick(uint8_t side, lickTimeDetails lick_time,
   lick_time.onset_rel_to_trial = lick_time.lick_begin_time - trial_start;
 
   // if a lick duration does not meet the LICK_THRESHOLD, disregard it
-  if (lick_time.lick_duration < LICK_THRESHOLD) {
-    return;
-  }
+  //if (lick_time.lick_duration < LICK_THRESHOLD) {
+  //  return;
+  //}
   // fix for issue #26 on github, where a state switch after a lick has already
   // been initiated results in a sample lick without a valve actuation.
   if (valve_time.valve_duration > MAXIMUM_SAMPLE_VALVE_DURATION) {
