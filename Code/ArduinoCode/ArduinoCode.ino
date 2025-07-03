@@ -119,21 +119,21 @@ void loop() {
     if (command.equals("BEGIN OPEN VALVES")) {
       // begin opening valves from this point forward, 
       // this is called when sample time begins
-      open_valves = true;
+      open_valves = true;  
       
-      PORTH |= (1 << 6); // digital 8 | capacitive arduino lick enable set to 0 initially
+      PORTH |= (1 << 6); // digital 9 | capacitive arduino reset set to 1 initially, 0 resets
+      PORTH |= (1 << 5); // digital 8 | enable lick counting in sample state
     }
     else if (command.equals("STOP OPEN VALVES")) {
       // stop opening valves
-      open_valves = false;
-      PORTH &= ~(1 << 6); // digital 8 | capacitive arduino lick enable set to 0 initially
+      open_valves = false; 
+      PORTH &= ~(1 << 6); // digital 9 | 0 resets the board (resets lick counters)
     }
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
       accept_licks = true;
 
   
-      PORTH |= (1 << 5); // digital 8 | capacitive arduino lick enable set to 0 initially
     }
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
