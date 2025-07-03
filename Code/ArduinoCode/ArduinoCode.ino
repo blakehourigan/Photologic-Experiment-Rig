@@ -66,6 +66,10 @@ void loop() {
   static bool motor_running = false; 
 
   static bool accept_licks = false;
+  
+  // use this variable to know if trial start valve opening is occuring. 
+  // in other words: do i need to worry about closing the valves? 
+  static bool valve_open_trial_start = false;
   // since we support up to 320 trials, 
   // we need more than 2^8 = 255 we use 
   // 16 bit int which provides vals up to 2^16 -1 = 65535
@@ -87,6 +91,10 @@ void loop() {
   static lickTimeDetails lick_time = {};
   static doorMotorTimeDetails motor_time = {};
   static valveTimeDetails valve_time = {};
+  
+  // valve time storage for the trial start valve actuations
+  static valveTimeDetails trial_start_valve_side_one = {};
+  static valveTimeDetails trial_start_valve_side_two = {};
 
   // side one data variables, used in optical/valve functions like
   // open_valve, close_valve, etc
@@ -132,8 +140,16 @@ void loop() {
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
       accept_licks = true;
-
+      valve_open_trial_start = true;
   
+      /// open valve for current trial on each spout, disabled for now. need to add ability to enable this as an option
+      /// in the controller software. 
+      //open_valve(&side_one_data, current_trial);
+      //valve_time.valve_open_time = micros();
+      //trial_start_valve_side_one.valve_open_time = micros();
+      //
+      //open_valve(&side_two_data, current_trial);
+      //trial_start_valve_side_two.valve_open_time = micros();
     }
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
@@ -202,6 +218,11 @@ void loop() {
       Serial.println(command);
     }
   }
+
+  //if(valve_open_trial_start){
+  //  close_valve(trial_start_valve_side_one, &side_one_data, current_trial);
+  //  close_valve(trial_start_valve_side_two, &side_two_data, current_trial);
+  //}
 
   // check if motor_running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
