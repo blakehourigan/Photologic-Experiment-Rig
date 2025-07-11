@@ -72,16 +72,14 @@ void loop() {
 
   if (accept_licks && (!handling_lick)){
     // reject licks if that start before 90 seconds after last lick has ended.
-    if(millis() - last_lick_end > 90){
+    if(millis() - last_lick_end> 90){
       if (port_1_state && !port_1_prev_state) {
         // only increment once per touch
         handling_lick = true;
-        last_lick_end = millis();
       }
 
       if (port_2_state && !port_2_prev_state) {
         handling_lick = true;
-        last_lick_end = millis();
       }
     }
   }else if(handling_lick){
@@ -107,6 +105,7 @@ void loop() {
         }
 
         handling_lick = false;
+        last_lick_end= millis();
         port_1_falling_edge = false;
 
         display_binary_port_1(port_1_val);
@@ -124,6 +123,7 @@ void loop() {
         }
 
         handling_lick = false;
+        last_lick_end= millis();
         port_2_falling_edge = false;
 
         display_binary_port_2(port_2_val);
