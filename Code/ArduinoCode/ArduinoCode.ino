@@ -41,12 +41,12 @@ void setup() {
   PORTL |= (1 << LED_BIT_SIDE1);
   PORTL |= (1 << LED_BIT_SIDE2);
 
-  DDRH |= (1 << 5);
-  DDRH |= (1 << 6);
+  DDRH |= (1 << PH5);
+  DDRH |= (1 << PH6);
 
 
-  PORTH &= ~(1 << 5); // digital 8 | capacitive arduino lick enable set to 0 initially
-  PORTH |= (1 << 6); // digital 9 | capacitive arduino reset set to 1 initially, 0 resets
+  PORTH &= ~(1 << PH5); // digital 8 | capacitive arduino lick enable set to 0 initially
+  PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
   
 
 }
@@ -80,6 +80,7 @@ void loop() {
   
   static unsigned long last_poll = 0;
   static unsigned long last_lick_end = 0;
+  static unsigned long sent_reset_time = 0;
 
   static bool side_one_pin_state = 0;
   static bool side_one_previous_state = 1;
@@ -118,6 +119,12 @@ void loop() {
   // a pointer to the side_data for the side that was licked most recently
   static SideData * side_data;
   
+  // if reset pin has been high for 3ms or longer reset it. 
+  bool reset_pin_high = (PINH & (1 << PH6)) != 0;
+  if (reset_pin_high && ((millis() - sent_reset_time) > 2)){
+    PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
+  }
+  
   if (Serial.available() > 0) {
     // read until the newline char 
     command = Serial.readStringUntil('\n');
@@ -129,13 +136,17 @@ void loop() {
       // this is called when sample time begins
       open_valves = true;  
       
-      PORTH |= (1 << 6); // digital 9 | capacitive arduino reset set to 1 initially, 0 resets
-      PORTH |= (1 << 5); // digital 8 | enable lick counting in sample state
+      PORTH &= ~(1 << PH6); // digital 9 | capacitive arduino reset set to 0 initially, 1 resets
+      PORTH |= (1 << PH5); // digital 8 | enable lick counting in sample state
     }
     else if (command.equals("STOP OPEN VALVES")) {
       // stop opening valves
       open_valves = false; 
-      PORTH &= ~(1 << 6); // digital 9 | 0 resets the board (resets lick counters)
+      
+      PORTH &= ~(1 << PH5); // digital 8 | disable lick counting 
+      PORTH |= (1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
+      
+      sent_reset_time = millis();
     }
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
