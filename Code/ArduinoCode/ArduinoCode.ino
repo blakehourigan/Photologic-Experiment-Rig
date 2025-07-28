@@ -40,6 +40,15 @@ void setup() {
   // turn each side's (yellow&red) lick indicator LEDs to on
   PORTL |= (1 << LED_BIT_SIDE1);
   PORTL |= (1 << LED_BIT_SIDE2);
+  
+  DDRB |= (1 << PB4); // digital pin 10 | sends start signal to capacitive arduino.
+  DDRH |= (1 << PH5);
+  DDRH |= (1 << PH6);
+
+  PORTB &= ~(1 << PB4); // digital 10 | 1 sends start signal
+  PORTH &= ~(1 << PH5); // digital 8 | capacitive arduino lick enable set to 0 initially
+  PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
+  
 
 }
 
@@ -58,6 +67,10 @@ void loop() {
   static bool motor_running = false; 
 
   static bool accept_licks = false;
+  
+  // use this variable to know if trial start valve opening is occuring. 
+  // in other words: do i need to worry about closing the valves? 
+  static bool valve_open_trial_start = false;
   // since we support up to 320 trials, 
   // we need more than 2^8 = 255 we use 
   // 16 bit int which provides vals up to 2^16 -1 = 65535
@@ -65,6 +78,12 @@ void loop() {
   
   static unsigned long program_start_time = 0; 
   static unsigned long trial_start_time = 0;
+  
+  static unsigned long last_poll = 0;
+  static unsigned long last_lick_end = 0;
+  
+  static unsigned long sent_reset_time = 0;
+  static unsigned long sent_start_time = 0;
 
   static bool side_one_pin_state = 0;
   static bool side_one_previous_state = 1;
@@ -76,6 +95,10 @@ void loop() {
   static lickTimeDetails lick_time = {};
   static doorMotorTimeDetails motor_time = {};
   static valveTimeDetails valve_time = {};
+  
+  // valve time storage for the trial start valve actuations
+  static valveTimeDetails trial_start_valve_side_one = {};
+  static valveTimeDetails trial_start_valve_side_two = {};
 
   // side one data variables, used in optical/valve functions like
   // open_valve, close_valve, etc
@@ -99,6 +122,18 @@ void loop() {
   // a pointer to the side_data for the side that was licked most recently
   static SideData * side_data;
   
+  // if reset pin has been high for 3ms or longer reset it. 
+  bool reset_pin_high = (PINH & (1 << PH6)) != 0;
+  if (reset_pin_high && ((millis() - sent_reset_time) > 2)){
+    PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
+  }
+  
+  // if reset pin has been high for 3ms or longer reset it. 
+  bool start_pin_high = (PINB & (1 << PB4)) != 0;
+  if (start_pin_high && ((millis() - sent_start_time) > 2)){
+    PORTB &= ~(1 << PB4); // digital 10, clear start signal bit
+  }
+  
   if (Serial.available() > 0) {
     // read until the newline char 
     command = Serial.readStringUntil('\n');
@@ -108,19 +143,38 @@ void loop() {
     if (command.equals("BEGIN OPEN VALVES")) {
       // begin opening valves from this point forward, 
       // this is called when sample time begins
-      open_valves = true;
+      open_valves = true;  
+      
+      PORTH &= ~(1 << PH6); // digital 9 | capacitive arduino reset set to 0 initially, 1 resets
+      PORTH |= (1 << PH5); // digital 8 | enable lick counting in sample state
     }
     else if (command.equals("STOP OPEN VALVES")) {
       // stop opening valves
-      open_valves = false;
+      open_valves = false; 
+      
+      PORTH &= ~(1 << PH5); // digital 8 | disable lick counting 
+      PORTH |= (1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
+      
+      sent_reset_time = millis();
     }
     else if (command.equals("TRIAL START")){
       trial_start_time = millis(); 
       accept_licks = true;
+      valve_open_trial_start = true;
+  
+      /// open valve for current trial on each spout, disabled for now. need to add ability to enable this as an option
+      /// in the controller software. 
+      //open_valve(&side_one_data, current_trial);
+      //valve_time.valve_open_time = micros();
+      //trial_start_valve_side_one.valve_open_time = micros();
+      //
+      //open_valve(&side_two_data, current_trial);
+      //trial_start_valve_side_two.valve_open_time = micros();
     }
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
       program_start_time = millis();
+      PORTB |= (1 << PB4);
 
       trial_start_time = program_start_time;
     }
@@ -186,6 +240,11 @@ void loop() {
     }
   }
 
+  //if(valve_open_trial_start){
+  //  close_valve(trial_start_valve_side_one, &side_one_data, current_trial);
+  //  close_valve(trial_start_valve_side_two, &side_two_data, current_trial);
+  //}
+
   // check if motor_running first to avoid unneccessary calls to stepper.distanceToGo()
   if (motor_running && stepper.distanceToGo() == 0) {
     // at this stage we have filled movement_start, movement_type, and now movement_end
@@ -199,9 +258,17 @@ void loop() {
     motor_running = false;
   }
 
-  // read current optical sensor pin values
-  side_one_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
-  side_two_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+  // read current optical sensor pin values, ONLY EVERY 5 MILLISECONDS. We do this to avoid picking up 
+  // rapidly changing noise on beam break onset or offset. This was a solution to gh issue #30
+  if(millis() - last_poll > 5){
+    side_one_previous_state = side_one_pin_state;
+    side_two_previous_state = side_two_pin_state;
+
+    side_one_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE1));
+    side_two_pin_state = (PINL & (1 << OPTICAL_DETECTOR_BIT_SIDE2));
+    
+    last_poll = millis();
+  }
 
 
   // only if the schedule and durations have been recieved should we detect licks and open valves
@@ -218,27 +285,28 @@ void loop() {
     
     if (accept_licks && (!handling_lick)){
       // if no previous lick or valve movement is being handled
-      bool lick_start_one = lick_started(side_one_data);
-      bool lick_start_two = lick_started(side_two_data);
+      bool lick_start_one = lick_started(&side_one_data); 
+      bool lick_start_two = lick_started(&side_two_data);
+    
+      // reject licks if that start before 90 seconds after last lick has ended.
+      if(millis() - last_lick_end > 90){
+        if (lick_start_one || lick_start_two){
+          if(lick_start_one){
+            side_data = &side_one_data;
+          }else{
+            side_data = &side_two_data;
+          }
+          // record lick start time 
+          lick_time.lick_begin_time = millis();
+          handling_lick = true;
 
-      if (lick_start_one || lick_start_two){
-        if(lick_start_one){
-          side_data = &side_one_data;
-          lick_start_one= false;
-        }else{
-          side_data = &side_two_data;
-          lick_start_two = false;
-        }
-        // record lick start time 
-        lick_time.lick_begin_time = millis();
-        handling_lick = true;
+          ttc_lick=true;
 
-        ttc_lick=true;
-
-        if (open_valves){
-          ttc_lick =false;
-          open_valve(side_data, current_trial);
-          valve_time.valve_open_time = micros();
+          if (open_valves){
+            ttc_lick =false;
+            open_valve(side_data, current_trial);
+            valve_time.valve_open_time = micros();
+          }
         }
       }
     }
@@ -255,6 +323,7 @@ void loop() {
 
         if (lick_ended(side_data)){ 
           lick_time.lick_end_time= millis();
+          last_lick_end = lick_time.lick_end_time;
           // in the case that we WERE in open valves, but moved out of a sample time without
           handling_lick = false;
           report_ttc_lick(side_data->SIDE, lick_time, program_start_time, trial_start_time);
@@ -267,6 +336,7 @@ void loop() {
         if (!lick_marked){ 
           if (lick_ended(side_data)){
             lick_time.lick_end_time= millis();
+            last_lick_end = lick_time.lick_end_time;
             lick_marked = true;
           }
         }
@@ -295,4 +365,3 @@ void loop() {
 
   stepper.run();
 }
-

@@ -28,7 +28,7 @@ struct SideData {
 
 void update_leds(bool side_1_pin_state, bool side_two_pin_state);
 
-bool lick_started(SideData side_data);
+bool lick_started(SideData *side_data);
 bool lick_ended(SideData *side_data);
 
 #endif // !OPTICAL_DET_H

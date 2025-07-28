@@ -97,6 +97,7 @@ void open_valve(SideData *side_data, uint16_t current_trial) {
     valve_number = valve_number - (MAX_VALVES_PER_SIDE / 2);
     break;
   }
+  Serial.println("valve opened");
 
   // open the valve on the desired port
   *PORT = (1 << valve_number);
