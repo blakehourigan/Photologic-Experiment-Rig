@@ -40,11 +40,12 @@ void setup() {
   // turn each side's (yellow&red) lick indicator LEDs to on
   PORTL |= (1 << LED_BIT_SIDE1);
   PORTL |= (1 << LED_BIT_SIDE2);
-
+  
+  DDRB |= (1 << PB4); // digital pin 10 | sends start signal to capacitive arduino.
   DDRH |= (1 << PH5);
   DDRH |= (1 << PH6);
 
-
+  PORTB &= ~(1 << PB4); // digital 10 | 1 sends start signal
   PORTH &= ~(1 << PH5); // digital 8 | capacitive arduino lick enable set to 0 initially
   PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
   
@@ -80,7 +81,9 @@ void loop() {
   
   static unsigned long last_poll = 0;
   static unsigned long last_lick_end = 0;
+  
   static unsigned long sent_reset_time = 0;
+  static unsigned long sent_start_time = 0;
 
   static bool side_one_pin_state = 0;
   static bool side_one_previous_state = 1;
@@ -125,6 +128,12 @@ void loop() {
     PORTH &= ~(1 << PH6); // digital 9 | 1 resets the board (resets lick counters)
   }
   
+  // if reset pin has been high for 3ms or longer reset it. 
+  bool start_pin_high = (PINB & (1 << PB4)) != 0;
+  if (start_pin_high && ((millis() - sent_start_time) > 2)){
+    PORTB &= ~(1 << PB4); // digital 10, clear start signal bit
+  }
+  
   if (Serial.available() > 0) {
     // read until the newline char 
     command = Serial.readStringUntil('\n');
@@ -165,6 +174,7 @@ void loop() {
     else if (command.equals("T=0")){
       // mark t=0 time for the arduino side
       program_start_time = millis();
+      PORTB |= (1 << PB4);
 
       trial_start_time = program_start_time;
     }
